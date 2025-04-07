@@ -22,7 +22,6 @@ import {
   MenuItem,
   MenuList,
   Image,
-  Link,
   Spacer,
   ComponentWithAs,
   IconProps,
@@ -60,6 +59,7 @@ import { adminLogout } from "@/redux/features/auth/authActions";
 import { Home2, Element4, Icon as IconSax } from "iconsax-react";
 import { toast } from "react-toastify";
 import { ChakraWrapper } from "../chakraUIWrapper";
+import Link from "next/link";
 
 interface LinkItemProps {
   name: string;
@@ -236,11 +236,10 @@ const NavItem = ({
   const icon = pathname == path || isHovered ? iconLight : iconDark;
 
   return (
-    <Box
-      as="a"
+    <Link
       href={path}
+      prefetch={true}
       style={{ textDecoration: "none" }}
-      _focus={{ boxShadow: "none" }}
       onMouseEnter={() => setIsHovered(true)} // Set hoveredIndex on mouse enter
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -275,7 +274,7 @@ const NavItem = ({
         {children}
         {/* {pathname} */}
       </Flex>
-    </Box>
+    </Link>
   );
 };
 
@@ -318,7 +317,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       />
 
       {pathLength > 2 && (
-        <Show above="sm">
+        <Show above="md">
           <Button
             mr="auto"
             border="1px"

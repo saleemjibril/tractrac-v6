@@ -30,6 +30,7 @@ import { useRouter } from "next/navigation";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { useLoginAdminMutation } from "@/redux/services/authApi";
 import { toast } from "react-toastify";
+import { ChakraWrapper } from "@/app/chakraUIWrapper";
 
 export default function Home() {
   const dispatch = useAppDispatch();
@@ -72,6 +73,7 @@ export default function Home() {
     return error;
   }
   return (
+    <ChakraWrapper>
     <Box
       bgImage="url('/images/modal-bg.jpg')"
       bgRepeat="no-repeat"
@@ -293,5 +295,6 @@ export default function Home() {
         </Box>
       </Flex>
     </Box>
+    </ChakraWrapper>
   );
 }

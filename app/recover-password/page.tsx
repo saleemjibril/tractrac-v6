@@ -33,6 +33,7 @@ import {
 } from "@/redux/services/authApi";
 import { toast } from "react-toastify";
 import { ArrowBackIcon } from "@chakra-ui/icons";
+import { ChakraWrapper } from "../chakraUIWrapper";
 
 export default function RecoverPassword() {
   const router = useRouter();
@@ -42,6 +43,7 @@ export default function RecoverPassword() {
   const [phoneNumber, setPhoneNumber] = useState("");
 
   return (
+    <ChakraWrapper>
     <Box
       bgImage="url('images/modal-bg.jpg')"
       bgRepeat="no-repeat"
@@ -99,6 +101,7 @@ export default function RecoverPassword() {
         </Box>
       </Flex>
     </Box>
+    </ChakraWrapper>
   );
 }
 
