@@ -59,6 +59,7 @@ import { useEffect, useState } from "react";
 import { adminLogout } from "@/redux/features/auth/authActions";
 import { Home2, Element4, Icon as IconSax } from "iconsax-react";
 import { toast } from "react-toastify";
+import { ChakraWrapper } from "../chakraUIWrapper";
 
 interface LinkItemProps {
   name: string;
@@ -417,7 +418,8 @@ export const AdminSidebarWithHeader: React.FC<ModalProps> = ({ children }) => {
   });
 
   return (
-    <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")} p={0}>
+    <ChakraWrapper>
+      <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")} p={0}>
       <SidebarContent
         onClose={() => onClose}
         display={{ base: "none", md: "block" }}
@@ -441,6 +443,7 @@ export const AdminSidebarWithHeader: React.FC<ModalProps> = ({ children }) => {
         {children}
       </Box>
     </Box>
+    </ChakraWrapper>
   );
 };
 
