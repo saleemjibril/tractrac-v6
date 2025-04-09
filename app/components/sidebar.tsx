@@ -1,43 +1,13 @@
 
 import {
     Box,
-    ButtonGroup,
-    List,
-    ListIcon,
-    ListItem,
-    Stack,
     Flex,
-    Text,
-    Link,
     Button,
-    IconButton,
     useColorModeValue,
-    Divider,
-    Accordion,
-    AccordionItem,
-    AccordionButton,
-    AccordionPanel,
-    AccordionIcon,
-    Image,
-    Input,
-    Textarea,
-    Tabs,
-    TabList,
-    TabPanels,
-    Tab,
-    TabPanel,
-    Center,
-    Drawer,
-    useDisclosure,
-    DrawerContent,
     FlexProps,
-    CloseButton,
-    Alert,
-    AlertIcon,
-    AlertTitle,
-    useMediaQuery,
-    // NavItem,
+    CloseButton
   } from "@chakra-ui/react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
   interface SidebarProps extends FlexProps {
@@ -96,20 +66,16 @@ export const SidebarContent = ({ onClose }: SidebarProps) => {
         {LinkItems.map((link) => {
           return (
             <Link
-              px="36px"
+              style={{padding: "12px 36px", fontSize: "14px", fontWeight: "700", display: "block"}}
               key={link.name}
               href={link.path}
-              // mb="12px"
-              py="12px"
-              fontSize={"md"}
-              fontWeight={700}
+              prefetch={true}
               // color={linkColor}
-              display="block"
-              _hover={{
-                textDecoration: "none",
-                bgColor: "#FA9411",
-                color: "white",
-              }}
+              // _hover={{
+              //   textDecoration: "none",
+              //   bgColor: "#FA9411",
+              //   color: "white",
+              // }}
             >
               {link.name}
             </Link>

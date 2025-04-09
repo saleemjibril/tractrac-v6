@@ -8,7 +8,19 @@ import FooterComponent from "./footer";
 import { ChakraWrapper } from "../chakraUIWrapper";
 import { blogItems } from "../blog/items";
 
-export default function BlogInner() {
+interface Post {
+  id: string;
+  title: string;
+  excerpt: string;
+  slug: string;
+  date: string;
+}
+
+interface BlogInnerProps {
+  posts: Post[];
+}
+
+export default function BlogInner({posts} : BlogInnerProps) {  
   return (
     <ChakraWrapper>
       <Box position={"relative"}>

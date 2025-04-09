@@ -164,11 +164,11 @@ export default function Navbar({ onOpen }: MobileProps) {
               <Text
                 fontSize="xs"
                 opacity={0.8}
-                display={{ base: "none", sm: "flex" }}
+                // display={{ base: "none", sm: "flex" }}
               >
                 Call Now
               </Text>
-              <Text fontWeight={[400, 700]} fontSize="12px">
+              <Text fontWeight={[400, 700]} fontSize={{ base: "8px", md: "12px" }}>
                 +234 806 464 8720
               </Text>
             </Box>
@@ -186,11 +186,11 @@ export default function Navbar({ onOpen }: MobileProps) {
               <Text
                 fontSize="xs"
                 opacity={0.8}
-                display={{ base: "none", sm: "flex" }}
+                // display={{ base: "none", sm: "flex" }}
               >
                 Open Hours
               </Text>
-              <Text fontWeight={[400, 700]} fontSize="12px">
+              <Text fontWeight={[400, 700]} fontSize={{ base: "8px", md: "12px" }}>
                 24 Hours
               </Text>
             </Box>
@@ -208,11 +208,11 @@ export default function Navbar({ onOpen }: MobileProps) {
               <Text
                 fontSize="xs"
                 opacity={0.8}
-                display={{ base: "none", sm: "flex" }}
+                // display={{ base: "none", sm: "flex" }}
               >
                 Address
               </Text>
-              <Text fontWeight={[400, 700]} fontSize="12px">
+              <Text fontWeight={[400, 700]} fontSize={{ base: "8px", md: "12px" }}>
                 11 Vanern St, Wuse, Abuja 904101, Federal Capital Territory
               </Text>
             </Box>

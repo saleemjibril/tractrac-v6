@@ -18,7 +18,9 @@ import { ChakraWrapper } from "../chakraUIWrapper";
 export default function FaqComponent() {
   return (
     <ChakraWrapper>
-    <Flex flexWrap={"wrap"}>
+    <Flex 
+    flexWrap={{ base: "wrap", lg: "nowrap" }}
+    >
       <Image
         src="images/faq.jpg"
         alt=""
