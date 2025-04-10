@@ -41,7 +41,12 @@ export default function BlogInner({ posts }: BlogInnerProps) {
           </Stack>
         </Center>
 
-        <Box maxW={{ base: "100%", md: "80vw" }} mx="auto" mt="20px" mb="80px">
+        <Box 
+        pr="20px"
+        pl="20px"
+        width={"100%"}
+        maxWidth={"1440px"}
+        mx="auto" mt="20px" mb="80px">
           <SimpleGrid
             columns={{ base: 2, md: 3 }}
             spacingX="28px"

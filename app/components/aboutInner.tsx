@@ -98,9 +98,11 @@ export default function AboutInner() {
         </Center>
 
         <Box
-          maxW={{ base: "100%", md: "80vw" }}
           margin={"0 auto"}
-          px={{ base: "20px", md: "0px" }}
+          pr="20px"
+          pl="20px"
+          width={"100%"}
+          maxWidth={"1440px"}
         >
           {/* <Flex gap="24px" mb="30px" flexDir={{ base: "column", md: "row" }}>
             <Box width={{ base: "100%", md: "60%" }}>

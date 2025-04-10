@@ -48,7 +48,10 @@ export default function ServicesInner() {
         </Center>
 
         <Box
-          maxW={{ base: "100%", md: "80vw" }}
+          pr="20px"
+          pl="20px"
+          width={"100%"}
+          maxWidth={"1440px"}
           margin={"0 auto"}
           //   px={{ base: "20px", md: "0px" }}
         >
