@@ -110,7 +110,11 @@ export default function HowItWorksComponent() {
       // height="300px"
       color={{ base: "black", md: "white" }}
     >
-      <Box position="relative">
+      <Box position="relative"
+      width={"100%"}
+      maxWidth="1400px"
+      margin={"0 auto"}
+      >
         <Text fontSize="24px" fontFamily="cursive">
           How it works
         </Text>

@@ -9,7 +9,8 @@ import { ChakraWrapper } from "../chakraUIWrapper";
 export default function OutPartnersComponent() {
     return (
       <ChakraWrapper>
-      <Flex bgColor="#F8F8F0" py="80px" direction="column" alignItems="center">
+      <Flex bgColor="#F8F8F0" py="80px" direction="column" alignItems="center" pr="20px"
+          pl="20px">
         <Text lineHeight="64px" fontWeight={800} fontSize="48px">
           Our Partners
         </Text>

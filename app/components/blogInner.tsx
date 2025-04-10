@@ -7,20 +7,22 @@ import Header from "./header";
 import FooterComponent from "./footer";
 import { ChakraWrapper } from "../chakraUIWrapper";
 import { blogItems } from "../blog/items";
-
+// components/blogInner.tsx
 interface Post {
   id: string;
   title: string;
   excerpt: string;
   slug: string;
   date: string;
+  image?: string;
+  imageAlt?: string;
 }
 
 interface BlogInnerProps {
   posts: Post[];
 }
 
-export default function BlogInner({posts} : BlogInnerProps) {  
+export default function BlogInner({ posts }: BlogInnerProps) {
   return (
     <ChakraWrapper>
       <Box position={"relative"}>

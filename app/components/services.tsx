@@ -23,11 +23,12 @@ export default function ServicesComponent() {
         bg="#F8F8F0"
         // bg={{base: "#F8F8F0", md: "red", lg: "green", xl:"black", "2xl": "pink"}}
         borderRadius={"10px"}
-        px="20px"
         pt="25px"
         pb="60px"
+        pr="20px"
+          pl="20px"
         width={"100%"}
-        maxWidth={"1300px"}
+        maxWidth={"1400px"}
         direction={{ base: "column-reverse", md: "row" }}
         margin={"auto"}
         position={"relative"}
@@ -137,7 +138,13 @@ export default function ServicesComponent() {
         pb="80px"
         color="white"
       >
-        <Box width={{ base: "90vw", md: "80vw" }} margin={"auto"}>
+        <Box 
+        width={"100%"}
+        maxWidth={"1400px"}
+        margin={"auto"}
+        pr="20px"
+          pl="20px"
+        >
           <Text
             fontFamily={"cursive"}
             fontSize={"28px"}

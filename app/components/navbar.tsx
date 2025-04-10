@@ -39,16 +39,16 @@ export default function Navbar({ onOpen }: MobileProps) {
 
   return (
     <Box bg={"#F8F8F0"} p={0}>
-      <Flex
-        // px={"160px"}
-        width={{ base: "100%", md: "80vw" }}
-        bg={"#F8F8F0"}
-        margin={"0 auto"}
-        height={"96px"}
-        alignItems={"center"}
-        pb="40px"
-        justifyContent={{ base: "end", md: "space-between" }}
-      >
+     <Flex
+  width="100%"  
+  maxWidth="1400px"
+  bg={"#F8F8F0"}
+  margin={"0 auto"}
+  height={"96px"}
+  alignItems={"center"}
+  pb="40px"
+  justifyContent={{ base: "end", md: "space-between" }}
+>
         {/* <Box  width={"80vw"}
     margin={"auto"}> */}
         <Text
@@ -129,14 +129,12 @@ export default function Navbar({ onOpen }: MobileProps) {
 
       {/* MIDDLE NAV */}
       <Flex
+        width="100%"  
+  maxWidth="1400px"
         bg={"#FA9411"}
-        position={"absolute"}
-        top={"54px"}
-        width={{ base: "100%", lg: "80vw" }}
         margin={"auto"}
         height={"82px"}
         borderRadius={{ base: 0, lg: "10px" }}
-        left={{ base: 0, lg: "10vw" }}
         alignItems={"center"}
       >
         <Stack
@@ -229,7 +227,7 @@ export default function Navbar({ onOpen }: MobileProps) {
           pr="20px"
           pl="20px"
           width={"100%"}
-          maxWidth={"1300px"}
+          maxWidth={"1440px"}
           margin={"0 auto"}
           justifyContent="space-between"
         >

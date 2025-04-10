@@ -14,19 +14,22 @@ export default function HomeBanner() {
       <ChakraWrapper>
       <Box
         position={"relative"}
-        width={"100%"}
         height={{ base: "350px", md: "535px" }}
         bgImage="linear-gradient(to left, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('hero_banner.jpg')"
         bgPosition="center"
         bgSize="cover"
         bgAttachment="fixed"
         bgRepeat="no-repeat"
-      >
+        width={"100%"}
+        >
         <Box
-          width={{ base: "90vw", md: "80vw" }}
-          margin={"0 auto"}
           pt={{ base: "20px", md: "86px" }}
           color={"white"}
+          width={"100%"}
+        maxWidth="1400px"
+        margin={"0 auto"}
+        pr="20px"
+          pl="20px"
         >
           <Text fontFamily={"cursive"} fontSize={"28px"} color={"#FA9411"}>
             Tractrac MSL

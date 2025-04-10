@@ -6,7 +6,7 @@ export const dashboardApi = createApi({
   reducerPath: "dashboardApi",
   baseQuery: fetchBaseQuery({
     // base url of backend API
-    baseUrl: "https://tractrac.iiimpact.org/v1",
+    baseUrl: "https://backend-v6.onrender.com/api/v1",
 
     // prepareHeaders is used to configure the header of every request and gives access to getState which we use to include the token from the store
     prepareHeaders: (headers, { getState }) => {

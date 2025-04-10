@@ -20,6 +20,9 @@ export default function FaqComponent() {
     <ChakraWrapper>
     <Flex 
     flexWrap={{ base: "wrap", lg: "nowrap" }}
+    width={"100%"}
+        maxWidth="1400px"
+        margin={"0 auto"}
     >
       <Image
         src="images/faq.jpg"
