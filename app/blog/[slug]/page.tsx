@@ -117,23 +117,23 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       title: post.title,
       description: cleanDescription,
       type: 'article',
-      url: `https://yourdomain.com/blog/${post.slug}`,
+      url: `https://web-v6.onrender.com/blog/${post.slug}`,
       images: [
         {
-          url: post.image || 'https://yourdomain.com/default-image.jpg',
+          url: post.image || 'https://web-v6.onrender.com/default-image.jpg',
           width: 1200,
           height: 630,
           alt: post.imageAlt || post.title,
         },
       ],
-      siteName: 'Your Site Name',
+      siteName: 'TracTrac',
     },
     twitter: {
       card: 'summary_large_image',
       title: post.title,
       description: cleanDescription,
-      images: [post.image || 'https://yourdomain.com/default-image.jpg'],
-      creator: '@yourtwitter',
+      images: [post.image || 'https://web-v6.onrender.com/default-image.jpg'],
+      creator: '@tractrac',
     },
   };
 }
