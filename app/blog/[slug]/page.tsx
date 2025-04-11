@@ -1,6 +1,7 @@
 // app/blog/[slug]/page.tsx
 import BlogPostDetail from '@/app/components/singleBlogPostInner';
 import { graphQLClient } from '../../utils/graphql';
+import { Metadata } from 'next';
 
 // Define types for WordPress data
 interface Post {
@@ -95,12 +96,45 @@ async function getSinglePostBySlug(slug: string) {
   }
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const post = await getSinglePostBySlug(params.slug);  
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const post = await getSinglePostBySlug(params.slug);
+  
+  if (!post) {
+    return {
+      title: "Blog Post Not Found",
+      description: "The requested blog post could not be found."
+    };
+  }
+
+  const cleanDescription = post.content
+    .replace(/<[^>]*>/g, '')
+    .substring(0, 200) + '...';
   
   return {
-    title: post?.title || "Blog Post",
-    description: post?.content?.substring(0, 160).replace(/<[^>]*>/g, '') || "Blog post details"
+    title: post.title,
+    description: cleanDescription,
+    openGraph: {
+      title: post.title,
+      description: cleanDescription,
+      type: 'article',
+      url: `https://yourdomain.com/blog/${post.slug}`,
+      images: [
+        {
+          url: post.image || 'https://yourdomain.com/default-image.jpg',
+          width: 1200,
+          height: 630,
+          alt: post.imageAlt || post.title,
+        },
+      ],
+      siteName: 'Your Site Name',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: cleanDescription,
+      images: [post.image || 'https://yourdomain.com/default-image.jpg'],
+      creator: '@yourtwitter',
+    },
   };
 }
 
