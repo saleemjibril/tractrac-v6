@@ -150,7 +150,7 @@ export default function Navbar({ onOpen }: MobileProps) {
         >
           <Box display={"flex"}>
             <Image
-              src="icons/call.svg"
+              src="/icons/call.svg"
               alt="call icon"
               // layout='fill'
               // objectFit='cover'
@@ -174,7 +174,7 @@ export default function Navbar({ onOpen }: MobileProps) {
 
           <Box display={"flex"} ml={{ base: "0px", lg: "30px" }}>
             <Image
-              src="icons/clock.svg"
+              src="/icons/clock.svg"
               alt="Clock Icon"
               width={{ base: "20px", lg: "40px" }}
               // width={40}
@@ -196,7 +196,7 @@ export default function Navbar({ onOpen }: MobileProps) {
 
           <Box display={"flex"} ml={{ base: "0px", lg: "30px" }}>
             <Image
-              src="icons/location.svg"
+              src="/icons/location.svg"
               alt="Location icon"
               width={{ base: "20px", lg: "40px" }}
               // width={40}

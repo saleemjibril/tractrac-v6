@@ -52,11 +52,11 @@ export default function BlogInner({ posts }: BlogInnerProps) {
             spacingX="28px"
             spacingY="20px"
           >
-            {blogItems.map((blog) => (
+            {posts.map((blog) => (
               <Box
                 key={blog.id}
                 as="a"
-                href={`/blog/${blog.id}`}
+                href={`/blog/${blog.slug}`}
                 display="block"
                 boxShadow="sm"
                 borderRadius="4px"
@@ -90,8 +90,9 @@ export default function BlogInner({ posts }: BlogInnerProps) {
                     fontWeight={500}
                     my="12px"
                     lineHeight="16.1px"
+                    dangerouslySetInnerHTML={{ __html: blog.excerpt }}
+
                   >
-                    {blog.excerpt}
                   </Text>
 
                   <Box

@@ -11,30 +11,37 @@ import {
   Skeleton,
   SkeletonText,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { blogItems } from "../items";
 import { ChakraWrapper } from "@/app/chakraUIWrapper";
 import Header from "@/app/components/header";
 import FooterComponent from "@/app/components/footer";
 
-export default function SingleBlogPage({ params }: { params: { id: string } }) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const router = useRouter();
+// components/blogPostDetail.tsx
+interface Post {
+    id: string;
+    title: string;
+    content: string;
+    slug: string;
+    date: string;
+    image?: string;
+    imageAlt?: string;
+  }
+  
+  interface BlogPostDetailProps {
+    post: Post;
+  }
+  
+  export default function BlogPostDetail({ post }: BlogPostDetailProps) {
+    // Format the date for display
+    const formattedDate = new Date(post.date).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  
+    return (
 
-  const [blog, setBlog] = useState<(typeof blogItems)[0]>();
 
-  useEffect(() => {
-    const blog = blogItems.find((blog) => blog.id == params.id);
-    if (!blog) {
-      router.back();
-      return;
-    }
-    setBlog(blog);
-  }, [params.id, router]);
-
-  return (
-    <ChakraWrapper>
+      <ChakraWrapper>
       <Box position={"relative"}>
         <Header />
         <Center mb={{ base: "0px", md: "20px" }}>
@@ -58,7 +65,7 @@ export default function SingleBlogPage({ params }: { params: { id: string } }) {
           mb="80px"
           px={{ base: "20px", md: "0px" }}
         >
-          {!blog ? (
+          {!post ? (
             <>
               <Skeleton height="30px" />
               <Skeleton height="400px" mt="40px" />
@@ -78,13 +85,13 @@ export default function SingleBlogPage({ params }: { params: { id: string } }) {
                 fontSize={{ base: "20px", md: "24px", lg: "30px" }}
                 textAlign="center"
               >
-                {blog?.title}
+                {post?.title}
               </Text>
 
               <Box h={{ base: "250px", md: "500px" }} mt="50px">
                 <Image
                   borderRadius="4px"
-                  src={blog?.image}
+                  src={post?.image}
                   alt="single blog image"
                   height="100%"
                   width="100%"
@@ -95,8 +102,9 @@ export default function SingleBlogPage({ params }: { params: { id: string } }) {
                 mt={{ base: "20px", md: "50px" }}
                 fontSize={{ base: "14px", md: "16px" }}
                 lineHeight="30px"
+                dangerouslySetInnerHTML={{ __html: post.content }}
               >
-                {blog.content}
+                
               </Box>
             </>
           )}
@@ -105,5 +113,5 @@ export default function SingleBlogPage({ params }: { params: { id: string } }) {
         <FooterComponent />
       </Box>
     </ChakraWrapper>
-  );
-}
+    );
+  }
