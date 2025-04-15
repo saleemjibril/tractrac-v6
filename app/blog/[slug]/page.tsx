@@ -84,9 +84,17 @@ async function getSinglePostBySlug(slug: string) {
       );
     });
 
+    let formattedContent = post.content.replace(/\n+(?=<p>)/g, '<br>');
+
+    formattedContent = formattedContent.replace(
+      /<a(.*?)>/g,
+      '<a style="color: #FA9411; text-decoration: underline; text-decoration-color: #FA9411" $1>'
+    );
+
     // Return the post with the matched media
     return {
       ...post,
+      content: formattedContent || post.content,
       image: matchingMedia?.sourceUrl || '/placeholder-image.jpg',
       imageAlt: matchingMedia?.altText || post.title
     };
@@ -144,6 +152,8 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
   if (!post) {
     return <div>Post not found</div>;
   }
+
+  console.log(post);
 
   return <BlogPostDetail post={post} />;
 }

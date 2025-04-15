@@ -27,7 +27,7 @@ export default function BlogInner({ posts }: BlogInnerProps) {
     <ChakraWrapper>
       <Box position={"relative"}>
         <Header />
-        <Center mb={{ base: "0px", md: "20px" }}>
+        {/* <Center mb={{ base: "0px", md: "20px" }}>
           <Stack mt={{ base: "20px", md: "60px" }} textAlign="center">
             <Text
               fontSize="24px"
@@ -39,7 +39,7 @@ export default function BlogInner({ posts }: BlogInnerProps) {
               Blog
             </Text>
           </Stack>
-        </Center>
+        </Center> */}
 
         <Box 
         pr="20px"
