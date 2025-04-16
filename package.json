@@ -23,6 +23,7 @@
     "axios": "^1.4.0",
     "chakra-react-select": "^4.7.0",
     "country-code-lookup": "^0.1.0",
+    "dompurify": "^3.2.5",
     "eslint": "8.45.0",
     "eslint-config-next": "^13.5.2",
     "formik": "^2.4.3",

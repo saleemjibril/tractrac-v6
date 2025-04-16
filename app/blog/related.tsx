@@ -86,7 +86,6 @@ async function getPostsWithMedia() {
       });
 
       // console.log("matchingMedia", matchingMedia);
-      
 
       return {
         ...post,

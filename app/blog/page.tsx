@@ -92,9 +92,11 @@ async function getPostsWithMedia() {
 
       // console.log("matchingMedia", matchingMedia);
       
-
+      console.log(post.excerpt);
+      
       return {
         ...post,
+        // excerpt: post?.excerpt,
         image: matchingMedia?.sourceUrl || '/placeholder-image.jpg',
         imageAlt: matchingMedia?.altText || post.title
       };

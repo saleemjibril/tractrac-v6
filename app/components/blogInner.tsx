@@ -54,7 +54,7 @@ export default function BlogInner({ posts }: BlogInnerProps) {
         <Box 
         pr="20px"
         pl="20px"
-        width={"100%"}
+        width={"75%"}
         maxWidth={"1440px"}
         mx="auto" mt="20px" mb="80px">
           <Text
@@ -68,8 +68,8 @@ export default function BlogInner({ posts }: BlogInnerProps) {
           </Text>
           <SimpleGrid
             columns={{ base: 2, md: 3 }}
-            spacingX="28px"
-            spacingY="25px"
+            spacingX="30px"
+            spacingY="70px"
           >
             {posts.map((blog) => (
               <Box
@@ -82,13 +82,14 @@ export default function BlogInner({ posts }: BlogInnerProps) {
                 cursor="pointer"
                 border="2px"
                 borderColor="#F5F6FA"
+                backgroundColor="#fbfbfb"
                 transition="transform 0.2s ease, box-shadow 0.2s ease"
                 _hover={{
                   transform: "scale(1.05)",
                   boxShadow: "lg",
                 }}
               >
-                <Box h="300px">
+                <Box h="250px">
                   <Image
                     borderTopRadius="4px"
                     src={blog.image}
@@ -99,23 +100,31 @@ export default function BlogInner({ posts }: BlogInnerProps) {
                   />
                 </Box>
 
-                <Box p="12px" bgColor="white">
+                <Box p="12px" bgColor="transparent" mt="10px">
                   <Text
-                    fontSize="16px"
+                    fontSize="18px"
                     color="#333333"
-                    fontWeight={600}
-                    lineHeight="20px"
+                    fontWeight={800}
+                    lineHeight="25px"
                   >
                     {blog.title}
                   </Text>
+
                   <Text
                     fontSize="12px"
                     color="#858A8F"
                     fontWeight={500}
                     my="12px"
-                    lineHeight="16.1px"
+                    lineHeight="15px"
+                    noOfLines={2}
+                    overflow="hidden"
+                    textOverflow="ellipsis"
+                    display="-webkit-box"
+                    css={{
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: "vertical",
+                    }}
                     dangerouslySetInnerHTML={{ __html: blog.excerpt }}
-
                   >
                   </Text>
 
