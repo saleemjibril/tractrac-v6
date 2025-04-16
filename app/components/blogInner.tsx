@@ -27,19 +27,29 @@ export default function BlogInner({ posts }: BlogInnerProps) {
     <ChakraWrapper>
       <Box position={"relative"}>
         <Header />
-        {/* <Center mb={{ base: "0px", md: "20px" }}>
-          <Stack mt={{ base: "20px", md: "60px" }} textAlign="center">
-            <Text
-              fontSize="24px"
-              fontFamily="cursive"
-              color="#FA9411"
+        {/* <Center mb={{ base: "0px", md: "20px" }}> */}
+          {/* <Stack mt={{ base: "20px", md: "60px" }} textAlign="left" pl="8.5%"> */}
+            {/* <Text
+              fontWeight={800}
+              fontSize={{ base: "20px", md: "24px", lg: "39px" }}
+              textAlign="left"
+              mt="0px"
+              mb="30px"
+            >
+              Insights on Agricultural Mechanization
+            </Text> */}
+            {/* <Text
+              fontSize="40px"
+              // fontFamily="cursive"
+              // fontFamily="Trebuchet"
+              color="#2e475d"
               display="block"
-              fontWeight={600}
+              fontWeight={700}
             >
               Blog
-            </Text>
-          </Stack>
-        </Center> */}
+            </Text> */}
+          {/* </Stack> */}
+        {/* </Center> */}
 
         <Box 
         pr="20px"
@@ -47,10 +57,19 @@ export default function BlogInner({ posts }: BlogInnerProps) {
         width={"100%"}
         maxWidth={"1440px"}
         mx="auto" mt="20px" mb="80px">
+          <Text
+            fontWeight={800}
+            fontSize={{ base: "20px", md: "24px", lg: "39px" }}
+            textAlign="left"
+            mt="40px"
+            mb="40px"
+          >
+            Insights on Agricultural Mechanization ...
+          </Text>
           <SimpleGrid
             columns={{ base: 2, md: 3 }}
             spacingX="28px"
-            spacingY="20px"
+            spacingY="25px"
           >
             {posts.map((blog) => (
               <Box
@@ -63,8 +82,13 @@ export default function BlogInner({ posts }: BlogInnerProps) {
                 cursor="pointer"
                 border="2px"
                 borderColor="#F5F6FA"
+                transition="transform 0.2s ease, box-shadow 0.2s ease"
+                _hover={{
+                  transform: "scale(1.05)",
+                  boxShadow: "lg",
+                }}
               >
-                <Box h="200px">
+                <Box h="300px">
                   <Image
                     borderTopRadius="4px"
                     src={blog.image}
@@ -79,7 +103,7 @@ export default function BlogInner({ posts }: BlogInnerProps) {
                   <Text
                     fontSize="16px"
                     color="#333333"
-                    fontWeight={500}
+                    fontWeight={600}
                     lineHeight="20px"
                   >
                     {blog.title}
