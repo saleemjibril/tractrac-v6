@@ -7,6 +7,8 @@ const Map = ({ addresses }: { addresses: string[] }) => {
   const [map, setMap] = useState<google.maps.Map | null>(null);
   useEffect(() => {
     loader.importLibrary("maps").then(() => {
+          if (!!window) {
+      
       const geocoder = new window.google.maps.Geocoder();
 
       const mapOptions: google.maps.MapOptions = {
@@ -42,6 +44,7 @@ const Map = ({ addresses }: { addresses: string[] }) => {
           }
         });
       });
+    }
     });
   }, [addresses]);
   return <div id="map" style={{ height: "360px" }}></div>;
