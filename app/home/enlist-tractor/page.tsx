@@ -62,9 +62,9 @@ const BankFieldsMonitor = ({ onAllBankFieldsFilled }) => {
       (values as any).bank_account_type &&
       (values as any).bank &&
       (values as any).bank_account_number &&
-      touched.bank_account_type &&
-      touched.bank &&
-      touched.bank_account_number
+      (touched as any).bank_account_type &&
+      (touched as any).bank &&
+      (touched as any).bank_account_number
     ) {
       // Pass both the values and the setFieldValue function
       onAllBankFieldsFilled({
@@ -80,9 +80,9 @@ const BankFieldsMonitor = ({ onAllBankFieldsFilled }) => {
     (values as any).bank_account_type,
     (values as any).bank,
     (values as any).bank_account_number,
-    touched.bank_account_type,
-    touched.bank,
-    touched.bank_account_number,
+    (touched as any).bank_account_type,
+    (touched as any).bank,
+    (touched as any).bank_account_number,
     onAllBankFieldsFilled,
     setFieldValue,
   ]);
