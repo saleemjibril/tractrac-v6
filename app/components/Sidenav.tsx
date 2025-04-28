@@ -419,6 +419,7 @@ export const SidebarWithHeader: React.FC<SidebarProps> = ({
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
     setMounted(true);
+    
   }, []);
 
   return (
