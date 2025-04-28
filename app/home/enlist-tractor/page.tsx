@@ -1001,7 +1001,7 @@ export default function BecomeAnAgent() {
                           placeholder="Select bank name"
                         >
                           {banks?.map((bank) => (
-                            <option value={bank?.code}>{bank?.name}</option>
+                            <option value={(bank as any)?.code}>{(bank as any)?.name}</option>
                           ))}
                         </Select>
                         <FormErrorMessage>{form.errors.bank}</FormErrorMessage>
