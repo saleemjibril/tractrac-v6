@@ -55,10 +55,18 @@ export default function HiredTractors() {
       const handleGetTractors = async () => {
         setLoading(true)
         try {
-          const response = await getMyHiredTractors(userToken);
-          setTractors(response?.data?.items);
-          console.log("getTractors", response?.data);
-          setLoading(false)
+
+          if (typeof userToken === 'string') {
+            const response = await getMyHiredTractors(userToken);
+            setTractors(response?.data?.items);
+            console.log("getTractors", response?.data);
+            setLoading(false)
+          } else {
+            // Handle the case when userToken is not a string
+            console.error('User token is not a string');
+            // Maybe redirect to login or show an error
+          }
+         
         } catch (err) {
               const error = err as any;
               setError(error?.response?.data?.detail || "An unexpected error occurred")
