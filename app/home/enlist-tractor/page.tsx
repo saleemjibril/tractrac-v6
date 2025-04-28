@@ -296,7 +296,7 @@ export default function BecomeAnAgent() {
 
                 console.log("userToken", userToken);
 
-                const response = await createTractor(values, userToken || "");
+                const response = await createTractor(values, userToken as string);
 
                 console.log("createTractor", response);
 
