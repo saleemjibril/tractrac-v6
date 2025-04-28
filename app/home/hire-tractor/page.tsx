@@ -75,6 +75,7 @@ export default function HireTractor() {
   const [location, setLocation] = useState<any>(null);
   const [searchData, setSearchData] = useState<any>(null);
   const [tractors, setTractors] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [tractorId, setTractorId] = useState<string | null>(null);
   const [state, setState] = useState<string | null>(null);
   const [brand, setBrand] = useState<string | null>(null);
@@ -84,6 +85,7 @@ export default function HireTractor() {
   const [trigger, searchResult] = useLazyGetSearchTractorsQuery({});
 
   const handleGetTractors = async () => {
+    setLoading(true)
     try {
 
       if (typeof userToken === 'string') {
@@ -98,6 +100,8 @@ export default function HireTractor() {
       
     } catch (error) {
       console.log("Error fetching Tractors", error);
+    } finally {
+      setLoading(false)
     }
   };
 
@@ -238,7 +242,7 @@ export default function HireTractor() {
             <Text fontSize="24px" fontWeight={700} mb="15px">
               Hire a Tractor
             </Text>
-            {result?.isLoading || result.status === "uninitialized" ? (
+            {loading  ? (
               <Skeleton
                 mt="12px"
                 height="360px"
@@ -345,7 +349,7 @@ export default function HireTractor() {
             </Stack>
             {
               // searchResult?.isFetching ||
-              result?.isLoading || result.status === "uninitialized" ? (
+              loading ? (
                 <SimpleGrid
                   columns={{ base: 2, md: 4 }}
                   spacingX="20px"
