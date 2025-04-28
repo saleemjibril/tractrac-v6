@@ -5,7 +5,9 @@
     "react-hooks/exhaustive-deps": "off",
     "react/no-unescaped-entities": "off",
     "@typescript-eslint/no-explicit-any": "off",
-    "@typescript-eslint/ban-ts-comment": "off" // If using @ts-ignore
+    "@typescript-eslint/ban-ts-comment": "off", // If using @ts-ignore
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/no-inferrable-types": "off"
 
 
   }
