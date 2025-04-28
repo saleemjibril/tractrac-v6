@@ -22,6 +22,13 @@ import { useAppSelector } from "@/redux/hooks";
 import { getInvoiceDetails, initialisePayment, verifyPayment } from "@/app/apis/payment";
 import { toast } from "react-toastify";
 import { usePaystackPayment } from "react-paystack";
+import dynamic from 'next/dynamic';
+
+const PaystackHook = dynamic(
+  () => import('react-paystack').then(mod => mod.usePaystackPayment),
+  { ssr: false }
+);
+
 
 export default function Pay() {
   const initialState: Record<string, string> = {
@@ -173,7 +180,7 @@ function MakePaymentForInvoice({ data }: { data: Record<string, string> }) {
     console.log("verifyPayment", response);
   };
 
-  const initializePayment = usePaystackPayment(configPaystack);
+  const initializePayment = typeof window !== 'undefined' ? PaystackHook(configPaystack) : null;
 
   const handlePay = async () => {
     setDisabled(true);
@@ -246,4 +253,3 @@ function MakePaymentForInvoice({ data }: { data: Record<string, string> }) {
   );
 }
 
-export const dynamic = 'force-dynamic';
