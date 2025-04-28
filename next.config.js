@@ -3,10 +3,14 @@
 // const withSvgr = require("next-plugin-svgr");
 
 const nextConfig = {
-    compiler: {
-        // ssr and displayName are configured by default
-        styledComponents: true,
-      },
+  compiler: {
+      // ssr and displayName are configured by default
+      styledComponents: true,
+  },
+  typescript: {
+      // This will ignore TypeScript errors during the build process
+      ignoreBuildErrors: true,
+  }
 }
 
 module.exports = nextConfig

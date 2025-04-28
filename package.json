@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build --no-typescript",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "generate-icons": "npx create-chakra-icons  -o ./app/components/Icons.tsx ./public/icons --ts"
