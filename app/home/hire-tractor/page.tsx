@@ -815,7 +815,7 @@ function HireTractorForm({ id }: { id: string }) {
                 end_date: lastDate,
                 tractor_id: id,
               },
-              userToken
+              userToken as string
             );
 
             console.log("hireTractor", response);
