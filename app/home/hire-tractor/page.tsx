@@ -568,7 +568,7 @@ function HireTractorForm({ id }: { id: string }) {
 
   const handleGetBookedDates = async () => {
     try {
-      const response = await getBookedDates(id, userToken);
+      const response = await getBookedDates(id, userToken as string);
       console.log("getBookedDates", response);
       setBookedDates(response?.data?.booked_dates);
     } catch (error) {
