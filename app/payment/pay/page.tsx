@@ -39,7 +39,7 @@ export default function Pay() {
     try {
       setIsLoading(true);
       setError(null);
-      const response = await getInvoiceDetails(invoice, userToken);
+      const response = await getInvoiceDetails(invoice, userToken as string);
       console.log("getInvoiceDetails", response);
 
       setData(response?.data);
@@ -168,7 +168,7 @@ function MakePaymentForInvoice({ data }: { data: Record<string, string> }) {
   const handleCallBack = async (transactionId: string) => {
     console.log("transactionId", transactionId);
 
-    const response = await verifyPayment(transactionId, userToken);
+    const response = await verifyPayment(transactionId, userToken as string);
 
     console.log("verifyPayment", response);
   };
@@ -182,7 +182,7 @@ function MakePaymentForInvoice({ data }: { data: Record<string, string> }) {
       data?.hire_tractor_id,
       data?.invoice_number,
       data?.total_amount,
-      userToken
+      userToken as string
     )
     console.log("initializePayment", response);
     window.open(response?.data.authorization_url);
