@@ -132,9 +132,17 @@ console.log("profileInfo", profileInfo);
   console.log(result?.data);
 
   const handleGetUserStats = async () => {
-    const response = await getUserStats(profileInfo?.id, userToken);
 
-    console.log("getUserStats", response);
+    if (typeof userToken === 'string') {
+      const response = await getUserStats(profileInfo?.id, userToken);
+
+      console.log("getUserStats", response);
+    } else {
+      // Handle the case when userToken is not a string
+      console.error('User token is not a string');
+      // Maybe redirect to login or show an error
+    }
+  
     
   }
 
