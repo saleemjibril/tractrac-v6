@@ -617,7 +617,7 @@ function HireTractorForm({ id }: { id: string }) {
     setNdcCalendar(!ndcCalendar);
   };
 
-  const handleDateRangeClick = (date) => {
+  const handleDateRangeClick = (date: string | Date) => {
     if (!bookedDates?.includes(date)) {
       if (!firstDate) {
         setFirstDate(date);
