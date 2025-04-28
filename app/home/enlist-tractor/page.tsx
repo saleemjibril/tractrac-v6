@@ -59,9 +59,9 @@ const BankFieldsMonitor = ({ onAllBankFieldsFilled }) => {
   useEffect(() => {
     // Check if all three specific bank fields have values
     if (
-      values.bank_account_type &&
-      values.bank &&
-      values.bank_account_number &&
+      (values as any).bank_account_type &&
+      (values as any).bank &&
+      (values as any).bank_account_number &&
       touched.bank_account_type &&
       touched.bank &&
       touched.bank_account_number
@@ -69,17 +69,17 @@ const BankFieldsMonitor = ({ onAllBankFieldsFilled }) => {
       // Pass both the values and the setFieldValue function
       onAllBankFieldsFilled({
         bankValues: {
-          bank_account_type: values.bank_account_type,
-          bank: values.bank,
-          bank_account_number: values.bank_account_number,
+          bank_account_type: (values as any).bank_account_type,
+          bank: (values as any).bank,
+          bank_account_number: (values as any).bank_account_number,
         },
         setFieldValue,
       });
     }
   }, [
-    values.bank_account_type,
-    values.bank,
-    values.bank_account_number,
+    (values as any).bank_account_type,
+    (values as any).bank,
+    (values as any).bank_account_number,
     touched.bank_account_type,
     touched.bank,
     touched.bank_account_number,
@@ -807,7 +807,7 @@ export default function BecomeAnAgent() {
                               field.name,
                               v.currentTarget.value
                             );
-                            // alert(props.values.state);
+                            // alert(props.(values as any).state);
                             // setLgas(NaijaStates.lgas(state) ?? []);
                           }}
                         >
