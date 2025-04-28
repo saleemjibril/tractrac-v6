@@ -85,9 +85,17 @@ export default function HireTractor() {
 
   const handleGetTractors = async () => {
     try {
-      const response = await getApprovedTractors(userToken);
+
+      if (typeof userToken === 'string') {
+        const response = await getApprovedTractors(userToken);
       setTractors(response?.data);
       console.log("getTractors", response?.data);
+      } else {
+        // Handle the case when userToken is not a string
+        console.error('User token is not a string');
+        // Maybe redirect to login or show an error
+      }
+      
     } catch (error) {
       console.log("Error fetching Tractors", error);
     }
