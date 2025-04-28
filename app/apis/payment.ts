@@ -60,11 +60,8 @@ export const verifyPayment = async (reference: string, token: string) => {
     },
   };
 
-  const res = await axios.post(
-    `${process.env.NEXT_PUBLIC_URL}/payments/admin/payments/${reference}/verify`,
-    {
-      message: "data",
-    },
+  const res = await axios.get(
+    `${process.env.NEXT_PUBLIC_URL}/payments/verify/${reference}`,
     config
   );
 
