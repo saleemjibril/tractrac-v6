@@ -172,10 +172,18 @@ export default function BecomeAnAgent() {
 
   const handleGetBanks = async () => {
     try {
-      const response = await getBanks(userToken || "");
+      if (typeof userToken === 'string') {
+        const response = await getBanks(userToken);
+        console.log("getBanks", response);
       setBanks(response?.data);
+      } else {
+        // Handle the case when userToken is not a string
+        console.error('User token is not a string');
+        // Maybe redirect to login or show an error
+      }
+     
 
-      console.log("getBanks", response);
+      
     } catch (error) {
       console.log("Error fetching banks", error);
     }
