@@ -64,10 +64,15 @@ export default function EnlistedTractors() {
     const handleGetTractors = async () => {
       setLoading(true)
       try {
-        const response = await getMyTractors(userToken);
-        setTractors(response?.data);
+        if (typeof userToken === 'string') {
+          const response = await getMyTractors(userToken);
+          setTractors(response?.data);
         console.log("getTractors", response?.data);
         setLoading(false)
+        } else {
+          console.error('User token is not a string');
+        }
+        
       } catch (err) {
             const error = err as any;
             setError(error?.response?.data?.detail || "An unexpected error occurred")
