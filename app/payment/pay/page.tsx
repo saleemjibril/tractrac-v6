@@ -185,9 +185,9 @@ function MakePaymentForInvoice({ data }: { data: Record<string, string> }) {
       userToken as string
     )
     console.log("initializePayment", response);
-    if (!!window) {
-      window.open(response?.data.authorization_url);
-    }
+    // if (!!window) {
+    //   window.open(response?.data.authorization_url);
+    // }
     
     // initializePayment({
     //   onSuccess: (response) => {

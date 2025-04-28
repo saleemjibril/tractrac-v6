@@ -415,7 +415,6 @@ export const SidebarWithHeader: React.FC<SidebarProps> = ({
   const { isOpen, onOpen, onClose } = useDisclosure();
   // const router = useRouter();
   const { userToken } = useAppSelector((state) => state.auth);
-  console.log("userToken", userToken);
   
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
