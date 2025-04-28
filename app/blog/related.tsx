@@ -1,41 +1,36 @@
-
-// app/blog/page.tsx
 import { graphQLClient } from '../utils/graphql';
-import BlogInner from "../components/blogInner";
 
-// Define types for WordPress data
 interface Post {
-  id: string;
-  title: string;
-  excerpt: string;
-  slug: string;
-  date: string;
-  image?: string;
-  imageAlt?: string;
+    id: string;
+    title: string;
+    excerpt: string;
+    slug: string;
+    date: string;
+    image?: string;
+    imageAlt?: string;
 }
 
 interface MediaItem {
-  id: string;
-  title: string;
-  altText: string;
-  sourceUrl: string;
+    id: string;
+    title: string;
+    altText: string;
+    sourceUrl: string;
 }
 
 interface PostsResponse {
-  posts: {
-    nodes: Post[];
-  };
+    posts: {
+      nodes: Post[];
+    };
 }
 
 interface MediaResponse {
-  mediaItems: {
-    edges: {
-      node: MediaItem;
-    }[];
-  };
+    mediaItems: {
+      edges: {
+        node: MediaItem;
+      }[];
+    };
 }
 
-// Define the function to fetch posts with media
 async function getPostsWithMedia() {
   const postsQuery = `
     query AllPosts {
@@ -91,12 +86,9 @@ async function getPostsWithMedia() {
       });
 
       // console.log("matchingMedia", matchingMedia);
-      
-      console.log(post.excerpt);
-      
+
       return {
         ...post,
-        // excerpt: post?.excerpt,
         image: matchingMedia?.sourceUrl || '/placeholder-image.jpg',
         imageAlt: matchingMedia?.altText || post.title
       };
@@ -109,33 +101,12 @@ async function getPostsWithMedia() {
   }
 }
 
-export async function generateMetadata() {
-  return {
-    title: "Blog",
-    description:
-      "Facilitating access to mechanization services for all farmers in Africa.",
-  };
-}
-
-// export async function relatedBlogs(blogId : string) {
-//   const blogList = await getPostsWithMedia();
-//   let relatedList = blogList.filter(blog => blog.id !== blogId);
-
-//   if(relatedList.length > 3){
-//     relatedList.slice(0,3);
-//   }
-//   return relatedList;
-// }
-
-export default async function BlogPosts() {
-  // Call the defined function to fetch posts with media
-  const postsWithMedia = await getPostsWithMedia();
+export default async function relatedBlogs(blogId : string) {
+    const blogList = await getPostsWithMedia();
+    let relatedList = blogList.filter(blog => blog.id !== blogId);
   
-  //console.log("myPosts", postsWithMedia);
-
-  return (
-    <>
-      <BlogInner posts={postsWithMedia} />
-    </>
-  );
+    if(relatedList.length > 3){
+      relatedList.slice(0,3);
+    }
+    return relatedList;
 }

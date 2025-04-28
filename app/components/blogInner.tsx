@@ -27,30 +27,49 @@ export default function BlogInner({ posts }: BlogInnerProps) {
     <ChakraWrapper>
       <Box position={"relative"}>
         <Header />
-        <Center mb={{ base: "0px", md: "20px" }}>
-          <Stack mt={{ base: "20px", md: "60px" }} textAlign="center">
-            <Text
-              fontSize="24px"
-              fontFamily="cursive"
-              color="#FA9411"
+        {/* <Center mb={{ base: "0px", md: "20px" }}> */}
+          {/* <Stack mt={{ base: "20px", md: "60px" }} textAlign="left" pl="8.5%"> */}
+            {/* <Text
+              fontWeight={800}
+              fontSize={{ base: "20px", md: "24px", lg: "39px" }}
+              textAlign="left"
+              mt="0px"
+              mb="30px"
+            >
+              Insights on Agricultural Mechanization
+            </Text> */}
+            {/* <Text
+              fontSize="40px"
+              // fontFamily="cursive"
+              // fontFamily="Trebuchet"
+              color="#2e475d"
               display="block"
-              fontWeight={600}
+              fontWeight={700}
             >
               Blog
-            </Text>
-          </Stack>
-        </Center>
+            </Text> */}
+          {/* </Stack> */}
+        {/* </Center> */}
 
         <Box 
         pr="20px"
         pl="20px"
-        width={"100%"}
+        width={"75%"}
         maxWidth={"1440px"}
         mx="auto" mt="20px" mb="80px">
+          <Text
+            fontWeight={800}
+            fontSize={{ base: "20px", md: "24px", lg: "39px" }}
+            textAlign="left"
+            mt="40px"
+            mb="40px"
+          >
+            Insights on Agricultural Mechanization ...
+          </Text>
           <SimpleGrid
             columns={{ base: 2, md: 3 }}
-            spacingX="28px"
-            spacingY="20px"
+            spacingX="30px"
+            spacingY="70px"
           >
             {posts.map((blog) => (
               <Box
@@ -63,8 +82,14 @@ export default function BlogInner({ posts }: BlogInnerProps) {
                 cursor="pointer"
                 border="2px"
                 borderColor="#F5F6FA"
+                backgroundColor="#fbfbfb"
+                transition="transform 0.2s ease, box-shadow 0.2s ease"
+                _hover={{
+                  transform: "scale(1.05)",
+                  boxShadow: "lg",
+                }}
               >
-                <Box h="200px">
+                <Box h="250px">
                   <Image
                     borderTopRadius="4px"
                     src={blog.image}
@@ -75,23 +100,31 @@ export default function BlogInner({ posts }: BlogInnerProps) {
                   />
                 </Box>
 
-                <Box p="12px" bgColor="white">
+                <Box p="12px" bgColor="transparent" mt="10px">
                   <Text
-                    fontSize="16px"
+                    fontSize="18px"
                     color="#333333"
-                    fontWeight={500}
-                    lineHeight="20px"
+                    fontWeight={800}
+                    lineHeight="25px"
                   >
                     {blog.title}
                   </Text>
+
                   <Text
                     fontSize="12px"
                     color="#858A8F"
                     fontWeight={500}
                     my="12px"
-                    lineHeight="16.1px"
+                    lineHeight="15px"
+                    noOfLines={2}
+                    overflow="hidden"
+                    textOverflow="ellipsis"
+                    display="-webkit-box"
+                    css={{
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: "vertical",
+                    }}
                     dangerouslySetInnerHTML={{ __html: blog.excerpt }}
-
                   >
                   </Text>
 
