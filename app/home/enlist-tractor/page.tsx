@@ -199,7 +199,7 @@ export default function BecomeAnAgent() {
       const response = await verifyBankAccount(
         bankValues?.bank_account_number,
         bankValues?.bank,
-        userToken ?? ""
+        userToken as string
       );
       console.log("verifyBankAccount", response);
       setFieldValue("bank_account_name", response?.data?.account_name);
