@@ -28,6 +28,7 @@ import { ArrowRight } from "iconsax-react";
 import { AddIcon, PlusSquareIcon } from "@chakra-ui/icons";
 import { useGetHiredTractorsQuery } from "@/redux/services/tractorApi";
 import { useAppSelector } from "@/redux/hooks";
+import { getMyHiredTractors } from "@/app/apis/tractor";
 
 const statusTypes: Record<string, { title: string; color: string }> = {
   pending: { title: "Pending", color: "#FA9411" },
@@ -38,15 +39,37 @@ const statusTypes: Record<string, { title: string; color: string }> = {
 };
 
 export default function HiredTractors() {
-  const { profileInfo } = useAppSelector((state) => state.auth);
-
+  const { profileInfo, userToken } = useAppSelector((state) => state.auth);
+  const [tractors, setTractors] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const {
     data: result,
-    error,
+    // error,
     // isFetching,
-    isLoading,
+    // isLoading,
     // } = useGetHiredTractorsQuery("3");
   } = useGetHiredTractorsQuery(profileInfo?.id);
+
+
+      const handleGetTractors = async () => {
+        setLoading(true)
+        try {
+          const response = await getMyHiredTractors(userToken);
+          setTractors(response?.data?.items);
+          console.log("getTractors", response?.data);
+          setLoading(false)
+        } catch (err) {
+              const error = err as any;
+              setError(error?.response?.data?.detail || "An unexpected error occurred")
+              console.error("Error fetching tractor", error);
+              setLoading(false)
+        }
+      };
+    
+      useEffect(() => {
+        handleGetTractors();
+      }, []);
 
   return (
     <SidebarWithHeader isAuth={true}>
@@ -81,7 +104,7 @@ export default function HiredTractors() {
           </Button>
         </Flex>
 
-        {isLoading ? (
+        {loading ? (
           <Box boxShadow="lg" bg="white" borderRadius="12px">
             <Skeleton height="80px" />
             <Box p="12px">
@@ -117,7 +140,7 @@ export default function HiredTractors() {
                 </Tr>
               </Thead>
               <Tbody>
-                {result?.data.map((tractor: any) => (
+                {tractors?.map((tractor: any) => (
                   <Tr key={tractor?.id}>
                     <Td>{tractor?.state ?? "Nil"}</Td>
                     <Td>{tractor?.lga ?? "Nil"}</Td>

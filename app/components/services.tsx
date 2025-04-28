@@ -18,7 +18,7 @@ import { ChakraWrapper } from "../chakraUIWrapper";
 export default function ServicesComponent() {
   return (
     <ChakraWrapper>
-    <Box mt={{ base: "0px", md: "80px" }}>
+    <Box mt={{ base: "0px", xl: "80px" }}>
       <Flex
         bg="#F8F8F0"
         // bg={{base: "#F8F8F0", md: "red", lg: "green", xl:"black", "2xl": "pink"}}
@@ -29,7 +29,7 @@ export default function ServicesComponent() {
           pl="20px"
         width={"100%"}
         maxWidth={"1400px"}
-        direction={{ base: "column-reverse", md: "row" }}
+        direction={{ base: "column-reverse", lg: "row" }}
         margin={"auto"}
         position={"relative"}
         justifyContent={"center"}

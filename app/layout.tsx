@@ -1,6 +1,6 @@
 // app/layout.tsx
 import { Inter } from "next/font/google";
-import './app.css';
+import './app.scss';
 import { Providers } from "@/redux/provider";
 
 const inter = Inter({

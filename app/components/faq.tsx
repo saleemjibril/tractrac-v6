@@ -18,22 +18,32 @@ import { ChakraWrapper } from "../chakraUIWrapper";
 export default function FaqComponent() {
   return (
     <ChakraWrapper>
+       <Box position="relative"
+      width={"100%"}
+      bgColor="#F8F8F0"
+
+      >
     <Flex 
-    flexWrap={{ base: "wrap", lg: "nowrap" }}
+    flexWrap={{ base: "wrap", xl: "nowrap" }}
     width={"100%"}
-        maxWidth="1400px"
+        maxWidth="1440px"
         margin={"0 auto"}
+        padding={"0 20px"}
+        gap={"53px"}
+
     >
       <Image
         src="images/faq.jpg"
         alt=""
         display={{ base: "none", md: "block" }}
+        width={{ base: "100%", xl: "unset" }}
+
       />
       <Stack
         bgColor="#F8F8F0"
         py="80px"
-        pl="53px"
-        pr={{ base: "53px", md: "140px" }}
+        // pl={{ base: "0", md: "53px" }}
+        // pr={{ base: "53px", md: "140px" }}
         // px={{ base: "16px", md: "200px" }}
         width="100%"
       >
@@ -133,6 +143,7 @@ export default function FaqComponent() {
         </Accordion>
       </Stack>
     </Flex>
+    </Box>
     </ChakraWrapper>
   );
 }

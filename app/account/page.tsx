@@ -122,7 +122,7 @@ export default function AccountPage() {
                   <Avatar
                     my="30px"
                     size="xl"
-                    name={`${profileInfo?.fname} ${profileInfo?.lname}`}
+                    name={`${profileInfo?.name?.split(" ")[0]} ${profileInfo?.name?.split(" ")[1]}`}
                     src={undefined}
                   >
                     {/* <AvatarBadge
@@ -140,8 +140,8 @@ export default function AccountPage() {
                   <Formik
                     initialValues={{
                       phone: profileInfo?.phone,
-                      fname: profileInfo?.fname,
-                      lname: profileInfo?.lname,
+                      fname: profileInfo?.name?.split(" ")[0],
+                      lname: profileInfo?.name?.split(" ")[1],
                       email: profileInfo?.email,
                       gender: profileInfo?.gender,
                     }}

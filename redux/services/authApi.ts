@@ -6,7 +6,7 @@ export const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: fetchBaseQuery({
     // base url of backend API
-    baseUrl: "https://backend-v6.onrender.com/api/v1",
+    baseUrl: " https://tractracplus-backend-v6.onrender.com/api/v1",
     prepareHeaders: (headers, { getState }) => {
       headers.set("Content-Type", "application/x-www-form-urlencoded");
       return headers;
@@ -45,10 +45,10 @@ export const authApi = createApi({
     //   }),
     // }),
     loginUser: builder.mutation({
-      query: ({ phone, password }) => ({
-        url: "/login",
+      query: ({ username, password }) => ({
+        url: "/auth/phone-login",
         method: "POST",
-        body: transformRequest({ phone, password }),
+        body: transformRequest({ username, password }),
       }),
       //   invalidatesTags: ['users'],
     }),
@@ -61,11 +61,16 @@ export const authApi = createApi({
       //   invalidatesTags: ['users'],
     }),
     registerUser: builder.mutation({
-      query: (data: any) => ({
-        url: "/register",
+      query: (data: any) => 
+        
+       {
+        console.log("data from req", data);
+        
+        return  ({
+        url: "/users/register",
         method: "POST",
-        body: transformRequest(data),
-      }),
+        body: data
+      })},
       //   invalidatesTags: ['users'],
     }),
     verifyOtp: builder.mutation({

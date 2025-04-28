@@ -161,7 +161,7 @@ export default function BecomeAnAgent() {
                   <Input
                     variant="flushed"
                     borderColor="#929292"
-                    value={profileInfo?.fname}
+                    value={profileInfo?.name?.split(" ")[0]}
                     _focus={{
                       borderColor: "#929292",
                       boxShadow: 0,
@@ -176,7 +176,7 @@ export default function BecomeAnAgent() {
                   <Input
                     variant="flushed"
                     borderColor="#929292"
-                    value={profileInfo?.lname}
+                    value={profileInfo?.name?.split(" ")[1]}
                     _focus={{
                       borderColor: "#929292",
                       boxShadow: 0,

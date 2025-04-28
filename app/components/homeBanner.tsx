@@ -31,7 +31,7 @@ export default function HomeBanner() {
         pr="20px"
           pl="20px"
         >
-          <Text fontFamily={"cursive"} fontSize={"28px"} color={"#FA9411"}>
+          <Text fontFamily={"cursive"} fontSize={"28px"} color={"#FA9411"} display={{ base: "none", sm: "initial" }}>
             Tractrac MSL
           </Text>
           <Text

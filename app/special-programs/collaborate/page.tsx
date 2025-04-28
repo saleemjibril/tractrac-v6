@@ -211,7 +211,7 @@ export default function BecomeAnAgent() {
                   <Input
                     variant="flushed"
                     borderColor="#929292"
-                    value={`${profileInfo?.fname} ${profileInfo?.lname}`}
+                    value={`${profileInfo?.name?.split(" ")[0]}`}
                     _focusVisible={{
                       borderColor: "#929292",
                     }}
@@ -224,8 +224,8 @@ export default function BecomeAnAgent() {
                   fieldName="name"
                   placeHolder="Name"
                   type="text"
-                  defaultValue={`${profileInfo?.fname} ${profileInfo?.lname}`}
-                  defaultCheck={profileInfo?.fname}
+                  defaultValue={`${profileInfo?.name?.split(" ")[0]}`}
+                  defaultCheck={profileInfo?.name?.split(" ")[0]}
                   validate={validateEmpty}
                 />
 

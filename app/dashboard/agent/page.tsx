@@ -211,7 +211,7 @@ export default function Agent() {
                           {parseFloat(farmer?.farm_size ?? 0).toLocaleString()}
                         </Td>
                         <Td>{farmer?.location}</Td>
-                        <Td>{profileInfo?.fname ?? "Nil"}</Td>
+                        <Td>{profileInfo?.name?.split(" ")[0] ?? "Nil"}</Td>
                       </Tr>
                     ))}
                   </Tbody>

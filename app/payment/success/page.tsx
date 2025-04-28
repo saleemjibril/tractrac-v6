@@ -17,11 +17,33 @@ import { SidebarWithHeader } from "../../components/Sidenav";
 import { useEffect, useState } from "react";
 import { AddIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 // import { useMakePaymentMutation } from "@/redux/services/userApi";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useAppSelector } from "@/redux/hooks";
+import { verifyPayment } from "@/app/apis/payment";
 
 export default function PaymentSuccessful() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const router = useRouter();
+  const params = useSearchParams();
+  const reference = params.get("reference");
+    const { userToken } = useAppSelector((state) => state.auth);
+  
+
+  const handleVerification = async () => {
+
+    console.log({
+      reference, userToken
+    });
+    
+        const response = await verifyPayment(reference, userToken);
+        console.log("verifyPayment", response);
+        
+    
+  }
+
+  useEffect(() => {
+    handleVerification();
+  }, []);
 
   useEffect(() => {
     onOpen();

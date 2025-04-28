@@ -281,7 +281,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   const router = useRouter();
   const pathLength = usePathname().split("/").length;
   useEffect(() => {
-    // console.log(profileInfo)
+    console.log("profileInfo", profileInfo)
     setMounted(true);
   }, []);
 
@@ -357,7 +357,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                 >
                   {mounted && (
                     <Text fontSize="sm">
-                      Hello, {profileInfo?.fname ?? "Guest"}
+                      Hello, {profileInfo?.name?.split(" ")[0] ?? "Guest"}
                     </Text>
                   )}
                   {/* <Text fontSize="xs" color="gray.600">
@@ -373,7 +373,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               bg={useColorModeValue("white", "gray.900")}
               borderColor={useColorModeValue("gray.200", "gray.700")}
             >
-              {mounted && profileInfo?.fname && (
+              {mounted && profileInfo?.name?.split(" ")[0] && (
                 <Link
                   href="/account"
                   prefetch={true}
@@ -415,6 +415,8 @@ export const SidebarWithHeader: React.FC<SidebarProps> = ({
   const { isOpen, onOpen, onClose } = useDisclosure();
   // const router = useRouter();
   const { userToken } = useAppSelector((state) => state.auth);
+  console.log("userToken", userToken);
+  
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
     setMounted(true);

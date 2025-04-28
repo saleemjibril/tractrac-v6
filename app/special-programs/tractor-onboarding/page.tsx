@@ -216,7 +216,7 @@ export default function BecomeAnAgent() {
                   <Input
                     variant="flushed"
                     borderColor="#929292"
-                    value={`${profileInfo?.fname} ${profileInfo?.lname}`}
+                    value={`${profileInfo?.name?.split(" ")[0]}`}
                     _focusVisible={{
                       borderColor: "#929292",
                     }}

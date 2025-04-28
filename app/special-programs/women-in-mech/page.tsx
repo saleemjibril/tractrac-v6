@@ -147,8 +147,8 @@ export default function BecomeAnAgent() {
                   fieldName="name"
                   placeHolder="Name"
                   type="text"
-                  defaultValue={`${profileInfo?.fname} ${profileInfo?.lname}`}
-                  defaultCheck={profileInfo?.fname}
+                  defaultValue={`${profileInfo?.name?.split(" ")[0]} ${profileInfo?.name?.split(" ")[1]}`}
+                  defaultCheck={profileInfo?.name?.split(" ")[0]}
                   validate={validateEmpty}
                 />
 

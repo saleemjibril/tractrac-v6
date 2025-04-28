@@ -121,7 +121,7 @@ export default function EnlistedTractors() {
                 <TractorCard
                   key={tractor?.id}
                   id={tractor?.id}
-                  name={`${tractor?.brand} ${tractor?.model}`}
+                  name={`${tractor?.name}`}
                   capacity=" 105 to 135 HP"
                   type={tractor?.tractor_type}
                   location={tractor?.address}

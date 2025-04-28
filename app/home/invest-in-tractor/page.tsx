@@ -346,7 +346,7 @@ export default function InvestInTractor() {
                   fieldName="fname"
                   placeHolder="First Name"
                   type="text"
-                  defaultValue={profileInfo?.fname}
+                  defaultValue={profileInfo?.name?.split(" ")[0]}
                   validate={validateEmpty}
                 />
 
@@ -355,7 +355,7 @@ export default function InvestInTractor() {
                   fieldName="lname"
                   placeHolder="Last Name"
                   type="text"
-                  defaultValue={profileInfo?.lname}
+                  defaultValue={profileInfo?.name?.split(" ")[1]}
                   validate={validateEmpty}
                 />
 
@@ -388,7 +388,7 @@ export default function InvestInTractor() {
                         <Input
                           variant="flushed"
                           borderColor="#929292"
-                          value={profileInfo?.fname}
+                          value={profileInfo?.name?.split(" ")[0]}
                           _focus={{
                             borderColor: "orange",
                             boxShadow: 0,
@@ -407,7 +407,7 @@ export default function InvestInTractor() {
                   <Input
                     variant="flushed"
                     borderColor="#929292"
-                    value={profileInfo?.lname}
+                    value={profileInfo?.name?.split(" ")[1]}
                     _focus={{
                       borderColor: "orange",
                       boxShadow: 0,

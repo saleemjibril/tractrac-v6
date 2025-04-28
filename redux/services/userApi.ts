@@ -7,7 +7,7 @@ export const userApi = createApi({
   reducerPath: "userApi",
   baseQuery: fetchBaseQuery({
     // base url of backend API
-    baseUrl: "https://backend-v6.onrender.com/api/v1",
+    baseUrl: " https://tractracplus-backend-v6.onrender.com/api/v1",
     // prepareHeaders: (headers, { getState }) => {
     //   return headers;
     // },

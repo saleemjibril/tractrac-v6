@@ -115,10 +115,10 @@ export default function HowItWorksComponent() {
       maxWidth="1400px"
       margin={"0 auto"}
       >
-        <Text fontSize="24px" fontFamily="cursive">
+        <Text fontSize="24px" fontFamily="cursive" color={{ base: "#000", xl: "#FFF" }}>
           How it works
         </Text>
-        <Text fontSize="28px" fontWeight={700} lineHeight="38px" mt="4px">
+        <Text fontSize="28px" fontWeight={700} lineHeight="38px" mt="4px" color={{ base: "#000", xl: "#FFF" }}>
           Driving Growth, Harvesting <br />
           Success
         </Text>

@@ -24,6 +24,7 @@ import { useGetDashboardStatsQuery } from "@/redux/services/userApi";
 import LoginRequiredModal from "../components/LoginRequiredModal";
 import { toast } from "react-toastify";
 import Link from "next/link";
+import { getUserStats } from "../apis/user";
 
 interface ItemProps {
   name: string;
@@ -119,7 +120,8 @@ export default function Dashboard() {
   const [modalState, setModalState] = useState<boolean>(false);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
-  const { profileInfo } = useAppSelector((state) => state.auth);
+  const { profileInfo, userToken } = useAppSelector((state) => state.auth);
+console.log("profileInfo", profileInfo);
 
   const {
     data: result,
@@ -128,6 +130,17 @@ export default function Dashboard() {
   } = useGetDashboardStatsQuery({});
 
   console.log(result?.data);
+
+  const handleGetUserStats = async () => {
+    const response = await getUserStats(profileInfo?.id, userToken);
+
+    console.log("getUserStats", response);
+    
+  }
+
+  useEffect(() => {
+    handleGetUserStats();
+  }, [])
 
   /**
    * 
@@ -147,7 +160,7 @@ export default function Dashboard() {
           <Text fontSize="24px" color="#929292" fontWeight={400}>
             Good day,{" "}
             <Box as="span" fontWeight={600} color="#929292">
-              {profileInfo?.fname || "Guest"}
+              {profileInfo?.name?.split(" ")[0] || "Guest"}
             </Box>
           </Text>
         </Flex>

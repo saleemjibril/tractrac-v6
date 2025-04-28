@@ -47,6 +47,48 @@ import { FiFile, FiUpload } from "react-icons/fi";
 import { enlistTractor } from "@/redux/features/user/userActions";
 import { usePlacesWidget } from "react-google-autocomplete";
 import Autocomplete from "react-google-autocomplete";
+import { createTractor } from "@/app/apis/tractor";
+import { getBanks, verifyBankAccount } from "@/app/apis/payment";
+
+import { useFormikContext } from "formik";
+
+// Component to monitor the specific fields
+const BankFieldsMonitor = ({ onAllBankFieldsFilled }) => {
+  const { values, touched, setFieldValue } = useFormikContext();
+
+  useEffect(() => {
+    // Check if all three specific bank fields have values
+    if (
+      values.bank_account_type &&
+      values.bank &&
+      values.bank_account_number &&
+      touched.bank_account_type &&
+      touched.bank &&
+      touched.bank_account_number
+    ) {
+      // Pass both the values and the setFieldValue function
+      onAllBankFieldsFilled({
+        bankValues: {
+          bank_account_type: values.bank_account_type,
+          bank: values.bank,
+          bank_account_number: values.bank_account_number,
+        },
+        setFieldValue,
+      });
+    }
+  }, [
+    values.bank_account_type,
+    values.bank,
+    values.bank_account_number,
+    touched.bank_account_type,
+    touched.bank,
+    touched.bank_account_number,
+    onAllBankFieldsFilled,
+    setFieldValue,
+  ]);
+
+  return null;
+};
 
 const fileTypes = ["JPG", "PNG", "JPEG"];
 
@@ -63,14 +105,16 @@ export default function BecomeAnAgent() {
     null
   );
   const [lgas, setLgas] = useState<string[]>([]);
+  const [banks, setBanks] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const router = useRouter();
 
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length: currentYear - 1979 }, (_, i) => 1980 + i);
 
-  const dispatch = useAppDispatch();
-  const { profileInfo } = useAppSelector((state) => state.auth);
+  const { profileInfo, userToken } = useAppSelector((state) => state.auth);
+  console.log("userToken", userToken);
+
   const {
     loading,
     error: enlistTractorError,
@@ -126,6 +170,38 @@ export default function BecomeAnAgent() {
     onPlaceSelected: (place) => console.log(place),
   });
 
+  const handleGetBanks = async () => {
+    try {
+      const response = await getBanks(userToken);
+      setBanks(response?.data);
+
+      console.log("getBanks", response);
+    } catch (error) {
+      console.log("Error fetching banks", error);
+    }
+  };
+
+  useEffect(() => {
+    handleGetBanks();
+  }, []);
+
+  const handleBankFieldsFilled = async ({ bankValues, setFieldValue }) => {
+    try {
+      console.log("All bank fields are filled:", bankValues);
+      const response = await verifyBankAccount(
+        bankValues?.bank_account_number,
+        bankValues?.bank,
+        userToken
+      );
+      console.log("verifyBankAccount", response);
+      setFieldValue("bank_account_name", response?.data?.account_name);
+    } catch (error) {
+      console.error("Error verifying bank account", error);
+      // toast.error((error as any).response?.data?.detail ||
+      // "An unknown error occurred")
+    }
+  };
+
   return (
     <SidebarWithHeader isAuth={true}>
       <Box bgColor="white" mx="20px" my="12px" px="34px" py="20px">
@@ -149,21 +225,33 @@ export default function BecomeAnAgent() {
         <Box pr={{ base: "0px", lg: "150px", xl: "200px" }} mt="40px">
           <Formik
             initialValues={{
+              name: "",
               brand: "",
               model: "",
-              tractor_type: "",
-              rating: "",
+              year: "",
               purchase_year: "",
+              horsepower: "",
+              chassis_vin: "",
               plate_number: "",
-              insured: "",
-              tracker: "",
-              lga: "",
+              is_insured: "",
+              insurance_company: "",
+              insurance_expiry: "",
+              has_tracker: "",
+              tractor_type: "",
+              bank_account_name: "",
+              bank_account_type: "",
+              bank_account_number: "",
+              current_location_lat: "",
+              current_location_lng: "",
+              current_address: "",
               state: "",
+              lga: "",
+              tractor_image: "",
             }}
             onSubmit={async (values: any, { resetForm }) => {
               setError(null);
 
-              if (values?.insured == "yes") {
+              if (values?.is_insured == "yes") {
                 if (!values?.insurance_expiry) {
                   // if (!values?.insurance_company || !values?.insurance_expiry) {
                   toast.error(
@@ -196,9 +284,18 @@ export default function BecomeAnAgent() {
                 formData.append("tracker", values?.tracker);
                 formData.append("insurance_expiry", values?.insurance_expiry);
                 formData.append("image", values?.image);
-                console.log(formData);
+                console.log("formData", formData);
 
-                dispatch(enlistTractor(formData));
+                console.log("userToken", userToken);
+
+                const response = await createTractor(values, userToken || "");
+
+                console.log("createTractor", response);
+
+                toast.success("Enlisting successful");
+                router.push("/dashboard");
+
+                // dispatch(enlistTractor(formData));
 
                 // const response = await collaborate({
                 //   ...values,
@@ -215,13 +312,11 @@ export default function BecomeAnAgent() {
                 // }
               } catch (err) {
                 const error = err as any;
-                // alert('error')
-                if (error?.data?.errors) {
-                  // setError(error?.data?.errors[0])
-                } else if (error?.data?.message) {
-                  setError(error?.data?.message);
-                }
-                console.error("rejected", error);
+                toast.error(
+                  error?.response?.data?.detail ||
+                    "An unexpected error occurred"
+                );
+                console.error("Error enlisting tractor", error);
               }
             }}
           >
@@ -234,11 +329,38 @@ export default function BecomeAnAgent() {
                   </Alert>
                 )}
 
+                <BankFieldsMonitor
+                  onAllBankFieldsFilled={handleBankFieldsFilled}
+                />
+
                 <Flex columnGap="30px">
+                  <Field name="name" validate={validateEmpty}>
+                    {({ field, form }: { [x: string]: any }) => (
+                      <FormControl
+                        isInvalid={form.errors.name && form.touched.name}
+                        isRequired
+                      >
+                        <FormLabel fontSize="12px" color="#323232">
+                          Tractor Name
+                        </FormLabel>
+                        <Input
+                          {...field}
+                          bgColor="#3232320D"
+                          fontSize="12px"
+                          color="#323232"
+                          placeholder="Enter a unique name for your tractor"
+                        />
+                        <FormErrorMessage>{form.errors.name}</FormErrorMessage>
+                      </FormControl>
+                    )}
+                  </Field>
+                </Flex>
+                <Flex columnGap="30px" mt="20px">
                   <Field name="brand" validate={validateEmpty}>
                     {({ field, form }: { [x: string]: any }) => (
                       <FormControl
                         isInvalid={form.errors.brand && form.touched.brand}
+                        isRequired
                       >
                         <FormLabel fontSize="12px" color="#323232">
                           Brand
@@ -283,6 +405,7 @@ export default function BecomeAnAgent() {
                     {({ field, form }: { [x: string]: any }) => (
                       <FormControl
                         isInvalid={form.errors.model && form.touched.model}
+                        isRequired
                       >
                         <FormLabel fontSize="12px" color="#323232">
                           Model
@@ -306,9 +429,10 @@ export default function BecomeAnAgent() {
                         isInvalid={
                           form.errors.tractor_type && form.touched.tractor_type
                         }
+                        isRequired
                       >
                         <FormLabel fontSize="12px" color="#323232">
-                          Implement type
+                          Tractor type
                         </FormLabel>
 
                         <Select
@@ -342,10 +466,13 @@ export default function BecomeAnAgent() {
                     )}
                   </Field>
 
-                  <Field name="rating" validate={validateEmpty}>
+                  <Field name="horsepower" validate={validateEmpty}>
                     {({ field, form }: { [x: string]: any }) => (
                       <FormControl
-                        isInvalid={form.errors.rating && form.touched.rating}
+                        isInvalid={
+                          form.errors.horsepower && form.touched.horsepower
+                        }
+                        isRequired
                       >
                         <FormLabel fontSize="12px" color="#323232">
                           Tractor rating (housepower)
@@ -357,7 +484,7 @@ export default function BecomeAnAgent() {
                           color="#323232"
                         />
                         <FormErrorMessage>
-                          {form.errors.rating}
+                          {form.errors.horsepower}
                         </FormErrorMessage>
                       </FormControl>
                     )}
@@ -372,6 +499,7 @@ export default function BecomeAnAgent() {
                           form.errors.purchase_year &&
                           form.touched.purchase_year
                         }
+                        isRequired
                       >
                         <FormLabel fontSize="12px" color="#323232">
                           Purchase year
@@ -399,10 +527,13 @@ export default function BecomeAnAgent() {
                     )}
                   </Field>
 
-                  <Field name="chasis" validate={validateEmpty}>
+                  <Field name="chassis_vin" validate={validateEmpty}>
                     {({ field, form }: { [x: string]: any }) => (
                       <FormControl
-                        isInvalid={form.errors.chasis && form.touched.chasis}
+                        isInvalid={
+                          form.errors.chassis_vin && form.touched.chassis_vin
+                        }
+                        isRequired
                       >
                         <FormLabel fontSize="12px" color="#323232">
                           Chasis number
@@ -414,7 +545,7 @@ export default function BecomeAnAgent() {
                           color="#323232"
                         />
                         <FormErrorMessage>
-                          {form.errors.chasis}
+                          {form.errors.chassis_vin}
                         </FormErrorMessage>
                       </FormControl>
                     )}
@@ -428,6 +559,7 @@ export default function BecomeAnAgent() {
                         isInvalid={
                           form.errors.plate_number && form.touched.plate_number
                         }
+                        isRequired
                       >
                         <FormLabel fontSize="12px" color="#323232">
                           Plate number
@@ -445,13 +577,11 @@ export default function BecomeAnAgent() {
                     )}
                   </Field>
 
-                  <Field name="manufactured_year" validate={validateEmpty}>
+                  <Field name="year" validate={validateEmpty}>
                     {({ field, form }: { [x: string]: any }) => (
                       <FormControl
-                        isInvalid={
-                          form.errors.manufactured_year &&
-                          form.touched.manufactured_year
-                        }
+                        isInvalid={form.errors.year && form.touched.year}
+                        isRequired
                       >
                         <FormLabel fontSize="12px" color="#323232">
                           Manufacturing year
@@ -475,20 +605,21 @@ export default function BecomeAnAgent() {
                           fontSize="12px"
                           color="#323232"
                         /> */}
-                        <FormErrorMessage>
-                          {form.errors.manufactured_year}
-                        </FormErrorMessage>
+                        <FormErrorMessage>{form.errors.year}</FormErrorMessage>
                       </FormControl>
                     )}
                   </Field>
                 </Flex>
 
                 <Flex mt="20px" columnGap="30px">
-                  <Field name="insured" validate={validateEmpty}>
+                  <Field name="is_insured" validate={validateEmpty}>
                     {({ field, form }: { [x: string]: any }) => (
                       <FormControl
-                        isInvalid={form.errors.insured && form.touched.insured}
+                        isInvalid={
+                          form.errors.is_insured && form.touched.is_insured
+                        }
                         width="20%"
+                        isRequired
                       >
                         <FormLabel fontSize="12px" color="#323232">
                           Is the tractor insured
@@ -504,7 +635,7 @@ export default function BecomeAnAgent() {
                           <option value="no">No</option>
                         </Select>
                         <FormErrorMessage>
-                          {form.errors.insured}
+                          {form.errors.is_insured}
                         </FormErrorMessage>
                       </FormControl>
                     )}
@@ -513,11 +644,12 @@ export default function BecomeAnAgent() {
                   <Field name="insurance_expiry">
                     {({ field, form }: { [x: string]: any }) => (
                       <FormControl
-                      width="25%"
+                        width="25%"
                         isInvalid={
                           form.errors.insurance_expiry &&
                           form.touched.insurance_expiry
                         }
+                        isRequired
                       >
                         <FormLabel fontSize="12px" color="#323232">
                           Insurance expiry
@@ -543,7 +675,7 @@ export default function BecomeAnAgent() {
                     )}
                   </Field>
 
-                   <Field name="insurance_company" >
+                  <Field name="insurance_company">
                     {({ field, form }: { [x: string]: any }) => (
                       <FormControl
                         isInvalid={
@@ -551,6 +683,7 @@ export default function BecomeAnAgent() {
                           form.touched.insurance_company
                         }
                         flex="1"
+                        isRequired
                       >
                         <FormLabel fontSize="12px" color="#323232">
                           Insurance company
@@ -566,14 +699,17 @@ export default function BecomeAnAgent() {
                         </FormErrorMessage>
                       </FormControl>
                     )}
-                  </Field> 
+                  </Field>
                 </Flex>
 
                 <Flex mt="20px" columnGap="30px">
-                  <Field name="tracker" validate={validateEmpty}>
+                  <Field name="has_tracker" validate={validateEmpty}>
                     {({ field, form }: { [x: string]: any }) => (
                       <FormControl
-                        isInvalid={form.errors.tracker && form.touched.tracker}
+                        isInvalid={
+                          form.errors.has_tracker && form.touched.has_tracker
+                        }
+                        isRequired
                       >
                         <FormLabel fontSize="12px" color="#323232">
                           Is there a tracker
@@ -589,7 +725,7 @@ export default function BecomeAnAgent() {
                           <option value="no">No</option>
                         </Select>
                         <FormErrorMessage>
-                          {form.errors.tracker}
+                          {form.errors.has_tracker}
                         </FormErrorMessage>
                       </FormControl>
                     )}
@@ -600,6 +736,7 @@ export default function BecomeAnAgent() {
                       <FormControl
                         isInvalid={form.errors.state && form.touched.state}
                         mb="20px"
+                        isRequired
                       >
                         <FormLabel fontSize="12px" color="#323232">
                           State of residence
@@ -649,6 +786,7 @@ export default function BecomeAnAgent() {
                       <FormControl
                         // my={4}
                         isInvalid={form.errors.lga && form.touched.lga}
+                        isRequired
                       >
                         <FormLabel fontSize="12px" color="#323232">
                           Local Government Area
@@ -685,11 +823,15 @@ export default function BecomeAnAgent() {
                     )}
                   </Field>
 
-                  <Field name="address" validate={validateEmpty}>
+                  <Field name="current_address" validate={validateEmpty}>
                     {({ field, form }: { [x: string]: any }) => (
                       <FormControl
                         // my={4}
-                        isInvalid={form.errors.address && form.touched.address}
+                        isInvalid={
+                          form.errors.current_address &&
+                          form.touched.current_address
+                        }
+                        isRequired
                       >
                         <FormLabel fontSize="12px" color="#323232">
                           Tractor Address
@@ -706,22 +848,48 @@ export default function BecomeAnAgent() {
                           }}
                           placeholder=""
                           apiKey={"AIzaSyBWo_tQ4rjQkZz1kN5WXfnemHCaF0gQ8BU"}
-                          onChange={(e)=>{
+                          onChange={(e) => {
                             // alert(`Address: ${e.currentTarget?.value}`)
-                            form.setFieldValue(field.name, e.currentTarget?.value);
+                            form.setFieldValue(
+                              field.name,
+                              e.currentTarget?.value
+                            );
                           }}
                           onPlaceSelected={(place) => {
-                            console.log("hello", place.formatted_address);
-                            // alert(place.formatted_address)
+                            console.log("Address:", place.formatted_address);
+
+                            // Extract latitude and longitude
+                            if (place.geometry && place.geometry.location) {
+                              const current_location_lat =
+                                place.geometry.location.lat();
+                              const current_location_lng =
+                                place.geometry.location.lng();
+                              console.log("Latitude:", current_location_lat);
+                              console.log("Longitude:", current_location_lng);
+
+                              // Update form with address and coordinates
+                              form.setFieldValue(
+                                field.name,
+                                place.formatted_address
+                              );
+                              form.setFieldValue(
+                                "current_location_lat",
+                                current_location_lat
+                              );
+                              form.setFieldValue(
+                                "current_location_lng",
+                                current_location_lng
+                              );
+                            }
                           }}
                           options={{
-                            types: ['address'],
+                            types: ["address"],
                             // types: ["(regions)"],
                             componentRestrictions: { country: "ng" },
                           }}
                         />
                         <FormErrorMessage>
-                          {form.errors.address}
+                          {form.errors.current_address}
                         </FormErrorMessage>
                       </FormControl>
                     )}
@@ -776,6 +944,129 @@ export default function BecomeAnAgent() {
                       </FormControl>
                     )}
                   </Field> */}
+                </Flex>
+
+                <Flex mt="20px" columnGap="30px">
+                  <Field name="bank_account_type" validate={validateEmpty}>
+                    {({ field, form }: { [x: string]: any }) => (
+                      <FormControl
+                        isInvalid={
+                          form.errors.bank_account_type &&
+                          form.touched.bank_account_type
+                        }
+                        isRequired
+                      >
+                        <FormLabel fontSize="12px" color="#323232">
+                          Bank account type
+                        </FormLabel>
+                        <Select
+                          {...field}
+                          bgColor="#3232320D"
+                          fontSize="12px"
+                          color="#323232"
+                          placeholder="Select bank account type"
+                        >
+                          <option value={"personal"}>Personal</option>
+                          <option value={"business"}>Business</option>
+                        </Select>
+                        <FormErrorMessage>
+                          {form.errors.bank_account_type}
+                        </FormErrorMessage>
+                      </FormControl>
+                    )}
+                  </Field>
+
+                  <Field name="bank" validate={validateEmpty}>
+                    {({ field, form }: { [x: string]: any }) => (
+                      <FormControl
+                        isInvalid={form.errors.bank && form.touched.bank}
+                        isRequired
+                      >
+                        <FormLabel fontSize="12px" color="#323232">
+                          Bank
+                        </FormLabel>
+                        <Select
+                          {...field}
+                          bgColor="#3232320D"
+                          fontSize="12px"
+                          color="#323232"
+                          placeholder="Select bank name"
+                        >
+                          {banks?.map((bank) => (
+                            <option value={bank?.code}>{bank?.name}</option>
+                          ))}
+                        </Select>
+                        <FormErrorMessage>{form.errors.bank}</FormErrorMessage>
+                      </FormControl>
+                    )}
+                  </Field>
+                </Flex>
+                <Flex mt="20px" columnGap="30px">
+                  <Field name="bank_account_number" validate={validateEmpty}>
+                    {({ field, form }: { [x: string]: any }) => (
+                      <FormControl
+                        isInvalid={
+                          form.errors.bank_account_number &&
+                          form.touched.bank_account_number
+                        }
+                        isRequired
+                      >
+                        <FormLabel fontSize="12px" color="#323232">
+                          Bank account number
+                        </FormLabel>
+
+                        <Input
+                          {...field}
+                          bgColor="#3232320D"
+                          fontSize="12px"
+                          color="#323232"
+                        />
+
+                        {/* <Input
+                          {...field}
+                          bgColor="#3232320D"
+                          fontSize="12px"
+                          color="#323232"
+                        /> */}
+                        <FormErrorMessage>
+                          {form.errors.bank_account_number}
+                        </FormErrorMessage>
+                      </FormControl>
+                    )}
+                  </Field>
+
+                  <Field name="bank_account_name" validate={validateEmpty}>
+                    {({ field, form }: { [x: string]: any }) => (
+                      <FormControl
+                        isInvalid={
+                          form.errors.bank_account_name &&
+                          form.touched.bank_account_name
+                        }
+                      >
+                        <FormLabel fontSize="12px" color="#323232">
+                          Bank account name
+                        </FormLabel>
+
+                        <Input
+                          {...field}
+                          bgColor="#3232320D"
+                          fontSize="12px"
+                          color="#323232"
+                          disabled
+                        />
+
+                        {/* <Input
+                          {...field}
+                          bgColor="#3232320D"
+                          fontSize="12px"
+                          color="#323232"
+                        /> */}
+                        <FormErrorMessage>
+                          {form.errors.bank_account_name}
+                        </FormErrorMessage>
+                      </FormControl>
+                    )}
+                  </Field>
                 </Flex>
 
                 {/* <FileUploader
@@ -835,10 +1126,16 @@ export default function BecomeAnAgent() {
                 {/* </Flex> */}
 
                 <Flex my="30px" columnGap="30px">
-                  <Field name="image" validate={(e: any) => validateImage(e)}>
+                  <Field
+                    name="tractor_image"
+                    validate={(e: any) => validateImage(e)}
+                  >
                     {({ field, form }: { [x: string]: any }) => (
                       <FormControl
-                        isInvalid={form.errors.image && form.touched.image}
+                        isInvalid={
+                          form.errors.tractor_image &&
+                          form.touched.tractor_image
+                        }
                         isRequired
                         width="100%"
                       >
@@ -866,7 +1163,7 @@ export default function BecomeAnAgent() {
                                   );
                                   return;
                                 }
-                                form.setFieldValue(field.name, file);
+                                form.setFieldValue(field.name, "image");
                               }
                             }}
                             // {...field}
@@ -1038,7 +1335,7 @@ export default function BecomeAnAgent() {
 
 const brands = ["case_ih", "sonalika", "john_deere", "mahindra", "others"];
 
-const tractorTypes = ["Harrower", "Ridger", "Plough", "Planter", "Sprayer"];
+const tractorTypes = ["small", "medium", "large", "specialized", "utility"];
 
 const states = [
   "Abia",
