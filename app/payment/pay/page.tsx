@@ -248,3 +248,5 @@ function MakePaymentForInvoice({ data }: { data: Record<string, string> }) {
     </Flex>
   );
 }
+
+export const dynamic = 'force-dynamic';
