@@ -172,7 +172,7 @@ export default function BecomeAnAgent() {
 
   const handleGetBanks = async () => {
     try {
-      const response = await getBanks(userToken);
+      const response = await getBanks(userToken || "");
       setBanks(response?.data);
 
       console.log("getBanks", response);
