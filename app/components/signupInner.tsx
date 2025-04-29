@@ -591,7 +591,7 @@ export default function SignupInner() {
                               // placeholder="Enter"
                               type="referring_agent_id"
                               bgColor="#3232320D"
-                              placeholder="Enter your ISSAM Agent ID"
+                              placeholder="Enter your Agent ID"
                             />
                             <FormErrorMessage>
                               {form.errors.referring_agent_id}
