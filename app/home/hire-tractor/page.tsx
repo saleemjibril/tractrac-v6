@@ -66,10 +66,15 @@ interface ITractorCard {
   capacity: string;
   location: string;
   distance: string;
+  status: string;
   tractor_type: string;
   setTractorId: Dispatch<SetStateAction<string | null>>;
 }
-
+const statusTypes: Record<string, { title: string; color: string }> = {
+  booked: { title: "Booked", color: "#FA9411" },
+  available: { title: "Available", color: "#27AE60" },
+  in_use: { title: "In Use", color: "#FA9411" },
+};
 export default function HireTractor() {
   const { userToken } = useAppSelector((state) => state.auth);
   const [location, setLocation] = useState<any>(null);
@@ -441,6 +446,7 @@ export default function HireTractor() {
                       // distance={"10"}
                       distance={tractor?.distance}
                       tractor_type={tractor?.tractor_type}
+                      status={tractor?.status}
                     />
                   ))}
                 </SimpleGrid>
@@ -463,6 +469,7 @@ function TractorCard({
   tractor_type,
   setTractorId,
   id,
+  status
 }: ITractorCard) {
   return (
     <Box
@@ -540,6 +547,21 @@ function TractorCard({
           </Box>{" "}
           {location.length < 2 ? "N/a" : location}
         </Box>
+
+        {statusTypes[status]?.color && (
+          <Box
+            mt="10px"
+            bgColor={statusTypes[status]?.color}
+            py="2px"
+            textAlign="center"
+            borderRadius="4px"
+            w="111px"
+          >
+            <Text fontSize="14px" color="white">
+              {statusTypes[status]?.title}
+            </Text>
+          </Box>
+        )}
         {/* </Text> */}
       </Box>
     </Box>
