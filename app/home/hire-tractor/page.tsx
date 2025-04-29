@@ -27,6 +27,7 @@ import {
   InputRightElement,
   Skeleton,
   SkeletonText,
+  Tooltip,
 } from "@chakra-ui/react";
 import { SidebarWithHeader } from "../../components/Sidenav";
 import { Formik, Form, Field } from "formik";
@@ -695,6 +696,7 @@ function HireTractorForm({ id }: { id: string }) {
           }${isBooked ? " booked" : ""}`;
 
           days.push(
+            <Tooltip label={bookedDates?.includes(dateString) ? "This tractor has been booked for this date" : ""} aria-label="A tooltip">
             <div
               key={dateString}
               className={
@@ -713,6 +715,7 @@ function HireTractorForm({ id }: { id: string }) {
             >
               {currentDay}
             </div>
+            </Tooltip>
           );
           currentDay++;
         }
