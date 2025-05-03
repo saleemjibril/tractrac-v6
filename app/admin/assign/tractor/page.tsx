@@ -141,8 +141,8 @@ export default function AssignSingleTractorPage() {
                     borderRadius="4px"
                     // src="/images/man-with-tractor.svg"
                     src={
-                      resultData?.tractor?.image?.startsWith("https")
-                        ?  resultData?.tractor?.image
+                      resultData?.tractor?.tractor_image?.startsWith("https")
+                        ?  resultData?.tractor?.tractor_image
                         : "/images/man-with-tractor.svg"
                     }
                     alt="Man with a tractor image"

@@ -153,7 +153,7 @@ export default function LoginInner() {
                             token: response?.data?.access_token,
                           })
                         );
-                        // toast.success(response.message);
+                        toast.success("Login successful");
                         // router.replace("/login");
                       } else {
                         setError("An unknown error occured");

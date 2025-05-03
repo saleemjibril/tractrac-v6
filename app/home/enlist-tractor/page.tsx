@@ -28,6 +28,8 @@ import {
 import * as nigerianStates from "nigerian-states-and-lgas";
 import { SidebarWithHeader } from "../../components/Sidenav";
 import { Formik, Form, Field } from "formik";
+import { Select as MultiSelect } from "chakra-react-select";
+
 import { useRouter } from "next/navigation";
 import {
   ArrowForwardIcon,
@@ -172,18 +174,15 @@ export default function BecomeAnAgent() {
 
   const handleGetBanks = async () => {
     try {
-      if (typeof userToken === 'string') {
+      if (typeof userToken === "string") {
         const response = await getBanks(userToken);
         console.log("getBanks", response);
-      setBanks(response?.data);
+        setBanks(response?.data);
       } else {
         // Handle the case when userToken is not a string
-        console.error('User token is not a string');
+        console.error("User token is not a string");
         // Maybe redirect to login or show an error
       }
-     
-
-      
     } catch (error) {
       console.log("Error fetching banks", error);
     }
@@ -246,6 +245,7 @@ export default function BecomeAnAgent() {
               insurance_expiry: "",
               has_tracker: "",
               tractor_type: "",
+              implement_types: "",
               bank_account_name: "",
               bank_account_type: "",
               bank_account_number: "",
@@ -254,7 +254,7 @@ export default function BecomeAnAgent() {
               current_address: "",
               state: "",
               lga: "",
-              tractor_image: "",
+              tractor_image_file: "",
             }}
             onSubmit={async (values: any, { resetForm }) => {
               setError(null);
@@ -282,6 +282,7 @@ export default function BecomeAnAgent() {
                 formData.append("lga", values?.lga);
                 formData.append("state", values?.state);
                 formData.append("tractor_type", values?.tractor_type);
+                formData.append("implement_types", values?.implement_types);
                 formData.append("purchase_year", values?.purchase_year);
                 formData.append("plate_number", values?.plate_number);
                 formData.append("chasis_serial_vn", values?.chasis);
@@ -296,7 +297,13 @@ export default function BecomeAnAgent() {
 
                 console.log("userToken", userToken);
 
-                const response = await createTractor(values, userToken as string);
+                const response = await createTractor(
+                  {...values,
+                    implement_types: values?.implement_types[0]
+
+                  },
+                  userToken as string
+                );
 
                 console.log("createTractor", response);
 
@@ -341,7 +348,7 @@ export default function BecomeAnAgent() {
                   onAllBankFieldsFilled={handleBankFieldsFilled}
                 />
 
-                <Flex columnGap="30px">
+                <Flex columnGap="30px" >
                   <Field name="name" validate={validateEmpty}>
                     {({ field, form }: { [x: string]: any }) => (
                       <FormControl
@@ -363,7 +370,13 @@ export default function BecomeAnAgent() {
                     )}
                   </Field>
                 </Flex>
-                <Flex columnGap="30px" mt="20px">
+                <Flex
+                
+                direction={{ base: "column", md: "row" }}
+                columnGap={{ base: "0", md: "30px" }}
+                rowGap={{ base: "20px", md: "0" }}
+                mt="20px"
+                width="100%">
                   <Field name="brand" validate={validateEmpty}>
                     {({ field, form }: { [x: string]: any }) => (
                       <FormControl
@@ -379,8 +392,7 @@ export default function BecomeAnAgent() {
                           bgColor="#3232320D"
                           fontSize="12px"
                           color="#323232"
-                          placeholder="What brand of Tractor are you
-                        interested in?"
+                          placeholder="What brand of Tractor do you have?"
                           // _placeholder={{
                           //   fontSize: "12px",
                           //   color: "red"
@@ -430,7 +442,11 @@ export default function BecomeAnAgent() {
                   </Field>
                 </Flex>
 
-                <Flex mt="20px" columnGap="30px">
+                <Flex  direction={{ base: "column", md: "row" }}
+  columnGap={{ base: "0", md: "30px" }}
+  rowGap={{ base: "20px", md: "0" }}
+  mt="20px"
+  width="100%">
                   <Field name="tractor_type" validate={validateEmpty}>
                     {({ field, form }: { [x: string]: any }) => (
                       <FormControl
@@ -438,6 +454,7 @@ export default function BecomeAnAgent() {
                           form.errors.tractor_type && form.touched.tractor_type
                         }
                         isRequired
+                        width={{ base: "100%", md: "20%" }}
                       >
                         <FormLabel fontSize="12px" color="#323232">
                           Tractor type
@@ -474,6 +491,40 @@ export default function BecomeAnAgent() {
                     )}
                   </Field>
 
+                  <Field name="implement_types" validate={validateEmpty}>
+                    {({ field, form }: { [x: string]: any }) => (
+                      <FormControl
+                        isInvalid={
+                          form.errors.implement_types &&
+                          form.touched.implement_types
+                        }
+                        width={{ base: "100%", md: "25%" }}
+                      >
+                        <FormLabel fontSize="12px" color="#323232">
+                          Implement Type
+                        </FormLabel>
+                        <MultiSelect
+                          // {...field}
+                          name="Roles"
+                          isMulti
+                          options={implementTypes}
+                          placeholder="Select implements"
+                          onChange={(option) => {
+                            console.log(option.at(0));
+                            form.setFieldValue(
+                              field.name,
+                              option.map((e) => e.value)
+                            );
+                          }}
+                          // id="roles-select-field"
+                        />
+                        <FormErrorMessage>
+                          {form.errors.implement_types}
+                        </FormErrorMessage>
+                      </FormControl>
+                    )}
+                  </Field>
+
                   <Field name="horsepower" validate={validateEmpty}>
                     {({ field, form }: { [x: string]: any }) => (
                       <FormControl
@@ -481,6 +532,7 @@ export default function BecomeAnAgent() {
                           form.errors.horsepower && form.touched.horsepower
                         }
                         isRequired
+                        flex="1"
                       >
                         <FormLabel fontSize="12px" color="#323232">
                           Tractor rating (housepower)
@@ -499,7 +551,11 @@ export default function BecomeAnAgent() {
                   </Field>
                 </Flex>
 
-                <Flex mt="20px" columnGap="30px">
+                <Flex  direction={{ base: "column", md: "row" }}
+  columnGap={{ base: "0", md: "30px" }}
+  rowGap={{ base: "20px", md: "0" }}
+  mt="20px"
+  width="100%">
                   <Field name="purchase_year" validate={validateEmpty}>
                     {({ field, form }: { [x: string]: any }) => (
                       <FormControl
@@ -560,7 +616,11 @@ export default function BecomeAnAgent() {
                   </Field>
                 </Flex>
 
-                <Flex mt="20px" columnGap="30px">
+                <Flex  direction={{ base: "column", md: "row" }}
+  columnGap={{ base: "0", md: "30px" }}
+  rowGap={{ base: "20px", md: "0" }}
+  mt="20px"
+  width="100%">
                   <Field name="plate_number" validate={validateEmpty}>
                     {({ field, form }: { [x: string]: any }) => (
                       <FormControl
@@ -619,14 +679,18 @@ export default function BecomeAnAgent() {
                   </Field>
                 </Flex>
 
-                <Flex mt="20px" columnGap="30px">
+                <Flex  direction={{ base: "column", md: "row" }}
+  columnGap={{ base: "0", md: "30px" }}
+  rowGap={{ base: "20px", md: "0" }}
+  mt="20px"
+  width="100%">
                   <Field name="is_insured" validate={validateEmpty}>
                     {({ field, form }: { [x: string]: any }) => (
                       <FormControl
                         isInvalid={
                           form.errors.is_insured && form.touched.is_insured
                         }
-                        width="20%"
+                        width={{ base: "100%", md: "20%" }}
                         isRequired
                       >
                         <FormLabel fontSize="12px" color="#323232">
@@ -652,8 +716,8 @@ export default function BecomeAnAgent() {
                   <Field name="insurance_expiry">
                     {({ field, form }: { [x: string]: any }) => (
                       <FormControl
-                        width="25%"
-                        isInvalid={
+                      width={{ base: "100%", md: "25%" }}
+                      isInvalid={
                           form.errors.insurance_expiry &&
                           form.touched.insurance_expiry
                         }
@@ -667,6 +731,7 @@ export default function BecomeAnAgent() {
                           bgColor="#3232320D"
                           fontSize="12px"
                           color="#323232"
+                          type="date"
                         />
                         {/* <Select
                           bgColor="#3232320D"
@@ -710,7 +775,11 @@ export default function BecomeAnAgent() {
                   </Field>
                 </Flex>
 
-                <Flex mt="20px" columnGap="30px">
+                <Flex  direction={{ base: "column", md: "row" }}
+  columnGap={{ base: "0", md: "30px" }}
+  rowGap={{ base: "20px", md: "0" }}
+  mt="20px"
+  width="100%">
                   <Field name="has_tracker" validate={validateEmpty}>
                     {({ field, form }: { [x: string]: any }) => (
                       <FormControl
@@ -788,7 +857,13 @@ export default function BecomeAnAgent() {
                   </Field>
                 </Flex>
 
-                <Flex columnGap="30px">
+                <Flex 
+                
+                direction={{ base: "column", md: "row" }}
+  columnGap={{ base: "0", md: "30px" }}
+  rowGap={{ base: "20px", md: "0" }}
+  width="100%"
+  >
                   <Field name="lga" validate={validateEmpty}>
                     {({ field, form }: { [x: string]: any }) => (
                       <FormControl
@@ -954,7 +1029,11 @@ export default function BecomeAnAgent() {
                   </Field> */}
                 </Flex>
 
-                <Flex mt="20px" columnGap="30px">
+                <Flex  direction={{ base: "column", md: "row" }}
+  columnGap={{ base: "0", md: "30px" }}
+  rowGap={{ base: "20px", md: "0" }}
+  mt="20px"
+  width="100%">
                   <Field name="bank_account_type" validate={validateEmpty}>
                     {({ field, form }: { [x: string]: any }) => (
                       <FormControl
@@ -1001,7 +1080,9 @@ export default function BecomeAnAgent() {
                           placeholder="Select bank name"
                         >
                           {banks?.map((bank) => (
-                            <option value={(bank as any)?.code}>{(bank as any)?.name}</option>
+                            <option value={(bank as any)?.code}>
+                              {(bank as any)?.name}
+                            </option>
                           ))}
                         </Select>
                         <FormErrorMessage>{form.errors.bank}</FormErrorMessage>
@@ -1009,7 +1090,11 @@ export default function BecomeAnAgent() {
                     )}
                   </Field>
                 </Flex>
-                <Flex mt="20px" columnGap="30px">
+                <Flex  direction={{ base: "column", md: "row" }}
+  columnGap={{ base: "0", md: "30px" }}
+  rowGap={{ base: "20px", md: "0" }}
+  mt="20px"
+  width="100%">
                   <Field name="bank_account_number" validate={validateEmpty}>
                     {({ field, form }: { [x: string]: any }) => (
                       <FormControl
@@ -1133,16 +1218,22 @@ export default function BecomeAnAgent() {
                 </FileUploader> */}
                 {/* </Flex> */}
 
-                <Flex my="30px" columnGap="30px">
+                <Flex 
+                 direction={{ base: "column", md: "row" }}
+                 columnGap={{ base: "0", md: "30px" }}
+                 rowGap={{ base: "20px", md: "0" }}
+                 my="30px"
+                 width="100%"
+                >
                   <Field
-                    name="tractor_image"
+                    name="tractor_image_file"
                     validate={(e: any) => validateImage(e)}
                   >
                     {({ field, form }: { [x: string]: any }) => (
                       <FormControl
                         isInvalid={
-                          form.errors.tractor_image &&
-                          form.touched.tractor_image
+                          form.errors.tractor_image_file &&
+                          form.touched.tractor_image_file
                         }
                         isRequired
                         width="100%"
@@ -1171,7 +1262,7 @@ export default function BecomeAnAgent() {
                                   );
                                   return;
                                 }
-                                form.setFieldValue(field.name, "image");
+                                form.setFieldValue(field.name, file);
                               }
                             }}
                             // {...field}
@@ -1196,6 +1287,7 @@ export default function BecomeAnAgent() {
                                 alignContent="center"
                                 my="4px"
                                 columnGap="10px"
+                                
                               >
                                 {/* <FiFile color="#FA9411" /> */}
                                 <Icon
@@ -1383,4 +1475,45 @@ const states = [
   "Taraba",
   "Yobe",
   "Zamfara",
+];
+
+const implementTypes = [
+  {
+    label: "Harrow",
+    value: "harrow",
+    // colorScheme: "red", // This is allowed because of the key in the `OptionBase` type
+  },
+  {
+    label: "Plow",
+    value: "plow",
+  },
+  {
+    label: "Ridger",
+    value: "ridger",
+  },
+  {
+    label: "Harvester",
+    value: "harvester",
+  },
+  {
+    label: "Seeder",
+    value: "seeder",
+  },
+  {
+    label: "Plough",
+    value: "plough",
+  },
+  {
+    label: "Planter",
+    value: "planter",
+  },
+  {
+    label: "Sprayer",
+    value: "sprayer",
+  },
+  // ,
+  // {
+  //   label: "Other",
+  //   value: "other",
+  // },
 ];

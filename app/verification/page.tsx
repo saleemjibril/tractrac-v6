@@ -40,7 +40,7 @@ import {
 import { toast } from "react-toastify";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { ChakraWrapper } from "../chakraUIWrapper";
-import { verifyUserOtp } from "../apis/auth";
+import { resendUserOtp, verifyUserOtp } from "../apis/auth";
 
 export default function Verification() {
   const [countdown, setCountdown] = useState(45); // 2 minutes in seconds
@@ -164,9 +164,8 @@ export default function Verification() {
                   // }).unwrap();
 
                   const userData = localStorage.getItem("user_data");
-                  const parsedUserData = JSON.parse(userData)
+                  const parsedUserData = JSON.parse(userData);
                   console.log("parsedId", parsedUserData);
-                  
 
                   const response = await verifyUserOtp({
                     otp_code: values?.otp?.toString(),
@@ -174,7 +173,7 @@ export default function Verification() {
                   });
 
                   console.log("verifyUserOtp", response);
-                  toast.success("Verification successful")
+                  toast.success("Verification successful");
 
                   router.replace("/login");
 
@@ -285,10 +284,10 @@ export default function Verification() {
                       return null;
                     }
                     try {
-                      await resendOtp({
-                        phone: phoneNumber,
-                        type: "registration",
-                      });
+                      const userData = localStorage.getItem("user_data");
+                      const parsedUserData = JSON.parse(userData);
+                      await resendUserOtp(parsedUserData?.id);
+                      toast.success("OTP has been resent");
                       startCountdown();
                       toast.success("OTP has been resent");
                     } catch (err) {

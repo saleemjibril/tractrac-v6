@@ -34,6 +34,7 @@ import {
 import { toast } from "react-toastify";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { ChakraWrapper } from "../chakraUIWrapper";
+import { forgotPassword, resetUserPassword } from "../apis/auth";
 
 export default function RecoverPassword() {
   const router = useRouter();
@@ -44,63 +45,63 @@ export default function RecoverPassword() {
 
   return (
     <ChakraWrapper>
-    <Box
-      bgImage="url('images/modal-bg.jpg')"
-      bgRepeat="no-repeat"
-      bgPosition="right bottom"
-      bgSize="cover"
-      minH="100vh"
-    >
-      <Flex
-        height="100%"
-        py="50px"
-        px={{ base: "20px", md: "150px" }}
-        direction="row-reverse"
+      <Box
+        bgImage="url('images/modal-bg.jpg')"
+        bgRepeat="no-repeat"
+        bgPosition="right bottom"
+        bgSize="cover"
+        minH="100vh"
       >
-        <Box width={{ base: "100%", md: "50%", xl: "40%" }}>
-          <Center mb="30px">
-            <Link href="/">
-              <Image
-                src="/logo-white.svg"
-                alt="TracTrac Logo"
-                width={{ base: "150px", lg: "210px" }}
-              />
-            </Link>
-          </Center>
-          <Stack
-            bgColor="white"
-            p={{ base: "20px", md: "40px" }}
-            justifyContent="center"
-          >
-            <IconButton
-              backgroundColor="transparent"
-              mb="27px"
-              w="20px"
-              icon={<ArrowBackIcon boxSize="20px" />}
-              aria-label="back icon"
-              onClick={() => router.back()}
-            />
-            <Text
-              fontSize={{ base: "20px", md: "24px" }}
-              // color="#FA9411"
-              fontWeight="700"
-              mb="12px"
+        <Flex
+          height="100%"
+          py="50px"
+          px={{ base: "20px", md: "150px" }}
+          direction="row-reverse"
+        >
+          <Box width={{ base: "100%", md: "50%", xl: "40%" }}>
+            <Center mb="30px">
+              <Link href="/">
+                <Image
+                  src="/logo-white.svg"
+                  alt="TracTrac Logo"
+                  width={{ base: "150px", lg: "210px" }}
+                />
+              </Link>
+            </Center>
+            <Stack
+              bgColor="white"
+              p={{ base: "20px", md: "40px" }}
+              justifyContent="center"
             >
-              Recover Password
-            </Text>
-
-            {isSendOtp ? (
-              <SendOtpComponent
-                setPhoneNumber={setPhoneNumber}
-                setPasswordResetVisibility={setIsSendOtp}
+              <IconButton
+                backgroundColor="transparent"
+                mb="27px"
+                w="20px"
+                icon={<ArrowBackIcon boxSize="20px" />}
+                aria-label="back icon"
+                onClick={() => router.back()}
               />
-            ) : (
-              <ResetPasswordComponent phoneNumber={phoneNumber} />
-            )}
-          </Stack>
-        </Box>
-      </Flex>
-    </Box>
+              <Text
+                fontSize={{ base: "20px", md: "24px" }}
+                // color="#FA9411"
+                fontWeight="700"
+                mb="12px"
+              >
+                Recover Password
+              </Text>
+
+              {isSendOtp ? (
+                <SendOtpComponent
+                  setPhoneNumber={setPhoneNumber}
+                  setPasswordResetVisibility={setIsSendOtp}
+                />
+              ) : (
+                <ResetPasswordComponent phoneNumber={phoneNumber} />
+              )}
+            </Stack>
+          </Box>
+        </Flex>
+      </Box>
     </ChakraWrapper>
   );
 }
@@ -115,6 +116,7 @@ function SendOtpComponent({
   const [sendOtp] = useSendOtpMutation();
 
   const [error, setError] = useState<string | null>(null);
+  const [userId, setUserId] = useState("");
 
   function validatePhoneNumber(value: any) {
     let error;
@@ -131,28 +133,23 @@ function SendOtpComponent({
       initialValues={{ phone: "" }}
       onSubmit={async (values: any, actions) => {
         try {
-          const response = await sendOtp({
-            ...values,
-            type: "password_reset",
-          }).unwrap();
-          if (response.status && response.status == "success") {
-            setPasswordResetVisibility(false);
-            setPhoneNumber(values?.phone);
-            toast.success(response.message);
-            // router.replace("/login");
-          } else {
-            setError("An unknown error occured");
-          }
-          console.log("fulfilled", response);
-        } catch (err) {
-          const error = err as any;
-          // alert('error')
-          if (error?.data?.errors) {
-            // setError(error?.data?.errors[0])
-          } else if (error?.data?.message) {
-            setError(error?.data?.message);
-          }
-          console.error("rejected", error);
+          const response = await forgotPassword(values?.phone?.toString());
+          // if (response.status && response.status == "success") {
+          setPasswordResetVisibility(false);
+          setPhoneNumber(values?.phone?.toString());
+          setUserId(response?.data?.user_id);
+          toast.success("OTP sent successfully");
+          // router.replace("/login");
+          // } else {
+          //   setError("An unknown error occured");
+          // }
+          console.log("forgotPassword", response);
+        } catch (error) {
+          console.error("error resetting password", error);
+          setError(
+            (error as any).response?.data?.detail ||
+              "An unknown error occurred"
+          );
         }
       }}
     >
@@ -205,7 +202,7 @@ function SendOtpComponent({
   );
 }
 
-function ResetPasswordComponent({ phoneNumber }: { phoneNumber: string }) {
+function ResetPasswordComponent({ phoneNumber, userId }: { phoneNumber: string, userId: string }) {
   const [resetPassword] = useResetPasswordMutation();
 
   const dispatch = useAppDispatch();
@@ -248,26 +245,26 @@ function ResetPasswordComponent({ phoneNumber }: { phoneNumber: string }) {
         initialValues={{ confirm_password: "", password: "", otp: "" }}
         onSubmit={async (values: any, actions) => {
           try {
-            const response = await resetPassword({
-              ...values,
-              phone: phoneNumber,
-            }).unwrap();
-            if (response?.status && response?.status == "success") {
-              toast.success(response.message);
+            const response = await resetUserPassword(
+              userId,
+              values?.otp?.toString(),
+              values?.password,
+              values?.confirm_password
+            );
+            toast.success(response?.data?.message);
+            // if (response?.status && response?.status == "success") {
+            //   toast.success(response.message);
               router.replace("/login");
-            } else {
-              setError("An unknown error occured");
-            }
-            console.log("fulfilled", response?.data[0], response.token);
+            // } else {
+            //   setError("An unknown error occured");
+            // }
+            console.log("resetUserPassword", response);
           } catch (err) {
-            const error = err as any;
-            // alert('error')
-            if (error?.data?.errors) {
-              // setError(error?.data?.errors[0])
-            } else if (error?.data?.message) {
-              setError(error?.data?.message);
-            }
             console.error("rejected", error);
+            setError(
+              (error as any).response?.data?.detail ||
+                "An unknown error occurred"
+            );
           }
         }}
       >

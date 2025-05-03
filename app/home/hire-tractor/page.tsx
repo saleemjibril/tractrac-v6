@@ -25,6 +25,7 @@ import {
   SimpleGrid,
   InputGroup,
   InputRightElement,
+  InputRightAddon,
   Skeleton,
   SkeletonText,
   Tooltip,
@@ -44,8 +45,11 @@ import {
   useHireTractorMutation,
   useLazyGetSearchTractorsQuery,
 } from "@/redux/services/tractorApi";
+import Autocomplete from "react-google-autocomplete";
+
 import Map from "../../components/Map";
 import {
+  filterTractors,
   getApprovedTractors,
   getBookedDates,
   getTractors,
@@ -59,6 +63,13 @@ const fileTypes = ["JPG", "PNG", "JPEG"];
 // const DynamicHeader = dynamic(() => import('../components/Sidenav'), {
 //     loading: () => <p>Loading...</p>,
 //   })
+const tractorTypes = ["small", "medium", "large", "specialized", "utility"];
+
+
+interface ICoordinates {
+  latitude: number;
+  longitude: number;
+}
 
 interface ITractorCard {
   id: string;
@@ -66,11 +77,12 @@ interface ITractorCard {
   image: string;
   capacity: string;
   location: string;
-  distance: string;
   status: string;
   tractor_type: string;
   setTractorId: Dispatch<SetStateAction<string | null>>;
+  coordinates: ICoordinates;
 }
+
 const statusTypes: Record<string, { title: string; color: string }> = {
   booked: { title: "Booked", color: "#FA9411" },
   available: { title: "Available", color: "#27AE60" },
@@ -84,30 +96,31 @@ export default function HireTractor() {
   const [loading, setLoading] = useState(false);
   const [tractorId, setTractorId] = useState<string | null>(null);
   const [state, setState] = useState<string | null>(null);
+  const [lgas, setLgas] = useState<string[]>([]);
+  const [lga, setLga] = useState<string[]>("");
   const [brand, setBrand] = useState<string | null>(null);
   const [implement, setImplement] = useState<string | null>(null);
+  const [tractorType, setTractorType] = useState<string | null>(null);
   // const [getTractors, result] = useLazyGetTractorsQuery();
   const [result] = useLazyGetTractorsQuery();
   const [trigger, searchResult] = useLazyGetSearchTractorsQuery({});
 
   const handleGetTractors = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
-
-      if (typeof userToken === 'string') {
+      if (typeof userToken === "string") {
         const response = await getApprovedTractors(userToken);
-      setTractors(response?.data);
-      console.log("getTractors", response?.data);
+        setTractors(response?.data);
+        console.log("getTractors", response?.data);
       } else {
         // Handle the case when userToken is not a string
-        console.error('User token is not a string');
+        console.error("User token is not a string");
         // Maybe redirect to login or show an error
       }
-      
     } catch (error) {
       console.log("Error fetching Tractors", error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   };
 
@@ -146,35 +159,51 @@ export default function HireTractor() {
   //   // return {getTractors}
   // }, [getTractors]);
 
-  // useEffect(() => {
-  //   let param = "";
-  //   if (state && brand && implement) {
-  //     param = `${implement}/${brand}/${state}`;
-  //   } else if (state && implement && !brand) {
-  //     // param = `${state}/${implement}`;
-  //     param = `${implement}/${state}`;
-  //   } else if (!state && brand && implement) {
-  //     param = `${implement}/${brand}`;
-  //   } else if (state && !brand && !implement) {
-  //     param = state;
-  //   } else if (!state && !brand && implement) {
-  //     param = implement;
-  //   } else if (!state && brand && !implement) {
-  //     param = brand;
-  //   }
-  //   if (param.length > 1) {
-  //     trigger(param)
-  //       .unwrap()
-  //       .then((result) => {
-  //         setSearchData(result?.data || []);
-  //       })
-  //       .catch((_) => {
-  //         setSearchData([]);
-  //       });
-  //   } else {
-  //     setSearchData(null);
-  //   }
-  // }, [trigger, state, brand, implement]);
+  useEffect(() => {
+    // Define an async function inside useEffect
+    const fetchFilteredTractors = async () => {
+      setLoading(true);
+      console.log("change", state, tractorType, lga);
+
+      // Build query parameters
+      const queryParams = new URLSearchParams();
+
+      // Only add parameters that have values
+      if (state) queryParams.append("state", state);
+      if (lga) queryParams.append("local_government_area", lga);
+      if (tractorType) queryParams.append("tractor_type", tractorType);
+
+      // Convert URLSearchParams to string
+      const queryString = queryParams.toString();
+
+      if (queryString) {
+        console.log("query parameters:", queryString);
+
+        try {
+          // Now we can use await properly inside the async function
+          const response = await filterTractors(
+            queryString,
+            userToken as string
+          );
+          console.log("filterTractors", response);
+          setTractors(response?.data);
+
+          // Assuming response has a data property
+          // setSearchData(response?.data || []);
+        } catch (error) {
+          console.error("Search error:", error);
+          setSearchData([]);
+        } finally {
+          setLoading(false);
+        }
+      } else {
+        setSearchData(null);
+      }
+    };
+
+    // Call the async function
+    fetchFilteredTractors();
+  }, [state, lga, tractorType, userToken]);
 
   async function search() {
     // alert(state);
@@ -248,7 +277,7 @@ export default function HireTractor() {
             <Text fontSize="24px" fontWeight={700} mb="15px">
               Hire a Tractor
             </Text>
-            {loading  ? (
+            {loading ? (
               <Skeleton
                 mt="12px"
                 height="360px"
@@ -307,9 +336,18 @@ export default function HireTractor() {
                 }}
                 onChange={(e) => {
                   // alert(e?.target?.value);
-                  if (e?.target?.value) {
+                  const state = e.currentTarget.value || "";
+                  if (!!state) {
                     setState(e?.currentTarget?.value);
                     // search();
+                    if (state.includes("abuja")) {
+                      // Federal Capital Territory
+                      setLgas(
+                        nigerianStates.lgas("Federal Capital Territory") ?? []
+                      );
+                    } else {
+                      setLgas(nigerianStates.lgas(state) ?? []);
+                    }
                   } else {
                     setState(null);
                     //   // search();
@@ -322,8 +360,68 @@ export default function HireTractor() {
                   </option>
                 ))}
               </Select>
-
               <Select
+                width="150px"
+                placeholder="Lga"
+                value={(lga || "").toLowerCase()}
+                icon={<ArrowDown2 />}
+                color="#FA9411"
+                border="1px"
+                borderColor="#FA9411"
+                _focus={{
+                  borderColor: "#FA9411",
+                }}
+                _focusVisible={{
+                  borderColor: "#FA9411",
+                }}
+                onChange={(e) => {
+                  if (e?.target?.value) {
+                    setLga(e?.target?.value);
+                    // search();
+                  } else {
+                    setLga(null);
+                    // search();
+                  }
+                }}
+              >
+                {lgas.map((state) => (
+                  <option key={state} value={state.toLowerCase()}>
+                    {state}
+                  </option>
+                ))}
+              </Select>
+              <Select
+                width="150px"
+                placeholder="Tractor Type"
+                value={(tractorType || "").toLowerCase()}
+                icon={<ArrowDown2 />}
+                color="#FA9411"
+                border="1px"
+                borderColor="#FA9411"
+                _focus={{
+                  borderColor: "#FA9411",
+                }}
+                _focusVisible={{
+                  borderColor: "#FA9411",
+                }}
+                onChange={(e) => {
+                  if (e?.target?.value) {
+                    setTractorType(e?.target?.value);
+                    // search();
+                  } else {
+                    setTractorType(null);
+                    // search();
+                  }
+                }}
+              >
+                {tractorTypes.map((tractorType) => (
+                  <option key={tractorType} value={tractorType.toLowerCase()}>
+                    {tractorType}
+                  </option>
+                ))}
+              </Select>
+
+              {/* <Select
                 width="130px"
                 placeholder="Brand"
                 icon={<ArrowDown2 />}
@@ -351,7 +449,7 @@ export default function HireTractor() {
                     {snakeToCamelWithSpaces(brand)}
                   </option>
                 ))}
-              </Select>
+              </Select> */}
             </Stack>
             {
               // searchResult?.isFetching ||
@@ -415,7 +513,7 @@ export default function HireTractor() {
               //           setTractorId={setTractorId}
               //           id={tractor?.id}
               //           name={`${tractor?.name}`}
-              //           image={tractor?.image}
+              //           image={tractor?.tractor_image}
               //           capacity=" 105 to 135 HP"
               //           location={tractor?.address}
               //           distance={tractor?.distance}
@@ -440,7 +538,7 @@ export default function HireTractor() {
                       setTractorId={setTractorId}
                       id={tractor?.id}
                       name={`${tractor?.name}`}
-                      image={tractor?.image}
+                      image={tractor?.tractor_image}
                       capacity=" 105 to 135 HP"
                       location={`${tractor?.lga},${tractor?.state}`}
                       // location={tractor?.address}
@@ -448,6 +546,10 @@ export default function HireTractor() {
                       distance={tractor?.distance}
                       tractor_type={tractor?.tractor_type}
                       status={tractor?.status}
+                      coordinates={{ 
+                        latitude: tractor?.current_location_lat, 
+                        longitude: tractor?.current_location_lng 
+                      }}
                     />
                   ))}
                 </SimpleGrid>
@@ -462,16 +564,81 @@ export default function HireTractor() {
   );
 }
 
+export function calculateDistance(
+  lat1: number,
+  lon1: number,
+  lat2: number,
+  lon2: number
+): number {
+  // Earth's radius in kilometers
+  const R = 6371;
+  
+  // Convert latitude and longitude from degrees to radians
+  const dLat = (lat2 - lat1) * (Math.PI / 180);
+  const dLon = (lon2 - lon1) * (Math.PI / 180);
+  
+  // Haversine formula
+  const a = 
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) * 
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  let distance = R * c; // Distance in kilometers
+  
+  return Math.round(distance * 10) / 10; // Round to 1 decimal place
+}
+
+
 function TractorCard({
   name,
   image,
   location,
-  distance,
   tractor_type,
   setTractorId,
   id,
-  status
+  status,
+  coordinates
 }: ITractorCard) {
+  
+  const [userCoordinates, setUserCoordinates] = useState<ICoordinates | null>(null);
+  const [distance, setDistance] = useState<number | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+    // Get user's location on component mount
+    useEffect(() => {
+      console.log("coordinates", coordinates);
+      
+      if (!coordinates) return;
+  
+      if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const userCoords = {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+            };
+            setUserCoordinates(userCoords);
+            
+            // Calculate distance once we have user coordinates
+            const calculatedDistance = calculateDistance(
+              userCoords.latitude,
+              userCoords.longitude,
+              coordinates.latitude,
+              coordinates.longitude
+            );
+            setDistance(calculatedDistance);
+          },
+          (error) => {
+            console.error("Error getting user location:", error);
+            setError("Unable to get your location");
+          }
+        );
+      } else {
+        setError("Geolocation is not supported by your browser");
+      }
+    }, [coordinates]);
+
   return (
     <Box
       boxShadow="md"
@@ -490,7 +657,7 @@ function TractorCard({
           width="100%"
           objectFit="cover"
         />
-        {distance && distance != "0" && (
+        {distance && (
           <Box
             bgColor="#FA9411"
             borderRadius="6px"
@@ -502,6 +669,21 @@ function TractorCard({
           >
             <Text fontSize="12px" color="white">
               {distance}KM Away
+            </Text>
+          </Box>
+        )}
+        {error && process.env.NODE_ENV === 'development' && (
+          <Box
+            bgColor="#F04438"
+            borderRadius="6px"
+            py="2px"
+            px="8px"
+            position="absolute"
+            bottom="4"
+            right="2"
+          >
+            <Text fontSize="12px" color="white">
+              {error}
             </Text>
           </Box>
         )}
@@ -528,25 +710,18 @@ function TractorCard({
             {tractor_type}
           </Box>
         </Text>
-        {/* <Text
-            fontSize="12px"
-            color="#323232"
-            fontWeight={700}
-            mt="8px"
-            lineHeight="12.1px"
-          >
-            Capacity:
-            <Box fontWeight={500} as="span">
-              {capacity}
-            </Box>
-          </Text> */}
-        {/* <Text fontSize="12px" color="#323232" fontWeight={700} mt="8px"> */}
-        {/* Location:  */}
+
         <Box fontWeight={500} fontSize="12px" mt="8px" as="span" noOfLines={2}>
           <Box fontWeight={700} as="span">
             Location:
           </Box>{" "}
           {location.length < 2 ? "N/a" : location}
+        </Box>
+        <Box fontWeight={500} fontSize="12px" mt="8px" as="span" noOfLines={2}>
+          <Box fontWeight={700} as="span">
+            Status:
+          </Box>{" "}
+          {statusTypes[status]?.title}
         </Box>
 
         {statusTypes[status]?.color && (
@@ -559,11 +734,14 @@ function TractorCard({
             w="111px"
           >
             <Text fontSize="14px" color="white">
-              {statusTypes[status]?.title}
+              {status === "available"
+                ? "Book now"
+                : status === "in_use"
+                ? "Book ahead"
+                : "Book ahead"}
             </Text>
           </Box>
         )}
-        {/* </Text> */}
       </Box>
     </Box>
   );
@@ -696,25 +874,32 @@ function HireTractorForm({ id }: { id: string }) {
           }${isBooked ? " booked" : ""}`;
 
           days.push(
-            <Tooltip label={bookedDates?.includes(dateString) ? "This tractor has been booked for this date" : ""} aria-label="A tooltip">
-            <div
-              key={dateString}
-              className={
-                firstDate === dateString
-                  ? `active-date ${cellClassName}`
-                  : lastDate === dateString
-                  ? `active-date ${cellClassName}`
-                  : parseInt(firstDate?.split("-")[2]) <
-                      parseInt(dateString?.split("-")[2]) &&
-                    parseInt(lastDate?.split("-")[2]) >
-                      parseInt(dateString?.split("-")[2])
-                  ? `subsidiary-date ${cellClassName}`
-                  : cellClassName
+            <Tooltip
+              label={
+                bookedDates?.includes(dateString)
+                  ? "This tractor has been booked for this date"
+                  : ""
               }
-              onClick={() => handleDateRangeClick(dateString)}
+              aria-label="A tooltip"
             >
-              {currentDay}
-            </div>
+              <div
+                key={dateString}
+                className={
+                  firstDate === dateString
+                    ? `active-date ${cellClassName}`
+                    : lastDate === dateString
+                    ? `active-date ${cellClassName}`
+                    : parseInt(firstDate?.split("-")[2]) <
+                        parseInt(dateString?.split("-")[2]) &&
+                      parseInt(lastDate?.split("-")[2]) >
+                        parseInt(dateString?.split("-")[2])
+                    ? `subsidiary-date ${cellClassName}`
+                    : cellClassName
+                }
+                onClick={() => handleDateRangeClick(dateString)}
+              >
+                {currentDay}
+              </div>
             </Tooltip>
           );
           currentDay++;
@@ -872,7 +1057,13 @@ function HireTractorForm({ id }: { id: string }) {
               </Alert>
             )}
 
-            <Flex mt="20px" columnGap="30px">
+            <Flex 
+             direction={{ base: "column", md: "row" }}
+  columnGap={{ base: "0", md: "30px" }}
+  rowGap={{ base: "20px", md: "0" }}
+  mt="20px"
+  width="100%"
+            >
               <Field name="farm_size" validate={validateEmpty}>
                 {({ field, form }: { [x: string]: any }) => (
                   <FormControl
@@ -891,43 +1082,52 @@ function HireTractorForm({ id }: { id: string }) {
                       </Link>
                       )
                     </FormLabel>
-                    <InputGroup>
-                      <Input
-                        {...field}
-                        pr="130px"
-                        bgColor="#3232320D"
-                        fontSize="12px"
-                        color="#323232"
-                        type="text"
-                      />
-
-                      <InputRightElement width="fit-content">
-                        <Select
-                          top="0"
-                          left="0"
-                          zIndex={1}
-                          bottom={0}
-                          ml="8px"
-                          fontSize="12px"
-                          // opacity={0}
-                          height="100%"
-                          variant="unstyled"
-                          // position="absolute"
-                          value={unit}
-                          onChange={(v) => {
-                            // alert(v?.currentTarget?.value)
-                            setUnit(v?.currentTarget?.value);
-                          }}
-                        >
-                          {/* <option value="" /> */}
-                          {landMeasurementUnits?.map((option) => (
-                            <option value={option.value} key={option.value}>
-                              {option.label}
-                            </option>
-                          ))}
-                        </Select>
-                      </InputRightElement>
-                    </InputGroup>
+                    <InputGroup size="md">
+  <Input
+    {...field}
+    bgColor="#3232320D"
+    fontSize="12px"
+    color="#323232"
+    type="number"
+    paddingRight="0px"
+    borderRightRadius="0"
+  />
+  
+  <InputRightAddon 
+    padding="0" 
+    backgroundColor="transparent" 
+    border="1px solid" 
+    borderColor="inherit"
+    borderLeft="none"
+    height="40px" // Explicit height to match input
+    display="flex"
+    alignItems="center"
+  >
+    <Box position="relative" width="auto" minWidth="80px" height="40px"
+    display="flex"
+    alignItems="center"
+    >
+      <Select
+        fontSize="12px"
+        height="26px"
+        padding="0 8px"
+        background="transparent"
+        minWidth="100%"
+        width="auto"
+        value={unit}
+        onChange={(v) => {
+          setUnit(v?.currentTarget?.value);
+        }}
+      >
+        {landMeasurementUnits?.map((option) => (
+          <option value={option.value} key={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </Select>
+    </Box>
+  </InputRightAddon>
+</InputGroup>
                     <FormErrorMessage>{form.errors.farm_size}</FormErrorMessage>
                   </FormControl>
                 )}
@@ -975,7 +1175,13 @@ function HireTractorForm({ id }: { id: string }) {
               </Field>
             </Flex>
 
-            <Flex mt="20px" columnGap="30px">
+            <Flex 
+             direction={{ base: "column", md: "row" }}
+  columnGap={{ base: "0", md: "30px" }}
+  rowGap={{ base: "20px", md: "0" }}
+  mt="20px"
+  width="100%"
+            >
               <Field name="implement_types" validate={validateEmpty}>
                 {({ field, form }: { [x: string]: any }) => (
                   <FormControl
@@ -1057,7 +1263,13 @@ function HireTractorForm({ id }: { id: string }) {
               </Field>
             </Flex>
 
-            {/* <Flex mt="20px" columnGap="30px">
+            {/* <Flex 
+             direction={{ base: "column", md: "row" }}
+  columnGap={{ base: "0", md: "30px" }}
+  rowGap={{ base: "20px", md: "0" }}
+  mt="20px"
+  width="100%"
+            >
               <Field name="community" validate={validateEmpty}>
                 {({ field, form }: { [x: string]: any }) => (
                   <FormControl
@@ -1078,7 +1290,13 @@ function HireTractorForm({ id }: { id: string }) {
               </Field>
             </Flex> */}
 
-            <Flex mt="20px" columnGap="30px">
+            <Flex 
+             direction={{ base: "column", md: "row" }}
+  columnGap={{ base: "0", md: "30px" }}
+  rowGap={{ base: "20px", md: "0" }}
+  mt="20px"
+  width="100%"
+            >
               <Field name="community" validate={validateEmpty}>
                 {({ field, form }: { [x: string]: any }) => (
                   <FormControl
@@ -1156,8 +1374,8 @@ function HireTractorForm({ id }: { id: string }) {
 
                             <div>
                               <svg
-                                width="12"
-                                height="12"
+                                width="24"
+                                height="24"
                                 viewBox="0 0 12 12"
                                 fill="none"
                                 xmlns="http://www.w3.org/2000/svg"
@@ -1188,8 +1406,8 @@ function HireTractorForm({ id }: { id: string }) {
                               </svg>
 
                               <svg
-                                width="12"
-                                height="12"
+                                width="24"
+                                height="24"
                                 viewBox="0 0 12 12"
                                 fill="none"
                                 xmlns="http://www.w3.org/2000/svg"
@@ -1293,7 +1511,13 @@ function HireTractorForm({ id }: { id: string }) {
               </Field> */}
             </Flex>
 
-            <Flex my="40px" columnGap="30px">
+            <Flex 
+             direction={{ base: "column", md: "row" }}
+             columnGap={{ base: "0", md: "30px" }}
+             rowGap={{ base: "20px", md: "0" }}
+             my="40px"
+             width="100%"
+            >
               <Field name="address" validate={validateEmpty}>
                 {({ field, form }: { [x: string]: any }) => (
                   <FormControl
@@ -1302,11 +1526,54 @@ function HireTractorForm({ id }: { id: string }) {
                     <FormLabel fontSize="12px" color="#323232">
                       Address
                     </FormLabel>
-                    <Input
-                      {...field}
-                      bgColor="#3232320D"
-                      fontSize="12px"
-                      color="#323232"
+                    <Autocomplete
+                      style={{
+                        padding: "0px 10px 0px 10px",
+                        borderRadius: "6px",
+                        width: "100%",
+                        fontSize: "12px",
+                        color: "#929292",
+                        height: "39px",
+                        backgroundColor: "#3232320D",
+                      }}
+                      placeholder=""
+                      apiKey={"AIzaSyBWo_tQ4rjQkZz1kN5WXfnemHCaF0gQ8BU"}
+                      onChange={(e) => {
+                        // alert(`Address: ${e.currentTarget?.value}`)
+                        form.setFieldValue(field.name, e.currentTarget?.value);
+                      }}
+                      onPlaceSelected={(place) => {
+                        console.log("Address:", place.formatted_address);
+
+                        // Extract latitude and longitude
+                        if (place.geometry && place.geometry.location) {
+                          const current_location_lat =
+                            place.geometry.location.lat();
+                          const current_location_lng =
+                            place.geometry.location.lng();
+                          console.log("Latitude:", current_location_lat);
+                          console.log("Longitude:", current_location_lng);
+
+                          // Update form with address and coordinates
+                          form.setFieldValue(
+                            field.name,
+                            place.formatted_address
+                          );
+                          form.setFieldValue(
+                            "current_location_lat",
+                            current_location_lat
+                          );
+                          form.setFieldValue(
+                            "current_location_lng",
+                            current_location_lng
+                          );
+                        }
+                      }}
+                      options={{
+                        types: ["address"],
+                        // types: ["(regions)"],
+                        componentRestrictions: { country: "ng" },
+                      }}
                     />
                     <FormErrorMessage>{form.errors.address}</FormErrorMessage>
                   </FormControl>
@@ -1528,7 +1795,7 @@ const states = [
 
 const brands = ["case_ih", "sonalika", "john_deere", "mahindra", "others"];
 
-const tractorTypes = ["Harrower", "Ridger", "Plough", "Planter", "Sprayer"];
+// const tractorTypes = ["Harrower", "Ridger", "Plough", "Planter", "Sprayer"];
 
 const implementTypes = [
   {
@@ -1549,8 +1816,8 @@ const implementTypes = [
     value: "harvester",
   },
   {
-    label: "Seeded",
-    value: "seeded",
+    label: "Seeder",
+    value: "seeder",
   },
   {
     label: "Plough",
@@ -1564,10 +1831,11 @@ const implementTypes = [
     label: "Sprayer",
     value: "sprayer",
   },
-  {
-    label: "Other",
-    value: "other",
-  },
+  // ,
+  // {
+  //   label: "Other",
+  //   value: "other",
+  // },
 ];
 
 const landMeasurementUnits = [

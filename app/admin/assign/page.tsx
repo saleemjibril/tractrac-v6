@@ -125,7 +125,7 @@ export default function AllHiredTractors() {
                   capacity=" 105 to 135 HP"
                   type={result?.tractor?.tractor_type}
                   location={result?.address}
-                  image={result?.tractor?.image}
+                  image={result?.tractor?.tractor_image}
                   status={result?.status}
                 />
               ))}
