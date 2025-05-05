@@ -107,14 +107,14 @@ export default function AboutInner() {
           {/* <Flex gap="24px" mb="30px" flexDir={{ base: "column", md: "row" }}>
             <Box width={{ base: "100%", md: "60%" }}>
               <Image
-                src="/images/about-banner-1.svg"
+                src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446761/about-banner-1_vx2uae.svg"
                 alt="About page banner one"
                 w="100%"
                 borderRadius="50px"
               />
             </Box>
             <Box width={{ base: "100%", md: "40%" }}>
-              <Image src="/images/about-2.svg" alt="About page banner two" />
+              <Image src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446755/about-2_zjdjko.svg" alt="About page banner two" />
             </Box>
           </Flex> */}
           <Text color="#858A8F" fontSize="16px" textAlign="center" mb="50px">
@@ -171,7 +171,7 @@ export default function AboutInner() {
               for investors to participate in the Agric mechanization space,
               ensure tractors are available to users and make a good return.
             </Text>
-            {/* <Image src="/images/about-3.svg" alt="About page banner three" /> */}
+            {/* <Image src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446761/about-3_uc4qzw.svg" alt="About page banner three" /> */}
           </Flex>
 
           <Center my="30px">

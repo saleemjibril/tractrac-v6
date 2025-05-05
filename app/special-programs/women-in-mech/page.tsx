@@ -66,7 +66,7 @@ export default function BecomeAnAgent() {
             Women in Mechanization
           </Text>
           <Image
-            src="/images/women-in-mech.svg"
+            src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446746/women-in-mech_y8ekus.svg"
             alt="women-in-mechanization image"
           />
           <Text fontSize="20px" fontWeight={600} my="4px">
@@ -331,7 +331,7 @@ export default function BecomeAnAgent() {
           <ModalBody textAlign="center">
             <Flex flexDir="column" alignItems="center">
               <Image
-                src="/images/checkmark.svg"
+                src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446823/checkmark_jyuxnj.svg"
                 width="120px"
                 alt="Checkmark image icon"
               />

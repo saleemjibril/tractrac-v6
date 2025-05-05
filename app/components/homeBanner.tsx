@@ -15,7 +15,7 @@ export default function HomeBanner() {
       <Box
         position={"relative"}
         height={{ base: "350px", md: "535px" }}
-        bgImage="linear-gradient(to left, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('hero_banner.jpg')"
+        bgImage="linear-gradient(to left, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://res.cloudinary.com/tractrac-global/image/upload/v1746446556/hero_banner_jh5hui.jpg')"
         bgPosition="center"
         bgSize="cover"
         bgAttachment="fixed"

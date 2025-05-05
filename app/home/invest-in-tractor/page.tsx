@@ -112,7 +112,7 @@ export default function InvestInTractor() {
           <Text fontSize="24px" fontWeight={700} mb="4px">
             Invest in Tractor
           </Text>
-          <Image src="/images/invest.svg" alt="Invest image" />
+          <Image src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446739/invest_td6he5.svg" alt="Invest image" />
           <Text fontSize="20px" fontWeight={600} my="4px">
             Information
           </Text>
@@ -574,7 +574,7 @@ export default function InvestInTractor() {
           <ModalBody textAlign="center">
             <Flex flexDir="column" alignItems="center">
               <Image
-                src="/images/checkmark.svg"
+                src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446823/checkmark_jyuxnj.svg"
                 width="120px"
                 alt="checkmark image icon"
               />

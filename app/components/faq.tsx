@@ -33,7 +33,7 @@ export default function FaqComponent() {
 
     >
       <Image
-        src="images/faq.jpg"
+        src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446531/faq_uuekot.jpg"
         alt=""
         display={{ base: "none", md: "block" }}
         width={{ base: "100%", xl: "unset" }}

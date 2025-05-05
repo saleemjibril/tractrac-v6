@@ -85,7 +85,7 @@ export default function BecomeAnAgent() {
             Enlist as Operator/ Mechanic
           </Text>
           <Image
-            src="/images/enlist-as-operator.svg"
+            src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446715/enlist-as-operator_cujwpn.svg"
             alt="Agent image"
             borderRadius="10px"
           />
@@ -447,7 +447,7 @@ export default function BecomeAnAgent() {
           <ModalBody textAlign="center">
             <Flex flexDir="column" alignItems="center">
               <Image
-                src="/images/checkmark.svg"
+                src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446823/checkmark_jyuxnj.svg"
                 width="120px"
                 alt="Checkmark image"
               />

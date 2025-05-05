@@ -61,7 +61,7 @@ export default function PaymentSuccessful() {
           mt="40px"
         >
           <Center>
-            <Image src="/images/pay.svg" alt="wallet image icon" />
+            <Image src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446743/pay_y7fzuy.svg" alt="wallet image icon" />
           </Center>
 
           <Box
@@ -111,7 +111,7 @@ export default function PaymentSuccessful() {
           <ModalBody textAlign="center">
             <Flex flexDir="column" alignItems="center">
               <Image
-                src="/images/checkmark.svg"
+                src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446823/checkmark_jyuxnj.svg"
                 width="120px"
                 alt="Checkmark image icon"
               />

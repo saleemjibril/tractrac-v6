@@ -142,7 +142,7 @@ export default function SignupInner() {
     <ChakraWrapper>
       <NoSsrWrapper>
         <Box
-          bgImage="url('images/modal-bg.jpg')"
+          bgImage="url('https://res.cloudinary.com/tractrac-global/image/upload/v1746446532/modal-bg_t1hr7g.jpg')"
           bgRepeat="no-repeat"
           bgPosition="right bottom"
           bgSize="cover"
@@ -158,7 +158,7 @@ export default function SignupInner() {
               <Center mb="30px">
                 <ChakraLink href="/">
                   <Image
-                    src="/logo-white.svg"
+                    src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446665/logo-white_aerm8p.svg"
                     alt="TracTrac Logo"
                     // layout='fill'
                     // objectFit='cover'

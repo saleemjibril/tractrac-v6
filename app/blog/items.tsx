@@ -3,7 +3,7 @@ import { Box, Link, Text, UnorderedList, ListItem } from "@chakra-ui/react";
 export const blogItems = [
   {
     id: "1",
-    image: "/blog/image-1.svg",
+    image: "https://res.cloudinary.com/tractrac-global/image/upload/v1746446607/image-1_ehkmxd.svg",
     title: "Importance agricultural mechanisation",
     excerpt:
       "Daily records show there is a high level of hunger in the country. Eating just one...",
@@ -85,7 +85,7 @@ export const blogItems = [
   },
   {
     id: "2",
-    image: "/blog/image-2.svg",
+    image: "https://res.cloudinary.com/tractrac-global/image/upload/v1746446645/image-2_ee0meu.svg",
     title: "Why farmers need mechanization services",
     excerpt:
       "Smallholder farmers in Nigeria still operate within an obsolete and backward agricultural...",
@@ -172,7 +172,7 @@ export const blogItems = [
   },
   {
     id: "3",
-    image: "/blog/image-3.svg",
+    image: "https://res.cloudinary.com/tractrac-global/image/upload/v1746446644/image-3_ibudvj.svg",
     title:
       "Improving Access to Agricultural Mechanization for Smallholder Farmers using Technology.",
     excerpt:
@@ -302,7 +302,7 @@ export const blogItems = [
   },
   {
     id: "4",
-    image: "/blog/issam.jpg",
+    image: "https://res.cloudinary.com/tractrac-global/image/upload/v1746446569/issam_alexbc.jpg",
     title:
       "Inside Tractrac and Mastercard Foundation's Partnership: Improving Smallholder Farmers’ Access to Small-Scale Agricultural Mechanization (ISSAM)",
     excerpt:

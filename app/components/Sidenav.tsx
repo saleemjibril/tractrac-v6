@@ -157,7 +157,7 @@ const SidebarContent = ({
       <Box pl="18px" pt="24px" as="a" href="/" display="block">
         <Image
           display={{ base: "none", md: "flex" }}
-          src="/logo.svg"
+          src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446664/logo_ofzooy.svg"
           fill="red"
           alt="Logo"
         />
@@ -307,7 +307,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
 
       <Image
         display={{ base: "flex", md: "none" }}
-        src="/logo.svg"
+        src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446664/logo_ofzooy.svg"
         fill="red"
         alt="Logo"
       />

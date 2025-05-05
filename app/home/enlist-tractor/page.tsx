@@ -216,7 +216,7 @@ export default function BecomeAnAgent() {
           <Text fontSize="24px" fontWeight={700} mb="20px">
             Enlist your Tractors
           </Text>
-          <Image src="/banner2.svg" alt="women-in-mechanization image" />
+          <Image src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446674/banner2_mgdjcu.svg" alt="women-in-mechanization image" />
           <Text fontSize="20px" fontWeight={600} mt="10px">
             Enlist Your Tractors
           </Text>
@@ -296,6 +296,9 @@ export default function BecomeAnAgent() {
                 console.log("formData", formData);
 
                 console.log("userToken", userToken);
+                if(!values?.current_location_lat || !values?.current_location_lng) {
+                  toast.error("Please enter a valid location for your tractor")
+                }
 
                 const response = await createTractor(
                   {...values,
@@ -1188,7 +1191,7 @@ export default function BecomeAnAgent() {
                       <Stack textAlign="center">
                         <Center>
                           <Image
-                            src="/cloud-computing.svg"
+                            src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446663/cloud-computing_avygmx.svg"
                             width="60px"
                             alt="cloud computing image icon"
                           />
@@ -1397,7 +1400,7 @@ export default function BecomeAnAgent() {
           <ModalBody textAlign="center">
             <Flex flexDir="column" alignItems="center">
               <Image
-                src="/images/checkmark.svg"
+                src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446823/checkmark_jyuxnj.svg"
                 width="120px"
                 alt="Checkmark image icon"
               />

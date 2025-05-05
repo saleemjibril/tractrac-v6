@@ -40,14 +40,14 @@ export default function ServicesComponent() {
         <Stack ml={"120px"}>
           <Box mb="-100px" ml="-120px">
             <Image
-              src="images/machinery.jpg"
+              src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446531/machinery_hhd88c.jpg"
               alt="Tractor image"
               width={216}
               height={245}
             />
           </Box>
           <Image
-            src="images/tractor.jpg"
+            src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446531/tractor_q5dtvz.jpg"
             alt="Tractor image"
             width={"328px"}
             // height={385}
@@ -55,7 +55,7 @@ export default function ServicesComponent() {
 
           <Box mt="-200px" ml="-90px">
             <Image
-              src="images/years-of-experience.svg"
+              src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446746/years-of-experience_eoc5k9.svg"
               alt="Tractor image"
               width={157}
               height={157}
@@ -85,7 +85,7 @@ export default function ServicesComponent() {
           <Flex gap="20px" mt="20px" flexDir={{ base: "column", md: "row" }} flexWrap={"wrap"}>
             <Flex direction="row" alignItems="center" gap={"14px"}>
               <Image
-                src="images/user-icon-avatar.svg"
+                src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446743/user-icon-avatar_itnjf5.svg"
                 alt=""
                 width={{ base: "30px", md: "50px" }}
               />
@@ -95,7 +95,7 @@ export default function ServicesComponent() {
             </Flex>
             <Stack direction="row" alignItems="center" gap={"14px"}>
               <Image
-                src="images/tractor-icon-avatar.svg"
+                src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446742/tractor-icon-avatar_opoeff.svg"
                 alt=""
                 width={{ base: "30px", md: "50px" }}
               />
@@ -108,7 +108,7 @@ export default function ServicesComponent() {
           <Flex gap="20px" mt="32px" flexWrap={"wrap"}>
             <Image
               display={{ base: "none", md: "flex" }}
-              src="images/machinery-2.jpg"
+              src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446531/machinery-2_ys9jlb.jpg"
               alt="Farm machinery"
               width={"200px"}
               // height={149}
@@ -198,7 +198,7 @@ export default function ServicesComponent() {
               </Text>
             </Box>
             <Box bgColor="#FFA035" p="20px" as="a" href="/home/agent">
-              <Image src="icons/agent.svg" alt=""></Image>
+              <Image src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446758/agent_coin3x.svg" alt=""></Image>
               <Text fontSize="16px" mt="18px" fontWeight={600}>
                 Become an Agent
               </Text>

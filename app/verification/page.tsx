@@ -106,7 +106,7 @@ export default function Verification() {
   return (
     <ChakraWrapper>
       <Box
-        bgImage="url('images/modal-bg.jpg')"
+        bgImage="url('https://res.cloudinary.com/tractrac-global/image/upload/v1746446532/modal-bg_t1hr7g.jpg')"
         bgRepeat="no-repeat"
         bgPosition="right bottom"
         bgSize="cover"

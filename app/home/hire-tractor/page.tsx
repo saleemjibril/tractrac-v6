@@ -289,7 +289,7 @@ export default function HireTractor() {
                 addresses={tractors.map((item: any) => item?.current_address)}
               />
             )}
-            {/* <Image src="/images/map.svg" alt="map image" /> */}
+            {/* <Image src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446725/map_punpe8.svg" alt="map image" /> */}
           </Stack>
           <Box mt="40px">
             <Stack direction="row" gap="20px">
@@ -650,7 +650,7 @@ function TractorCard({
         <Image
           borderTopRadius="4px"
           src={
-            image?.startsWith("https") ? image : "/images/man-with-tractor.svg"
+            image?.startsWith("https") ? image : "https://res.cloudinary.com/tractrac-global/image/upload/v1746446723/man-with-tractor_dxf5ly.svg"
           }
           alt="Tractor image"
           height="100%"
@@ -1230,6 +1230,7 @@ function HireTractorForm({ id }: { id: string }) {
                     </FormLabel>
                     <Select
                       bgColor="#3232320D"
+                      placeholder="Local Government Area"
                       fontSize="12px"
                       color="#323232"
                       _focusVisible={{
@@ -1660,7 +1661,7 @@ function HireTractorForm({ id }: { id: string }) {
           <ModalBody textAlign="center">
             <Flex flexDir="column" alignItems="center">
               <Image
-                src="/images/checkmark.svg"
+                src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446823/checkmark_jyuxnj.svg"
                 width="120px"
                 alt="Checkmark image icon"
               />
@@ -1702,7 +1703,7 @@ function EmptyDataPlaceholder({ isSearch }: { isSearch: boolean }) {
       <Box bgColor="white" width="100%" p="60px" textAlign="center" mt="20px">
         {/* <Box bgColor="white" width="400px" p="60px" textAlign="center" mt="40px"> */}
         <Center>
-          <Image src="/images/empty-state.svg" alt="Empty state image icon" />
+          <Image src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446712/empty-state_tytpqr.svg" alt="Empty state image icon" />
         </Center>
         <Text color="#323232" fontWeight="700" fontSize="20px" mt="57px">
           {isSearch ? "Search result is empty" : " Tractors list is empty"}

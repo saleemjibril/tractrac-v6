@@ -17,7 +17,7 @@ export default function OutPartnersComponent() {
         <Text fontSize="18px" mt="4px" mb="36px">
           Transforming Agricultural Mechanisation, Hand in Hand with Our Partners
         </Text>
-        <Image src="images/partners-logo.svg" alt="" />
+        <Image src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446734/partners-logo_v5iz3f.svg" alt="" />
       </Flex>
       </ChakraWrapper>
     );

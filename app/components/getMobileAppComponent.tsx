@@ -25,7 +25,7 @@ export default function GetMobileAppComponent() {
           color="white"
           pt="50px"
         >
-          <Image src="images/hand.svg" alt="" width="300px" />
+          <Image src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446716/hand_cugsxq.svg" alt="" width="300px" />
           <Stack>
             <Text
               fontSize={{ base: "24px", md: "50px" }}
@@ -40,13 +40,13 @@ export default function GetMobileAppComponent() {
             <Stack direction="row" gap="16px" justify="center">
               <Link href="https://play.google.com/store/apps/details?id=com.tractrac.trac_trac&hl=en_GB">
                 <Image
-                  src="images/google-play.svg"
+                  src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446714/google-play_ft9sq5.svg"
                   alt=""
                   width={{ base: "150px", md: "240px" }}
                 />
               </Link>
               <Image
-                src="images/app-store.svg"
+                src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446750/app-store_iv64xk.svg"
                 alt=""
                 width={{ base: "150px", md: "240px" }}
               />

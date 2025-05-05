@@ -57,7 +57,7 @@ export default function Issam() {
           <Text fontSize="24px" fontWeight={700} mb="4px">
             ISSAM
           </Text>
-          <Image src="/images/agent.svg" alt="Agent image icon" />
+          <Image src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446758/agent_coin3x.svg" alt="Agent image icon" />
 
           <Text mt="24px" fontSize="14px">
             To access the features and functionality, please enter your unique
@@ -203,7 +203,7 @@ export default function Issam() {
         size="xs"
       >
         <ModalOverlay
-        // bgImage="url('images/modal-bg.jpg')"
+        // bgImage="url('https://res.cloudinary.com/tractrac-global/image/upload/v1746446532/modal-bg_t1hr7g.jpg')"
         // bgRepeat="no-repeat"
         // bgPosition="right bottom"
         // bgSize="cover"

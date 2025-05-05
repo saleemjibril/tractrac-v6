@@ -75,7 +75,7 @@ export default function Home() {
   return (
     <ChakraWrapper>
     <Box
-      bgImage="url('/images/modal-bg.jpg')"
+      bgImage="url('https://res.cloudinary.com/tractrac-global/image/upload/v1746446532/modal-bg_t1hr7g.jpg')"
       bgRepeat="no-repeat"
       bgPosition="right bottom"
       bgSize="cover"
@@ -91,7 +91,7 @@ export default function Home() {
           <Center mb="30px">
             <Link href="/">
               <Image
-                src="/logo-white.svg"
+                src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446665/logo-white_aerm8p.svg"
                 alt="TracTrac Logo"
                 width={{ base: "150px", lg: "210px" }}
               />

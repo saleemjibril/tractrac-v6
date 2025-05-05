@@ -49,7 +49,7 @@ export default function ContactUsComponent() {
         id="contact"
         width={"100%"}
         // height={"535px"}
-        bgImage="url('images/contact-us.jpg')"
+        bgImage="url('https://res.cloudinary.com/tractrac-global/image/upload/v1746446536/contact-us_srkrsr.jpg')"
         bgPosition="center"
         bgSize="cover"
         bgAttachment="fixed"

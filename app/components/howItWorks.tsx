@@ -39,7 +39,7 @@ function TabContent({
       position="relative"
     >
       <Flex
-        bgImage="url('images/tab-bg.svg')"
+        bgImage="url('https://res.cloudinary.com/tractrac-global/image/upload/v1746446738/tab-bg_rm8tl9.svg')"
         bgPosition="60% center"
         bgRepeat="no-repeat"
         height={{ base: "100%", lg: "450px" }}

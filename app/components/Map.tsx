@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import loader from "../googleMapsLoader";
 
-import * as markerI from "./tractor-icon.svg";
+import * as markerI from ".https://res.cloudinary.com/tractrac-global/image/upload/v1746446667/tractor-icon_nwbaf5.svg";
 
 const Map = ({ addresses }: { addresses: string[] }) => {
   const [map, setMap] = useState<google.maps.Map | null>(null);
@@ -30,11 +30,11 @@ const Map = ({ addresses }: { addresses: string[] }) => {
               map: newMap,
               icon: {
                 // url: google.maps.Circle
-                url: "/tractor-icon.svg",
+                url: "https://res.cloudinary.com/tractrac-global/image/upload/v1746446667/tractor-icon_nwbaf5.svg",
                 // fillColor: "#EB00FF",
                 // scale: 7,
                 // url: markerI.default,
-                // url: "./tractor-icon.ico",
+                // url: "https://res.cloudinary.com/tractrac-global/image/upload/v1746446552/tractor-icon_i6psd0.ico",
               },
             });
             setMap(newMap);
