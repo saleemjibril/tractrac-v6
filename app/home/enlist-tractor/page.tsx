@@ -255,6 +255,7 @@ export default function BecomeAnAgent() {
               state: "",
               lga: "",
               tractor_image_file: "",
+              group_id: ""
             }}
             onSubmit={async (values: any, { resetForm }) => {
               setError(null);
@@ -293,6 +294,7 @@ export default function BecomeAnAgent() {
                 formData.append("tracker", values?.tracker);
                 formData.append("insurance_expiry", values?.insurance_expiry);
                 formData.append("image", values?.image);
+                formData.append("group_id", values?.group_id);
                 console.log("formData", formData);
 
                 console.log("userToken", userToken);
@@ -1163,6 +1165,45 @@ export default function BecomeAnAgent() {
                       </FormControl>
                     )}
                   </Field>
+                </Flex>
+                <Flex  direction={{ base: "column", md: "row" }}
+  columnGap={{ base: "0", md: "30px" }}
+  rowGap={{ base: "20px", md: "0" }}
+  mt="20px"
+  width="100%">
+                  <Field name="group_id">
+                    {({ field, form }: { [x: string]: any }) => (
+                      <FormControl
+                        isInvalid={
+                          form.errors.group_id &&
+                          form.touched.group_id
+                        }
+                        
+                      >
+                        <FormLabel fontSize="12px" color="#323232">
+                          Group ID
+                        </FormLabel>
+
+                        <Input
+                          {...field}
+                          bgColor="#3232320D"
+                          fontSize="12px"
+                          color="#323232"
+                        />
+
+                        {/* <Input
+                          {...field}
+                          bgColor="#3232320D"
+                          fontSize="12px"
+                          color="#323232"
+                        /> */}
+                        <FormErrorMessage>
+                          {form.errors.group_id}
+                        </FormErrorMessage>
+                      </FormControl>
+                    )}
+                  </Field>
+
                 </Flex>
 
                 {/* <FileUploader
