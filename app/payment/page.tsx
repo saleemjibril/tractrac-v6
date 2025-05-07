@@ -81,7 +81,7 @@ export default function Payments() {
               />
             </Box>
           </Box>
-        ) : error ? (
+        ) : error || payments?.length < 1 ? (
           <EmptyPaymentPlaceholder />
         ) : (
           <Box mx="20px" my="12px" py="20px">
