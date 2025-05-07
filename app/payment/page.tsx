@@ -138,6 +138,7 @@ export default function Payments() {
               <Tbody>
                 {payments?.map((payment: any) => (
                   <Tr key={payment?.id}>
+                    <Td>{payment?.id}</Td>
                     <Td>{payment?.hire_tractor_id}</Td>
                     <Td>{payment?.invoice_number}</Td>
 
@@ -145,19 +146,19 @@ export default function Payments() {
                     <Td>{payment?.paystack_reference}</Td>
                     {/* <Td>{parseFloat(payment?.amount ?? 0).toLocaleString()}</Td> */}
                     <Td>{payment?.payment_type}</Td>
-                    <Td>{moment(payment?.created_at).format("Do MMM YYYY")}</Td>
+                    <Td>{moment(payment?.created_at).format('MMMM D, YYYY [at] h:mm:ss A')}</Td>
                     <Td>
-                      {statusTypes[payment?.status]?.color && (
+                      {statusTypes[payment?.payment_status]?.color && (
                         <Box
                           mt="10px"
-                          bgColor={statusTypes[payment?.status].color}
+                          bgColor={statusTypes[payment?.payment_status].color}
                           py="4px"
                           textAlign="center"
                           borderRadius="4px"
                           w="80px"
                         >
                           <Text fontSize="14px" color="white">
-                            {statusTypes[payment?.status].title}
+                            {statusTypes[payment?.payment_status].title}
                           </Text>
                         </Box>
                       )}
