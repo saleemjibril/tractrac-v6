@@ -755,7 +755,7 @@ function HireTractorForm({ id }: { id: string }) {
   const [firstDate, setFirstDate] = useState(null);
   const [lastDate, setLastDate] = useState(null);
   const [lgas, setLgas] = useState<string[]>([]);
-  const [unit, setUnit] = useState<string | null>("acre");
+  const [unit, setUnit] = useState<string | null>("square_meter");
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
   const [bookedDates, setBookedDates] = useState([]);
@@ -1841,6 +1841,10 @@ const implementTypes = [
 
 const landMeasurementUnits = [
   {
+    label: "Square Meter",
+    value: "square_meter",
+  },
+  {
     label: "Acre",
     value: "acre",
   },
@@ -1848,10 +1852,7 @@ const landMeasurementUnits = [
     label: "Hectare",
     value: "hectare",
   },
-  {
-    label: "Square Meter",
-    value: "square_meter",
-  },
+  
   {
     label: "Square Foot",
     value: "square_foot",
