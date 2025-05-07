@@ -102,3 +102,24 @@ export const initialisePayment = async (
 
   return res;
 };
+
+export const getUserPayments = async (
+  token: string
+) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+
+  
+
+  const res = await axios.get(
+    `${process.env.NEXT_PUBLIC_URL}/payments/user`,
+  
+    config
+  );
+
+  return res;
+};
