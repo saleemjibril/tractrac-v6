@@ -80,7 +80,7 @@ export const getBookedDates = async (tractorId: string, token: string) => {
   };
 
   const res = await axios.get(
-    `${process.env.NEXT_PUBLIC_URL}/hire_tractor/booked-dates/faae57e6-8c31-4a78-8faa-4cdb8a1f47e4`,
+    `${process.env.NEXT_PUBLIC_URL}/hire_tractor/booked-dates/${tractorId}`,
     config
   );
 
