@@ -25,6 +25,7 @@ import LoginRequiredModal from "../components/LoginRequiredModal";
 import { toast } from "react-toastify";
 import Link from "next/link";
 import { getUserStats } from "../apis/user";
+import PersonalOverview from "../components/PersonalOverview";
 
 interface ItemProps {
   name: string;
@@ -267,56 +268,7 @@ console.log("profileInfo", profileInfo);
           );
         })}
       </SimpleGrid>
-      <Box
-        bgColor="#FFFFFF"
-        mt="50px"
-        mr={{ base: "0px", lg: "120px" }}
-        px={{base: "24px", lg: "66px"}}
-        py="43px"
-        borderRadius="6px"
-      >
-        <Text color="#333333" fontWeight={700} fontSize="28px">
-          Engagement Overview
-        </Text>
-
-        <SimpleGrid
-          mt="20px"
-          columns={{ base: 1, lg: 3 }}
-          spacingX={{ base: "24px" }}
-          spacingY="20px"
-        >
-          <StatisticsCard
-            title="Total Tractors Enlisted"
-            amount={result?.data?.total_tractors_enlisted || 0}
-          />
-
-          <StatisticsCard
-            title="Total Tractors Hired"
-            amount={result?.data?.total_hired_tractors || 0}
-          />
-          
-
-          <StatisticsCard
-            title="Total Tractors In-Use"
-            amount={result?.data?.total_hired_tractors || 0}
-          />
-          
-          <StatisticsCard
-            title="Total Agents Registered"
-            amount={result?.data?.total_agents || 0}
-          />
-
-          <StatisticsCard
-            title="Total Tractor Vendors Registered"
-            amount={result?.data?.total_agents || 0}
-          />
-          
-          <StatisticsCard
-            title="Total Operators/Mechanic Registered"
-            amount={result?.data?.total_demand_fulfiled || 0}
-          />
-        </SimpleGrid>
-      </Box>
+      <PersonalOverview />
       <LoginRequiredModal title="" isOpen={modalState} setModalState={setModalState} />
     </SidebarWithHeader>
   );

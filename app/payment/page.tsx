@@ -120,18 +120,20 @@ export default function Payments() {
             border="1px"
             borderColor="#32323220"
             borderRadius="12px"
+            height="500px"
+            bgColor="white"
           >
             <Table variant="simple" bgColor="white">
-              <Thead color="#323232" bgColor="#E2E8F0">
+              <Thead bgColor="#FA9411">
                 <Tr>
-                  <Th>Payment ID</Th>
-                  <Th>Tractor ID</Th>
-                  <Th>Invoice number</Th>
-                  <Th>Amount Paid (₦)</Th>
-                  <Th>Reference</Th>
-                  <Th>Payment type</Th>
-                  <Th>Date</Th>
-                  <Th>Payment status</Th>
+                  <Th color="white">Payment ID</Th>
+                  <Th color="white">Tractor ID</Th>
+                  <Th color="white">Invoice number</Th>
+                  <Th color="white">Amount Paid (₦)</Th>
+                  <Th color="white">Reference</Th>
+                  <Th color="white">Payment type</Th>
+                  <Th color="white">Date</Th>
+                  <Th color="white">Payment status</Th>
                   {/* <Th isNumeric>multiply by</Th> */}
                 </Tr>
               </Thead>
