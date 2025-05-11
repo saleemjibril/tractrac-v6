@@ -54,8 +54,8 @@ export default function BlogInner({ posts }: BlogInnerProps) {
         <Box 
         pr="20px"
         pl="20px"
-        width={"75%"}
-        maxWidth={"1440px"}
+        width={"100%"}
+        maxWidth={"1200px"}
         mx="auto" mt="20px" mb="80px">
           <Text
             fontWeight={800}
@@ -67,7 +67,7 @@ export default function BlogInner({ posts }: BlogInnerProps) {
             Insights on Agricultural Mechanization ...
           </Text>
           <SimpleGrid
-            columns={{ base: 2, md: 3 }}
+            columns={{ base: 1, md: 2, lg: 3 }}
             spacingX="30px"
             spacingY="70px"
           >
