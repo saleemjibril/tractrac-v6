@@ -1,61 +1,59 @@
-// app/blog/[slug]/page.tsx
 import BlogPostDetail from '@/app/components/singleBlogPostInner';
 import { graphQLClient } from '../../utils/graphql';
-import { Metadata } from 'next';
-
-// Define types for WordPress data
-interface Post {
-  id: string;
-  title: string;
-  content: string;
-  slug: string;
-  date: string;
-  image?: string;
-  imageAlt?: string;
-}
-
-interface MediaItem {
-  id: string;
-  title: string;
-  altText: string;
-  sourceUrl: string;
-}
+import { JSDOM } from 'jsdom';
 
 interface PostResponse {
-  post: Post;
-}
-
-interface MediaResponse {
-  mediaItems: {
-    edges: {
-      node: MediaItem;
-    }[];
+  post: {
+    id: string;
+    title: string;
+    content: string;
+    slug: string;
+    date: string;
+    modified: string;
+    author: {
+      node: {
+        name: string;
+        avatar: {
+          url: string;
+        };
+        description: string;
+        url: string;
+      };
+    };
+    featuredImage: {
+      node: {
+        sourceUrl: string;
+        altText: string;
+      };
+    };
+    toc?: { id: string; content: string }[]; // Add optional TOC field
   };
 }
 
-// Function to fetch a single post by slug with matching media
-async function getSinglePostBySlug(slug: string) {
+const FetchBlogSlug = async (slug: string) => {
   const postQuery = `
-    query SinglePost($slug: ID!) {
+    query PostBySlug($slug: ID!) {
       post(id: $slug, idType: SLUG) {
         id
         title
         content
         slug
         date
-      }
-    }
-  `;
-  
-  const mediaQuery = `
-    query AllMedia {
-      mediaItems(first: 100) {
-        edges {
+        modified
+        author {
           node {
-            id
-            title
-            altText
+            name
+            avatar {
+              url
+            }
+            description
+            url
+          }
+        }
+        featuredImage {
+          node {
             sourceUrl
+            altText
           }
         }
       }
@@ -63,97 +61,45 @@ async function getSinglePostBySlug(slug: string) {
   `;
 
   try {
-    // Fetch post and media items in parallel
-    const [postData, mediaData] = await Promise.all([
-      graphQLClient.request<PostResponse>(postQuery, { slug }),
-      graphQLClient.request<MediaResponse>(mediaQuery)
-    ]);
+    const variables = { slug };
+    const data = await graphQLClient.request<PostResponse>(postQuery, variables);
+    const data_content = data.post.content;
 
-    const post = postData.post;
-    const mediaItems = mediaData.mediaItems.edges.map(edge => edge.node);
+    // Parse the HTML content
+    const dom = new JSDOM(data_content);
+    const document = dom.window.document;
 
-    // Find matching media for the post
-    const matchingMedia = mediaItems.find(media => {
-      const postTitle = post.title.toLowerCase();
-      const mediaTitle = media.title.toLowerCase();
-      
-      return (
-        mediaTitle.includes(postTitle) || 
-        postTitle.includes(mediaTitle) ||
-        media.title.includes(post.id)
-      );
+    // Find all elements with data-content="true"
+    const elements = document.querySelectorAll('[data-content="true"]');
+    //console.log("Elements with data-content=true:", elements);
+
+    // Extract the content or IDs of the elements
+    const dataContentElements = Array.from(elements).map((el) => {
+      const element = el as HTMLElement;
+      return {
+        id: element.id,
+        content: element.textContent || '', // Provide a fallback for null content
+      };
     });
+    //console.log("Extracted elements:", dataContentElements);
 
-    let formattedContent = post.content.replace(/\n+(?=<p>)/g, '<br>');
-
-    formattedContent = formattedContent.replace(
-      /<a(.*?)>/g,
-      '<a style="color: #FA9411; text-decoration: underline; text-decoration-color: #FA9411" $1>'
-    );
-
-    // Return the post with the matched media
+    // Add the extracted elements to the post object
     return {
-      ...post,
-      content: formattedContent || post.content,
-      image: matchingMedia?.sourceUrl || '/placeholder-image.jpg',
-      imageAlt: matchingMedia?.altText || post.title
+      ...data.post,
+      toc: dataContentElements, // Add TOC to the post object
     };
   } catch (error) {
-    console.error('Error fetching post with media:', error);
+    //console.error('Error fetching post:', error);
     return null;
   }
-}
-
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const post = await getSinglePostBySlug(params.slug);
-  
-  if (!post) {
-    return {
-      title: "Blog Post Not Found",
-      description: "The requested blog post could not be found."
-    };
-  }
-
-  const cleanDescription = post.content
-    .replace(/<[^>]*>/g, '')
-    .substring(0, 200) + '...';
-  
-  return {
-    title: post.title,
-    description: cleanDescription,
-    openGraph: {
-      title: post.title,
-      description: cleanDescription,
-      type: 'article',
-      url: `https://yourdomain.com/blog/${post.slug}`,
-      images: [
-        {
-          url: post.image || 'https://yourdomain.com/default-image.jpg',
-          width: 1200,
-          height: 630,
-          alt: post.imageAlt || post.title,
-        },
-      ],
-      siteName: 'Your Site Name',
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: post.title,
-      description: cleanDescription,
-      images: [post.image || 'https://yourdomain.com/default-image.jpg'],
-      creator: '@yourtwitter',
-    },
-  };
-}
+};
 
 export default async function BlogPostPage({ params }: { params: { slug: string } }) {
-  const post = await getSinglePostBySlug(params.slug);
-  
+  const post = await FetchBlogSlug(params.slug);
+
   if (!post) {
     return <div>Post not found</div>;
   }
-
-  console.log(post);
 
   return <BlogPostDetail post={post} />;
 }

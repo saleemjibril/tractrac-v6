@@ -72,3 +72,75 @@
     100% { transform: rotate(360deg); }
   }
   
+
+
+.wp-block-quote {
+  border-left: 4px solid #fa9411;
+  padding-left: 1rem;
+  font-style: italic;
+  color: #555;
+  background-color: #f4f4f4;
+}
+.wp-block-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+.size-large{
+  width: 100%;
+  max-width: 1000px;
+  height: auto;
+}
+
+h1.wp-block-heading {
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 57.65px;
+}
+
+h2.wp-block-heading {
+  font-size: 28.15px;
+  line-height: 33.81px;
+}
+
+h3.wp-block-heading {
+  font-size: 20.2px;
+  font-weight: 600;
+  line-height: 20.2px;
+}
+
+h4.wp-block-heading {
+  font-size: 1.5rem;
+}
+
+h5.wp-block-heading {
+  font-size: 1.25rem;
+}
+
+h6.wp-block-heading {
+  font-size: 1rem;
+}
+
+.wp-block-heading strong {
+  font-weight: bolder;
+}
+div.css-zlregu p{
+  margin-block-start: 0;
+  margin-block-end: .9rem;
+}
+div.css-zlregu figure{
+  display: block;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  /* margin-inline-start: 40px;
+  margin-inline-end: 40px; */
+  unicode-bidi: isolate;
+}
+div.css-zlregu a{
+  color: #fa9411;
+  text-decoration: underline;
+  text-decoration-color: #fa9411;
+}
+div.css-zlregu a:hover{
+  opacity: 0.5;
+}
