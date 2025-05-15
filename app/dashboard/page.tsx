@@ -24,6 +24,8 @@ import { useGetDashboardStatsQuery } from "@/redux/services/userApi";
 import LoginRequiredModal from "../components/LoginRequiredModal";
 import { toast } from "react-toastify";
 import Link from "next/link";
+import { getUserStats } from "../apis/user";
+import PersonalOverview from "../components/PersonalOverview";
 
 interface ItemProps {
   name: string;
@@ -119,7 +121,8 @@ export default function Dashboard() {
   const [modalState, setModalState] = useState<boolean>(false);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
-  const { profileInfo } = useAppSelector((state) => state.auth);
+  const { profileInfo, userToken } = useAppSelector((state) => state.auth);
+console.log("profileInfo", profileInfo);
 
   const {
     data: result,
@@ -128,6 +131,25 @@ export default function Dashboard() {
   } = useGetDashboardStatsQuery({});
 
   console.log(result?.data);
+
+  const handleGetUserStats = async () => {
+
+    if (typeof userToken === 'string') {
+      const response = await getUserStats(profileInfo?.id, userToken);
+
+      console.log("getUserStats", response);
+    } else {
+      // Handle the case when userToken is not a string
+      console.error('User token is not a string');
+      // Maybe redirect to login or show an error
+    }
+  
+    
+  }
+
+  useEffect(() => {
+    handleGetUserStats();
+  }, [])
 
   /**
    * 
@@ -143,11 +165,11 @@ export default function Dashboard() {
     <SidebarWithHeader>
       {mounted && (
         <Flex alignItems="center" py="8px" mb="10px" columnGap="8px">
-          <Image src="/sun.svg" width="30px" alt="Sun image icon" />
+          <Image src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446665/sun_rahz5w.svg" width="30px" alt="Sun image icon" />
           <Text fontSize="24px" color="#929292" fontWeight={400}>
             Good day,{" "}
             <Box as="span" fontWeight={600} color="#929292">
-              {profileInfo?.fname || "Guest"}
+              {profileInfo?.name?.split(" ")[0] || "Guest"}
             </Box>
           </Text>
         </Flex>
@@ -246,56 +268,7 @@ export default function Dashboard() {
           );
         })}
       </SimpleGrid>
-      <Box
-        bgColor="#FFFFFF"
-        mt="50px"
-        mr={{ base: "0px", lg: "120px" }}
-        px={{base: "24px", lg: "66px"}}
-        py="43px"
-        borderRadius="6px"
-      >
-        <Text color="#333333" fontWeight={700} fontSize="28px">
-          Engagement Overview
-        </Text>
-
-        <SimpleGrid
-          mt="20px"
-          columns={{ base: 1, lg: 3 }}
-          spacingX={{ base: "24px" }}
-          spacingY="20px"
-        >
-          <StatisticsCard
-            title="Total Tractors Enlisted"
-            amount={result?.data?.total_tractors_enlisted || 0}
-          />
-
-          <StatisticsCard
-            title="Total Tractors Hired"
-            amount={result?.data?.total_hired_tractors || 0}
-          />
-          
-
-          <StatisticsCard
-            title="Total Tractors In-Use"
-            amount={result?.data?.total_hired_tractors || 0}
-          />
-          
-          <StatisticsCard
-            title="Total Agents Registered"
-            amount={result?.data?.total_agents || 0}
-          />
-
-          <StatisticsCard
-            title="Total Tractor Vendors Registered"
-            amount={result?.data?.total_agents || 0}
-          />
-          
-          <StatisticsCard
-            title="Total Operators/Mechanic Registered"
-            amount={result?.data?.total_demand_fulfiled || 0}
-          />
-        </SimpleGrid>
-      </Box>
+      <PersonalOverview />
       <LoginRequiredModal title="" isOpen={modalState} setModalState={setModalState} />
     </SidebarWithHeader>
   );

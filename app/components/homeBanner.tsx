@@ -1,40 +1,93 @@
 "use client";
 import { useRouter } from "next/navigation";
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
 import {
-    Box,
-    Text,
-    Button,
-  } from "@chakra-ui/react";
+  Box,
+  Text,
+  Button,
+} from "@chakra-ui/react";
 import { ChakraWrapper } from "../chakraUIWrapper";
 
 export default function HomeBanner() {
-    const router = useRouter();
+  const router = useRouter();
   
-    return (
-      <ChakraWrapper>
+  const bannerRef = useRef(null);
+  const brandTextRef = useRef(null);
+  const headingRef = useRef(null);
+  const subTextRef = useRef(null);
+  const buttonRef = useRef(null);
+  
+  useEffect(() => {
+    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+    
+    gsap.set([brandTextRef.current, headingRef.current, subTextRef.current, buttonRef.current], { 
+      opacity: 0,
+      y: 20
+    });
+    
+    gsap.fromTo(bannerRef.current, 
+      { scale: 1.1 }, 
+      { scale: 1, duration: 1.5, ease: "power2.out" }
+    );
+    
+    tl.to(brandTextRef.current, { opacity: 1, y: 0, duration: 0.8 })
+      .to(headingRef.current, { opacity: 1, y: 0, duration: 0.8 }, "-=0.4")
+      .to(subTextRef.current, { opacity: 1, y: 0, duration: 0.8 }, "-=0.4")
+      .to(buttonRef.current, { 
+        opacity: 1, 
+        y: 0, 
+        duration: 0.8,
+        onComplete: () => {
+          gsap.to(buttonRef.current, {
+            scale: 1.05,
+            duration: 0.3,
+            paused: true,
+            repeat: 1,
+            yoyo: true
+          }).play();
+        }
+      }, "-=0.4");
+      
+    // Cleanup function
+    return () => {
+      tl.kill();
+    };
+  }, []);
+
+  return (
+    <ChakraWrapper>
       <Box
+        ref={bannerRef}
         position={"relative"}
         height={{ base: "350px", md: "535px" }}
-        bgImage="linear-gradient(to left, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('hero_banner.jpg')"
+        bgImage="linear-gradient(to left, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://res.cloudinary.com/tractrac-global/image/upload/v1746446556/hero_banner_jh5hui.jpg')"
         bgPosition="center"
         bgSize="cover"
         bgAttachment="fixed"
         bgRepeat="no-repeat"
         width={"100%"}
-        >
+      >
         <Box
           pt={{ base: "20px", md: "86px" }}
           color={"white"}
           width={"100%"}
-        maxWidth="1400px"
-        margin={"0 auto"}
-        pr="20px"
+          maxWidth="1400px"
+          margin={"0 auto"}
+          pr="20px"
           pl="20px"
         >
-          <Text fontFamily={"cursive"} fontSize={"28px"} color={"#FA9411"}>
+          <Text 
+            ref={brandTextRef}
+            fontFamily={"cursive"} 
+            fontSize={"28px"} 
+            color={"#FA9411"} 
+            display={{ base: "none", sm: "initial" }}
+          >
             Tractrac MSL
           </Text>
           <Text
+            ref={headingRef}
             fontSize={{ base: "26px", md: "48px" }}
             lineHeight={{ base: "28px", md: "57.65px" }}
             mt="20px"
@@ -42,14 +95,23 @@ export default function HomeBanner() {
             Facilitating access to <br /> mechanization services <br /> for all
             farmers in Africa.
           </Text>
-          <Text mt="20px" mb="30px">
+          <Text 
+            ref={subTextRef}
+            mt="20px" 
+            mb="30px"
+          >
             Driving up private sector investments in Agricultural Mechanization
           </Text>
           <Button
+            ref={buttonRef}
             bg="#FA9411"
             width={"190px"}
             height={"40px"}
-            _hover={{ opacity: 0.8 }}
+            _hover={{ 
+              opacity: 0.8,
+              transform: "scale(1.05)",
+              transition: "transform 0.3s ease"
+            }}
             color="#FFFFFF"
             onClick={() => router.push("/signup")}
           >
@@ -57,6 +119,6 @@ export default function HomeBanner() {
           </Button>
         </Box>
       </Box>
-      </ChakraWrapper>
-    );
-  }
+    </ChakraWrapper>
+  );
+}

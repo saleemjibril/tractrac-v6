@@ -26,6 +26,7 @@ import { createElement, useEffect, useState } from "react";
 import PersonalOverview from "@/app/components/PersonalOverview";
 import { useGetEnlistedTractorsQuery } from "@/redux/services/tractorApi";
 import { useAppSelector } from "@/redux/hooks";
+import { getMyTractors, getTractors } from "@/app/apis/tractor";
 
 interface ITractorCard {
   name: string;
@@ -43,19 +44,46 @@ const statusTypes: Record<string, { title: string; color: string }> = {
 };
 
 export default function EnlistedTractors() {
-  const { profileInfo } = useAppSelector((state) => state.auth);
+  const { profileInfo, userToken } = useAppSelector((state) => state.auth);
+  const [tractors, setTractors] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const {
     data: result,
-    error,
+    // error,
     // isFetching,
-    isLoading,
+    // isLoading,
     // } = useGetEnlistedTractorsQuery("3");
   } = useGetEnlistedTractorsQuery(profileInfo?.id);
 
   console.log(error, result);
 
   // const skeletons = [1,2,3,4,5,6];
+
+    const handleGetTractors = async () => {
+      setLoading(true)
+      try {
+        if (typeof userToken === 'string') {
+          const response = await getMyTractors(userToken);
+          setTractors(response?.data);
+        console.log("getTractors", response?.data);
+        setLoading(false)
+        } else {
+          console.error('User token is not a string');
+        }
+        
+      } catch (err) {
+            const error = err as any;
+            setError(error?.response?.data?.detail || "An unexpected error occurred")
+            console.error("Error fetching tractor", error);
+            setLoading(false)
+      }
+    };
+  
+    useEffect(() => {
+      handleGetTractors();
+    }, []);
 
   return (
     <SidebarWithHeader isAuth={true}>
@@ -109,7 +137,7 @@ export default function EnlistedTractors() {
           </Button>
         </Flex>
 
-        {isLoading ? (
+        {loading ? (
           <SimpleGrid
             columns={{ base: 2, md: 4 }}
             spacingX="40px"
@@ -149,14 +177,14 @@ export default function EnlistedTractors() {
             mt="10px"
             // spacing={{ base: "12px", md: "40px" }}
           >
-            {result?.data.map((tractor: any) => (
+            {tractors?.map((tractor: any) => (
               <TractorCard
                 key={tractor?.id}
-                name={`${tractor?.brand} ${tractor?.model}`}
+                name={`${tractor?.name}`}
                 capacity=" 105 to 135 HP"
                 type={tractor?.tractor_type}
                 location={tractor?.address}
-                image={tractor?.image}
+                image={tractor?.tractor_image}
                 status={tractor?.status}
               />
             ))}
@@ -182,7 +210,7 @@ export default function EnlistedTractors() {
               </Tr>
             </Thead>
             <Tbody>
-              {result?.data.map((tractor: any) => (
+              {tractors.map((tractor: any) => (
                 <Tr key={tractor?.id}>
                   <Td>{`${tractor?.brand} ${tractor?.model}`}</Td>
                   <Td>{tractor?.hours_used ?? "Nil"}</Td>
@@ -240,9 +268,9 @@ function TractorCard({ name, type, location, status, image }: ITractorCard) {
       <Box h="200px">
         <Image
           borderTopRadius="4px"
-          // src="/images/man-with-tractor.svg"
+          // src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446723/man-with-tractor_dxf5ly.svg"
           src={
-            image?.startsWith("https") ? image : "/images/man-with-tractor.svg"
+            image?.startsWith("https") ? image : "https://res.cloudinary.com/tractrac-global/image/upload/v1746446723/man-with-tractor_dxf5ly.svg"
           }
           alt="Man with a tractor image"
           height="100%"
@@ -315,7 +343,7 @@ function EmptyTractorsPlaceholder() {
       <Box bgColor="white" width="100%" p="60px" textAlign="center" mt="20px">
         {/* <Box bgColor="white" width="400px" p="60px" textAlign="center" mt="40px"> */}
         <Center>
-          <Image src="/images/empty-state.svg" alt="Empty state image icon" />
+          <Image src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446712/empty-state_tytpqr.svg" alt="Empty state image icon" />
         </Center>
         <Text color="#323232" fontWeight="700" fontSize="20px" mt="57px">
           Your list is empty

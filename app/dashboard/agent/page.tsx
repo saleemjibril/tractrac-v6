@@ -211,7 +211,7 @@ export default function Agent() {
                           {parseFloat(farmer?.farm_size ?? 0).toLocaleString()}
                         </Td>
                         <Td>{farmer?.location}</Td>
-                        <Td>{profileInfo?.fname ?? "Nil"}</Td>
+                        <Td>{profileInfo?.name?.split(" ")[0] ?? "Nil"}</Td>
                       </Tr>
                     ))}
                   </Tbody>
@@ -464,7 +464,7 @@ function EmptyTractorsPlaceholder() {
       <Box bgColor="white" width="100%" p="60px" textAlign="center" mt="20px">
         {/* <Box bgColor="white" width="400px" p="60px" textAlign="center" mt="40px"> */}
         <Center>
-          <Image src="/images/empty-state.svg" alt="Empty state image icon" />
+          <Image src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446712/empty-state_tytpqr.svg" alt="Empty state image icon" />
         </Center>
         <Text color="#323232" fontWeight="700" fontSize="20px" mt="57px">
           Your list is empty

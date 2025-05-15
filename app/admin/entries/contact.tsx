@@ -125,7 +125,7 @@ function EmptyDataPlaceholder() {
       <Box bgColor="white" width="100%" p="60px" textAlign="center" mt="20px">
         {/* <Box bgColor="white" width="400px" p="60px" textAlign="center" mt="40px"> */}
         <Center>
-          <Image src="/images/empty-state.svg" alt="Empty state image icon" />
+          <Image src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446712/empty-state_tytpqr.svg" alt="Empty state image icon" />
         </Center>
         <Text color="#323232" fontWeight="700" fontSize="20px" mt="57px">
           Entry is empty

@@ -45,7 +45,7 @@ export default function Dashboard() {
     <AdminSidebarWithHeader>
       {mounted && (
         <Flex alignItems="center" py="8px" mb="10px" columnGap="8px">
-          <Image src="/sun.svg" width="30px" alt="Sun image icon" />
+          <Image src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446665/sun_rahz5w.svg" width="30px" alt="Sun image icon" />
           <Text fontSize="24px" color="#929292" fontWeight={400}>
             Good day,{" "}
             <Box as="span" fontWeight={600} color="#929292">

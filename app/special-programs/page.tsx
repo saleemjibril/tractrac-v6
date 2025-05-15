@@ -110,13 +110,13 @@ export default function Dashboard() {
               {pageItem.imageLight ? (
                 hoveredIndex === index ? (
                   <Image
-                    src={`/images/${pageItem.imageDark}.svg`}
+                    src={`https://res.cloudinary.com/tractrac-global/image/upload/v1746446745/woman-in-mech-white_gostjc.svg`}
                     alt="Icon image"
                     width="80px"
                   />
                 ) : (
                   <Image
-                    src={`/images/${pageItem.imageLight}.svg`}
+                    src={`https://res.cloudinary.com/tractrac-global/image/upload/v1746446744/woman-in-mech-colored_vlzout.svg`}
                     alt="Icon image"
                     width="80px"
                   />

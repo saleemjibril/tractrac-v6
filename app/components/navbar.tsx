@@ -129,9 +129,22 @@ export default function Navbar({ onOpen }: MobileProps) {
 
       {/* MIDDLE NAV */}
       <Flex
-        width="100%"  
-  maxWidth="1400px"
+  //       width="100%"  
+  // maxWidth="1400px"
+  //       bg={"#FA9411"}
+  //       margin={"auto"}
+  //       height={"82px"}
+  //       borderRadius={{ base: 0, lg: "10px" }}
+  //       alignItems={"center"}
+
         bg={"#FA9411"}
+        position={"absolute"}
+        top={"54px"}
+        width="100%" 
+        left="50%" 
+        transform={"translateX(-50%)"}
+        maxWidth="1400px"
+
         margin={"auto"}
         height={"82px"}
         borderRadius={{ base: 0, lg: "10px" }}
@@ -234,7 +247,7 @@ export default function Navbar({ onOpen }: MobileProps) {
           <Box display={"flex"} alignItems={"center"}>
             <Link href="/">
               <Image
-                src="/logo.svg"
+                src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446664/logo_ofzooy.svg"
                 alt="app Logo"
                 // layout='fill'
                 // objectFit='cover'

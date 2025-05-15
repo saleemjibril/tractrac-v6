@@ -86,7 +86,7 @@ export default function BecomeAnAgent() {
           <Text fontSize="24px" fontWeight={700} mb="4px">
             Become An Agent
           </Text>
-          <Image src="/images/agent.svg" alt="Agent image" />
+          <Image src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446758/agent_coin3x.svg" alt="Agent image" />
           <Text fontSize="16px" fontWeight={600} my="4px">
             Enlist as a TracTrac Agent
           </Text>
@@ -192,7 +192,7 @@ export default function BecomeAnAgent() {
                     <Input
                       variant="flushed"
                       borderColor="#929292"
-                      value={profileInfo?.fname}
+                      value={profileInfo?.name?.split(" ")[0]}
                       _focus={{
                         borderColor: "#929292",
                         boxShadow: 0,
@@ -207,7 +207,7 @@ export default function BecomeAnAgent() {
                     <Input
                       variant="flushed"
                       borderColor="#929292"
-                      value={profileInfo?.lname}
+                      value={profileInfo?.name?.split(" ")[1]}
                       _focus={{
                         borderColor: "#929292",
                         boxShadow: 0,
@@ -486,7 +486,7 @@ export default function BecomeAnAgent() {
           <ModalBody textAlign="center">
             <Flex flexDir="column" alignItems="center">
               <Image
-                src="/images/checkmark.svg"
+                src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446823/checkmark_jyuxnj.svg"
                 width="120px"
                 alt="Checkmark image"
               />

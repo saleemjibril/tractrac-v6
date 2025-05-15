@@ -122,7 +122,7 @@ export default function AccountPage() {
                   <Avatar
                     my="30px"
                     size="xl"
-                    name={`${profileInfo?.fname} ${profileInfo?.lname}`}
+                    name={`${profileInfo?.name?.split(" ")[0]} ${profileInfo?.name?.split(" ")[1]}`}
                     src={undefined}
                   >
                     {/* <AvatarBadge
@@ -140,8 +140,8 @@ export default function AccountPage() {
                   <Formik
                     initialValues={{
                       phone: profileInfo?.phone,
-                      fname: profileInfo?.fname,
-                      lname: profileInfo?.lname,
+                      fname: profileInfo?.name?.split(" ")[0],
+                      lname: profileInfo?.name?.split(" ")[1],
                       email: profileInfo?.email,
                       gender: profileInfo?.gender,
                     }}
@@ -762,7 +762,7 @@ function EmptyTractorsPlaceholder() {
       <Box bgColor="white" width="100%" p="60px" textAlign="center" mt="20px">
         {/* <Box bgColor="white" width="400px" p="60px" textAlign="center" mt="40px"> */}
         <Center>
-          <Image src="/images/empty-state.svg" alt="Empty state image icon" />
+          <Image src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446712/empty-state_tytpqr.svg" alt="Empty state image icon" />
         </Center>
         <Text color="#323232" fontWeight="700" fontSize="20px" mt="57px">
           Your list is empty

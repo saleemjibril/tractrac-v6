@@ -125,7 +125,7 @@ export default function AllHiredTractors() {
                   capacity=" 105 to 135 HP"
                   type={result?.tractor?.tractor_type}
                   location={result?.address}
-                  image={result?.tractor?.image}
+                  image={result?.tractor?.tractor_image}
                   status={result?.status}
                 />
               ))}
@@ -157,9 +157,9 @@ function TractorCard({
       <Box h="200px">
         <Image
           borderTopRadius="4px"
-          // src="/images/man-with-tractor.svg"
+          // src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446723/man-with-tractor_dxf5ly.svg"
           src={
-            image?.startsWith("https") ? image : "/images/man-with-tractor.svg"
+            image?.startsWith("https") ? image : "https://res.cloudinary.com/tractrac-global/image/upload/v1746446723/man-with-tractor_dxf5ly.svg"
           }
           alt="Man with a tractor image"
           height="100%"
@@ -238,7 +238,7 @@ function EmptyTractorsPlaceholder() {
       <Box bgColor="white" width="100%" p="60px" textAlign="center" mt="20px">
         {/* <Box bgColor="white" width="400px" p="60px" textAlign="center" mt="40px"> */}
         <Center>
-          <Image src="/images/empty-state.svg" alt="Empty state image icon" />
+          <Image src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446712/empty-state_tytpqr.svg" alt="Empty state image icon" />
         </Center>
         <Text color="#323232" fontWeight="700" fontSize="20px" mt="57px">
           Your list is empty

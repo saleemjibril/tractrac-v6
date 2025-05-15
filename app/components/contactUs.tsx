@@ -45,29 +45,38 @@ export default function ContactUsComponent() {
   
     return (
       <ChakraWrapper>
-      <Flex
+      <Box
         id="contact"
         width={"100%"}
         // height={"535px"}
-        bgImage="url('images/contact-us.jpg')"
+        bgImage="url('https://res.cloudinary.com/tractrac-global/image/upload/v1746446536/contact-us_srkrsr.jpg')"
         bgPosition="center"
         bgSize="cover"
         bgAttachment="fixed"
         bgRepeat="no-repeat"
         py="8em"
         // pr={{ base: "0px", md: "8em" }}
-        px={{ base: "12px", md: "0px" }}
+        px={{ base: "12px", lg: "0px" }}
         // pl={{ base: "12px", md: "0px" }}
-        justifyContent="end"
+
       >
-        
+         <Flex
+         id="contact"
+         width={"100%"}
+         maxWidth={"1400px"}
+         margin={"auto"}
+         justifyContent="end"
+         px={0}
+      >
         <Box
-          mr={{ base: "0px", md: "8em" }}
           bgColor="white"
           py="40px"
-          px={{ base: "12px", md: "50px" }}
+          px={{ base: "20px", lg: "50px" }}
           borderRadius="6px"
-          minW={{ base: "100%", md: "500px" }}
+          // minW={{ base: "100%", lg: "500px" }}
+          width={"100%"}
+          maxWidth={"500px"}
+          margin={{base: "0 auto", lg: "0"}}
         >
           <Text fontSize="24px" mt="4px" mb="36px">
             Contact Us
@@ -181,7 +190,8 @@ export default function ContactUsComponent() {
             Send
           </Button>
         </Box>
-      </Flex>
+        </Flex>
+      </Box>
       </ChakraWrapper>
     );
   }

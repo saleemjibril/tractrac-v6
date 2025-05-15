@@ -41,7 +41,7 @@ const LogoutRequiredModal: React.FC<ModalProps> = ({
         <ModalBody textAlign="center" py="20px">
           <Flex flexDir="column" alignItems="center">
             <Image
-              src="/images/error.svg"
+              src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446713/error_yfoaht.svg"
               width="120px"
               alt="Error image icon"
             />

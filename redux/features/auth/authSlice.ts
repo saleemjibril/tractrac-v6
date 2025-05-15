@@ -11,11 +11,26 @@ const userToken = secureLocalStorage.getItem("xak")
   ? secureLocalStorage.getItem("xuk")
   : null;
   
-const hasProfile = secureLocalStorage.getItem("xad") !== "undefined";
-const profileInfo = hasProfile
-  ? JSON.parse(secureLocalStorage.getItem("xad") as string)
-  : null;
+// First, safely get the value from storage
+const profileData = secureLocalStorage.getItem("xad");
 
+// Check if the data exists and is not "undefined" string
+const hasProfile = profileData !== null && 
+                   profileData !== undefined && 
+                   profileData !== "undefined" &&
+                   profileData !== "";
+
+// Parse the data safely
+let profileInfo = null;
+if (hasProfile) {
+  try {
+    profileInfo = JSON.parse(profileData as string);
+  } catch (error) {
+    console.error("Failed to parse profile data:", error);
+    // You could also set a flag to indicate there was an error
+    // setParseError(true);
+  }
+}
   const hasAdminProfile = secureLocalStorage.getItem("xua") !== "undefined";
 const adminInfo = hasAdminProfile
   ? JSON.parse(secureLocalStorage.getItem("xua") as string)

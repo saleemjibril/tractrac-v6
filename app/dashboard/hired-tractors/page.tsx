@@ -28,25 +28,62 @@ import { ArrowRight } from "iconsax-react";
 import { AddIcon, PlusSquareIcon } from "@chakra-ui/icons";
 import { useGetHiredTractorsQuery } from "@/redux/services/tractorApi";
 import { useAppSelector } from "@/redux/hooks";
+import { getMyHiredTractors } from "@/app/apis/tractor";
+import formatNumber from "@/app/utils/formatNumber";
+import moment from "moment";
 
 const statusTypes: Record<string, { title: string; color: string }> = {
   pending: { title: "Pending", color: "#FA9411" },
+  payment_pending: { title: "Payment Pending", color: "#FA9411" },
   approved: { title: "Approved", color: "#27AE60" },
   completed: { title: "Completed", color: "#27AE60" },
-  in_use: { title: "In Use", color: "#F03B13" },
-  not_approved: { title: "Not Approved", color: "#FE391E" },
+  in_progress: { title: "In Progress", color: "#27AE60" },
+  rejected: { title: "Rejected", color: "#FE391E" },
+  paid: { title: "Paid", color: "#27AE60" },
+  cancelled: { title: "Cancelled", color: "#FE391E" },
+  abandoned: { title: "Abandoned", color: "#FE391E" },
 };
 
 export default function HiredTractors() {
-  const { profileInfo } = useAppSelector((state) => state.auth);
-
+  const { profileInfo, userToken } = useAppSelector((state) => state.auth);
+  const [tractors, setTractors] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const {
     data: result,
-    error,
+    // error,
     // isFetching,
-    isLoading,
+    // isLoading,
     // } = useGetHiredTractorsQuery("3");
   } = useGetHiredTractorsQuery(profileInfo?.id);
+
+
+      const handleGetTractors = async () => {
+        setLoading(true)
+        try {
+
+          if (typeof userToken === 'string') {
+            const response = await getMyHiredTractors(userToken);
+            setTractors(response?.data?.items);
+            console.log("getTractors", response?.data);
+            setLoading(false)
+          } else {
+            // Handle the case when userToken is not a string
+            console.error('User token is not a string');
+            // Maybe redirect to login or show an error
+          }
+         
+        } catch (err) {
+              const error = err as any;
+              setError(error?.response?.data?.detail || "An unexpected error occurred")
+              console.error("Error fetching tractor", error);
+              setLoading(false)
+        }
+      };
+    
+      useEffect(() => {
+        handleGetTractors();
+      }, []);
 
   return (
     <SidebarWithHeader isAuth={true}>
@@ -81,7 +118,7 @@ export default function HiredTractors() {
           </Button>
         </Flex>
 
-        {isLoading ? (
+        {loading ? (
           <Box boxShadow="lg" bg="white" borderRadius="12px">
             <Skeleton height="80px" />
             <Box p="12px">
@@ -100,27 +137,31 @@ export default function HiredTractors() {
             border="1px"
             borderColor="#32323220"
             borderRadius="12px"
+            height="500px"
+            bgColor="white"
           >
             <Table variant="simple" bgColor="white">
-              <Thead color="#323232" bgColor="#E2E8F0">
+              <Thead bgColor="#FA9411">
                 <Tr>
-                  <Th>State</Th>
-                  <Th>LGA</Th>
-                  <Th>Address</Th>
-                  <Th>Farm Size</Th>
-                  <Th>Type of Service</Th>
-                  <Th>Amount Paid (₦)</Th>
-                  <Th>Start Date</Th>
-                  <Th>End Date</Th>
-                  <Th>Status</Th>
+                  <Th color="white">Tractor name</Th>
+                  {/* <Th color="white">Tractor model</Th> */}
+                  <Th color="white">Owner</Th>
+                  <Th color="white">Address</Th>
+                  <Th color="white">Farm Size</Th>
+                  <Th color="white">Type of Service</Th>
+                  <Th color="white">Amount Paid (₦)</Th>
+                  <Th color="white">Start Date</Th>
+                  <Th color="white">End Date</Th>
+                  <Th color="white">Status</Th>
                   {/* <Th isNumeric>multiply by</Th> */}
                 </Tr>
               </Thead>
               <Tbody>
-                {result?.data.map((tractor: any) => (
+                {tractors?.map((tractor: any) => (
                   <Tr key={tractor?.id}>
-                    <Td>{tractor?.state ?? "Nil"}</Td>
-                    <Td>{tractor?.lga ?? "Nil"}</Td>
+                    <Td></Td>
+                    {/* <Td>{tractor?.tractor?.model}</Td> */}
+                    <Td>{tractor?.owner_name}</Td>
                     {/* <Td>{tractor?.address ?? "Nil"}</Td> */}
                     <Td 
                     whiteSpace="break-spaces"
@@ -137,23 +178,23 @@ export default function HiredTractors() {
                     >
                       {/* <Box maxW="80px" overflowWrap="break-word"> */}
                       <Text  >
-                        { tractor?.address ?? "Nil" }
+                        {/* { tractor?.address ?? "Nil" } */}
                       {/* Gaa-akanbi, ilorin south, nigeria Gaa-akanbi, ilorin
                       south, nigeria,  Gaa-akanbi, ilorin south, nigeria Gaa-akanbi, ilorin */}
                       </Text>
                       {/* </Box> */}
                     </Td>
-                    <Td>
+                    <Td>{tractor?.farm_size}</Td>
+                    <Td></Td>
+                    <Td>{formatNumber(tractor?.total_amount)}</Td>
+                    {/* <Td>
                       {parseFloat(tractor?.farm_size ?? 0).toLocaleString()}
-                    </Td>
-                    <Td>{tractor?.tractor_type ?? "Nil"}</Td>
-                    <Td>{parseFloat(tractor?.amount ?? 0).toLocaleString()}</Td>
-                    <Td>{tractor?.start_date}</Td>
-                    <Td>{tractor?.end_date}</Td>
+                    </Td> */}
+                    <Td>{moment(tractor?.start_date).format('MMMM D, YYYY')}</Td>
+                    <Td>{moment(tractor?.end_date).format('MMMM D, YYYY')}</Td>
                     <Td>
                       {statusTypes[tractor?.status]?.color && (
                         <Box
-                          mt="10px"
                           bgColor={statusTypes[tractor?.status].color}
                           py="4px"
                           textAlign="center"
@@ -186,7 +227,7 @@ function EmptyTractorsPlaceholder() {
       <Box bgColor="white" width="100%" p="60px" textAlign="center" mt="20px">
         {/* <Box bgColor="white" width="400px" p="60px" textAlign="center" mt="40px"> */}
         <Center>
-          <Image src="/images/empty-state.svg" alt="Empty state image icon" />
+          <Image src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446712/empty-state_tytpqr.svg" alt="Empty state image icon" />
         </Center>
         <Text color="#323232" fontWeight="700" fontSize="20px" mt="57px">
           Your list is empty

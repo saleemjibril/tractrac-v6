@@ -85,7 +85,7 @@ export default function BecomeAnAgent() {
             Enlist as Operator/ Mechanic
           </Text>
           <Image
-            src="/images/enlist-as-operator.svg"
+            src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446715/enlist-as-operator_cujwpn.svg"
             alt="Agent image"
             borderRadius="10px"
           />
@@ -161,7 +161,7 @@ export default function BecomeAnAgent() {
                   <Input
                     variant="flushed"
                     borderColor="#929292"
-                    value={profileInfo?.fname}
+                    value={profileInfo?.name?.split(" ")[0]}
                     _focus={{
                       borderColor: "#929292",
                       boxShadow: 0,
@@ -176,7 +176,7 @@ export default function BecomeAnAgent() {
                   <Input
                     variant="flushed"
                     borderColor="#929292"
-                    value={profileInfo?.lname}
+                    value={profileInfo?.name?.split(" ")[1]}
                     _focus={{
                       borderColor: "#929292",
                       boxShadow: 0,
@@ -447,7 +447,7 @@ export default function BecomeAnAgent() {
           <ModalBody textAlign="center">
             <Flex flexDir="column" alignItems="center">
               <Image
-                src="/images/checkmark.svg"
+                src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446823/checkmark_jyuxnj.svg"
                 width="120px"
                 alt="Checkmark image"
               />

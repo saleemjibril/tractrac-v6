@@ -36,7 +36,7 @@ function EnterInvoice() {
         mt="40px"
       >
         <Center>
-          <Image src="/images/pay.svg" alt="wallet image icon" />
+          <Image src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446743/pay_y7fzuy.svg" alt="wallet image icon" />
         </Center>
 
         <Text color="#333333" fontWeight="400" fontSize="14px" mt="10px">
@@ -84,7 +84,7 @@ function MakePayForInvoice() {
         mt="40px"
       >
         <Center>
-          <Image src="/images/pay.svg" alt="wallet image icon" />
+          <Image src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446743/pay_y7fzuy.svg" alt="wallet image icon" />
         </Center>
 
         <Box

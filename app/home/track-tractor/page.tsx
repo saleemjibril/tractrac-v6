@@ -139,7 +139,7 @@ export default function TrackATractor() {
           )}
         </Formik>
 
-        <Image src="/images/map2.svg" width="100%" mt="24px" alt="Map image" />
+        <Image src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446730/map2_ka2q82.svg" width="100%" mt="24px" alt="Map image" />
       </Box>
     </SidebarWithHeader>
   );

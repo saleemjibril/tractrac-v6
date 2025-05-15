@@ -8,7 +8,7 @@ export const AuthGuard = (props: any) => {
   const router = useRouter();
 
   useEffect(() => {
-    if (props?.isAuth && (!profileInfo?.fname || !userToken)) {
+    if (props?.isAuth && (!profileInfo?.name?.split(" ")[0] || !userToken)) {
       return router.replace("/");
     }
   });

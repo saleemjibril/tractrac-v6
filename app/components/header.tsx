@@ -106,8 +106,8 @@ export default function Header() {
             }}
           >
             <span>
-              {/* <img src="images/tractor-icon-avatar.svg" alt="logo-image" /> */}
-              <Image src="images/tractor-icon-avatar.svg" alt="logo-image" />
+              {/* <img src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446742/tractor-icon-avatar_opoeff.svg" alt="logo-image" /> */}
+              <Image src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446742/tractor-icon-avatar_opoeff.svg" alt="logo-image" />
             </span>
             <div>
               <h4 style={{ fontWeight: "bold" }}>Download TracTrac App</h4>

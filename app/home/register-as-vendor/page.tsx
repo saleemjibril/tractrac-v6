@@ -82,7 +82,7 @@ export default function BecomeAnAgent() {
             Tractor Vendor
           </Text>
           <Image
-            src="/images/register-as-vendor.svg"
+            src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446739/register-as-vendor_v9hh4n.svg"
             alt="Agent image"
             borderRadius="10px"
           />
@@ -153,7 +153,7 @@ Fill Out our form.
                   <Input
                     variant="flushed"
                     borderColor="#929292"
-                    value={profileInfo?.fname}
+                    value={profileInfo?.name?.split(" ")[0]}
                     _focus={{
                       borderColor: "#929292",
                       boxShadow: 0,
@@ -169,7 +169,7 @@ Fill Out our form.
                   <Input
                     variant="flushed"
                     borderColor="#929292"
-                    value={profileInfo?.lname}
+                    value={profileInfo?.name?.split(" ")[1]}
                     _focus={{
                       borderColor: "#929292",
                       boxShadow: 0,
@@ -315,7 +315,7 @@ Fill Out our form.
           <ModalBody textAlign="center">
             <Flex flexDir="column" alignItems="center">
               <Image
-                src="/images/checkmark.svg"
+                src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446823/checkmark_jyuxnj.svg"
                 width="120px"
                 alt="Checkmark image"
               />

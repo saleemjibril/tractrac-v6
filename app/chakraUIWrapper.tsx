@@ -8,7 +8,7 @@ import { useEffect } from 'react';
 import Router from 'next/router';
 import NProgress from 'nprogress';
 import 'react-toastify/dist/ReactToastify.css';
-import './app.css';
+import './app.scss';
 import { Providers as ReduxProviders } from "@/redux/provider";
 
 // Move your theme definition here

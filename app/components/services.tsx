@@ -1,4 +1,7 @@
 "use client";
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
   Box,
   List,
@@ -15,21 +18,168 @@ import {
 } from "react-icons/fa";
 import { ChakraWrapper } from "../chakraUIWrapper";
 
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
+
 export default function ServicesComponent() {
+  const aboutSectionRef = useRef(null);
+  const tractorImagesRef = useRef(null);
+  const tractorStatsRef = useRef(null);
+  const aboutTextRef = useRef(null);
+  const servicesSectionRef = useRef(null);
+  const serviceCardsRef = useRef(null);
+  const serviceBoxesRef = useRef([]);
+  const bottomQuoteRef = useRef(null);
+
+  useEffect(() => {
+    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+    
+    if (aboutSectionRef.current) {
+      gsap.set([tractorImagesRef.current.children], { 
+        opacity: 0, 
+        y: 50 
+      });
+      
+      gsap.set(aboutTextRef.current.children, { 
+        opacity: 0, 
+        y: 30 
+      });
+
+      tl.fromTo(
+        aboutSectionRef.current,
+        { backgroundColor: "rgba(248, 248, 240, 0.5)" },
+        { backgroundColor: "rgba(248, 248, 240, 1)", duration: 1 }
+      );
+
+      gsap.to(tractorImagesRef.current.children, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.2,
+        scrollTrigger: {
+          trigger: tractorImagesRef.current,
+          start: "top 80%",
+          toggleActions: "play none none none"
+        }
+      });
+
+      gsap.to(aboutTextRef.current.children, {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+        stagger: 0.15,
+        scrollTrigger: {
+          trigger: aboutTextRef.current,
+          start: "top 75%",
+          toggleActions: "play none none none"
+        }
+      });
+
+      gsap.fromTo(
+        tractorStatsRef.current,
+        { rotation: -5, scale: 0.8, opacity: 0 },
+        { 
+          rotation: 0, 
+          scale: 1, 
+          opacity: 1,
+          duration: 1.2,
+          scrollTrigger: {
+            trigger: tractorImagesRef.current,
+            start: "center 70%",
+            toggleActions: "play none none none"
+          }
+        }
+      );
+    }
+
+    if (servicesSectionRef.current) {
+      gsap.fromTo(
+        servicesSectionRef.current.children[0].children,
+        { opacity: 0, y: 30 },
+        { 
+          opacity: 1, 
+          y: 0, 
+          duration: 0.8,
+          stagger: 0.2,
+          scrollTrigger: {
+            trigger: servicesSectionRef.current,
+            start: "top 60%",
+            toggleActions: "play none none none"
+          }
+        }
+      );
+
+      serviceBoxesRef.current.forEach((box, index) => {
+        gsap.fromTo(
+          box,
+          { 
+            y: 60, 
+            opacity: 0, 
+            scale: 0.95
+          },
+          { 
+            y: 0, 
+            opacity: 1, 
+            scale: 1,
+            duration: 0.8,
+            delay: index * 0.15,
+            scrollTrigger: {
+              trigger: serviceCardsRef.current,
+              start: "top 70%",
+              toggleActions: "play none none none"
+            },
+            onComplete: () => {
+              box.addEventListener("mouseenter", () => {
+                gsap.to(box, { y: -10, duration: 0.3 });
+              });
+              box.addEventListener("mouseleave", () => {
+                gsap.to(box, { y: 0, duration: 0.3 });
+              });
+            }
+          }
+        );
+      });
+
+      gsap.fromTo(
+        bottomQuoteRef.current,
+        { opacity: 0, scale: 0.9 },
+        { 
+          opacity: 1, 
+          scale: 1, 
+          duration: 1.2,
+          scrollTrigger: {
+            trigger: bottomQuoteRef.current,
+            start: "top 80%",
+            toggleActions: "play none none none"
+          }
+        }
+      );
+    }
+
+    // Cleanup function
+    return () => {
+      if (typeof window !== "undefined") {
+        ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      }
+      tl.kill();
+    };
+  }, []);
+
   return (
     <ChakraWrapper>
-    <Box mt={{ base: "0px", md: "80px" }}>
+    <Box mt={{ base: "0px", xl: "80px" }}>
       <Flex
+        ref={aboutSectionRef}
         bg="#F8F8F0"
-        // bg={{base: "#F8F8F0", md: "red", lg: "green", xl:"black", "2xl": "pink"}}
         borderRadius={"10px"}
         pt="25px"
         pb="60px"
         pr="20px"
-          pl="20px"
+        pl="20px"
         width={"100%"}
         maxWidth={"1400px"}
-        direction={{ base: "column-reverse", md: "row" }}
+        direction={{ base: "column-reverse", lg: "row" }}
         margin={"auto"}
         position={"relative"}
         justifyContent={"center"}
@@ -37,32 +187,31 @@ export default function ServicesComponent() {
         columnGap={"50px"}
         mb={{ base: "0px", lg: "-250px" }}
       >
-        <Stack ml={"120px"}>
+        <Stack ref={tractorImagesRef} ml={"120px"}>
           <Box mb="-100px" ml="-120px">
             <Image
-              src="images/machinery.jpg"
+              src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446531/machinery_hhd88c.jpg"
               alt="Tractor image"
               width={216}
               height={245}
             />
           </Box>
           <Image
-            src="images/tractor.jpg"
+            src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446531/tractor_q5dtvz.jpg"
             alt="Tractor image"
             width={"328px"}
-            // height={385}
           />
 
-          <Box mt="-200px" ml="-90px">
+          <Box ref={tractorStatsRef} mt="-200px" ml="-90px">
             <Image
-              src="images/years-of-experience.svg"
+              src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446746/years-of-experience_eoc5k9.svg"
               alt="Tractor image"
               width={157}
               height={157}
             />
           </Box>
         </Stack>
-        <Box flex="1" mt={{ base: "0px", md: "36px" }}>
+        <Box ref={aboutTextRef} flex="1" mt={{ base: "0px", md: "36px" }}>
           <Text
             fontFamily={"cursive"}
             fontSize={{ base: "20px", md: "28px" }}
@@ -85,7 +234,7 @@ export default function ServicesComponent() {
           <Flex gap="20px" mt="20px" flexDir={{ base: "column", md: "row" }} flexWrap={"wrap"}>
             <Flex direction="row" alignItems="center" gap={"14px"}>
               <Image
-                src="images/user-icon-avatar.svg"
+                src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446743/user-icon-avatar_itnjf5.svg"
                 alt=""
                 width={{ base: "30px", md: "50px" }}
               />
@@ -95,7 +244,7 @@ export default function ServicesComponent() {
             </Flex>
             <Stack direction="row" alignItems="center" gap={"14px"}>
               <Image
-                src="images/tractor-icon-avatar.svg"
+                src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446742/tractor-icon-avatar_opoeff.svg"
                 alt=""
                 width={{ base: "30px", md: "50px" }}
               />
@@ -108,10 +257,9 @@ export default function ServicesComponent() {
           <Flex gap="20px" mt="32px" flexWrap={"wrap"}>
             <Image
               display={{ base: "none", md: "flex" }}
-              src="images/machinery-2.jpg"
+              src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446531/machinery-2_ys9jlb.jpg"
               alt="Farm machinery"
               width={"200px"}
-              // height={149}
             />
             <List spacing={3}>
               <ListItem fontSize="18px" fontWeight="400" alignItems="center">
@@ -129,20 +277,20 @@ export default function ServicesComponent() {
             </List>
           </Flex>
         </Box>
-        {/* <Flex></Flex>  */}
       </Flex>
 
       <Stack
+        ref={servicesSectionRef}
         bg="#333333"
         pt={{ base: "0px", md: "250px" }}
         pb="80px"
         color="white"
       >
         <Box 
-        width={"100%"}
-        maxWidth={"1400px"}
-        margin={"auto"}
-        pr="20px"
+          width={"100%"}
+          maxWidth={"1400px"}
+          margin={"auto"}
+          pr="20px"
           pl="20px"
         >
           <Text
@@ -157,15 +305,24 @@ export default function ServicesComponent() {
             Bridging the Gap to Mechanisation.
           </Text>
 
-          {/* <Box> */}
           <Stack
+            ref={serviceCardsRef}
             direction={{ base: "column", md: "row" }}
             gap={"0"}
             mt="60px"
             mb="-100px"
             mx={{ base: "12px", md: "24px" }}
+            zIndex={2}
+            position="relative"
           >
-            <Box bgColor="#CC6D02" p="20px" as="a" href="/home/hire-tractor">
+            <Box 
+              ref={el => serviceBoxesRef.current[0] = el}
+              bgColor="#CC6D02" 
+              p="20px" 
+              as="a" 
+              href="/home/hire-tractor"
+              transition="transform 0.3s"
+            >
               <Image
                 src="icons/tractor-bold.svg"
                 alt="Tractor image icon"
@@ -181,11 +338,13 @@ export default function ServicesComponent() {
               </Text>
             </Box>
             <Box
+              ref={el => serviceBoxesRef.current[1] = el}
               bgColor="#FF8802"
               p="20px"
               color="#222222"
               as="a"
               href="/home/enlist-tractor"
+              transition="transform 0.3s"
             >
               <Image src="icons/list.svg" alt=""></Image>
               <Text fontSize="16px" mt="18px" fontWeight={600}>
@@ -197,8 +356,15 @@ export default function ServicesComponent() {
                 to various farmers across Africa.
               </Text>
             </Box>
-            <Box bgColor="#FFA035" p="20px" as="a" href="/home/agent">
-              <Image src="icons/agent.svg" alt=""></Image>
+            <Box 
+              ref={el => serviceBoxesRef.current[2] = el}
+              bgColor="#FFA035" 
+              p="20px" 
+              as="a" 
+              href="/home/agent"
+              transition="transform 0.3s"
+            >
+              <Image src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446758/agent_coin3x.svg" alt=""></Image>
               <Text fontSize="16px" mt="18px" fontWeight={600}>
                 Become an Agent
               </Text>
@@ -209,11 +375,13 @@ export default function ServicesComponent() {
               </Text>
             </Box>
             <Box
+              ref={el => serviceBoxesRef.current[3] = el}
               bgColor="#FFB867"
               p="20px"
               color="#222222"
               as="a"
               href="/home/invest-in-tractor"
+              transition="transform 0.3s"
             >
               <Image src="icons/money.svg" alt=""></Image>
               <Text fontSize="16px" mt="18px" fontWeight={600}>
@@ -227,16 +395,14 @@ export default function ServicesComponent() {
               </Text>
             </Box>
           </Stack>
-          {/* </Box> */}
+          
           <Box
+            ref={bottomQuoteRef}
             border={"3px"}
             borderColor="white"
             borderStyle="solid"
             borderTopStyle={{ base: "solid", md: "dotted" }}
-            // borderTopWidth={"4px"}
-            // px={{ base: "1em", md: "4em", lg: "8em", xl: "12em" }}
             pt="140px"
-            // pb="48px"
           >
             <Text
               textAlign="center"
@@ -257,12 +423,7 @@ export default function ServicesComponent() {
               justifyContent="center"
               fontWeight={700}
             >
-              {/* <Link href="/home/register-as-vendor">Register as Vendors</Link>
-              <Link href="/home/enlist-as-op-mech">
-                Enlist as Operators/Mechanics{" "}
-              </Link> */}
               <Link href="/services">Explore more services</Link>
-              {/* <Link href="/home/track-tractor">Track your Tractors</Link> */}
             </Flex>
           </Box>
         </Box>

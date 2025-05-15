@@ -14,7 +14,7 @@ export const saveLoginInfo = createAsyncThunk<
 
     const state = getState();
 
-    console.log("DATA", user, token)
+    console.log("DATA", {user, token})
     // store user's token in local storage
     secureLocalStorage.setItem("xad", JSON.stringify(user));
     secureLocalStorage.setItem("xak", token);

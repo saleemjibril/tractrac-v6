@@ -1,23 +1,28 @@
 import { useAppSelector } from "@/redux/hooks";
 import { useGetPersonalStatsQuery } from "@/redux/services/userApi";
 import { SimpleGrid, Box, Text } from "@chakra-ui/react";
+import { getUserStats } from "../apis/user";
+import { useEffect, useState } from "react";
+import formatNumber from "../utils/formatNumber";
 
 export default function PersonalOverview() {
+  const { userToken, profileInfo } = useAppSelector((state) => state.auth);
+  const [userStats, setUserStats] = useState<any>(null);
 
-  const { profileInfo } = useAppSelector((state) => state.auth);
+  const handleGetUserStats = async () => {
+    const response = await getUserStats(profileInfo?.id, userToken as string);
+    console.log("getUserStats", response);
+    setUserStats(response?.data);
+  };
 
-  const {
-    data: result,
-    // isFetching,
-    isLoading,
-  // } = useGetPersonalStatsQuery("3");
-} = useGetPersonalStatsQuery(profileInfo?.id);
-
+  useEffect(() => {
+    handleGetUserStats();
+  }, []);
   return (
     <Box
       bgColor="#FFFFFF"
       mt="40px"
-    //   mr={{ base: "0px", lg: "120px" }}
+      //   mr={{ base: "0px", lg: "120px" }}
       px="66px"
       py="43px"
       borderRadius="6px"
@@ -32,15 +37,33 @@ export default function PersonalOverview() {
         spacingX={{ base: "24px" }}
         spacingY="20px"
       >
-        <StatisticsCard title="Total number of Tractors Hired" amount={formatNumber(result?.data?.total_hired_tractors || 0)} />
+        <StatisticsCard
+          title="Total number of Tractors Hired"
+          amount={formatNumber(userStats?.tractors_hired_count || 0)}
+        />
         <StatisticsCard
           title="Total Amount Paid for Hired Tractors"
-          amount={formatNumber(result?.data?.total_amount_paid_for_tractors || 0)}
+          amount={`₦${formatNumber(
+            userStats?.total_amount_paid || 0
+          )}`}
         />
-        <StatisticsCard title="Approved Leasing Request" amount={formatNumber(result?.data?.total_approved_leasing || 0)}/>
-        <StatisticsCard title="Total Tractors Enlisted" amount={formatNumber(result?.data?.total_tractors_enlisted || 0)}/>
-        <StatisticsCard title="Total Tractors In-Use" amount={formatNumber(result?.data?.total_demands_fulfilled || 0)} />
-        <StatisticsCard title="Total Pending Requests" amount={formatNumber(result?.data?.total_investments || 0)} />
+        <StatisticsCard
+          title="Approved Leasing Request"
+          amount={formatNumber(userStats?.hire_status_counts?.approved || 0)}
+        />
+        <StatisticsCard
+          title="Total Tractors Enlisted"
+          // amount={formatNumber(result?.data?.total_tractors_enlisted || 0)}
+          amount={"0"}
+        />
+        <StatisticsCard
+          title="Total Tractors In-Use"
+          amount={formatNumber(userStats?.hire_status_counts?.in_progress || 0)}
+        />
+        <StatisticsCard
+          title="Total Pending Requests"
+          amount={formatNumber(userStats?.hire_status_counts?.pending || 0)}
+        />
       </SimpleGrid>
     </Box>
   );
@@ -59,23 +82,4 @@ function StatisticsCard({ amount, title }: { amount: string; title: string }) {
   );
 }
 
-function formatNumber(numberString: string) {
-  const number = parseFloat(numberString); // Convert the string to a number
-
-  if (isNaN(number)) {
-    // Handle invalid input (e.g., non-numeric strings)
-    return '0';
-  }
-
-  if (number >= 1000000) {
-    // Format numbers in millions as "X.Xm"
-    return (number / 1000000).toFixed(1) + 'M';
-  } else if (number >= 99999) {
-    // Format numbers in thousands with commas
-    return (number / 1000).toLocaleString() + 'K';
-  } else {
-    // Numbers below 1000 remain the same with commas
-    return number.toLocaleString();
-  }
-}
 
