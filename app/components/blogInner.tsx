@@ -6,7 +6,7 @@ import { ArrowForwardIcon } from "@chakra-ui/icons";
 import Header from "./header";
 import FooterComponent from "./footer";
 import { ChakraWrapper } from "../chakraUIWrapper";
-import { blogItems } from "../blog/items";
+
 // components/blogInner.tsx
 interface Post {
   id: string;
@@ -14,8 +14,12 @@ interface Post {
   excerpt: string;
   slug: string;
   date: string;
-  image?: string;
-  imageAlt?: string;
+  featuredImage: {
+    node: {
+      sourceUrl: string;
+      altText: string;
+    };
+  };
 }
 
 interface BlogInnerProps {
@@ -27,36 +31,16 @@ export default function BlogInner({ posts }: BlogInnerProps) {
     <ChakraWrapper>
       <Box position={"relative"}>
         <Header />
-        {/* <Center mb={{ base: "0px", md: "20px" }}> */}
-          {/* <Stack mt={{ base: "20px", md: "60px" }} textAlign="left" pl="8.5%"> */}
-            {/* <Text
-              fontWeight={800}
-              fontSize={{ base: "20px", md: "24px", lg: "39px" }}
-              textAlign="left"
-              mt="0px"
-              mb="30px"
-            >
-              Insights on Agricultural Mechanization
-            </Text> */}
-            {/* <Text
-              fontSize="40px"
-              // fontFamily="cursive"
-              // fontFamily="Trebuchet"
-              color="#2e475d"
-              display="block"
-              fontWeight={700}
-            >
-              Blog
-            </Text> */}
-          {/* </Stack> */}
-        {/* </Center> */}
 
-        <Box 
-        pr="20px"
-        pl="20px"
-        width={"100%"}
-        maxWidth={"1200px"}
-        mx="auto" mt="20px" mb="80px">
+        <Box
+          pr="20px"
+          pl="20px"
+          width={"100%"}
+          maxWidth={"1440px"}
+          mx="auto"
+          mt="20px"
+          mb="80px"
+        >
           <Text
             fontWeight={800}
             fontSize={{ base: "20px", md: "24px", lg: "39px" }}
@@ -67,9 +51,9 @@ export default function BlogInner({ posts }: BlogInnerProps) {
             Insights on Agricultural Mechanization ...
           </Text>
           <SimpleGrid
-            columns={{ base: 1, md: 2, lg: 3 }}
-            spacingX="30px"
-            spacingY="70px"
+            columns={{ base: 1, md: 2, lg: 3 }} // Adjust columns based on screen size
+            spacingX={{ base: "0px", md: "30px" }} // No horizontal spacing on small screens
+            spacingY="30px" // Vertical spacing remains consistent
           >
             {posts.map((blog) => (
               <Box
@@ -88,12 +72,13 @@ export default function BlogInner({ posts }: BlogInnerProps) {
                   transform: "scale(1.05)",
                   boxShadow: "lg",
                 }}
+                width={{ base: "100%", md: "auto" }} // Full width on small screens
               >
                 <Box h="250px">
                   <Image
                     borderTopRadius="4px"
-                    src={blog.image}
-                    alt={`Blog image ${blog.id}`}
+                    src={blog.featuredImage.node.sourceUrl}
+                    alt={blog.featuredImage.node.altText || `Blog image ${blog.id}`}
                     height="100%"
                     width="100%"
                     objectFit="cover"
