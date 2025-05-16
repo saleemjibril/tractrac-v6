@@ -128,7 +128,7 @@ export default function FarmMeasurementMap() {
         initializeLocationStream();
       },
       (error) => {
-        console.error('Error getting current position:', error);
+        console.log('Error getting current position:', error);
         alert(`Error getting location: ${error.message}`);
       },
       { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
@@ -173,7 +173,7 @@ export default function FarmMeasurementMap() {
         }
       },
       (error) => {
-        console.error('Location watch error:', error);
+        console.log('Location watch error:', error);
       },
       { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
     );
@@ -398,7 +398,7 @@ export default function FarmMeasurementMap() {
         alert('Measurement completed successfully!');
         // router.push('/measurement-summary');
       } catch (error) {
-        console.error('Error saving measurement:', error);
+        console.log('Error saving measurement:', error);
         alert('Failed to save measurement. Your measurement was saved locally.');
       }
     }
@@ -427,7 +427,7 @@ export default function FarmMeasurementMap() {
       
       return await response.json();
     } catch (error) {
-      console.error('Error saving measurement:', error);
+      console.log('Error saving measurement:', error);
       // Save locally for later sync
       localStorage.setItem('pendingMeasurement', JSON.stringify(formattedPoints));
       throw error;

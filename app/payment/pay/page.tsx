@@ -61,7 +61,7 @@ export default function Pay() {
       toast.error(
         error?.response?.data?.detail || "An unexpected error occurred"
       );
-      console.error("Error getting payment details", error);
+      console.log("Error getting payment details", error);
     } finally {
       setIsLoading(false);
     }

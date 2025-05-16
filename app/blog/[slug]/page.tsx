@@ -99,7 +99,7 @@ async function getSinglePostBySlug(slug: string) {
       imageAlt: matchingMedia?.altText || post.title
     };
   } catch (error) {
-    console.error('Error fetching post with media:', error);
+    console.log('Error fetching post with media:', error);
     return null;
   }
 }

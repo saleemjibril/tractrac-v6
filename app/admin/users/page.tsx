@@ -206,7 +206,7 @@ export default function UsersPage() {
                   } else if (error?.data?.message) {
                     toast.error(error?.data?.message);
                   }
-                  console.error("rejected", error);
+                  console.log("rejected", error);
                 } finally {
                   setProcessing(false);
                 }
@@ -248,7 +248,7 @@ export default function UsersPage() {
                   } else if (error?.data?.message) {
                     toast.error(error?.data?.message);
                   }
-                  console.error("rejected", error);
+                  console.log("rejected", error);
                 } finally {
                   setProcessing(false);
                 }

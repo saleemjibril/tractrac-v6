@@ -26,7 +26,7 @@ if (hasProfile) {
   try {
     profileInfo = JSON.parse(profileData as string);
   } catch (error) {
-    console.error("Failed to parse profile data:", error);
+    console.log("Failed to parse profile data:", error);
     // You could also set a flag to indicate there was an error
     // setParseError(true);
   }

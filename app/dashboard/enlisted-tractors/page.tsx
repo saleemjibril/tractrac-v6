@@ -70,13 +70,13 @@ export default function EnlistedTractors() {
         console.log("getTractors", response?.data);
         setLoading(false)
         } else {
-          console.error('User token is not a string');
+          console.log('User token is not a string');
         }
         
       } catch (err) {
             const error = err as any;
             setError(error?.response?.data?.detail || "An unexpected error occurred")
-            console.error("Error fetching tractor", error);
+            console.log("Error fetching tractor", error);
             setLoading(false)
       }
     };

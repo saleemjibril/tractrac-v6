@@ -349,7 +349,7 @@ const AddFarmerModal: React.FC<ModalProps> = ({ isOpen, setModalState }) => {
                 } else if (error?.data?.message) {
                   setError(error?.data?.message);
                 }
-                console.error("rejected", error);
+                console.log("rejected", error);
               }
             }}
           >

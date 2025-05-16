@@ -91,7 +91,7 @@ export default function FooterComponent() {
                 } else if (error?.data?.message) {
                   toast.error(error?.data?.message);
                 }
-                console.error("rejected", error);
+                console.log("rejected", error);
               } finally {
                 setLoading(false);
               }

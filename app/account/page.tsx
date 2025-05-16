@@ -170,7 +170,7 @@ export default function AccountPage() {
                         } else if (error?.data?.message) {
                           setError(error?.data?.message);
                         }
-                        console.error("rejected", error);
+                        console.log("rejected", error);
                       }
                     }}
                   >
@@ -395,7 +395,7 @@ export default function AccountPage() {
                         } else if (error?.data?.message) {
                           setPasswordError(error?.data?.message);
                         }
-                        console.error("rejected", error);
+                        console.log("rejected", error);
                       }
                     }}
                   >
@@ -599,7 +599,7 @@ interface ModalProps {
 //                 } else if (error?.data?.message) {
 //                   setError(error?.data?.message);
 //                 }
-//                 console.error("rejected", error);
+//                 console.log("rejected", error);
 //               }
 //             }}
 //           >

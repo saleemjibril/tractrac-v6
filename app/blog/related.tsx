@@ -96,7 +96,7 @@ async function getPostsWithMedia() {
 
     return postsWithMedia;
   } catch (error) {
-    console.error('Error fetching posts with media:', error);
+    console.log('Error fetching posts with media:', error);
     return [];
   }
 }

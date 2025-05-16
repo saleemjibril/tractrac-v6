@@ -95,7 +95,7 @@ export default function Issam() {
                   setError(error?.data?.message);
                 }
                 onOpen();
-                console.error("rejected", error);
+                console.log("rejected", error);
               }
             }}
           >

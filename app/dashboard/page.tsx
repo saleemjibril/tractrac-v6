@@ -140,7 +140,7 @@ console.log("profileInfo", profileInfo);
       console.log("getUserStats", response);
     } else {
       // Handle the case when userToken is not a string
-      console.error('User token is not a string');
+      console.log('User token is not a string');
       // Maybe redirect to login or show an error
     }
   

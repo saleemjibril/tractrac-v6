@@ -25,13 +25,13 @@ app.prepare().then(() => {
         await handle(req, res, parsedUrl)
       }
     } catch (err) {
-      console.error('Error occurred handling', req.url, err)
+      console.log('Error occurred handling', req.url, err)
       res.statusCode = 500
       res.end('internal server error')
     }
   })
     .once('error', (err) => {
-      console.error(err)
+      console.log(err)
       process.exit(1)
     })
     .listen(port, () => {

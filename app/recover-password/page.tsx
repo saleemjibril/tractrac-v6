@@ -145,7 +145,7 @@ function SendOtpComponent({
           // }
           console.log("forgotPassword", response);
         } catch (error) {
-          console.error("error resetting password", error);
+          console.log("error resetting password", error);
           setError(
             (error as any).response?.data?.detail ||
               "An unknown error occurred"
@@ -260,7 +260,7 @@ function ResetPasswordComponent({ phoneNumber, userId }: { phoneNumber: string, 
             // }
             console.log("resetUserPassword", response);
           } catch (err) {
-            console.error("rejected", error);
+            console.log("rejected", error);
             setError(
               (error as any).response?.data?.detail ||
                 "An unknown error occurred"

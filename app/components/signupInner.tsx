@@ -261,7 +261,7 @@ export default function SignupInner() {
                       // }
                       // console.log("fulfilled", response?.data[0], response.token);
                     } catch (error) {
-                      console.error("rejected", error);
+                      console.log("rejected", error);
                       setError((error as any).response?.data?.detail || "An unknown error occurred");
                     }
                   }}

@@ -180,7 +180,7 @@ export default function BecomeAnAgent() {
         setBanks(response?.data);
       } else {
         // Handle the case when userToken is not a string
-        console.error("User token is not a string");
+        console.log("User token is not a string");
         // Maybe redirect to login or show an error
       }
     } catch (error) {
@@ -203,7 +203,7 @@ export default function BecomeAnAgent() {
       console.log("verifyBankAccount", response);
       setFieldValue("bank_account_name", response?.data?.account_name);
     } catch (error) {
-      console.error("Error verifying bank account", error);
+      console.log("Error verifying bank account", error);
       // toast.error((error as any).response?.data?.detail ||
       // "An unknown error occurred")
     }
@@ -336,7 +336,7 @@ export default function BecomeAnAgent() {
                   error?.response?.data?.detail ||
                     "An unexpected error occurred"
                 );
-                console.error("Error enlisting tractor", error);
+                console.log("Error enlisting tractor", error);
               }
             }}
           >

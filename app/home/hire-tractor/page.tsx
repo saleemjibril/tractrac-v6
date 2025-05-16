@@ -111,10 +111,10 @@ export default function HireTractor() {
       if (typeof userToken === "string") {
         const response = await getApprovedTractors(userToken);
         setTractors(response?.data);
-        console.log("getTractors", response?.data);
+        console.log("getTractorss", response);
       } else {
         // Handle the case when userToken is not a string
-        console.error("User token is not a string");
+        console.log("User token is not a string");
         // Maybe redirect to login or show an error
       }
     } catch (error) {
@@ -191,7 +191,7 @@ export default function HireTractor() {
           // Assuming response has a data property
           // setSearchData(response?.data || []);
         } catch (error) {
-          console.error("Search error:", error);
+          console.log("Search error:", error);
           setSearchData([]);
         } finally {
           setLoading(false);
@@ -630,7 +630,7 @@ function TractorCard({
             setDistance(calculatedDistance);
           },
           (error) => {
-            console.error("Error getting user location:", error);
+            console.log("Error getting user location:", error);
             setError("Unable to get your location");
           }
         );
@@ -773,7 +773,7 @@ function HireTractorForm({ id }: { id: string }) {
       console.log("getBookedDates", response);
       setBookedDates(response?.data?.booked_dates);
     } catch (error) {
-      console.error("ERROR", error);
+      console.log("ERROR", error);
     }
     // if (response?.data?.statusCode === 200) {
     //   setBookedDates(response?.data?.message[2]?.values);
@@ -1044,7 +1044,7 @@ function HireTractorForm({ id }: { id: string }) {
             toast.error(
               error?.response?.data?.detail || "An unexpected error occurred"
             );
-            console.error("Error hiring tractor", error);
+            console.log("Error hiring tractor", error);
           }
         }}
       >

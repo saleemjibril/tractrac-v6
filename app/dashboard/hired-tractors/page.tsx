@@ -69,14 +69,14 @@ export default function HiredTractors() {
             setLoading(false)
           } else {
             // Handle the case when userToken is not a string
-            console.error('User token is not a string');
+            console.log('User token is not a string');
             // Maybe redirect to login or show an error
           }
          
         } catch (err) {
               const error = err as any;
               setError(error?.response?.data?.detail || "An unexpected error occurred")
-              console.error("Error fetching tractor", error);
+              console.log("Error fetching tractor", error);
               setLoading(false)
         }
       };
@@ -184,7 +184,7 @@ export default function HiredTractors() {
                       </Text>
                       {/* </Box> */}
                     </Td>
-                    <Td>{tractor?.farm_size}</Td>
+                    <Td>{tractor?.farm_size} Square Meter</Td>
                     <Td></Td>
                     <Td>{formatNumber(tractor?.total_amount)}</Td>
                     {/* <Td>

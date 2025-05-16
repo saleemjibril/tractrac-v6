@@ -68,7 +68,7 @@ export default function TrackATractor() {
               } else if (error?.data?.message) {
                 setError(error?.data?.message);
               }
-              console.error("rejected", error);
+              console.log("rejected", error);
             }
           }}
         >

@@ -140,7 +140,7 @@ export default function BecomeAnAgent() {
                 } else {
                   setError("An unknown error occured, please try again");
                 }
-                console.error("rejected", error);
+                console.log("rejected", error);
               }
             }}
           >
