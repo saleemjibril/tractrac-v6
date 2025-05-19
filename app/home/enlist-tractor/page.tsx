@@ -540,10 +540,11 @@ export default function BecomeAnAgent() {
                         flex="1"
                       >
                         <FormLabel fontSize="12px" color="#323232">
-                          Tractor rating (housepower)
+                          Tractor rating (horsepower)
                         </FormLabel>
                         <Input
                           {...field}
+                          type="number"
                           bgColor="#3232320D"
                           fontSize="12px"
                           color="#323232"

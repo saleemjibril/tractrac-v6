@@ -34,7 +34,7 @@ import { SidebarWithHeader } from "../../components/Sidenav";
 import { Formik, Form, Field } from "formik";
 import { useRouter } from "next/navigation";
 import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
-import { ArrowForwardIcon } from "@chakra-ui/icons";
+import { AddIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 import { useAppSelector } from "@/redux/hooks";
 import { toast } from "react-toastify";
 import { Select as MultiSelect } from "chakra-react-select";
@@ -97,7 +97,7 @@ export default function HireTractor() {
   const [tractorId, setTractorId] = useState<string | null>(null);
   const [state, setState] = useState<string | null>(null);
   const [lgas, setLgas] = useState<string[]>([]);
-  const [lga, setLga] = useState<string[]>("");
+  const [lga, setLga] = useState<string[]>(null);
   const [brand, setBrand] = useState<string | null>(null);
   const [implement, setImplement] = useState<string | null>(null);
   const [tractorType, setTractorType] = useState<string | null>(null);
@@ -204,6 +204,12 @@ export default function HireTractor() {
     // Call the async function
     fetchFilteredTractors();
   }, [state, lga, tractorType, userToken]);
+
+  const clearFilters = () => {
+    setState(null);
+    setLga(null);
+    setTractorType(null);
+  } 
 
   async function search() {
     // alert(state);
@@ -420,6 +426,26 @@ export default function HireTractor() {
                   </option>
                 ))}
               </Select>
+
+              
+                        <Button
+                          bgColor="#FA9411"
+                          height="42px"
+                          borderRadius="4px"
+                          width="170px"
+                          color="white"
+                          as="a"
+                          _hover={{
+                            opacity: 0.8,
+                          }}
+                          onClick={clearFilters}
+                        >
+                          <Flex justifyContent="center" alignContent="center">
+                            <Text fontSize="14px">Clear filters</Text>
+                          </Flex>
+                        </Button>
+
+              
 
               {/* <Select
                 width="130px"
