@@ -247,7 +247,7 @@ export default function Navbar({ onOpen }: MobileProps) {
           <Box display={"flex"} alignItems={"center"}>
             <Link href="/">
               <Image
-                src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446664/logo_ofzooy.svg"
+                src="https://res.cloudinary.com/tractrac-global/image/upload/v1747644706/tractrac_logo_png_vfhoy7.png"
                 alt="app Logo"
                 // layout='fill'
                 // objectFit='cover'
