@@ -253,7 +253,7 @@ export default function Navbar({ onOpen }: MobileProps) {
                 // objectFit='cover'
                 // className={styles.vercelLogo}
                 width={120}
-                height={24}
+                // height={24}
               />
             </Link>
 

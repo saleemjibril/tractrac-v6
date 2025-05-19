@@ -10,7 +10,10 @@ const nextConfig = {
   typescript: {
       // This will ignore TypeScript errors during the build process
       ignoreBuildErrors: true,
-  }
+  },
+  images: {
+    domains: ['res.cloudinary.com'],
+  },
 }
 
 module.exports = nextConfig
