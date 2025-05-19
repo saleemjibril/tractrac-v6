@@ -29,15 +29,11 @@
     "eslint": "8.45.0",
     "eslint-config-next": "^13.5.2",
     "formik": "^2.4.3",
-    "framer-motion": "^10.18.0",
     "graphql": "^16.10.0",
     "graphql-request": "^7.1.2",
     "gsap": "^3.13.0",
     "iconsax-react": "^0.0.8",
     "jsdom": "^26.1.0",
-    "leaflet": "^1.9.4",
-    "leaflet-defaulticon-compatibility": "^0.1.2",
-    "lucide-react": "^0.511.0",
     "mapbox-gl": "^3.12.0",
     "moment": "^2.30.1",
     "next": "^13.5.2",
@@ -50,7 +46,6 @@
     "react-drag-drop-files": "^2.3.10",
     "react-google-autocomplete": "^2.7.3",
     "react-icons": "^4.10.1",
-    "react-leaflet": "^5.0.0",
     "react-paystack": "^6.0.0",
     "react-redux": "^8.1.2",
     "react-secure-storage": "^1.2.2",
@@ -60,7 +55,6 @@
   },
   "devDependencies": {
     "@types/google.maps": "^3.54.0",
-    "@types/leaflet": "^1.9.18",
     "@types/nprogress": "^0.2.1",
     "@types/qs": "^6.9.18"
   }
