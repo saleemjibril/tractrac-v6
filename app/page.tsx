@@ -1,5 +1,4 @@
 import React from 'react';
-import ClientPreloader from "./components/ClientPreloader";
 import ServicesComponent from "./components/services";
 import FooterComponent from "./components/footer";
 import Header from "./components/header";
@@ -9,6 +8,7 @@ import GetMobileAppComponent from "./components/getMobileAppComponent";
 import OutPartnersComponent from "./components/outPartnersComponent";
 import HomeBanner from "./components/homeBanner";
 import ContactUsComponent from "./components/contactUs";
+import ClientPreloader from './components/clientPreLoader';
 
 export async function generateMetadata() {
   return {
