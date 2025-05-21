@@ -1,5 +1,5 @@
 "use client";
-import { Dispatch, SetStateAction, useId, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useId, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import {
   Alert,
@@ -40,6 +40,7 @@ export default function RecoverPassword() {
   const router = useRouter();
 
   const [isSendOtp, setIsSendOtp] = useState<boolean>(true);
+  const [userId, setUserId] = useState("");
 
   const [phoneNumber, setPhoneNumber] = useState("");
 
@@ -94,9 +95,12 @@ export default function RecoverPassword() {
                 <SendOtpComponent
                   setPhoneNumber={setPhoneNumber}
                   setPasswordResetVisibility={setIsSendOtp}
+                  setUserId={setUserId}
                 />
               ) : (
-                <ResetPasswordComponent phoneNumber={phoneNumber} />
+                <ResetPasswordComponent phoneNumber={phoneNumber}
+                userId={userId}
+                />
               )}
             </Stack>
           </Box>
@@ -109,14 +113,15 @@ export default function RecoverPassword() {
 function SendOtpComponent({
   setPhoneNumber,
   setPasswordResetVisibility,
+  setUserId
 }: {
   setPhoneNumber: Dispatch<SetStateAction<string>>;
   setPasswordResetVisibility: Dispatch<SetStateAction<boolean>>;
+  setUserId: Dispatch<SetStateAction<string>>;
 }) {
   const [sendOtp] = useSendOtpMutation();
 
   const [error, setError] = useState<string | null>(null);
-  const [userId, setUserId] = useState("");
 
   function validatePhoneNumber(value: any) {
     let error;
@@ -127,6 +132,7 @@ function SendOtpComponent({
     }
     return error;
   }
+
 
   return (
     <Formik
@@ -143,7 +149,7 @@ function SendOtpComponent({
           // } else {
           //   setError("An unknown error occured");
           // }
-          console.log("forgotPassword", response);
+          console.log("forgotPassword", response?.data?.user_id, response);
         } catch (error) {
           console.log("error resetting password", error);
           setError(
@@ -245,6 +251,11 @@ function ResetPasswordComponent({ phoneNumber, userId }: { phoneNumber: string, 
         initialValues={{ confirm_password: "", password: "", otp: "" }}
         onSubmit={async (values: any, actions) => {
           try {
+            console.log("values", {userId,
+              otp: values?.otp?.toString(),
+              password: values?.password,
+              confirmPassword: values?.confirm_password});
+            
             const response = await resetUserPassword(
               userId,
               values?.otp?.toString(),
@@ -254,7 +265,9 @@ function ResetPasswordComponent({ phoneNumber, userId }: { phoneNumber: string, 
             toast.success(response?.data?.message);
             // if (response?.status && response?.status == "success") {
             //   toast.success(response.message);
-              router.replace("/login");
+              setTimeout(() => {
+                router.replace("/login");
+              }, 3000);
             // } else {
             //   setError("An unknown error occured");
             // }

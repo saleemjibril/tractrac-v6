@@ -47,6 +47,7 @@ import {
 import { toast } from "react-toastify";
 import * as nigerianStates from "nigerian-states-and-lgas";
 import { FaPlus } from "react-icons/fa";
+import { becomeAgent } from "@/app/apis/general";
 // import NaijaStates from 'naija-xbystate';
 
 // const DynamicHeader = dynamic(() => import('../components/Sidenav'), {
@@ -54,7 +55,7 @@ import { FaPlus } from "react-icons/fa";
 //   })
 
 export default function BecomeAnAgent() {
-  const { profileInfo } = useAppSelector((state) => state.auth);
+  const { profileInfo, userToken } = useAppSelector((state) => state.auth);
   const [error, setError] = useState<string | null>(null);
   const [gender, setGender] = useState<string | null>("");
   const [success, setSuccess] = useState<boolean>(false);
@@ -68,7 +69,6 @@ export default function BecomeAnAgent() {
     setGender(profileInfo?.gender ?? "");
   }, [profileInfo]);
 
-  const [becomeAgent] = useBecomeAnAgentMutation();
   const router = useRouter();
 
   function validateEmpty(value: any) {
@@ -86,7 +86,10 @@ export default function BecomeAnAgent() {
           <Text fontSize="24px" fontWeight={700} mb="4px">
             Become An Agent
           </Text>
-          <Image src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446758/agent_coin3x.svg" alt="Agent image" />
+          <Image
+            src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446758/agent_coin3x.svg"
+            alt="Agent image"
+          />
           <Text fontSize="16px" fontWeight={600} my="4px">
             Enlist as a TracTrac Agent
           </Text>
@@ -149,29 +152,42 @@ export default function BecomeAnAgent() {
 
                 try {
                   // alert('ss')
-                  console.log(values);
+                  console.log("become an agent", {
+                    ...values,
+                    user_id: profileInfo?.id,
+                    first_name: profileInfo?.name?.split(" ")[0],
+                    last_name: profileInfo?.name?.split(" ")[1],
+                    phone: profileInfo?.phone,
+                    gender
+                  });
                   const response = await becomeAgent({
                     ...values,
                     user_id: profileInfo?.id,
-                  }).unwrap();
-                  if (response.status == "success") {
-                    setSuccess(true);
-                    onOpen();
-                    resetForm();
-                    toast.success(response.message);
-                  } else {
-                    setError("An unknown error occured");
-                  }
-                  console.log("fulfilled", response?.data[0]);
+                    first_name: profileInfo?.name?.split(" ")[0],
+                    last_name: profileInfo?.name?.split(" ")[1],
+                    phone: profileInfo?.phone,
+                    gender
+                  }, userToken as string);
+                  console.log("becomeAgent", response);
+                  toast.success("Thank you registering as an agent");
+                  resetForm();
+                  // .unwrap();
+                  // if (response.status == "success") {
+                  //   setSuccess(true);
+                  //   onOpen();
+                  //   resetForm();
+                  //   toast.success(response.message);
+                  // } else {
+                  //   setError("An unknown error occured");
+                  // }
+                  // console.log("fulfilled", response?.data[0]);
                 } catch (err) {
                   const error = err as any;
-                  // alert('error')
-                  if (error?.data?.errors) {
-                    // setError(error?.data?.errors[0])
-                  } else if (error?.data?.message) {
-                    setError(error?.data?.message);
-                  }
-                  console.log("rejected", error);
+                toast.error(
+                  error?.response?.data?.detail ||
+                    "An unexpected error occurred"
+                );
+                console.log("Error submitting form", error);
                 }
               }}
             >
@@ -232,9 +248,13 @@ export default function BecomeAnAgent() {
                     />
                   </FormControl>
 
-                  <Field name="email">
+                  <Field name="email" validate={validateEmpty}>
                     {({ field, form }: { [x: string]: any }) => (
-                      <FormControl mb="20px" isDisabled={!!profileInfo?.email}>
+                      <FormControl
+                        mb="20px"
+                        isInvalid={form.errors.email && form.touched.email}
+                        isRequired
+                      >
                         <FormLabel fontSize="14px" color="#929292">
                           Email
                         </FormLabel>
@@ -251,6 +271,7 @@ export default function BecomeAnAgent() {
                           //  ref={initialRef}
                           placeholder="Enter your email"
                         />
+                        <FormErrorMessage>{form.errors.email}</FormErrorMessage>
                       </FormControl>
                     )}
                   </Field>

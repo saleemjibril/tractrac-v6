@@ -43,6 +43,7 @@ import { toast } from "react-toastify";
 import * as nigerianStates from "nigerian-states-and-lgas";
 import { FaPlus } from "react-icons/fa";
 import { useRegisterAsVendorMutation } from "@/redux/services/tractorApi";
+import { registerAsVendor } from "@/app/apis/general";
 // import NaijaStates from 'naija-xbystate';
 
 // const DynamicHeader = dynamic(() => import('../components/Sidenav'), {
@@ -50,13 +51,12 @@ import { useRegisterAsVendorMutation } from "@/redux/services/tractorApi";
 //   })
 
 export default function BecomeAnAgent() {
-  const { profileInfo } = useAppSelector((state) => state.auth);
+  const { profileInfo, userToken } = useAppSelector((state) => state.auth);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const [registerAsVendor] = useRegisterAsVendorMutation();
   const router = useRouter();
 
   function validateEmpty(value: any) {
@@ -90,9 +90,11 @@ export default function BecomeAnAgent() {
             Register as a Tractor Vendor
           </Text>
           <Text>
-          Tractrac is always on the hunt for reliable vendors who will work with us to provide genuine tractors and their spare parts to our vast network of Mechanization Service Providers (MSPs) and Tractor Owners.
-Interested in joining our guild of vendors?
-Fill Out our form.
+            Tractrac is always on the hunt for reliable vendors who will work
+            with us to provide genuine tractors and their spare parts to our
+            vast network of Mechanization Service Providers (MSPs) and Tractor
+            Owners. Interested in joining our guild of vendors? Fill Out our
+            form.
           </Text>
         </Stack>
 
@@ -112,31 +114,35 @@ Fill Out our form.
               setError(null);
 
               try {
-                console.log(values);
-                const response = await registerAsVendor({
-                  ...values,
-                  user_id: profileInfo?.id,
-                }).unwrap();
-                if (response.status == "success") {
-                  setSuccess(true);
-                  onOpen();
-                  resetForm();
-                  toast.success(response.message);
-                } else {
-                  setError("An unknown error occured");
-                }
-                console.log("fulfilled", response?.data[0]);
+                console.log("my values", { values });
+                const response = await registerAsVendor(
+                  {
+                    ...values,
+                    first_name: profileInfo?.name?.split(" ")[0],
+                    last_name: profileInfo?.name?.split(" ")[1],
+                  },
+                  userToken as string
+                );
+                console.log("registerAsVendor", response);
+                toast.success("Thank you, We will get back to you soon");
+                resetForm();
+                // .unwrap();
+                // if (response.status == "success") {
+                //   setSuccess(true);
+                //   onOpen();
+                //   resetForm();
+                //   toast.success(response.message);
+                // } else {
+                //   setError("An unknown error occured");
+                // }
+                // console.log("fulfilled", response?.data[0]);
               } catch (err) {
                 const error = err as any;
-                // alert('error')
-                if (error?.data?.errors) {
-                  // setError(error?.data?.errors[0])
-                } else if (error?.data?.message) {
-                  setError(error?.data?.message);
-                } else {
-                  setError("An unknown error occured, please try again");
-                }
-                console.log("rejected", error);
+                                toast.error(
+                                  error?.response?.data?.detail ||
+                                    "An unexpected error occurred"
+                                );
+                                console.log("Error submitting form", error);
               }
             }}
           >
@@ -202,7 +208,7 @@ Fill Out our form.
                   )}
                 </Field>
 
-                <Field name="email">
+                <Field name="email" validate={validateEmpty}>
                   {({ field, form }: { [x: string]: any }) => (
                     <FormControl
                       mb="20px"
@@ -226,11 +232,13 @@ Fill Out our form.
                   )}
                 </Field>
 
-                <Field name="company" validate={validateEmpty}>
+                <Field name="company_name" validate={validateEmpty}>
                   {({ field, form }: { [x: string]: any }) => (
                     <FormControl
                       // my={4}
-                      isInvalid={form.errors.company && form.touched.company}
+                      isInvalid={
+                        form.errors.company_name && form.touched.company_name
+                      }
                       mb="30px"
                     >
                       {/* <FormLabel fontSize="14px">Town (Optional)</FormLabel> */}
@@ -245,7 +253,9 @@ Fill Out our form.
                         //  ref={initialRef}
                         placeholder="Company Name"
                       />
-                      <FormErrorMessage>{form.errors.company}</FormErrorMessage>
+                      <FormErrorMessage>
+                        {form.errors.company_name}
+                      </FormErrorMessage>
                     </FormControl>
                   )}
                 </Field>

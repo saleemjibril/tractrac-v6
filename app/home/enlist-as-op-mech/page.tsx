@@ -42,6 +42,7 @@ import { useBecomeAnOpOrMechMutation } from "@/redux/services/userApi";
 import { toast } from "react-toastify";
 import * as nigerianStates from "nigerian-states-and-lgas";
 import { FaPlus } from "react-icons/fa";
+import { enlistOperator } from "@/app/apis/general";
 // import NaijaStates from 'naija-xbystate';
 
 // const DynamicHeader = dynamic(() => import('../components/Sidenav'), {
@@ -49,7 +50,7 @@ import { FaPlus } from "react-icons/fa";
 //   })
 
 export default function BecomeAnAgent() {
-  const { profileInfo } = useAppSelector((state) => state.auth);
+  const { profileInfo, userToken } = useAppSelector((state) => state.auth);
   const [error, setError] = useState<string | null>(null);
   const [gender, setGender] = useState<string | null>("");
   const [success, setSuccess] = useState<boolean>(false);
@@ -107,7 +108,7 @@ export default function BecomeAnAgent() {
           </Text>
           <Formik
             initialValues={{
-              state: "",
+              state_of_origin: "",
               lga: "",
               email: profileInfo?.email || "",
             }}
@@ -116,31 +117,40 @@ export default function BecomeAnAgent() {
 
               try {
                 // alert('ss')
-                console.log(values);
-                const response = await becomeAnOpOrMech({
+                console.log("enlistOperator", {
                   ...values,
-                  user_id: profileInfo?.id,
-                }).unwrap();
-                if (response.status == "success") {
-                  setSuccess(true);
-                  onOpen();
-                  resetForm();
-                  toast.success(response.message);
-                } else {
-                  setError("An unknown error occured");
-                }
-                console.log("fulfilled", response?.data[0]);
+                  first_name: profileInfo?.name?.split(" ")[0],
+                    last_name: profileInfo?.name?.split(" ")[1],
+                    phone: profileInfo?.phone,
+                    operator_type: "mechanic",
+                    gender
+
+                });
+                const response = await enlistOperator({
+                  ...values,
+                  first_name: profileInfo?.name?.split(" ")[0],
+                    last_name: profileInfo?.name?.split(" ")[1],
+                    phone: profileInfo?.phone,
+                    operator_type: "mechanic",
+                    gender
+                }, userToken as string)
+                // .unwrap();
+                // if (response.status == "success") {
+                //   setSuccess(true);
+                //   onOpen();
+                //   resetForm();
+                //   toast.success(response.message);
+                // } else {
+                //   setError("An unknown error occured");
+                // }
+                // console.log("fulfilled", response?.data[0]);
               } catch (err) {
                 const error = err as any;
-                // alert('error')
-                if (error?.data?.errors) {
-                  // setError(error?.data?.errors[0])
-                } else if (error?.data?.message) {
-                  setError(error?.data?.message);
-                } else {
-                  setError("An unknown error occured, please try again");
-                }
-                console.log("rejected", error);
+                toast.error(
+                  error?.response?.data?.detail ||
+                    "An unexpected error occurred"
+                );
+                console.log("Error submitting form", error);
               }
             }}
           >
@@ -203,7 +213,7 @@ export default function BecomeAnAgent() {
 
                 <Field name="email">
                   {({ field, form }: { [x: string]: any }) => (
-                    <FormControl mb="20px" isDisabled={!!profileInfo?.email}>
+                    <FormControl mb="20px">
                       <Input
                         {...field}
                         variant="flushed"
@@ -221,10 +231,10 @@ export default function BecomeAnAgent() {
                   )}
                 </Field>
 
-                <Field name="state" validate={validateEmpty}>
+                <Field name="state_of_origin" validate={validateEmpty}>
                   {({ field, form }: { [x: string]: any }) => (
                     <FormControl
-                      isInvalid={form.errors.state && form.touched.state}
+                      isInvalid={form.errors.state_of_origin && form.touched.state_of_origin}
                       mb="20px"
                     >
                       {/* <FormLabel fontSize="14px">State</FormLabel> */}
@@ -259,7 +269,7 @@ export default function BecomeAnAgent() {
                           </option>
                         ))}
                       </Select>
-                      <FormErrorMessage>{form.errors.state}</FormErrorMessage>
+                      <FormErrorMessage>{form.errors.state_of_origin}</FormErrorMessage>
                     </FormControl>
                   )}
                 </Field>

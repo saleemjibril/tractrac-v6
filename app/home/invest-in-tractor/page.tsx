@@ -37,13 +37,14 @@ import {
   useInvestInTractorMutation,
 } from "@/redux/services/userApi";
 import { toast } from "react-toastify";
+import { investInTractor } from "@/app/apis/general";
 
 // const DynamicHeader = dynamic(() => import('../components/Sidenav'), {
 //     loading: () => <p>Loading...</p>,
 //   })
 
 export default function InvestInTractor() {
-  const { profileInfo } = useAppSelector((state) => state.auth);
+  const { profileInfo, userToken } = useAppSelector((state) => state.auth);
   const [gender, setGender] = useState<string | null>("");
 
   const [error, setError] = useState<string | null>(null);
@@ -70,8 +71,6 @@ export default function InvestInTractor() {
     // const formatted = numericValue.toLocaleString();
     return numericValue;
   };
-
-  const [investInTractor] = useInvestInTractorMutation();
 
   function validateEmpty(value: any) {
     let error;
@@ -112,7 +111,10 @@ export default function InvestInTractor() {
           <Text fontSize="24px" fontWeight={700} mb="4px">
             Invest in Tractor
           </Text>
-          <Image src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446739/invest_td6he5.svg" alt="Invest image" />
+          <Image
+            src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446739/invest_td6he5.svg"
+            alt="Invest image"
+          />
           <Text fontSize="20px" fontWeight={600} my="4px">
             Information
           </Text>
@@ -158,30 +160,40 @@ export default function InvestInTractor() {
             // initialValues={{ name: 'Sasuke' }}
             initialValues={{ amount: "", units: "" }}
             onSubmit={async (values: any, { resetForm }) => {
+              console.log("I am here");
+
               setError(null);
               try {
-                console.log(values);
-                const response = await investInTractor({
-                  ...values,
-                  user_id: profileInfo?.id ?? 0,
-                }).unwrap();
-                if (response.status == "success") {
-                  setSuccess(true);
-                  onOpen();
-                  resetForm();
-                } else {
-                  setError("An unknown error occured");
-                }
-                console.log("fulfilled", response?.data[0]);
+                console.log({ values });
+                const response = await investInTractor(
+                  {
+                    ...values,
+                    first_name: profileInfo?.name?.split(" ")[0],
+                    last_name: profileInfo?.name?.split(" ")[1],
+                    phone: profileInfo?.phone,
+                    gender,
+                  },
+                  userToken as string
+                );
+                console.log("investInTractor", response);
+                toast.success("Thank you, We will get back to you soon");
+                resetForm();
+                // .unwrap();
+                // if (response.status == "success") {
+                //   setSuccess(true);
+                //   onOpen();
+                //   resetForm();
+                // } else {
+                //   setError("An unknown error occured");
+                // }
+                // console.log("fulfilled", response?.data[0]);
               } catch (err) {
                 const error = err as any;
-                // alert('error')
-                if (error?.data?.errors) {
-                  // setError(error?.data?.errors[0])
-                } else if (error?.data?.message) {
-                  setError(error?.data?.message);
-                }
-                console.log("rejected", error);
+                toast.error(
+                  error?.response?.data?.detail ||
+                    "An unexpected error occurred"
+                );
+                console.log("Error submitting form", error);
               }
             }}
           >
@@ -197,11 +209,14 @@ export default function InvestInTractor() {
                   </Alert>
                 )}
 
-                <Field name="amount" validate={validateEmpty}>
+                <Field name="amount_to_invest" validate={validateEmpty}>
                   {({ field, form }: { [x: string]: any }) => (
                     <FormControl
                       my={4}
-                      isInvalid={form.errors.amount && form.touched.amount}
+                      isInvalid={
+                        form.errors.amount_to_invest &&
+                        form.touched.amount_to_invest
+                      }
                     >
                       <FormLabel fontSize="12px" color="#929292" mb="0px">
                         How much do you want to invest
@@ -232,16 +247,21 @@ export default function InvestInTractor() {
                           placeholder="How much do you want to invest"
                         />
                       </InputGroup>
-                      <FormErrorMessage>{form.errors.amount}</FormErrorMessage>
+                      <FormErrorMessage>
+                        {form.errors.amount_to_invest}
+                      </FormErrorMessage>
                     </FormControl>
                   )}
                 </Field>
 
-                <Field name="units" validate={validateEmpty}>
+                <Field name="number_of_tractors" validate={validateEmpty}>
                   {({ field, form }: { [x: string]: any }) => (
                     <FormControl
                       my={4}
-                      isInvalid={form.errors.units && form.touched.units}
+                      isInvalid={
+                        form.errors.number_of_tractors &&
+                        form.touched.number_of_tractors
+                      }
                     >
                       <FormLabel fontSize="12px" color="#929292" mb="0px">
                         How many Tractors do you want
@@ -277,15 +297,20 @@ export default function InvestInTractor() {
                         placeholder="How much do you want to invest"
                       />
 
-                      <FormErrorMessage>{form.errors.units}</FormErrorMessage>
+                      <FormErrorMessage>
+                        {form.errors.number_of_tractors}
+                      </FormErrorMessage>
                     </FormControl>
                   )}
                 </Field>
 
-                <Field name="brand" validate={validateEmpty}>
+                <Field name="brand_of_interest" validate={validateEmpty}>
                   {({ field, form }: { [x: string]: any }) => (
                     <FormControl
-                      isInvalid={form.errors.brand && form.touched.brand}
+                      isInvalid={
+                        form.errors.brand_of_interest &&
+                        form.touched.brand_of_interest
+                      }
                       mb="20px"
                     >
                       {/* <FormLabel fontSize="14px">State</FormLabel> */}
@@ -313,7 +338,9 @@ export default function InvestInTractor() {
                           </option>
                         ))}
                       </Select>
-                      <FormErrorMessage>{form.errors.brand}</FormErrorMessage>
+                      <FormErrorMessage>
+                        {form.errors.brand_of_interest}
+                      </FormErrorMessage>
                     </FormControl>
                   )}
                 </Field>
@@ -359,14 +386,34 @@ export default function InvestInTractor() {
                   validate={validateEmpty}
                 />
 
-                <CustomInput
-                  label="Email"
-                  fieldName="email"
-                  placeHolder="Email Address"
-                  type="email"
-                  defaultValue={profileInfo?.email}
-                  // validate={validateEmpty}
-                />
+                <Field name="email" validate={validateEmpty}>
+                  {({ field, form }: { [x: string]: any }) => (
+                    <FormControl
+                      mb="20px"
+                      isInvalid={form.errors.email && form.touched.email}
+                      isRequired
+                    >
+                      <FormLabel fontSize="14px" color="#929292">
+                        Email
+                      </FormLabel>
+                      <Input
+                        {...field}
+                        type="email"
+                        variant="flushed"
+                        borderColor="#929292"
+                        // value={profileInfo?.email}
+                        _focus={{
+                          borderColor: "#929292",
+                          boxShadow: 0,
+                        }}
+                        //  ref={initialRef}
+                        placeholder="Enter your email"
+                        defaultValue={profileInfo?.email}
+                      />
+                      <FormErrorMessage>{form.errors.email}</FormErrorMessage>
+                    </FormControl>
+                  )}
+                </Field>
 
                 <CustomInput
                   label="Phone Number"
@@ -497,10 +544,10 @@ export default function InvestInTractor() {
                         if (!profileInfo?.gender) {
                           setGender("female");
                         } else {
-                        if (!gender || gender?.length < 1) {
-                          setGender("female");
+                          if (!gender || gender?.length < 1) {
+                            setGender("female");
+                          }
                         }
-                      }
                       }}
                       // height="37px"
                       px="16px"
@@ -628,11 +675,11 @@ const CustomInput: FC<CustomInputProps> = ({
   validate,
 }) => {
   const [mounted, setMounted] = useState(false);
-  useEffect(()=>{
+  useEffect(() => {
     setMounted(true);
-  }, [])
+  }, []);
 
-  if(!mounted) return <Skeleton height="30px" mt="16px" />
+  if (!mounted) return <Skeleton height="30px" mt="16px" />;
 
   return defaultValue ? (
     <FormControl mb="16px" isDisabled>
