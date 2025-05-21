@@ -364,7 +364,7 @@ export default function ServicesComponent() {
               href="/home/agent"
               transition="transform 0.3s"
             >
-              <Image src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446758/agent_coin3x.svg" alt=""></Image>
+              <Image src="https://res.cloudinary.com/tractrac-global/image/upload/v1747817550/agent_hxadwc.svg" alt=""></Image>
               <Text fontSize="16px" mt="18px" fontWeight={600}>
                 Become an Agent
               </Text>
