@@ -844,33 +844,97 @@ function HireTractorForm({ id }: { id: string }) {
     setNdcCalendar(!ndcCalendar);
   };
 
-  const handleDateRangeClick = (date: string) => {
-    if (!bookedDates?.includes(date)) {
-      if (!firstDate) {
-        setFirstDate(date);
-      } else if (firstDate && !lastDate) {
-        if (
-          parseInt(firstDate?.split("-")[2]) > parseInt(date?.split("-")[2])
-        ) {
-          setLastDate(firstDate);
-          setFirstDate(date);
-        } else {
-          setLastDate(date);
-        }
-      } else if (!!firstDate && !!lastDate) {
-        setFirstDate(date);
-        setLastDate(null);
-      }
+   // Helper function to check if there are any booked dates in the given range
+   const checkForBookedDatesInRange = (start: string, end: string) => {
+    if (!bookedDates || bookedDates.length === 0) {
+      return false;
     }
+    
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+    
+    // Go through each day between start and end to check if any are booked
+    const currentDate = new Date(startDate);
+    
+    while (currentDate <= endDate) {
+      const dateString = currentDate.toISOString().split('T')[0]; // Format: YYYY-MM-DD
+      
+      if (bookedDates.includes(dateString)) {
+        return true; // Found a booked date in the range
+      }
+      
+      // Move to the next day
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+    
+    return false; // No booked dates in the range
   };
 
+
+  const handleDateRangeClick = (date: string) => {
+    // Don't proceed if the date is booked
+    if (bookedDates?.includes(date)) {
+      return;
+    }
+  
+    // Get today's date for comparison
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    // Parse the selected date
+    const selectedDate = new Date(date);
+    
+    // Don't allow selection of today or past dates (additional safety check)
+    if (selectedDate <= today) {
+      return;
+    }
+  
+    if (!firstDate) {
+      // Set first date if none is selected yet
+      setFirstDate(date);
+    } else if (firstDate && !lastDate) {
+      // Compare full dates instead of just the day part
+      const firstDateObj = new Date(firstDate);
+      const dateObj = new Date(date);
+      
+      if (firstDateObj > dateObj) {
+        // If the selected date is before the first date, swap them
+        setLastDate(firstDate);
+        setFirstDate(date);
+      } else {
+        // Before setting the last date, check if there are any booked dates in the range
+        const hasBookedDatesInRange = checkForBookedDatesInRange(firstDate, date);
+        
+        if (hasBookedDatesInRange) {
+          // If there are booked dates in the range, reset the selection and use the new date as first date
+          setFirstDate(date);
+          setLastDate(null);
+        } else {
+          // Otherwise, set it as the last date
+          setLastDate(date);
+        }
+      }
+    } else if (firstDate && lastDate) {
+      // Reset selection and start a new range
+      setFirstDate(date);
+      setLastDate(null);
+    }
+  };
+  
+ 
   const renderCalendarGridRange = () => {
     const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     const startDay = new Date(currentYear, currentMonth, 1).getDay();
     const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
 
+      // Get today's date for comparison
+  const today = new Date();
+  const currentDay = today.getDate();
+  const currentRealMonth = today.getMonth();
+  const currentRealYear = today.getFullYear();
+
     const rows = [];
-    let currentDay = 1;
+    let calendarDay = 1;
 
     console.log("perimiter", new Date().getMonth());
     console.log("perimiter", new Date().getFullYear());
@@ -883,21 +947,31 @@ function HireTractorForm({ id }: { id: string }) {
         if (i === 0 && j < startDay) {
           // Render empty cells for days before the first of the month
           days.push(<div key={`empty-${j}`} className="calendar-cell"></div>);
-        } else if (currentDay > daysInMonth) {
+        } else if (calendarDay > daysInMonth) {
           // Finish rendering the calendar grid
           break;
         } else {
           // Render the date cell
           const dateString = `${currentYear}-${String(
             currentMonth + 1
-          ).padStart(2, "0")}-${String(currentDay).padStart(2, "0")}`;
+          ).padStart(2, "0")}-${String(calendarDay).padStart(2, "0")}`;
 
           const isAvailable = !bookedDates?.includes(dateString);
           const isBooked = bookedDates?.includes(dateString);
 
+          const isPastOrToday = 
+          currentYear < currentRealYear || 
+          (currentYear === currentRealYear && currentMonth < currentRealMonth) || 
+          (currentYear === currentRealYear && currentMonth === currentRealMonth && calendarDay <= currentDay);
+
+
+
           const cellClassName = `calendar-cell ndc-calendar-date${
-            isAvailable ? " available" : ""
-          }${isBooked ? " booked" : ""}`;
+            isAvailable && !isPastOrToday ? " available" : ""
+          }${isBooked ? " booked" : ""}${
+            isPastOrToday ? " disabled" : ""
+          }`;
+  
 
           days.push(
             <Tooltip
@@ -924,11 +998,11 @@ function HireTractorForm({ id }: { id: string }) {
                 }
                 onClick={() => handleDateRangeClick(dateString)}
               >
-                {currentDay}
+                {calendarDay}
               </div>
             </Tooltip>
           );
-          currentDay++;
+          calendarDay++;
         }
       }
 
@@ -1042,7 +1116,10 @@ function HireTractorForm({ id }: { id: string }) {
             console.log("unit", unit);
 
             console.log("hello", `${values?.farm_size} ${unit}`);
-
+if(!firstDate || !lastDate) {
+  toast.error("Please select a date range");
+  return;
+}
             const response = await hireTractor(
               {
                 ...values,
