@@ -209,6 +209,7 @@ export default function HireTractor() {
     setState(null);
     setLga(null);
     setTractorType(null);
+    handleGetTractors();
   } 
 
   async function search() {
