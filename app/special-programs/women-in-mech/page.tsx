@@ -34,6 +34,7 @@ import {
   useCollaborateMutation,
 } from "@/redux/services/userApi";
 import { toast } from "react-toastify";
+import { womenInMech } from "@/app/apis/general";
 
 // const DynamicHeader = dynamic(() => import('../components/Sidenav'), {
 //     loading: () => <p>Loading...</p>,
@@ -46,7 +47,7 @@ export default function BecomeAnAgent() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const router = useRouter();
 
-  const { profileInfo } = useAppSelector((state) => state.auth);
+  const { profileInfo, userToken } = useAppSelector((state) => state.auth);
 
   const [collaborate] = useCollaborateMutation();
 
@@ -98,36 +99,49 @@ export default function BecomeAnAgent() {
           </Text>
           <Formik
             // initialValues={{ name: 'Sasuke' }}
-            initialValues={{ state: "", lga: "" }}
+            initialValues={{
+              name: "",
+              email: profileInfo?.email,
+              organization: "",
+              position: "",
+              phone: "",
+              message: ""
+            }}
             onSubmit={async (values: any, { resetForm }) => {
               setError(null);
 
               try {
                 // alert('ss')
-                console.log(values);
-                const response = await collaborate({
-                  ...values,
-                  user_id: profileInfo?.id,
-                  type: "women_in_mech",
-                }).unwrap();
-                if (response.status == "success") {
-                  // router.replace("/login");
-                  resetForm();
-                  setSuccess(true);
-                  onOpen();
-                } else {
-                  setError("An unknown error occured");
-                }
-                console.log("fulfilled", response?.data[0]);
+                console.log("my values", values);
+                const response = await womenInMech(
+                  {
+                    ...values,
+                    first_name: profileInfo?.name?.split(" ")[0],
+                    last_name: profileInfo?.name?.split(" ")[1],
+                    email: profileInfo?.email,
+                    phone: values?.phone?.toString(),
+                  },
+                  userToken as string
+                );
+                toast.success("Thank you, We will get back to you soon");
+                resetForm();
+                // .unwrap();
+                // if (response.status == "success") {
+                //   // router.replace("/login");
+                //   resetForm();
+                //   setSuccess(true);
+                //   onOpen();
+                // } else {
+                //   setError("An unknown error occured");
+                // }
+                // console.log("fulfilled", response?.data[0]);
               } catch (err) {
                 const error = err as any;
-                // alert('error')
-                if (error?.data?.errors) {
-                  // setError(error?.data?.errors[0])
-                } else if (error?.data?.message) {
-                  setError(error?.data?.message);
-                }
-                console.log("rejected", error);
+                toast.error(
+                  error?.response?.data?.detail ||
+                    "An unexpected error occurred"
+                );
+                console.log("Error submitting form", error);
               }
             }}
           >
@@ -147,21 +161,35 @@ export default function BecomeAnAgent() {
                   fieldName="name"
                   placeHolder="Name"
                   type="text"
-                  defaultValue={`${profileInfo?.name?.split(" ")[0]} ${profileInfo?.name?.split(" ")[1]}`}
+                  defaultValue={`${profileInfo?.name?.split(" ")[0]} ${
+                    profileInfo?.name?.split(" ")[1]
+                  }`}
                   defaultCheck={profileInfo?.name?.split(" ")[0]}
                   validate={validateEmpty}
                 />
-
-                <CustomInput
-                  label="Email"
-                  fieldName="email"
-                  placeHolder="Email Address"
-                  type="email"
-                  defaultValue={profileInfo?.email}
-                  defaultCheck={profileInfo?.email}
-                  validate={validateEmpty}
-                />
-
+<Field name="email" validate={validateEmpty}>
+                  {({ field, form }: { [x: string]: any }) => (
+                    <FormControl
+                      mb="20px"
+                      isInvalid={form.errors.email && form.touched.email}
+                    >
+                      <Input
+                        {...field}
+                        variant="flushed"
+                        borderColor="#929292"
+                        color="#929292"
+                        // value={profileInfo?.email}
+                        _focus={{
+                          borderColor: "#929292",
+                          boxShadow: 0,
+                        }}
+                        //  ref={initialRef}
+                        placeholder="Email Address"
+                      />
+                      <FormErrorMessage>{form.errors.email}</FormErrorMessage>
+                    </FormControl>
+                  )}
+                </Field>
                 {/* <Field name="state" validate={validateEmpty}>
                   {({ field, form }: { [x: string]: any }) => (
                     <FormControl

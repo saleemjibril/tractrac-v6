@@ -28,33 +28,33 @@ export default function OutPartnersComponent() {
       }
     });
 
-    const title = titleRef.current;
-    const words = title.innerText.split(' ');
+    // const title = titleRef.current;
+    // const words = title.innerText.split(' ');
     
-    title.innerText = '';
+    // title.innerText = '';
     
-    words.forEach((word, index) => {
-      const wordSpan = document.createElement('span');
-      wordSpan.innerText = word + (index < words.length - 1 ? ' ' : '');
-      wordSpan.style.display = 'inline-block';
-      wordSpan.style.opacity = '0';
-      wordSpan.style.transform = 'translateY(30px)';
-      title.appendChild(wordSpan);
-    });
+    // words.forEach((word, index) => {
+    //   const wordSpan = document.createElement('span');
+    //   wordSpan.innerText = word + (index < words.length - 1 ? ' ' : '');
+    //   wordSpan.style.display = 'inline-block';
+    //   wordSpan.style.opacity = '0';
+    //   wordSpan.style.transform = 'translateY(30px)';
+    //   title.appendChild(wordSpan);
+    // });
 
-    tl.to(title.children, {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      stagger: 0.15,
-      ease: "power3.out"
-    })
-    .fromTo(
-      subtitleRef.current,
-      { opacity: 0, y: 20 },
-      { opacity: 1, y: 0, duration: 1, ease: "power2.out" },
-      "-=0.4"
-    );
+    // tl.to(title.children, {
+    //   opacity: 1,
+    //   y: 0,
+    //   duration: 0.8,
+    //   stagger: 0.15,
+    //   ease: "power3.out"
+    // })
+    // .fromTo(
+    //   subtitleRef.current,
+    //   { opacity: 1, y: 20 },
+    //   { opacity: 1, y: 0, duration: 1, ease: "power2.out" },
+    //   "-=0.4"
+    // );
 
     const logoAnimation = gsap.timeline({
       scrollTrigger: {
@@ -101,7 +101,7 @@ export default function OutPartnersComponent() {
         overflow="hidden"
       >
         <Text 
-          ref={titleRef}
+          // ref={titleRef}
           lineHeight="64px" 
           fontWeight={800} 
           fontSize="48px"

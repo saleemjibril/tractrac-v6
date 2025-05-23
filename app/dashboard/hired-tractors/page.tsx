@@ -184,7 +184,7 @@ export default function HiredTractors() {
                       </Text>
                       {/* </Box> */}
                     </Td>
-                    <Td>{tractor?.farm_size} Square Meter</Td>
+                    <Td>{tractor?.farm_size} sqm</Td>
                     <Td></Td>
                     <Td>{formatNumber(tractor?.total_amount)}</Td>
                     {/* <Td>

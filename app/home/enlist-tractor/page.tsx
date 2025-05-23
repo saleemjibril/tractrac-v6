@@ -211,7 +211,7 @@ export default function BecomeAnAgent() {
 
   return (
     <SidebarWithHeader isAuth={true}>
-      <Box bgColor="white" mx="20px" my="12px" px="34px" py="20px">
+      <Box bgColor={{base: "transparent", lg: "white"}} mx="20px" my="12px" px={{base: "0", lg: "34px"}} py="20px">
         <Stack>
           <Text fontSize="24px" fontWeight={700} mb="20px">
             Enlist your Tractors

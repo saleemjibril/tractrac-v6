@@ -6,6 +6,8 @@ import {
   ComponentWithAs,
   IconProps,
   Image,
+  Box,
+  Button,
 } from "@chakra-ui/react";
 import { SidebarWithHeader } from "../components/Sidenav";
 import {
@@ -19,6 +21,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { createElement, useState } from "react";
 import LoginRequiredModal from "../components/LoginRequiredModal";
 import { useAppSelector } from "@/redux/hooks";
+import { ArrowBackIcon } from "@chakra-ui/icons";
 
 interface ItemProps {
   name: string;
@@ -70,6 +73,21 @@ export default function Dashboard() {
 
   return (
     <SidebarWithHeader>
+      <Box p="20px 0" display={{base: "block", md: "none"}}>
+                <Button
+                  mr="auto"
+                  border="1px"
+                  bgColor="transparent"
+                  onClick={() => {
+                    router.back();
+                  }}
+                >
+                  <ArrowBackIcon boxSize="20px" mr="14px" />
+                  <Text fontSize="14px" fontWeight={400}>
+                    Back
+                  </Text>
+                </Button>
+                </Box>
       <SimpleGrid
         columns={{ base: 2, md: 2 }}
         spacing={{ base: "12px", md: "40px" }}

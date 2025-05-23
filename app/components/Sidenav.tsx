@@ -413,9 +413,9 @@ export const SidebarWithHeader: React.FC<SidebarProps> = ({
   isAuth,
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  // const router = useRouter();
+  const router = useRouter();
   const { userToken } = useAppSelector((state) => state.auth);
-  
+  const pathLength = usePathname().split("/").length;
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
     setMounted(true);
@@ -452,6 +452,24 @@ export const SidebarWithHeader: React.FC<SidebarProps> = ({
         {/* mobilenav */}
         <MobileNav onOpen={onOpen} />
         {/* <MobileNavigation /> */}
+
+        {pathLength > 2 && (
+          <Box p="20px" display={{base: "block", md: "none"}}>
+          <Button
+            mr="auto"
+            border="1px"
+            bgColor="transparent"
+            onClick={() => {
+              router.back();
+            }}
+          >
+            <ArrowBackIcon boxSize="20px" mr="14px" />
+            <Text fontSize="14px" fontWeight={400}>
+              Back
+            </Text>
+          </Button>
+          </Box>
+      )}
         <Box ml={{ base: 0, md: 60 }} p="4">
           {/* <Box ml={{ base: 0, md: 60 }} p={{base: "3", md: "4"}}> */}
           <NoSsrWrapper>{children}</NoSsrWrapper>

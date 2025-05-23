@@ -117,25 +117,7 @@ export default function BecomeAnAgent() {
             >
               Import CSV
             </Button>
-            <Button
-              bgColor="#F8A730"
-              fontSize="14px"
-              minW="170px"
-              color="white"
-              borderRadius="4px"
-              fontWeight={400}
-              _hover={{
-                bgColor: "#F8A73099",
-              }}
-              onClick={() => {
-                setModalState(true);
-              }}
-            >
-              <Box as="span" mr="12px">
-                Add Farmers
-              </Box>
-              <AddIcon boxSize="12px" />
-            </Button>
+          
           </ButtonGroup>
           <Box pr={{ base: "0px", lg: "82px" }}>
             <Text fontWeight={500} mb="24px" mt="20px">

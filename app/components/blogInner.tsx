@@ -43,7 +43,7 @@ export default function BlogInner({ posts }: BlogInnerProps) {
         >
           <Text
             fontWeight={800}
-            fontSize={{ base: "20px", md: "24px", lg: "39px" }}
+            fontSize={{ base: "24px", lg: "39px" }}
             textAlign="left"
             mt="40px"
             mb="40px"

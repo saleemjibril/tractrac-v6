@@ -684,6 +684,7 @@ export default function SignupInner() {
                           color="#F8A730"
                           borderRadius={0}
                           flex={1}
+                          onClick={() => router.replace("/home")}
                         >
                           I am a Guest
                         </Button>

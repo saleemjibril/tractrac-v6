@@ -54,6 +54,7 @@ import {
 import router from "next/router";
 import { Formik, Form, Field } from "formik";
 import { toast } from "react-toastify";
+import { getUserInfo, updateUserInfo } from "../apis/user";
 
 const statusTypes: Record<string, { title: string; color: string }> = {
   pending: { title: "Pending", color: "#FA9411" },
@@ -64,21 +65,22 @@ const statusTypes: Record<string, { title: string; color: string }> = {
 };
 
 export default function AccountPage() {
-  const { profileInfo } = useAppSelector((state) => state.auth);
+  const { profileInfo, userToken } = useAppSelector((state) => state.auth);
+
+  console.log("profileInfo", profileInfo);
 
   const [modalState, setModalState] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   const [error, setError] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
-  
 
   const [updateBioData] = useUpdateBioDataMutation();
   const [updatePassword] = useUpdatePasswordMutation();
 
-  useEffect(()=>{
-      setMounted(true)
-  }, [mounted])
+  useEffect(() => {
+    setMounted(true);
+  }, [mounted]);
 
   function validateEmpty(value: any) {
     let error;
@@ -87,6 +89,15 @@ export default function AccountPage() {
     }
     return error;
   }
+
+  const handleGetUserInfo = () => {
+    const response = getUserInfo(profileInfo?.id, userToken as string);
+    console.log("getUserInfo", response);
+  };
+
+  useEffect(() => {
+    handleGetUserInfo();
+  }, [profileInfo]);
 
   return (
     <SidebarWithHeader>
@@ -118,14 +129,16 @@ export default function AccountPage() {
                   <Text fontWeight={700} fontSize="28px" mt="12px">
                     Edit Profile
                   </Text>
-                  {mounted &&
-                  <Avatar
-                    my="30px"
-                    size="xl"
-                    name={`${profileInfo?.name?.split(" ")[0]} ${profileInfo?.name?.split(" ")[1]}`}
-                    src={undefined}
-                  >
-                    {/* <AvatarBadge
+                  {mounted && (
+                    <Avatar
+                      my="30px"
+                      size="xl"
+                      name={`${profileInfo?.name?.split(" ")[0]} ${
+                        profileInfo?.name?.split(" ")[1]
+                      }`}
+                      src={undefined}
+                    >
+                      {/* <AvatarBadge
                       cursor="pointer"
                       boxSize="1.1em"
                       bg="#F8A730"
@@ -135,7 +148,8 @@ export default function AccountPage() {
                     >
                       <Edit2 color="white" size="18px" />
                     </AvatarBadge> */}
-                  </Avatar> }
+                    </Avatar>
+                  )}
 
                   <Formik
                     initialValues={{
@@ -150,27 +164,30 @@ export default function AccountPage() {
 
                       try {
                         // alert('ss')
-                        console.log(values);
+                        console.log("my data", values);
 
-                        const response = await updateBioData({
-                          ...values,
-                          user_id: profileInfo?.id,
-                          //   tractor_id: id,
-                        }).unwrap();
-                        if (response.status == "success") {
-                          toast.success(response.message);
-                        } else {
-                          setError("An unknown error occured");
-                        }
+                        const response = await updateUserInfo(
+                          profileInfo?.id,
+                          {
+                            ...values,
+                          },
+                          userToken as string
+                        );
+                        toast.success("Profile updated successfully");
+                        resetForm();
+                        // .unwrap();
+                        // if (response.status == "success") {
+                        //   toast.success(response.message);
+                        // } else {
+                        //   setError("An unknown error occured");
+                        // }
                       } catch (err) {
                         const error = err as any;
-                        // alert('error')
-                        if (error?.data?.errors) {
-                          // setError(error?.data?.errors[0])
-                        } else if (error?.data?.message) {
-                          setError(error?.data?.message);
-                        }
-                        console.log("rejected", error);
+                        toast.error(
+                          error?.response?.data?.detail ||
+                            "An unexpected error occurred"
+                        );
+                        console.log("Error submitting form", error);
                       }
                     }}
                   >
@@ -187,7 +204,7 @@ export default function AccountPage() {
                           <Field name="phone" validate={validateEmpty}>
                             {({ field, form }: { [x: string]: any }) => (
                               <FormControl
-                              // isDisabled={true}
+                                // isDisabled={true}
                                 isInvalid={
                                   form.errors.phone && form.touched.phone
                                 }
@@ -413,7 +430,8 @@ export default function AccountPage() {
                             {({ field, form }: { [x: string]: any }) => (
                               <FormControl
                                 isInvalid={
-                                  form.errors.old_password && form.touched.old_password
+                                  form.errors.old_password &&
+                                  form.touched.old_password
                                 }
                               >
                                 <FormLabel fontSize="12px" color="#323232">
@@ -439,8 +457,7 @@ export default function AccountPage() {
                             <FormControl
                               mt="30px"
                               isInvalid={
-                                form.errors.password &&
-                                form.touched.password
+                                form.errors.password && form.touched.password
                               }
                             >
                               <FormLabel fontSize="12px" color="#323232">
@@ -762,7 +779,10 @@ function EmptyTractorsPlaceholder() {
       <Box bgColor="white" width="100%" p="60px" textAlign="center" mt="20px">
         {/* <Box bgColor="white" width="400px" p="60px" textAlign="center" mt="40px"> */}
         <Center>
-          <Image src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446712/empty-state_tytpqr.svg" alt="Empty state image icon" />
+          <Image
+            src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446712/empty-state_tytpqr.svg"
+            alt="Empty state image icon"
+          />
         </Center>
         <Text color="#323232" fontWeight="700" fontSize="20px" mt="57px">
           Your list is empty

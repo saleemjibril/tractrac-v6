@@ -23,8 +23,8 @@ export default function PersonalOverview() {
       bgColor="#FFFFFF"
       mt="40px"
       //   mr={{ base: "0px", lg: "120px" }}
-      px="66px"
-      py="43px"
+      px={{base: "20px", lg: "66px"}}
+      py={{base: "20px", lg: "43px"}}
       borderRadius="6px"
     >
       <Text color="#333333" fontWeight={700} fontSize="28px">

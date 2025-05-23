@@ -18,8 +18,10 @@ import Header from "./header";
 import FooterComponent from "./footer";
 import { ChakraWrapper } from "../chakraUIWrapper";
 import { serviceItems } from "../services/items";
+import { useAppSelector } from "@/redux/hooks";
 
 export default function ServicesInner() {
+  const { userToken } = useAppSelector((state) => state.auth);
 
   return (
     <ChakraWrapper>
@@ -83,7 +85,7 @@ export default function ServicesInner() {
                       opacity: ".8",
                     }}
                     as="a"
-                    href={item.buttonLink}
+                    href={userToken ? item.buttonLink : `/login?redirect=${item.buttonLink}`}
                   >
                     <Box as="span" mr="30px">
                       {item.buttonText}

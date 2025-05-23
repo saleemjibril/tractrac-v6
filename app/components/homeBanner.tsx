@@ -69,7 +69,7 @@ export default function HomeBanner() {
         width={"100%"}
       >
         <Box
-          pt={{ base: "20px", md: "86px" }}
+          pt={{ base: "40px", md: "86px" }}
           color={"white"}
           width={"100%"}
           maxWidth="1400px"

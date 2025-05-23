@@ -124,6 +124,8 @@ export default function FooterComponent() {
           <Link href="https://web.facebook.com/tractracglobal">Facebook</Link>
           <Link href="https://twitter.com/TractracGlobal">Twitter</Link>
           <Link href="https://www.instagram.com/tractracglobal">Instagram</Link>
+          <Link href="/privacy-policy">Privacy Policy</Link>
+          <Link href="/terms-and-conditions">Terms and conditions</Link>
         </Flex>
       </Flex>
       </ChakraWrapper>

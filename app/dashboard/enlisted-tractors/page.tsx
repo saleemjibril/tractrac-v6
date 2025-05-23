@@ -112,7 +112,7 @@ export default function EnlistedTractors() {
         <EmptyTractorsPlaceholder />
       ) : ( */}
       <Box mx="20px" my="12px" py="20px">
-        <Flex justifyContent="space-between" mb="20px">
+        <Flex justifyContent="space-between" mb="20px" flexWrap={"wrap"} gap="20px">
           <Stack>
             <Text fontSize="24px" fontWeight={700} lineHeight="24px">
               Enlisted tractors.
@@ -125,7 +125,7 @@ export default function EnlistedTractors() {
             bgColor="#FA9411"
             height="42px"
             borderRadius="4px"
-            width="200px"
+            minWidth="200px"
             color="white"
             as="a"
             href="/home/enlist-tractor"

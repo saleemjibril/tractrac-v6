@@ -15,3 +15,36 @@ export const getUserStats = async (id: string, token: string) => {
   
     return res;
   };
+
+export const getUserInfo = async (id: string, token: string) => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+  
+    const res = await axios.get(
+      `${process.env.NEXT_PUBLIC_URL}/users/${id}`,
+      config
+    );
+  
+    return res;
+  };
+
+export const updateUserInfo = async (id: string, data: object, token: string) => {
+
+  
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+  
+    const res = await axios.put(
+      `${process.env.NEXT_PUBLIC_URL}/users/${id}`,
+      data,
+      config
+    );
+  
+    return res;
+  };

@@ -139,7 +139,13 @@ export default function Payments() {
               </Thead>
               <Tbody>
                 {payments?.map((payment: any) => (
-                  <Tr key={payment?.id}>
+                  <Tr cursor={"pointer"} key={payment?.id}
+                  onClick={() => {
+                    if(payment?.payment_status === "pending") {
+                      window.open(`https://checkout.paystack.com/${payment?.paystack_access_code}`)
+                    }
+                  }}
+                  >
                     <Td>{payment?.id}</Td>
                     <Td>{payment?.hire_tractor_id}</Td>
                     <Td>{payment?.invoice_number}</Td>

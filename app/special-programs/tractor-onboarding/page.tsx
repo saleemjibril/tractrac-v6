@@ -41,7 +41,7 @@ import {
 import { toast } from "react-toastify";
 import { FiFile, FiUpload } from "react-icons/fi";
 import { FaUpload } from "react-icons/fa";
-import { tractorOnboarding } from "@/redux/features/user/userActions";
+import { tractorOnboarding } from "@/app/apis/general";
 
 // const DynamicHeader = dynamic(() => import('../components/Sidenav'), {
 //     loading: () => <p>Loading...</p>,
@@ -64,7 +64,7 @@ export default function BecomeAnAgent() {
   const router = useRouter();
 
   const dispatch = useAppDispatch();
-  const { profileInfo } = useAppSelector((state) => state.auth);
+  const { profileInfo, userToken } = useAppSelector((state) => state.auth);
   const {
     loading,
     error: tractorOnboardingError,
@@ -165,29 +165,37 @@ export default function BecomeAnAgent() {
 
               try {
                 // alert('ss')
-                console.log("nn", values);
-                const formData = new FormData();
-                formData.append("user_id", profileInfo?.id);
-                formData.append("dob", values?.dob);
-                formData.append("email", values?.email || "");
-                formData.append("id_no", values?.id_no);
-                formData.append("school", values?.school);
-                formData.append("course", values?.course);
-                formData.append("id_type", values?.id_type);
+                console.log("valuesssss", values);
+                const response = await tractorOnboarding(
+                  {...values,
+                    name: profileInfo?.name,
 
-                formData.append("id_image", values?.id_image);
-                formData.append("tractor_image", values?.tractor_image);
+                  },
+                  userToken as string
+                );
 
-                dispatch(tractorOnboarding(formData));
+                toast.success("Thank you, We will get back to you soon");
+                resetForm();
+                // const formData = new FormData();
+                // formData.append("user_id", profileInfo?.id);
+                // formData.append("dob", values?.dob);
+                // formData.append("email", values?.email || "");
+                // formData.append("id_type", values?.id_type);
+                // formData.append("school", values?.school);
+                // formData.append("course", values?.course);
+                // formData.append("id_type", values?.id_type);
+
+                // formData.append("id_image", values?.id_image);
+                // formData.append("tractor_image", values?.tractor_image);
+
+                // dispatch(tractorOnboarding(formData));
               } catch (err) {
                 const error = err as any;
-                // alert('error')
-                if (error?.data?.errors) {
-                  // setError(error?.data?.errors[0])
-                } else if (error?.data?.message) {
-                  setError(error?.data?.message);
-                }
-                console.log("rejected", error);
+                toast.error(
+                  error?.response?.data?.detail ||
+                    "An unexpected error occurred"
+                );
+                console.log("Error submitting form", error);
               }
             }}
           >
@@ -227,7 +235,7 @@ export default function BecomeAnAgent() {
 
                 <Field name="email">
                   {({ field, form }: { [x: string]: any }) => (
-                    <FormControl isDisabled={!!profileInfo?.email} mb="16px">
+                    <FormControl mb="16px">
                       <FormLabel fontSize="14px" color="#929292">
                         Email
                       </FormLabel>
@@ -246,11 +254,11 @@ export default function BecomeAnAgent() {
                   )}
                 </Field>
 
-                <Field name="dob" validate={validateEmpty}>
+                <Field name="date_of_birth" validate={validateEmpty}>
                   {({ field, form }: { [x: string]: any }) => (
                     <FormControl
                       my={4}
-                      isInvalid={form.errors.dob && form.touched.dob}
+                      isInvalid={form.errors.date_of_birth && form.touched.date_of_birth}
                     >
                       <FormLabel fontSize="14px" color="#929292">
                         Date of birth
@@ -266,7 +274,7 @@ export default function BecomeAnAgent() {
                         type="date"
                         placeholder="Date of birth"
                       />
-                      <FormErrorMessage>{form.errors.dob}</FormErrorMessage>
+                      <FormErrorMessage>{form.errors.date_of_birth}</FormErrorMessage>
                     </FormControl>
                   )}
                 </Field>
@@ -294,11 +302,11 @@ export default function BecomeAnAgent() {
                   )}
                 </Field>
 
-                <Field name="course" validate={validateEmpty}>
+                <Field name="course_of_study" validate={validateEmpty}>
                   {({ field, form }: { [x: string]: any }) => (
                     <FormControl
                       my={4}
-                      isInvalid={form.errors.course && form.touched.course}
+                      isInvalid={form.errors.course_of_study && form.touched.course_of_study}
                     >
                       {/* <FormLabel fontSize="14px">Town (Optional)</FormLabel> */}
                       <Input
@@ -313,7 +321,7 @@ export default function BecomeAnAgent() {
                         //  ref={initialRef}
                         placeholder="Course of Study"
                       />
-                      <FormErrorMessage>{form.errors.course}</FormErrorMessage>
+                      <FormErrorMessage>{form.errors.course_of_study}</FormErrorMessage>
                     </FormControl>
                   )}
                 </Field>
@@ -370,11 +378,11 @@ export default function BecomeAnAgent() {
                   )}
                 </Field>
 
-                <Field name="id_no">
+                <Field name="id_type">
                   {({ field, form }: { [x: string]: any }) => (
                     <FormControl
                       my={4}
-                      isInvalid={form.errors.id_no && form.touched.id_no}
+                      isInvalid={form.errors.id_type && form.touched.id_type}
                     >
                       <Input
                         borderColor="#929292"
@@ -386,7 +394,7 @@ export default function BecomeAnAgent() {
                         {...field}
                         placeholder="ID Number"
                       />
-                      <FormErrorMessage>{form.errors.id_no}</FormErrorMessage>
+                      <FormErrorMessage>{form.errors.id_type}</FormErrorMessage>
                     </FormControl>
                   )}
                 </Field>

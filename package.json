@@ -10,9 +10,9 @@
     "generate-icons": "npx create-chakra-icons  -o ./app/components/Icons.tsx ./public/icons --ts"
   },
   "dependencies": {
-    "@chakra-ui/icons": "^2.1.0",
+    "@chakra-ui/icons": "^2.2.4",
     "@chakra-ui/next-js": "^2.1.5",
-    "@chakra-ui/react": "^2.10.8",
+    "@chakra-ui/react": "^2.10.9",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@googlemaps/js-api-loader": "^1.16.2",
@@ -29,6 +29,7 @@
     "eslint": "8.45.0",
     "eslint-config-next": "^13.5.2",
     "formik": "^2.4.3",
+    "framer-motion": "^12.12.1",
     "graphql": "^16.10.0",
     "graphql-request": "^7.1.2",
     "gsap": "^3.13.0",

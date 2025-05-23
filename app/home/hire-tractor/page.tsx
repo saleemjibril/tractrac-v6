@@ -299,8 +299,8 @@ export default function HireTractor() {
             {/* <Image src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446725/map_punpe8.svg" alt="map image" /> */}
           </Stack>
           <Box mt="40px">
-            <Stack direction="row" gap="20px">
-              {/* <InputGroup
+          <SimpleGrid columns={{base: 2, lg: 4}} spacing="20px" width={"fit-content"}>
+                          {/* <InputGroup
                 width="140px"
                 border="1px"
                 borderColor="#FA9411"
@@ -477,12 +477,12 @@ export default function HireTractor() {
                   </option>
                 ))}
               </Select> */}
-            </Stack>
+            </SimpleGrid>
             {
               // searchResult?.isFetching ||
               loading ? (
                 <SimpleGrid
-                  columns={{ base: 2, md: 4 }}
+                  columns={{ base: 1, md: 4 }}
                   spacingX="20px"
                   spacingY="15px"
                   mt="30px"
@@ -554,8 +554,8 @@ export default function HireTractor() {
                 <EmptyDataPlaceholder isSearch={false} />
               ) : (
                 <SimpleGrid
-                  columns={{ base: 2, md: 4 }}
-                  spacingX="20px"
+                columns={{ base: 1, md: 4 }}
+                spacingX="20px"
                   spacingY="15px"
                   mt="30px"
                 >
@@ -791,8 +791,9 @@ function HireTractorForm({ id }: { id: string }) {
   const { profileInfo } = useAppSelector((state) => state.auth);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const router = useRouter();
+  
 
-  console.log("tractor id", id);
+  console.log("profileInfo", profileInfo);
 
   const handleGetBookedDates = async () => {
     try {
@@ -1073,11 +1074,11 @@ function HireTractorForm({ id }: { id: string }) {
   };
   return (
     <Box
-      pl="60px"
-      pr={{ base: "60px", lg: "150px", xl: "200px" }}
+      pl={{ base: "20px", lg: "60px", xl: "60px" }}
+      pr={{ base: "20px", lg: "150px", xl: "200px" }}
       py="40px"
       mt="15px"
-      mx="20px"
+      mx={{ base: "0", lg: "20px" }}
       bgColor="white"
     >
       <Text fontSize="24px" fontWeight={700} mb="10px" lineHeight="16px">

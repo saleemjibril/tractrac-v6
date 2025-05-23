@@ -26,7 +26,7 @@ import {
 } from "@chakra-ui/react";
 import { saveLoginInfo } from "@/redux/features/auth/authActions";
 import { Formik, Form, Field } from "formik";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { toast } from "react-toastify";
 import NoSsrWrapper from "./noSsrWrapper";
@@ -41,17 +41,20 @@ export default function LoginInner() {
   const toggleVisibility = () => setPasswordVisibility(!passwordShown);
   let [countryCode, setCountryCode] = useState("234");
   const router = useRouter();
+  const searchParams = useSearchParams();
+
 
   // useEffect(() => {
   //   dispatch(openModal(LoginModal));
   // });
   const { loading, profileInfo } = useAppSelector((state) => state.auth);
   // const dispatch = useAppDispatch();
+  const redirectPath = searchParams.get("redirect") || "/home";
 
   useEffect(() => {
     // redirect authenticated user to home screen
     if (profileInfo) {
-      router.replace("/home");
+      router.replace(redirectPath);
     }
   }, [router, profileInfo]);
 
