@@ -14,6 +14,7 @@ import {
   Input,
 } from "@chakra-ui/react";
 import { ChakraWrapper } from "../chakraUIWrapper";
+import { subscribeUser } from "../apis/mailingList";
 
 export default function FooterComponent() {
     const [subscribe] = useSubscribeMutation();
@@ -53,6 +54,8 @@ export default function FooterComponent() {
             placeholder="Email address"
             disabled={success}
             onChange={(e) => setEmail(e?.currentTarget.value)}
+            type="email"
+            value={email}
           />
           <Button
             width={{ base: "100px", md: "150px" }}
@@ -60,10 +63,7 @@ export default function FooterComponent() {
             onClick={async () => {
               try {
                 setLoading(true);
-                if (success) {
-                  toast.error("You have already subscribed");
-                  return;
-                }
+               
                 const emailRegex =
                   /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   
@@ -71,26 +71,29 @@ export default function FooterComponent() {
                   toast.error("Please enter a valid email");
                   return;
                 }
-                const response = await subscribe({
-                  email,
-                }).unwrap();
+                const response = await subscribeUser(email);
+
+                console.log("subscribeUser", response);
+                
   
-                if (response.status == "success") {
+                // if (response.status == "success") {
                   toast.success(
-                    response.message ?? "Received, thanks for subscribing!"
+                    "Thanks for subscribing!"
                   );
-                  setSuccess(true);
-                } else {
-                  toast.error("An unknown error occured");
-                }
+                  setEmail("");
+                //   setSuccess(true);
+                // } else {
+                //   toast.error("An unknown error occured");
+                // }
               } catch (err) {
                 const error = err as any;
-                // alert('error')
-                if (error?.data?.errors) {
-                  // setError(error?.data?.errors[0])
-                } else if (error?.data?.message) {
-                  toast.error(error?.data?.message);
-                }
+                toast.error(error?.response?.data?.message || "An unexpected error occurred");
+                // // alert('error')
+                // if (error?.data?.errors) {
+                //   // setError(error?.data?.errors[0])
+                // } else if (error?.data?.message) {
+                //   toast.error(error?.data?.message);
+                // }
                 console.log("rejected", error);
               } finally {
                 setLoading(false);
