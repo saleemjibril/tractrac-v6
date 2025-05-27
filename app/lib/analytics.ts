@@ -27,6 +27,8 @@ export const initGA = (): void => {
 
 // Track page views
 export const trackPageView = (url: string): void => {
+  console.log("page url", url, GA_MEASUREMENT_ID, typeof window.gtag);
+  
   if (!GA_MEASUREMENT_ID || typeof window.gtag === 'undefined') return
   
   window.gtag('config', GA_MEASUREMENT_ID, {
