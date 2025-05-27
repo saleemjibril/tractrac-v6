@@ -25,9 +25,7 @@
     cursor: pointer;
     // border: 4px solid #FFF;
 
-    & > svg {
-        width: 40px;
-    }
+   
 }
 
   &__inner {
@@ -38,8 +36,8 @@
 
     background: #fff;
     position: fixed;
-    bottom: 0;
-    right: 0;
+    bottom: 100px;
+    right: 20px;
     border-radius: 16px 16px 0 0;
     overflow-y: auto;
 
@@ -115,8 +113,8 @@
 
     &__new {
         position: fixed;
-        bottom: 20px;
-        right: 20px;
+        bottom: 120px;
+        right: 40px;
         width: 50px;
         height: 50px;
         border-radius: 50%;
@@ -226,7 +224,7 @@
 &__chat {
     &__time {
         font-size: 10px;
-        margin-top: 10px;
+        margin-top: 4px;
     }
 }
 
@@ -261,6 +259,13 @@
             color: #FFF;
             margin-bottom: 20px;
         }
+        
+    }
+
+    &__image {
+        width: 100%;
+        height: auto;
+        margin-bottom: 6px;
     }
 
    
@@ -272,6 +277,7 @@
     display: flex;
     align-items: center;
     padding: 0 20px;
+    position: relative;
     // gap: 10px;
 
     & > input {
@@ -291,6 +297,13 @@
         cursor: pointer;
     }
 
+    & > div {
+      & > svg {
+        width: 20px;
+        cursor: pointer;
+    }
+    }
+
     &__send {
         background: #f8a730;
         width: 35px;
@@ -305,6 +318,34 @@
             cursor: pointer;
         }
     
+    }
+
+    &__image-preview {
+      position: absolute;
+      top: -80px;
+      left: 0;
+      width: 100%;
+      height: 80px;
+      border-radius: 4px;
+      padding: 12px;
+      background: #FFF;
+      // background: yellow;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      border: 1px solid #f8a730;
+
+      & > img {
+        width: 60px;
+        height: auto;
+        border-radius: 4px;
+      }
+
+      & > svg {
+        width: 15px;
+        height: 15px;
+      }
     }
   }
   }

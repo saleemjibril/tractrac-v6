@@ -303,9 +303,7 @@ export default function BecomeAnAgent() {
                 }
 
                 const response = await createTractor(
-                  {...values,
-                    implement_types: values?.implement_types[0]
-
+                  {...values
                   },
                   userToken as string
                 );
@@ -313,7 +311,9 @@ export default function BecomeAnAgent() {
                 console.log("createTractor", response);
 
                 toast.success("Enlisting successful");
-                router.push("/dashboard");
+                setTimeout(() => {
+                  router.push("/dashboard");
+                }, 2000);
 
                 // dispatch(enlistTractor(formData));
 

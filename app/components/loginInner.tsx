@@ -270,7 +270,7 @@ export default function LoginInner() {
                                 {...field}
                                 // placeholder="Enter your phone number"
                                 bgColor="#3232320D"
-                                type="number"
+                                // type="number"
                               />
                             </InputGroup>
 

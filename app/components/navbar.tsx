@@ -18,6 +18,7 @@ import {
   Image,
   Center,
   FlexProps,
+  useBreakpointValue,
   // NavItem,
 } from "@chakra-ui/react";
 
@@ -36,6 +37,30 @@ export default function Navbar({ onOpen }: MobileProps) {
   useEffect(() => {
     setMounted(true);
   }, []);
+    const [isScrolled, setIsScrolled] = useState(false);
+  
+
+  const divider = useBreakpointValue({
+    base: undefined,
+    sm: (
+      <Center height="40px">
+        <Divider />
+      </Center>
+    )
+  })
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      // Adjust this threshold as needed (105px is the navbar height)
+      setIsScrolled(scrollTop > 105);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    
+    // Cleanup
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
     <Box bg={"#F8F8F0"} p={0}>
@@ -44,7 +69,7 @@ export default function Navbar({ onOpen }: MobileProps) {
   maxWidth="1400px"
   bg={"#F8F8F0"}
   margin={"0 auto"}
-  height={"96px"}
+  minHeight={"96px"}
   alignItems={"center"}
   pb="40px"
   justifyContent={{ base: "end", md: "space-between" }}
@@ -146,20 +171,18 @@ export default function Navbar({ onOpen }: MobileProps) {
         maxWidth="1400px"
 
         margin={"auto"}
-        height={"82px"}
+        minHeight={"82px"}
         borderRadius={{ base: 0, lg: "10px" }}
         alignItems={"center"}
+        padding={{ base: "8px 0", md: "0" } }
       >
         <Stack
           ml={{ base: "8px", lg: "30px" }}
           mr={{ base: "4px", lg: "0px" }}
-          direction={"row"}
+          direction={{base: "column", sm: "row"}}
           color="white"
-          divider={
-            <Center height="40px">
-              <Divider />
-            </Center>
-          }
+          divider={divider}
+          
         >
           <Box display={"flex"}>
             <Image
@@ -185,7 +208,7 @@ export default function Navbar({ onOpen }: MobileProps) {
             </Box>
           </Box>
 
-          <Box display={"flex"} ml={{ base: "0px", lg: "30px" }}>
+          <Box display={"flex"} ml={{ base: "0px", lg: "30px" }}  mt={{ base: "4px", md: "0" }}>
             <Image
               src="/icons/clock.svg"
               alt="Clock Icon"
@@ -207,7 +230,7 @@ export default function Navbar({ onOpen }: MobileProps) {
             </Box>
           </Box>
 
-          <Box display={"flex"} ml={{ base: "0px", lg: "30px" }}>
+          <Box display={"flex"} ml={{ base: "0px", lg: "30px" }} mt={{ base: "4px", md: "0" }}>
             <Image
               src="/icons/location.svg"
               alt="Location icon"
@@ -232,17 +255,29 @@ export default function Navbar({ onOpen }: MobileProps) {
       </Flex>
 
       {/* BOTTOM NAV */}
-      <Box bg="#FFFFFF">
+      <Box
+     bg="#FFFFFF"
+     position={isScrolled ? "fixed" : "static"}
+     top={isScrolled ? "0" : "auto"}
+     left="0"
+     right="0"
+     zIndex={1000}
+     boxShadow={isScrolled ? "0 2px 4px rgba(0,0,0,0.1)" : "none"}
+     transition="all 0.3s ease-in-out" 
+      >
         <Flex
           p={0}
-          height={"105px"}
-          pt="45px"
+          height={isScrolled ? "85px" : "105px"}
+          pt={isScrolled ? 0 : "45px"}
           pr="20px"
           pl="20px"
           width={"100%"}
           maxWidth={"1440px"}
           margin={"0 auto"}
+          // align={"center"}
+          alignItems={isScrolled ? "center" : "none"}
           justifyContent="space-between"
+          mt={isScrolled ? 0 : { base: "48px", sm: "0px" }}
         >
           <Box display={"flex"} alignItems={"center"}>
             <Link href="/">
