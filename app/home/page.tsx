@@ -18,6 +18,7 @@ import {
   IconWhite6,
   IconWhite8,
   Tractor_2,
+  AgroTools,
   TractorPlusWhite,
   CrawlerHandDrawnTransportWhite,
   ToolsWhite,
@@ -65,6 +66,14 @@ export default function Dashboard() {
       imageDark: "pay-dark",
       icon: Tractor_2,
       path: `${path}/hire-tractor`,
+      loginRequired: true,
+    },
+    {
+      name: "Hire Agro Tools",
+      imageLight: "pay-light",
+      imageDark: "pay-dark",
+      icon: AgroTools,
+      path: `${path}/hire-tools`,
       loginRequired: true,
     },
     {
@@ -117,18 +126,18 @@ export default function Dashboard() {
       imageDark: "user-dark",
       icon: Measure,
       iconActive: IconWhite8,
-      path: "#",
+      path: "https://play.google.com/store/apps/details?id=com.tractrac.trac_trac&hl=en_GB",
       loginRequired: true,
     },
-    {
-      name: "Track your Tractor",
-      imageLight: "user-light",
-      imageDark: "user-dark",
-      icon: Track,
-      iconActive: TrackWhite,
-      path: `${path}/track-tractor`,
-      loginRequired: true,
-    },
+    // {
+    //   name: "Track your Tractor",
+    //   imageLight: "user-light",
+    //   imageDark: "user-dark",
+    //   icon: Track,
+    //   iconActive: TrackWhite,
+    //   path: `${path}/track-tractor`,
+    //   loginRequired: true,
+    // },
   ];
 
   return (

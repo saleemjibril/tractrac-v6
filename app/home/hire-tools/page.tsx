@@ -282,7 +282,7 @@ export default function HireTractor() {
         >
           <Stack>
             <Text fontSize="24px" fontWeight={700} mb="15px">
-              Hire a Tractor
+              Hire Agro Tools
             </Text>
             {loading ? (
               <Skeleton
@@ -1177,8 +1177,7 @@ if(!firstDate || !lastDate) {
                     <FormLabel fontSize="12px" color="#323232">
                       Farm Size (Don't know your farm size?{" "}
                       <Link
-                        href="https://play.google.com/store/apps/details?id=com.tractrac.trac_trac&hl=en_GB"
-                        target="_blank"
+                        href="#"
                         style={{
                           color: "#f8a730",
                           textDecoration: "underline",
