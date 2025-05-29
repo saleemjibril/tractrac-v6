@@ -63,7 +63,7 @@ const fileTypes = ["JPG", "PNG", "JPEG"];
 // const DynamicHeader = dynamic(() => import('../components/Sidenav'), {
 //     loading: () => <p>Loading...</p>,
 //   })
-const tractorTypes = ["small", "medium", "large", "specialized", "utility"];
+const tractorTypes = ["Solar powered Knapsack sprayer", "Fertiliser applicator", "Treadle pump - irrigation", "Soil testing kit", "Multi seed Thresher"];
 
 
 interface ICoordinates {
@@ -399,7 +399,7 @@ export default function HireTractor() {
               </Select>
               <Select
                 width="150px"
-                placeholder="Tractor Type"
+                placeholder="Tool Type"
                 value={(tractorType || "").toLowerCase()}
                 icon={<ArrowDown2 />}
                 color="#FA9411"
@@ -1082,10 +1082,10 @@ function HireTractorForm({ id }: { id: string }) {
       bgColor="white"
     >
       <Text fontSize="24px" fontWeight={700} mb="10px" lineHeight="16px">
-        Hire a Tractor
+        Hire a Solar powered Knapsack sprayer
       </Text>
       <Text color="#323232" mb="30px">
-        Please fill the form below to hire a tractor from TracTrac
+        Please fill the form below to hire a Solar powered Knapsack sprayer from TracTrac
       </Text>
       <Formik
         initialValues={{
@@ -1287,7 +1287,7 @@ if(!firstDate || !lastDate) {
   mt="20px"
   width="100%"
             >
-              <Field name="implement_types" validate={validateEmpty}>
+              {/* <Field name="implement_types" validate={validateEmpty}>
                 {({ field, form }: { [x: string]: any }) => (
                   <FormControl
                     isInvalid={
@@ -1318,7 +1318,7 @@ if(!firstDate || !lastDate) {
                     </FormErrorMessage>
                   </FormControl>
                 )}
-              </Field>
+              </Field> */}
 
               <Field name="local_government_area" validate={validateEmpty}>
                 {({ field, form }: { [x: string]: any }) => (
