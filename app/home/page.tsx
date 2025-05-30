@@ -86,6 +86,15 @@ export default function Dashboard() {
       loginRequired: true,
     },
     {
+      name: "Enlist your Agro Tool",
+      imageLight: "dashboard-light",
+      imageDark: "dashboard-dark",
+      icon: TaskListColored,
+      iconActive: TaskListWhite,
+      path: `${path}/enlist-tool`,
+      loginRequired: true,
+    },
+    {
       name: "Become an Agent",
       imageLight: "user-light",
       imageDark: "user-dark",

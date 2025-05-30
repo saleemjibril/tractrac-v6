@@ -57,13 +57,24 @@ import {
 } from "@/app/apis/tractor";
 import moment from "moment";
 import Link from "next/link";
+import { filterTools, getToolBookedDates, getTools, hireTool } from "@/app/apis/tools";
 
 const fileTypes = ["JPG", "PNG", "JPEG"];
 
 // const DynamicHeader = dynamic(() => import('../components/Sidenav'), {
 //     loading: () => <p>Loading...</p>,
 //   })
-const tractorTypes = ["Solar powered Knapsack sprayer", "Fertiliser applicator", "Treadle pump - irrigation", "Soil testing kit", "Multi seed Thresher"];
+const tractorTypes =[
+  { value: "solar_sprayer", label: "Solar Sprayer" },
+  { value: "fertilizer_applicator", label: "Fertilizer Applicator" },
+  { value: "soil_testing_kit", label: "Soil Testing Kit" },
+  { value: "multi_seed_thresher", label: "Multi Seed Thresher" },
+  { value: "water_pump", label: "Water Pump" },
+  { value: "irrigation_system", label: "Irrigation System" },
+  { value: "crop_dryer", label: "Crop Dryer" },
+  { value: "harvesting_tools", label: "Harvesting Tools" },
+  { value: "other", label: "Other" }
+];
 
 
 interface ICoordinates {
@@ -109,9 +120,9 @@ export default function HireTractor() {
     setLoading(true);
     try {
       if (typeof userToken === "string") {
-        const response = await getApprovedTractors(userToken);
+        const response = await getTools(userToken);
         setTractors(response?.data);
-        console.log("getTractorss", response);
+        console.log("getTools", response);
       } else {
         // Handle the case when userToken is not a string
         console.log("User token is not a string");
@@ -171,7 +182,7 @@ export default function HireTractor() {
       // Only add parameters that have values
       if (state) queryParams.append("state", state);
       if (lga) queryParams.append("local_government_area", lga);
-      if (tractorType) queryParams.append("tractor_type", tractorType);
+      if (tractorType) queryParams.append("addon_type", tractorType);
 
       // Convert URLSearchParams to string
       const queryString = queryParams.toString();
@@ -181,7 +192,7 @@ export default function HireTractor() {
 
         try {
           // Now we can use await properly inside the async function
-          const response = await filterTractors(
+          const response = await filterTools(
             queryString,
             userToken as string
           );
@@ -422,8 +433,8 @@ export default function HireTractor() {
                 }}
               >
                 {tractorTypes.map((tractorType) => (
-                  <option key={tractorType} value={tractorType.toLowerCase()}>
-                    {tractorType}
+                  <option key={tractorType?.value} value={tractorType?.value?.toLowerCase()}>
+                    {tractorType?.label}
                   </option>
                 ))}
               </Select>
@@ -565,7 +576,7 @@ export default function HireTractor() {
                       setTractorId={setTractorId}
                       id={tractor?.id}
                       name={`${tractor?.name}`}
-                      image={tractor?.tractor_image}
+                      image={tractor?.image_urls[0]}
                       capacity=" 105 to 135 HP"
                       location={`${tractor?.lga},${tractor?.state}`}
                       // location={tractor?.address}
@@ -797,7 +808,7 @@ function HireTractorForm({ id }: { id: string }) {
 
   const handleGetBookedDates = async () => {
     try {
-      const response = await getBookedDates(id, userToken as string);
+      const response = await getToolBookedDates(id, userToken as string);
       console.log("getBookedDates", response);
       setBookedDates(response?.data?.booked_dates);
     } catch (error) {
@@ -1082,10 +1093,10 @@ function HireTractorForm({ id }: { id: string }) {
       bgColor="white"
     >
       <Text fontSize="24px" fontWeight={700} mb="10px" lineHeight="16px">
-        Hire a Solar powered Knapsack sprayer
+        Hire an Agro tool
       </Text>
       <Text color="#323232" mb="30px">
-        Please fill the form below to hire a Solar powered Knapsack sprayer from TracTrac
+        Please fill the form below to hire an agro tool from TracTrac
       </Text>
       <Formik
         initialValues={{
@@ -1093,7 +1104,6 @@ function HireTractorForm({ id }: { id: string }) {
           state: "",
           local_government_area: "",
           community: "",
-          implement_types: [],
           address: "",
           start_date: "",
           end_date: "",
@@ -1122,13 +1132,13 @@ if(!firstDate || !lastDate) {
   toast.error("Please select a date range");
   return;
 }
-            const response = await hireTractor(
+            const response = await hireTool(
               {
                 ...values,
                 // farm_size: `${values?.farm_size} ${unit}`,
                 start_date: firstDate,
                 end_date: lastDate,
-                tractor_id: id,
+                addon_ids: [id],
               },
               userToken as string
             );
