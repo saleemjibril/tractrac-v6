@@ -148,7 +148,7 @@ export default function HiredTractors() {
                   <Th color="white">Owner</Th>
                   <Th color="white">Address</Th>
                   <Th color="white">Farm Size</Th>
-                  <Th color="white">Type of Service</Th>
+                  {/* <Th color="white">Type of Service</Th> */}
                   <Th color="white">Amount Paid (₦)</Th>
                   <Th color="white">Start Date</Th>
                   <Th color="white">End Date</Th>
@@ -159,7 +159,7 @@ export default function HiredTractors() {
               <Tbody>
                 {tractors?.map((tractor: any) => (
                   <Tr key={tractor?.id}>
-                    <Td></Td>
+                    <Td>{tractor?.tractor?.name}</Td>
                     {/* <Td>{tractor?.tractor?.model}</Td> */}
                     <Td>{tractor?.owner_name}</Td>
                     {/* <Td>{tractor?.address ?? "Nil"}</Td> */}
@@ -178,14 +178,14 @@ export default function HiredTractors() {
                     >
                       {/* <Box maxW="80px" overflowWrap="break-word"> */}
                       <Text  >
-                        {/* { tractor?.address ?? "Nil" } */}
+                        { tractor?.tractor?.location ?? "Nil" }
                       {/* Gaa-akanbi, ilorin south, nigeria Gaa-akanbi, ilorin
                       south, nigeria,  Gaa-akanbi, ilorin south, nigeria Gaa-akanbi, ilorin */}
                       </Text>
                       {/* </Box> */}
                     </Td>
                     <Td>{tractor?.farm_size} sqm</Td>
-                    <Td></Td>
+                    {/* <Td></Td> */}
                     <Td>{formatNumber(tractor?.total_amount)}</Td>
                     {/* <Td>
                       {parseFloat(tractor?.farm_size ?? 0).toLocaleString()}
