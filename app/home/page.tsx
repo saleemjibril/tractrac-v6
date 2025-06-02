@@ -68,14 +68,14 @@ export default function Dashboard() {
       path: `${path}/hire-tractor`,
       loginRequired: true,
     },
-    {
-      name: "Hire Agro Tools",
-      imageLight: "pay-light",
-      imageDark: "pay-dark",
-      icon: AgroTools,
-      path: `${path}/hire-tools`,
-      loginRequired: true,
-    },
+    // {
+    //   name: "Hire Agro Tools",
+    //   imageLight: "pay-light",
+    //   imageDark: "pay-dark",
+    //   icon: AgroTools,
+    //   path: `${path}/hire-tools`,
+    //   loginRequired: true,
+    // },
     {
       name: "Enlist your Tractor",
       imageLight: "dashboard-light",

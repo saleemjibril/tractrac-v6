@@ -11,6 +11,7 @@ import { ChakraWrapper } from "../chakraUIWrapper";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
+import { toast } from "react-toastify";
 
 export default function GetMobileAppComponent() {
   const containerRef = useRef(null);
@@ -135,25 +136,33 @@ export default function GetMobileAppComponent() {
               Request, Enlist and Invest in Tractors on the GO!
             </Text>
             <Stack direction="row" gap="16px" justify="center">
-              <Link 
+              {/* <Link 
                 href="https://play.google.com/store/apps/details?id=com.tractrac.trac_trac&hl=en_GB"
+                href={"#"}
                 onMouseEnter={handleButtonHover}
                 onMouseLeave={handleButtonLeave}
-              >
-                <Box ref={googlePlayRef}>
+              > */}
+                <Box ref={googlePlayRef}
+                // as={Link} 
+                // href="#"
+                onMouseEnter={handleButtonHover}
+                onMouseLeave={handleButtonLeave}
+                onClick={() => toast.info("We are currently making some updates to the mobile app. Please check back later.")}
+                >
                   <Image
                     src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446714/google-play_ft9sq5.svg"
                     alt=""
                     width={{ base: "150px", md: "240px" }}
                   />
                 </Box>
-              </Link>
+              {/* </Link> */}
               <Box 
                 ref={appStoreRef}
-                as={Link} 
-                href="#"
+                // as={Link} 
+                // href="#"
                 onMouseEnter={handleButtonHover}
                 onMouseLeave={handleButtonLeave}
+                                onClick={() => toast.info("We are currently making some updates to the mobile app. Please check back later.")}
               >
                 <Image
                   src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446750/app-store_iv64xk.svg"

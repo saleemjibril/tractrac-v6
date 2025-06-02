@@ -49,18 +49,50 @@ export default function Navbar({ onOpen }: MobileProps) {
     )
   })
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop = window.scrollY;
-      // Adjust this threshold as needed (105px is the navbar height)
-      setIsScrolled(scrollTop > 105);
-    };
-
-    window.addEventListener('scroll', handleScroll);
+useEffect(() => {
+  const slider = document.querySelector(".header-banner");
+  let intervalId;
+  
+  if (slider) {
+    const isMobile = window.innerWidth < 566; // Adjust breakpoint as needed
     
-    // Cleanup
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    if (isMobile) {
+      let currentIndex = 0;
+      const items = slider.querySelectorAll(".header-banner__item");
+      const totalItems = items.length;
+      
+      const scrollToNext = () => {
+        currentIndex = (currentIndex + 1) % totalItems;
+        const scrollAmount = currentIndex * slider.clientWidth;
+        
+        slider.scrollTo({
+          left: scrollAmount,
+          behavior: "smooth",
+        });
+        
+        // Reset to first item after showing all items
+        if (currentIndex === 0) {
+          setTimeout(() => {
+            slider.scrollTo({
+              left: 0,
+              behavior: "smooth",
+            });
+          }, 100);
+        }
+      };
+      
+      intervalId = setInterval(scrollToNext, 3000); // 3 seconds per slide
+    }
+  }
+  
+  // Cleanup interval on component unmount
+  return () => {
+    if (intervalId) {
+      clearInterval(intervalId);
+    }
+  };
+}, []);
+
 
   return (
     <Box bg={"#F8F8F0"} p={0}>
@@ -169,6 +201,8 @@ export default function Navbar({ onOpen }: MobileProps) {
         left="50%" 
         transform={"translateX(-50%)"}
         maxWidth="1400px"
+                  overflowX={{base: "hidden", sm: "initial"}}
+                  className="header-banner"
 
         margin={"auto"}
         minHeight={"82px"}
@@ -179,12 +213,12 @@ export default function Navbar({ onOpen }: MobileProps) {
         <Stack
           ml={{ base: "8px", lg: "30px" }}
           mr={{ base: "4px", lg: "0px" }}
-          direction={{base: "column", sm: "row"}}
+          direction="row"
           color="white"
           divider={divider}
           
         >
-          <Box display={"flex"}>
+          <Box width={{base: "100vw", sm: "initial"}} className="header-banner__item" display={"flex"}>
             <Image
               src="/icons/call.svg"
               alt="call icon"
@@ -208,7 +242,7 @@ export default function Navbar({ onOpen }: MobileProps) {
             </Box>
           </Box>
 
-          <Box display={"flex"} ml={{ base: "0px", lg: "30px" }}  mt={{ base: "4px", md: "0" }}>
+          <Box width={{base: "100vw", sm: "initial"}} className="header-banner__item" display={"flex"} ml={{ base: "0px", lg: "30px" }}  mt={{ base: "4px", md: "0" }}>
             <Image
               src="/icons/clock.svg"
               alt="Clock Icon"
@@ -230,7 +264,7 @@ export default function Navbar({ onOpen }: MobileProps) {
             </Box>
           </Box>
 
-          <Box display={"flex"} ml={{ base: "0px", lg: "30px" }} mt={{ base: "4px", md: "0" }}>
+          <Box width={{base: "100vw", sm: "initial"}} className="header-banner__item" display={"flex"} ml={{ base: "0px", lg: "30px" }} mt={{ base: "4px", md: "0" }}>
             <Image
               src="/icons/location.svg"
               alt="Location icon"
@@ -277,7 +311,7 @@ export default function Navbar({ onOpen }: MobileProps) {
           // align={"center"}
           alignItems={isScrolled ? "center" : "none"}
           justifyContent="space-between"
-          mt={isScrolled ? 0 : { base: "48px", sm: "0px" }}
+          mt={isScrolled ? 0 : { base: "0", sm: "0px" }}
         >
           <Box display={"flex"} alignItems={"center"}>
             <Link href="/">

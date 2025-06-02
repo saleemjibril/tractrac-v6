@@ -375,8 +375,8 @@ export default function LoginInner() {
                 </Formik>
 
                 <Flex justifyContent="center" gap="12px" mt="12px">
-                  <Link>Privacy Policy</Link>
-                  <Link>Terms & Condition</Link>
+                  <Link href="/privacy-policy" prefetch={true}>Privacy Policy</Link>
+                  <Link href="/terms-and-conditions" prefetch={true}>Terms & Condition</Link>
                 </Flex>
               </Stack>
             </Box>
