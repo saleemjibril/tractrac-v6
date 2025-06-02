@@ -46,6 +46,7 @@ import { openModal } from "@/redux/features/modalSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { SidebarContent } from "./sidebar";
 import { ChakraWrapper } from "../chakraUIWrapper";
+import { toast } from "react-toastify";
 
 export default function Header() {
   const dispatch = useAppDispatch();
@@ -94,6 +95,7 @@ export default function Header() {
             justifyContent: "space-between",
             alignItems: "center",
             borderRadius: "8px",
+            zIndex: 1000
           }}
         >
           <div
@@ -131,7 +133,12 @@ export default function Header() {
                 position: "relative",
               }}
             >
-              <a href="https://play.google.com/store/apps/details?id=com.tractrac.trac_trac&hl=en_GB">
+              <a 
+              // href="https://play.google.com/store/apps/details?id=com.tractrac.trac_trac&hl=en_GB"
+              href="#"
+                              onClick={() => toast.info("We are currently making some updates to the mobile app. Please check back later.")}
+              
+              >
                 <button
                   style={{
                     display: "flex",

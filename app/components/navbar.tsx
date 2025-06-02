@@ -49,6 +49,19 @@ export default function Navbar({ onOpen }: MobileProps) {
     )
   })
 
+    useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      // Adjust this threshold as needed (105px is the navbar height)
+      setIsScrolled(scrollTop > 105);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    
+    // Cleanup
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
 useEffect(() => {
   const slider = document.querySelector(".header-banner");
   let intervalId;
@@ -225,18 +238,18 @@ useEffect(() => {
               // layout='fill'
               // objectFit='cover'
               // className={styles.vercelLogo}
-              width={{ base: "20px", lg: "40px" }}
+              width={{ base: "30px", lg: "40px" }}
               // height={40}
             />
             <Box pl={{ base: "4px", lg: "10px" }}>
               <Text
-                fontSize="xs"
+                fontSize={{base: "18px", md: "xs"}}
                 opacity={0.8}
                 // display={{ base: "none", sm: "flex" }}
               >
                 Call Now
               </Text>
-              <Text fontWeight={[400, 700]} fontSize={{ base: "8px", md: "12px" }}>
+              <Text fontWeight={[400, 700]} fontSize={{ base: "12px", md: "12px" }}>
                 +234 806 464 8720
               </Text>
             </Box>
@@ -246,19 +259,19 @@ useEffect(() => {
             <Image
               src="/icons/clock.svg"
               alt="Clock Icon"
-              width={{ base: "20px", lg: "40px" }}
+              width={{ base: "30px", lg: "40px" }}
               // width={40}
               // height={40}
             />
             <Box pl={{ base: "4px", lg: "10px" }}>
               <Text
-                fontSize="xs"
+                fontSize={{base: "18px", md: "xs"}}
                 opacity={0.8}
                 // display={{ base: "none", sm: "flex" }}
               >
                 Open Hours
               </Text>
-              <Text fontWeight={[400, 700]} fontSize={{ base: "8px", md: "12px" }}>
+              <Text fontWeight={[400, 700]} fontSize={{ base: "12px", md: "12px" }}>
                 24 Hours
               </Text>
             </Box>
@@ -268,19 +281,19 @@ useEffect(() => {
             <Image
               src="/icons/location.svg"
               alt="Location icon"
-              width={{ base: "20px", lg: "40px" }}
+              width={{ base: "30px", lg: "40px" }}
               // width={40}
               // height={40}
             />
             <Box pl={{ base: "4px", lg: "10px" }}>
               <Text
-                fontSize="xs"
+                fontSize={{base: "18px", md: "xs"}}
                 opacity={0.8}
                 // display={{ base: "none", sm: "flex" }}
               >
                 Address
               </Text>
-              <Text fontWeight={[400, 700]} fontSize={{ base: "8px", md: "12px" }}>
+              <Text fontWeight={[400, 700]} fontSize={{ base: "12px", md: "12px" }}>
                 11 Vanern St, Wuse, Abuja 904101, Federal Capital Territory
               </Text>
             </Box>

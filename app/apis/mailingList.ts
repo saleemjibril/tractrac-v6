@@ -53,7 +53,7 @@ export async function subscribeUser(email: string) {
 
   // } 
   // catch (error) {
-  //   console.error('MailerLite subscription error:', error);
+  //   console.log('MailerLite subscription error:', error);
 
   //   // Handle Axios errors
   //   if (axios.isAxiosError(error)) {

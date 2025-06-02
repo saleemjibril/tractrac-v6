@@ -40,7 +40,7 @@ export const useAudioRecorder = () => {
       }, 1000);
 
     } catch (error) {
-      console.error('Error starting recording:', error);
+      console.log('Error starting recording:', error);
       throw new Error('Microphone permission required');
     }
   }, []);

@@ -61,7 +61,7 @@ export const useWebSocket = ({ ticketId, token, profileId, onMessage, onSystemEv
             onMessage(message);
           }
         } catch (error) {
-          console.error('Error parsing WebSocket message:', error);
+          console.log('Error parsing WebSocket message:', error);
         }
       };
 
@@ -73,13 +73,13 @@ export const useWebSocket = ({ ticketId, token, profileId, onMessage, onSystemEv
       };
 
       ws.current.onerror = (error) => {
-        console.error('WebSocket error:', error);
+        console.log('WebSocket error:', error);
         setConnectionError('Connection failed');
         setIsConnected(false);
       };
       }
     } catch (error) {
-      console.error('Failed to connect WebSocket:', error);
+      console.log('Failed to connect WebSocket:', error);
       setConnectionError('Failed to establish connection');
     }
   }, [token, onMessage, onSystemEvent, profileId]);
@@ -88,7 +88,7 @@ export const useWebSocket = ({ ticketId, token, profileId, onMessage, onSystemEv
     if (ws.current && ws.current.readyState === WebSocket.OPEN) {
       ws.current.send(JSON.stringify(payload));
     } else {
-      console.error('WebSocket is not connected');
+      console.log('WebSocket is not connected');
     }
   }, []);
 

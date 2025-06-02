@@ -89,7 +89,7 @@ const FetchBlogSlug = async (slug: string) => {
       toc: dataContentElements, // Add TOC to the post object
     };
   } catch (error) {
-    //console.error('Error fetching post:', error);
+    //console.log('Error fetching post:', error);
     return null;
   }
 };

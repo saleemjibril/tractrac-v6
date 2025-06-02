@@ -238,7 +238,7 @@ export default function SupportWidget() {
       setSelectedImage(null);
       setImagePreview(null);
     } catch (error) {
-      console.error('Image upload failed:', error);
+      console.log('Image upload failed:', error);
     } finally {
       setIsUploading(false);
     }

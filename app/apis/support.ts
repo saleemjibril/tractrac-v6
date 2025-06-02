@@ -133,11 +133,11 @@ export async function uploadSupportMedia(mediaFile: File): Promise<string | null
       console.log('Cloudinary Response:', data);
       return data.secure_url;
     } else {
-      console.error('Upload failed with status:', response.status);
+      console.log('Upload failed with status:', response.status);
       return null;
     }
   } catch (error) {
-    console.error('Upload error:', error);
+    console.log('Upload error:', error);
     return null;
   }
 }
