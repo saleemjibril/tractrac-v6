@@ -1,5 +1,4 @@
-import TermsAndConditionsInner from "../components/privacyPolicyInner";
-import PrivacyPolicyInner from "../components/privacyPolicyInner";
+import TermsAndConditionsInner from "../components/termsAndConditionsInner";
 
 export async function generateMetadata() {
   return {
