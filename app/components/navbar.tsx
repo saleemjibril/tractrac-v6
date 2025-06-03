@@ -117,7 +117,7 @@ useEffect(() => {
   minHeight={"96px"}
   alignItems={"center"}
   pb="40px"
-  justifyContent={{ base: "end", md: "space-between" }}
+  justifyContent={{ base: "start", lg: "end",  md: "space-between" }}
 >
         {/* <Box  width={"80vw"}
     margin={"auto"}> */}

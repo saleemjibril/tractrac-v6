@@ -14,7 +14,7 @@ export interface MessageModel {
     message_key: string;
     content?: string;
     message_type: string;
-    isRead: boolean;
+    is_read: boolean;
     created_at: Date;
     updated_at?: Date;
     sender_id: string;
