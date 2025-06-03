@@ -47,7 +47,7 @@ export const useWebSocket = ({ ticketId, token, profileId, onMessage, onSystemEv
           const data = JSON.parse(event.data);
           console.log('Received message:', data);
 
-          if (data.event === 'connection_established' || data.type === 'welcome') {
+          if (data.event === 'connection_established' || data.type === 'welcome' || data.type === 'connection_established') {
             return;
           }
 

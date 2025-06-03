@@ -14,6 +14,7 @@ import { toast } from "react-toastify";
 import moment from "moment";
 import { useWebSocket } from "../hooks/useWebSocket";
 import { log } from "console";
+import { ArrowBackIcon } from "@chakra-ui/icons";
 
 // types/message.ts
 export interface MessageModel {
@@ -402,6 +403,9 @@ export default function SupportWidget() {
                   Support
                 </div>
                 <div className="support__inner__info">
+                  <ArrowBackIcon boxSize="20px" mb="14px" color="#f8a730" cursor="pointer"
+                  onClick={() => setStage(2)}
+                  />
                   <div className="support__inner__info__title">
                     What do you need help with?
                   </div>
