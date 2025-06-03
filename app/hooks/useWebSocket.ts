@@ -53,7 +53,8 @@ export const useWebSocket = ({ ticketId, token, profileId, onMessage, onSystemEv
 
           if (data.type === 'system_event') {
             onSystemEvent(data, profileId);
-          } else {
+          } else if(data.sender_id !== profileId) {
+                                  console.log('Received particular message:', data);
             const message: MessageModel = {
               ...data,
               createdAt: data.timestamp ? new Date(data.timestamp) : new Date(),

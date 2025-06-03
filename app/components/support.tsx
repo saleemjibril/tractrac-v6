@@ -128,6 +128,8 @@ export default function SupportWidget() {
       );
       console.log("createSupportTicket", response);
       setSelectedTicketId(response?.data?.id);
+      setTitle("");
+      setDescription("");
       // setStage(3);
       // handleGetTickets();
     } catch (err) {
@@ -172,18 +174,17 @@ export default function SupportWidget() {
     console.log("handleNewMessage", message);
 
     setMessages((prev) => [...prev, message]);
-    setMessages((prev) => [...prev, message]);
   }, []);
 
   const handleSystemEvent = useCallback(
     (message: MessageModel, profileId: string) => {
-      setMessages((prev) =>
-        prev.map((msg) =>
-          msg.message_key === message.message_key
-            ? { ...msg, ...message, is_read: true, sender_id: profileId }
-            : msg
-        )
-      );
+      // setMessages((prev) =>
+      //   prev.map((msg) =>
+      //     msg.message_key === message.message_key
+      //       ? { ...msg, ...message, is_read: true, sender_id: profileId }
+      //       : msg
+      //   )
+      // );
     },
     []
   );
