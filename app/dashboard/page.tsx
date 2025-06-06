@@ -16,6 +16,7 @@ import {
   DemandLight,
   DemandDark,
   TaskListWhite,
+  AgroTools
 } from "../components/Icons";
 import { createElement, useEffect, useState } from "react";
 import { useAppSelector } from "@/redux/hooks";
@@ -46,6 +47,13 @@ export default function Dashboard() {
       // imageDark: "home-dark",
       icon: Tractor_2,
       path: `${path}/hired-tractors`,
+    },
+    {
+      name: "Hired Tools",
+      // imageLight: "home-light",
+      // imageDark: "home-dark",
+      icon: AgroTools,
+      path: `${path}/hired-tools`,
     },
     {
       name: "Enlisted Tractors",

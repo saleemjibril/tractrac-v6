@@ -108,3 +108,18 @@ export const hireTool = async (data: object, token: string) => {
 
   return res;
 };
+
+export const getMyHiredTools = async (token: string) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const res = await axios.get(
+    `${process.env.NEXT_PUBLIC_URL}/hire_addons`,
+    config
+  );
+
+  return res;
+};

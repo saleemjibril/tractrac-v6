@@ -46,15 +46,16 @@ import {
   useGetHiredTractorsQuery,
   useHireTractorMutation,
 } from "@/redux/services/tractorApi";
-import { useAppSelector } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import {
   useUpdatePasswordMutation,
   useUpdateBioDataMutation,
 } from "@/redux/services/userApi";
-import router from "next/router";
 import { Formik, Form, Field } from "formik";
 import { toast } from "react-toastify";
 import { getUserInfo, updateUserInfo } from "../apis/user";
+import { useRouter } from "next/navigation";
+import { userLogout } from "@/redux/features/auth/authActions";
 
 const statusTypes: Record<string, { title: string; color: string }> = {
   pending: { title: "Pending", color: "#FA9411" },
@@ -73,11 +74,13 @@ export default function AccountPage() {
   const [mounted, setMounted] = useState(false);
 
   const [error, setError] = useState<string | null>(null);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
 
   const [updateBioData] = useUpdateBioDataMutation();
   const [updatePassword] = useUpdatePasswordMutation();
-
+  const router = useRouter();
+const dispatch = useAppDispatch();
   useEffect(() => {
     setMounted(true);
   }, [mounted]);
@@ -121,6 +124,14 @@ export default function AccountPage() {
               >
                 Change Password
               </Tab>
+              <Tab
+  _selected={{
+    color: "#F8A730",
+    borderBottomColor: "#F8A730",
+  }}
+>
+  Delete Account
+</Tab>
             </TabList>
 
             <TabPanels>
@@ -534,276 +545,242 @@ export default function AccountPage() {
                   </Formik>
                 </Box>
               </TabPanel>
+              {/* Add this to your TabList */}
+
+
+{/* Add this to your TabPanels */}
+<TabPanel>
+  <Box pl="24px" mr={{ base: "0px", md: "20em", lg: "30em" }}>
+    <Text fontWeight={700} fontSize="28px" mt="12px" color="#F03B13">
+      Delete Account
+    </Text>
+
+    <Text
+      fontWeight={400}
+      fontSize="16px"
+      color="#929292"
+      mt="4px"
+    >
+      This action cannot be undone. Please read carefully before proceeding.
+    </Text>
+
+    {/* Warning Alert */}
+    <Alert status="warning" mt="20px" mb="20px">
+      <AlertIcon />
+      <Box>
+        <AlertTitle>Warning!</AlertTitle>
+        <Text fontSize="14px" mt="8px">
+          Deleting your account will permanently remove:
+        </Text>
+        <Text fontSize="12px" mt="4px" color="#666">
+          • All your personal information and profile data<br/>
+          • Your transaction history and records<br/>
+          • Any active tractor hiring agreements<br/>
+          • Access to all platform services
+        </Text>
+      </Box>
+    </Alert>
+
+    <Formik
+      initialValues={{
+        password: "",
+        confirmation: "",
+        reason: "",
+      }}
+      validate={(values) => {
+        const errors: any = {};
+        
+        if (!values.password) {
+          errors.password = "Password is required to delete account";
+        }
+        
+        if (!values.confirmation) {
+          errors.confirmation = "Confirmation text is required";
+        } else if (values.confirmation !== "DELETE MY ACCOUNT") {
+          errors.confirmation = 'Please type "DELETE MY ACCOUNT" exactly';
+        }
+        
+        return errors;
+      }}
+      onSubmit={async (values: any, { resetForm, setSubmitting }) => {
+        setDeleteError(null);
+        
+        // try {
+          console.log("Delete account data", values);
+          
+          // Replace this with your actual delete account API call
+          // const response = await deleteUserAccount(
+          //   profileInfo?.id,
+          //   {
+          //     password: values.password,
+          //     reason: values.reason,
+          //   },
+          //   userToken as string
+          // );
+          
+          // if (response.status === "success") {
+            setTimeout(() => {
+              toast.success("Account deleted successfully");
+            // Redirect to login or home page
+             dispatch(userLogout());
+                      router.replace("/");
+            }, 2000);
+          // } else {
+          //   setDeleteError("Failed to delete account. Please try again.");
+          // }
+        // } catch (err) {
+          // const error = err as any;
+          // setDeleteError(
+          //   error?.response?.data?.detail ||
+          //   error?.data?.message ||
+          //   "An unexpected error occurred while deleting your account"
+          // );
+          // console.log("Error deleting account", error);
+        // } finally {
+          setSubmitting(false);
+        // }
+      }}
+    >
+      {(props) => (
+        <Form>
+          {deleteError && (
+            <Alert status="error" mt="20px">
+              <AlertIcon />
+              <AlertTitle>{deleteError}</AlertTitle>
+            </Alert>
+          )}
+
+          <Field name="reason">
+            {({ field, form }: { [x: string]: any }) => (
+              <FormControl
+                mt="30px"
+                isInvalid={form.errors.reason && form.touched.reason}
+              >
+                <FormLabel fontSize="12px" color="#323232">
+                  Reason for deletion (Optional)
+                </FormLabel>
+                <Select
+                  {...field}
+                  bgColor="#3232320D"
+                  placeholder="Select reason"
+                  fontSize="12px"
+                  color="#323232"
+                >
+                  <option value="no_longer_needed">No longer needed</option>
+                  <option value="privacy_concerns">Privacy concerns</option>
+                  <option value="switching_platform">Switching to another platform</option>
+                  <option value="technical_issues">Technical issues</option>
+                  <option value="other">Other</option>
+                </Select>
+                <FormErrorMessage>
+                  {form.errors.reason}
+                </FormErrorMessage>
+              </FormControl>
+            )}
+          </Field>
+
+          <Field name="password" validate={validateEmpty}>
+            {({ field, form }: { [x: string]: any }) => (
+              <FormControl
+                mt="30px"
+                isInvalid={form.errors.password && form.touched.password}
+              >
+                <FormLabel fontSize="12px" color="#323232">
+                  Enter your password to confirm
+                </FormLabel>
+                <Input
+                  {...field}
+                  type="password"
+                  bgColor="#3232320D"
+                  placeholder="Enter your current password"
+                  fontSize="12px"
+                  color="#323232"
+                />
+                <FormErrorMessage>
+                  {form.errors.password}
+                </FormErrorMessage>
+              </FormControl>
+            )}
+          </Field>
+
+          <Field name="confirmation">
+            {({ field, form }: { [x: string]: any }) => (
+              <FormControl
+                mt="30px"
+                isInvalid={form.errors.confirmation && form.touched.confirmation}
+              >
+                <FormLabel fontSize="12px" color="#323232">
+                  Type "DELETE MY ACCOUNT" to confirm
+                </FormLabel>
+                <Input
+                  {...field}
+                  bgColor="#3232320D"
+                  placeholder="DELETE MY ACCOUNT"
+                  fontSize="12px"
+                  color="#323232"
+                />
+                <FormErrorMessage>
+                  {form.errors.confirmation}
+                </FormErrorMessage>
+              </FormControl>
+            )}
+          </Field>
+
+          <Flex mt="40px" direction={{ base: "column", md: "row" }} gap="20px">
+            <Button
+              variant="outline"
+              borderColor="#929292"
+              color="#929292"
+              width={{ base: "100%", md: "50%" }}
+              fontSize="16px"
+              fontWeight={600}
+              minH="50px"
+              onClick={() => {
+                props.resetForm();
+                // Optionally switch to another tab
+              }}
+              _hover={{
+                borderColor: "#323232",
+                color: "#323232",
+              }}
+            >
+              Cancel
+            </Button>
+            
+            <Button
+              bgColor="#F03B13"
+              color="white"
+              width={{ base: "100%", md: "50%" }}
+              fontSize="16px"
+              fontWeight={600}
+              minH="50px"
+              isLoading={props.isSubmitting}
+              isDisabled={props.isSubmitting}
+              type="submit"
+              _disabled={{
+                bgColor: "#F03B1388",
+              }}
+              _hover={{
+                bgColor: "#E03410",
+              }}
+              _focus={{
+                bgColor: "#E03410",
+              }}
+            >
+              Delete Account Permanently
+            </Button>
+          </Flex>
+        </Form>
+      )}
+    </Formik>
+  </Box>
+</TabPanel>
             </TabPanels>
           </Tabs>
         </Box>
-        {/* <AddFarmerModal isOpen={modalState} setModalState={setModalState} /> */}
       </Box>
     </SidebarWithHeader>
   );
 }
 
-interface ModalProps {
-  isOpen: boolean;
-  setModalState: Dispatch<SetStateAction<boolean>>;
-}
 
-// const AddFarmerModal: React.FC<ModalProps> = ({ isOpen, setModalState }) => {
-//   const [error, setError] = useState<string | null>(null);
-
-//   function validateEmpty(value: any) {
-//     // alert('jjj')
-//     let error;
-//     if (!value) {
-//       error = "This field is required";
-//     }
-//     return error;
-//   }
-//   const { profileInfo } = useAppSelector((state) => state.auth);
-//   const [addFarmer] = useAddFarmerMutation();
-
-//   return (
-//     <ChakraModal
-//       isOpen={isOpen}
-//       onClose={() => setModalState(false)}
-//       //   closeOnOverlayClick={false}
-//       closeOnEsc={false}
-//       isCentered
-//       //   size="xs"
-//     >
-//       <ModalOverlay />
-//       <ModalContent px="30px" py="40px">
-//         <ModalBody textAlign="center" py="20px">
-//           <Flex>
-//             <IconButton
-//               aria-label="Close modal"
-//               bgColor="transparent"
-//               mb="50px"
-//               icon={<CloseIcon />}
-//               onClick={() => {
-//                 setModalState(false);
-//               }}
-//             />
-//           </Flex>
-//           <Text fontSize="16px" fontWeight={600} mb="20px">
-//             Add a farmer
-//           </Text>
-//           <Formik
-//             // initialValues={{ name: 'Sasuke' }}
-//             initialValues={{ dob: "", school: "", course: "", id_type: "" }}
-//             onSubmit={async (values: any, { resetForm }) => {
-//               setError(null);
-
-//               try {
-//                 // alert('ss')
-//                 console.log("nn", values);
-//                 const response = await addFarmer({
-//                   ...values,
-//                   user_id: profileInfo?.id,
-//                 }).unwrap();
-//                 if (response.status == "success") {
-//                   //   resetForm();
-//                   toast.success(response.message);
-//                   setModalState(false);
-//                 } else {
-//                   setError("An unknown error occured");
-//                 }
-//               } catch (err) {
-//                 const error = err as any;
-//                 // alert('error')
-//                 if (error?.data?.errors) {
-//                   // setError(error?.data?.errors[0])
-//                 } else if (error?.data?.message) {
-//                   setError(error?.data?.message);
-//                 }
-//                 console.log("rejected", error);
-//               }
-//             }}
-//           >
-//             {(props) => (
-//               <Form encType="multipart/form-data">
-//                 {error && (
-//                   <Alert status="error" mb="12px">
-//                     <AlertIcon />
-//                     <AlertTitle>{error}</AlertTitle>
-//                   </Alert>
-//                 )}
-
-//                 <Field name="fname" validate={validateEmpty}>
-//                   {({ field, form }: { [x: string]: any }) => (
-//                     <FormControl
-//                       mb="16px"
-//                       isInvalid={form.errors.fname && form.touched.fname}
-//                     >
-//                       <Input
-//                         {...field}
-//                         variant="flushed"
-//                         color="#929292"
-//                         borderColor="#929292"
-//                         _focusVisible={{
-//                           borderColor: "#929292",
-//                         }}
-//                         placeholder="First Name"
-//                       />
-//                       <FormErrorMessage>{form.errors.fname}</FormErrorMessage>
-//                     </FormControl>
-//                   )}
-//                 </Field>
-
-//                 <Field name="lname" validate={validateEmpty}>
-//                   {({ field, form }: { [x: string]: any }) => (
-//                     <FormControl
-//                       mb="16px"
-//                       isInvalid={form.errors.lname && form.touched.lname}
-//                     >
-//                       <Input
-//                         {...field}
-//                         variant="flushed"
-//                         color="#929292"
-//                         borderColor="#929292"
-//                         _focusVisible={{
-//                           borderColor: "#929292",
-//                         }}
-//                         placeholder="Last Name"
-//                       />
-//                       <FormErrorMessage>{form.errors.lname}</FormErrorMessage>
-//                     </FormControl>
-//                   )}
-//                 </Field>
-
-//                 <Field name="location" validate={validateEmpty}>
-//                   {({ field, form }: { [x: string]: any }) => (
-//                     <FormControl
-//                       my={4}
-//                       isInvalid={form.errors.location && form.touched.location}
-//                     >
-//                       <Input
-//                         borderColor="#929292"
-//                         color="#929292"
-//                         _focusVisible={{
-//                           borderColor: "#929292",
-//                         }}
-//                         variant="flushed"
-//                         {...field}
-//                         placeholder="Location"
-//                       />
-//                       <FormErrorMessage>
-//                         {form.errors.location}
-//                       </FormErrorMessage>
-//                     </FormControl>
-//                   )}
-//                 </Field>
-
-//                 <Field name="phone">
-//                   {({ field, form }: { [x: string]: any }) => (
-//                     <FormControl
-//                       my={4}
-//                       isInvalid={form.errors.phone && form.touched.phone}
-//                     >
-//                       <Input
-//                         borderColor="#929292"
-//                         _focusVisible={{
-//                           borderColor: "#929292",
-//                         }}
-//                         type="text"
-//                         color="#929292"
-//                         variant="flushed"
-//                         {...field}
-//                         placeholder="Phone Number"
-//                       />
-//                       <FormErrorMessage>{form.errors.phone}</FormErrorMessage>
-//                     </FormControl>
-//                   )}
-//                 </Field>
-
-//                 <Field name="farm_size" validate={validateEmpty}>
-//                   {({ field, form }: { [x: string]: any }) => (
-//                     <FormControl
-//                       my={4}
-//                       isInvalid={
-//                         form.errors.farm_size && form.touched.farm_size
-//                       }
-//                     >
-//                       <Input
-//                         borderColor="#929292"
-//                         _focusVisible={{
-//                           borderColor: "#929292",
-//                         }}
-//                         color="#929292"
-//                         variant="flushed"
-//                         {...field}
-//                         placeholder="Size of Farm"
-//                       />
-//                       <FormErrorMessage>
-//                         {form.errors.farm_size}
-//                       </FormErrorMessage>
-//                     </FormControl>
-//                   )}
-//                 </Field>
-
-//                 <Button
-//                   bgColor="#F8A730"
-//                   color="white"
-//                   width="100%"
-//                   my="12px"
-//                   fontSize="14px"
-//                   fontWeight={400}
-//                   isLoading={props.isSubmitting}
-//                   //   isDisabled={success}
-//                   minH="48px"
-//                   type="submit"
-//                   _disabled={{
-//                     bgColor: "#F8A73088",
-//                   }}
-//                   _hover={{
-//                     bgColor: "#F8A73088",
-//                   }}
-//                   _focus={{
-//                     bgColor: "#F8A73088",
-//                   }}
-//                 >
-//                   Add farmer
-//                 </Button>
-//               </Form>
-//             )}
-//           </Formik>
-//         </ModalBody>
-//       </ModalContent>
-//     </ChakraModal>
-//   );
-// };
-
-function EmptyTractorsPlaceholder() {
-  return (
-    <Flex justifyContent="center" alignItems="center">
-      <Box bgColor="white" width="100%" p="60px" textAlign="center" mt="20px">
-        {/* <Box bgColor="white" width="400px" p="60px" textAlign="center" mt="40px"> */}
-        <Center>
-          <Image
-            src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446712/empty-state_tytpqr.svg"
-            alt="Empty state image icon"
-          />
-        </Center>
-        <Text color="#323232" fontWeight="700" fontSize="20px" mt="57px">
-          Your list is empty
-        </Text>
-
-        <Text color="#323232" fontWeight="400" fontSize="18px">
-          All Farmer will be listed in this page
-        </Text>
-
-        {/* <Button
-          as="a"
-          mt="50px"
-          href="/home/enlist-tractor"
-          height="56px"
-          w="240px"
-          bgColor="#FA9411"
-          color="white"
-        >
-          Enlist your tractor
-        </Button> */}
-      </Box>
-    </Flex>
-  );
-}

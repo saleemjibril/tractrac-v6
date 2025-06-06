@@ -1124,7 +1124,17 @@ function HireTractorForm({ id }: { id: string }) {
 
           try {
             // alert('ss')
-            console.log("values", values);
+            console.log("values", {
+               ...values,
+                // farm_size: `${values?.farm_size} ${unit}`,
+                start_date: firstDate,
+                end_date: lastDate,
+                addon_ids: [id],
+                first_name: profileInfo?.name?.split(" ")[0],
+                    last_name: profileInfo?.name?.split(" ")[1],
+                    phone_number: profileInfo?.phone,
+            });
+
             console.log("unit", unit);
 
             console.log("hello", `${values?.farm_size} ${unit}`);
@@ -1139,11 +1149,15 @@ if(!firstDate || !lastDate) {
                 start_date: firstDate,
                 end_date: lastDate,
                 addon_ids: [id],
+                estimated_work_time: `${values?.estimated_work_time}${unit}`,
+                first_name: profileInfo?.name?.split(" ")[0],
+                    last_name: profileInfo?.name?.split(" ")[1],
+                    phone_number: profileInfo?.phone,
               },
               userToken as string
             );
 
-            console.log("hireTractor", response);
+            console.log("hireTool", response);
             setOpen(true);
 
             // if (response.status == "success") {
@@ -1297,38 +1311,64 @@ if(!firstDate || !lastDate) {
   mt="20px"
   width="100%"
             >
-              {/* <Field name="implement_types" validate={validateEmpty}>
+               <Field name="estimated_work_time" validate={validateEmpty}>
                 {({ field, form }: { [x: string]: any }) => (
                   <FormControl
-                    isInvalid={
-                      form.errors.implement_types &&
-                      form.touched.implement_types
-                    }
+                    isInvalid={form.errors.estimated_work_time && form.touched.estimated_work_time}
                   >
                     <FormLabel fontSize="12px" color="#323232">
-                      Implement Type
+                      Estimated work time
                     </FormLabel>
-                    <MultiSelect
-                      // {...field}
-                      name="Roles"
-                      isMulti
-                      options={implementTypes}
-                      placeholder="Select implements"
-                      onChange={(option) => {
-                        console.log(option.at(0));
-                        form.setFieldValue(
-                          field.name,
-                          option.map((e) => e.value)
-                        );
-                      }}
-                      // id="roles-select-field"
-                    />
-                    <FormErrorMessage>
-                      {form.errors.implement_types}
-                    </FormErrorMessage>
+                    <InputGroup size="md">
+  <Input
+    {...field}
+    bgColor="#3232320D"
+    fontSize="12px"
+    color="#323232"
+    paddingRight="0px"
+    borderRightRadius="0"
+  />
+  
+  <InputRightAddon 
+    padding="0" 
+    backgroundColor="transparent" 
+    border="1px solid" 
+    borderColor="inherit"
+    borderLeft="none"
+    height="40px" // Explicit height to match input
+    display="flex"
+    alignItems="center"
+  >
+    <Box position="relative" width="auto" minWidth="80px" height="40px"
+    display="flex"
+    alignItems="center"
+    >
+      <Select
+        fontSize="12px"
+        height="26px"
+        padding="0 8px"
+        background="transparent"
+        minWidth="100%"
+        width="auto"
+        value={unit}
+        onChange={(v) => {
+          setUnit(v?.currentTarget?.value);
+        }}
+      >
+          <option value="hours" key="hours">
+            Hours
+          </option>
+          <option value="minutes" key="minutes">
+            Minutes
+          </option>
+      </Select>
+    </Box>
+  </InputRightAddon>
+</InputGroup>
+                    <FormErrorMessage>{form.errors.estimated_work_time}</FormErrorMessage>
                   </FormControl>
                 )}
-              </Field> */}
+              </Field>
 
               <Field name="local_government_area" validate={validateEmpty}>
                 {({ field, form }: { [x: string]: any }) => (
@@ -1378,6 +1418,113 @@ if(!firstDate || !lastDate) {
                 )}
               </Field>
             </Flex>
+            <Flex 
+             direction={{ base: "column", md: "row" }}
+  columnGap={{ base: "0", md: "30px" }}
+  rowGap={{ base: "20px", md: "0" }}
+  mt="20px"
+  width="100%"
+            >
+            
+<Field name="sex" validate={validateEmpty}>
+                {({ field, form }: { [x: string]: any }) => (
+                  <FormControl
+                    // my={4}
+                    isInvalid={
+                      form.errors.sex &&
+                      form.touched.sex
+                    }
+                    mb="20px"
+                  >
+                    <FormLabel fontSize="12px" color="#323232">
+                      Gender
+                    </FormLabel>
+                    <Select
+                      bgColor="#3232320D"
+                      placeholder="Select Gender"
+                      fontSize="12px"
+                      color="#323232"
+                      _focusVisible={{
+                        borderColor: "#929292",
+                      }}
+                      onChange={(v) => {
+                        // const state = v.currentTarget.value || "";
+                        form.setFieldValue(field.name, v.currentTarget.value);
+                        // alert(props.values.state);
+                        // setLgas(NaijaStates.lgas(state) ?? []);
+                      }}
+                    >
+                        <option key="male" value="male">
+                          Male
+                        </option>
+                        <option key="female" value="female">
+                          Female
+                        </option>
+                    </Select>
+                    {/* <Input
+                        variant="flushed"
+                        borderColor="orange"
+                        {...field}
+                        //  ref={initialRef}
+                        placeholder="Enter your L.G.A."
+                      /> */}
+                    <FormErrorMessage>
+                      {form.errors.sex}
+                    </FormErrorMessage>
+                  </FormControl>
+                )}
+              </Field>
+
+              <Field name="age_bracket" validate={validateEmpty}>
+                {({ field, form }: { [x: string]: any }) => (
+                  <FormControl
+                    // my={4}
+                    isInvalid={
+                      form.errors.age_bracket &&
+                      form.touched.age_bracket
+                    }
+                    mb="20px"
+                  >
+                    <FormLabel fontSize="12px" color="#323232">
+                      Age bracket
+                    </FormLabel>
+                    <Select
+                      bgColor="#3232320D"
+                      placeholder="Select age bracket"
+                      fontSize="12px"
+                      color="#323232"
+                      _focusVisible={{
+                        borderColor: "#929292",
+                      }}
+                      onChange={(v) => {
+                        // const state = v.currentTarget.value || "";
+                        form.setFieldValue(field.name, v.currentTarget.value);
+                        // alert(props.values.state);
+                        // setLgas(NaijaStates.lgas(state) ?? []);
+                      }}
+                    >
+                        {ageBrackets?.map((age) => 
+                        <option key={age} value={age}>
+                          {age}
+                        </option>
+                        )}
+                        
+                    </Select>
+                    {/* <Input
+                        variant="flushed"
+                        borderColor="orange"
+                        {...field}
+                        //  ref={initialRef}
+                        placeholder="Enter your L.G.A."
+                      /> */}
+                    <FormErrorMessage>
+                      {form.errors.age_bracket}
+                    </FormErrorMessage>
+                  </FormControl>
+                )}
+              </Field>
+            </Flex>
+            
 
             {/* <Flex 
              direction={{ base: "column", md: "row" }}
@@ -1634,7 +1781,7 @@ if(!firstDate || !lastDate) {
              my="40px"
              width="100%"
             >
-              <Field name="address" validate={validateEmpty}>
+             <Field name="address" validate={validateEmpty}>
                 {({ field, form }: { [x: string]: any }) => (
                   <FormControl
                     isInvalid={form.errors.address && form.touched.address}
@@ -1692,6 +1839,79 @@ if(!firstDate || !lastDate) {
                       }}
                     />
                     <FormErrorMessage>{form.errors.address}</FormErrorMessage>
+                  </FormControl>
+                )}
+              </Field>
+
+              
+
+              <Field name="nearest_landmark">
+                {({ field, form }: { [x: string]: any }) => (
+                  <FormControl
+                    isInvalid={
+                      form.errors.nearest_landmark &&
+                      form.touched.nearest_landmark
+                    }
+                  >
+                    <FormLabel fontSize="12px" color="#323232">
+                      Nearest landmark
+                    </FormLabel>
+                    <Input
+                      {...field}
+                      bgColor="#3232320D"
+                      fontSize="12px"
+                      color="#323232"
+                    />
+                    {/* <Select
+                    bgColor="#3232320D"
+                    placeholder="Select"
+                    fontSize="12px"
+                    color="#323232"
+                  >
+                    <option value="trc1">2 weeks</option>
+                  </Select> */}
+                    <FormErrorMessage>
+                      {form.errors.nearest_landmark}
+                    </FormErrorMessage>
+                  </FormControl>
+                )}
+              </Field>
+            </Flex>
+            <Flex 
+             direction={{ base: "column", md: "row" }}
+             columnGap={{ base: "0", md: "30px" }}
+             rowGap={{ base: "20px", md: "0" }}
+             my="40px"
+             width="100%"
+            >
+           <Field name="ward_district">
+                {({ field, form }: { [x: string]: any }) => (
+                  <FormControl
+                    isInvalid={
+                      form.errors.ward_district &&
+                      form.touched.ward_district
+                    }
+                  >
+                    <FormLabel fontSize="12px" color="#323232">
+                      Ward district
+                    </FormLabel>
+                    <Input
+                      {...field}
+                      bgColor="#3232320D"
+                      fontSize="12px"
+                      color="#323232"
+                    />
+                    {/* <Select
+                    bgColor="#3232320D"
+                    placeholder="Select"
+                    fontSize="12px"
+                    color="#323232"
+                  >
+                    <option value="trc1">2 weeks</option>
+                  </Select> */}
+                    <FormErrorMessage>
+                      {form.errors.ward_district}
+                    </FormErrorMessage>
                   </FormControl>
                 )}
               </Field>
@@ -1781,17 +2001,17 @@ if(!firstDate || !lastDate) {
                 alt="Checkmark image icon"
               />
               <Text fontSize="16px" fontWeight={600}>
-                Tractor Request Completed
+                Agro tool Request Completed
               </Text>
               <Text my="8px" fontSize="14px">
                 Thank you for providing us with this information, check your
-                profile for the status of your tractor
+                profile for the status of your agro tool
               </Text>
               <Button
                 mb="4px"
                 onClick={() => {
                   onClose();
-                  router.replace("/dashboard/hired-tractors");
+                  router.replace("/dashboard/hired-tools");
                 }}
                 width="100%"
                 height="45px"
@@ -1984,4 +2204,10 @@ const landMeasurementUnits = [
     label: "Other",
     value: "other",
   },
+];
+
+
+const ageBrackets = [
+  "18-35",
+  "36 & above"
 ];
