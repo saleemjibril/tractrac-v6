@@ -122,6 +122,15 @@ const LinkItems: Array<LinkItemProps> = [
     requiresAuth: true,
   },
   {
+    name: "Agro Tool Payment",
+    imageLight: "pay-light",
+    imageDark: "pay-dark",
+    path: "/payment/tools",
+    iconLight: PaymentWhite,
+    iconDark: Payment,
+    requiresAuth: true,
+  },
+  {
     name: "Account",
     imageLight: "user-light",
     imageDark: "user-dark",

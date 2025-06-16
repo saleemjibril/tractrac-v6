@@ -63,7 +63,6 @@ export const verifyPayment = async (reference: string, token: string) => {
   const res = await axios.get(
     `${process.env.NEXT_PUBLIC_URL}/payments/verify/${reference}`,
     config
-    
   );
 
   return res;
@@ -81,13 +80,12 @@ export const initialisePayment = async (
     },
   };
 
-  console.log( {
+  console.log({
     hire_tractor_id,
     invoice_number,
     amount,
     payment_type: "card",
   });
-  
 
   const res = await axios.post(
     `${process.env.NEXT_PUBLIC_URL}/payments/initialize`,
@@ -103,7 +101,59 @@ export const initialisePayment = async (
   return res;
 };
 
-export const getUserPayments = async (
+export const getUserPayments = async (token: string) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const res = await axios.get(
+    `${process.env.NEXT_PUBLIC_URL}/payments/user`,
+
+    config
+  );
+
+  return res;
+};
+
+export const getUserAgroToolPayments = async (token: string) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const res = await axios.get(
+    `${process.env.NEXT_PUBLIC_URL}/hire_addon_payment/user`,
+
+    config
+  );
+
+  return res;
+};
+
+
+export const getAgroToolInvoiceDetails = async (invoice_id: string, token: string) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const res = await axios.get(
+    `${process.env.NEXT_PUBLIC_URL}/hire_addon_payment/invoice-details/${invoice_id}`,
+    config
+  );
+
+  return res;
+  
+};
+
+export const initialiseAgroToolPayment = async (
+  hire_addon_id: string,
+  invoice_number: string,
+  amount: number,
   token: string
 ) => {
   const config = {
@@ -112,12 +162,37 @@ export const getUserPayments = async (
     },
   };
 
+  console.log({
+    hire_addon_id,
+    invoice_number,
+    amount,
+    payment_type: "card",
+  });
 
-  
+  const res = await axios.post(
+    `${process.env.NEXT_PUBLIC_URL}/hire_addon_payment/initialize`,
+    {
+      hire_addon_id,
+      invoice_number,
+      amount,
+      payment_type: "card",
+    },
+    config
+  );
+
+  return res;
+};
+
+
+export const verifyAgroToolPayment = async (reference: string, token: string) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
 
   const res = await axios.get(
-    `${process.env.NEXT_PUBLIC_URL}/payments/user`,
-  
+    `${process.env.NEXT_PUBLIC_URL}/hire_addon_payment/verify/${reference}`,
     config
   );
 

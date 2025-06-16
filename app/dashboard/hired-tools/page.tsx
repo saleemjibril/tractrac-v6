@@ -64,8 +64,8 @@ export default function HiredTractors() {
 
           if (typeof userToken === 'string') {
             const response = await getMyHiredTools(userToken);
-            setTractors(response?.data?.items);
-            console.log("getMyHiredTools", response);
+            console.log("getMyHiredTools", response?.data);
+            setTractors(response?.data);
             setLoading(false)
           } else {
             // Handle the case when userToken is not a string
@@ -84,6 +84,12 @@ export default function HiredTractors() {
       useEffect(() => {
         handleGetTractors();
       }, []);
+      useEffect(() => {
+       console.log("dont stop me now", tractors);
+       
+      }, [tractors]);
+
+
 
   return (
     <SidebarWithHeader isAuth={true}>
@@ -106,13 +112,13 @@ export default function HiredTractors() {
             width="170px"
             color="white"
             as="a"
-            href="/home/hire-tractor"
+            href="/home/hire-tools"
             _hover={{
               opacity: 0.8,
             }}
           >
             <Flex justifyContent="center" alignContent="center">
-              <Text fontSize="14px">Hire a tractor</Text>
+              <Text fontSize="14px">Hire an agro tool</Text>
               <AddIcon boxSize="12px" ml="30px" mt="3px" />
             </Flex>
           </Button>
