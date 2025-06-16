@@ -13,7 +13,7 @@ import {
   ModalBody,
   useDisclosure,
 } from "@chakra-ui/react";
-import { SidebarWithHeader } from "../../components/Sidenav";
+import { SidebarWithHeader } from "../../../components/Sidenav";
 import { useEffect, useState } from "react";
 import { AddIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 // import { useMakePaymentMutation } from "@/redux/services/userApi";
