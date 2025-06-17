@@ -135,7 +135,7 @@ export default function GetMobileAppComponent() {
             >
               Request, Enlist and Invest in Tractors on the GO!
             </Text>
-            <Stack direction="row" gap="16px" justify="center">
+            <Stack direction="row" gap="16px" justify="start">
               {/* <Link 
                 href="https://play.google.com/store/apps/details?id=com.tractrac.trac_trac&hl=en_GB"
                 href={"#"}
