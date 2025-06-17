@@ -135,8 +135,9 @@ export default function Header() {
             >
               <a 
               // href="https://play.google.com/store/apps/details?id=com.tractrac.trac_trac&hl=en_GB"
-              href="#"
-                              onClick={() => toast.info("We are currently making some updates to the mobile app. Please check back later.")}
+                href="https://play.google.com/store/apps/details?id=com.tractrac.plus"
+                target="_blank"
+                              // onClick={() => toast.info("We are currently making some updates to the mobile app. Please check back later.")}
               
               >
                 <button
