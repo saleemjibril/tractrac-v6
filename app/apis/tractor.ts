@@ -13,6 +13,17 @@ export const createTractor = async (data: object, token: string) => {
       formData.append(key, value);
     } else if (value instanceof Blob) {
       formData.append(key, value);
+    } else if (Array.isArray(value)) {
+      // Handle arrays - append each item separately or as a single value
+      if (key === 'implement_types' || key === 'implement_types') {
+        // For implementType, send each value separately
+        value.forEach((item) => {
+          formData.append(key, String(item));
+        });
+      } else {
+        // For other arrays, you might want to send as JSON string
+        formData.append(key, JSON.stringify(value));
+      }
     } else if (typeof value === 'object' && value !== null) {
       // Convert objects to JSON strings
       formData.append(key, JSON.stringify(value));
@@ -24,25 +35,25 @@ export const createTractor = async (data: object, token: string) => {
   const config = {
     headers: {
       'Authorization': `Bearer ${token}`,
-      'Content-Type': 'multipart/form-data', // Set the Content-Type header for form data
+      // Remove Content-Type header - let the browser set it automatically for FormData
+      // This ensures proper boundary is set for multipart/form-data
     },
   };
 
   // Log FormData entries
   console.log("FormData contents:");
   for (const pair of formData.entries()) {
-    console.log(pair[0], pair[1]);
+    console.log(typeof pair[1], pair[0], pair[1]);
   }
   
   const res = await axios.post(
     `${process.env.NEXT_PUBLIC_URL}/tractors`,
-    formData, // Send formData instead of JSON
+    formData,
     config
   );
 
   return res;
 };
-
 export const getTractors = async (token: string) => {
   const config = {
     headers: {
