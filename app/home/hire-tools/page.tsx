@@ -57,7 +57,7 @@ import {
 } from "@/app/apis/tractor";
 import moment from "moment";
 import Link from "next/link";
-import { filterTools, getToolBookedDates, getTools, hireTool } from "@/app/apis/tools";
+import { filterTools, getToolBookedDates, getApprovedTools, hireTool } from "@/app/apis/tools";
 
 const fileTypes = ["JPG", "PNG", "JPEG"];
 
@@ -120,9 +120,9 @@ export default function HireTractor() {
     setLoading(true);
     try {
       if (typeof userToken === "string") {
-        const response = await getTools(userToken);
+        const response = await getApprovedTools(userToken);
         setTractors(response?.data);
-        console.log("getTools", response);
+        console.log("getApprovedTools", response);
       } else {
         // Handle the case when userToken is not a string
         console.log("User token is not a string");
@@ -576,9 +576,9 @@ export default function HireTractor() {
                       setTractorId={setTractorId}
                       id={tractor?.id}
                       name={`${tractor?.name}`}
-                      image={tractor?.image_urls[0]}
+                      image={tractor?.image_urls}
                       capacity=" 105 to 135 HP"
-                      location={`${tractor?.lga},${tractor?.state}`}
+                      location={`${tractor?.local_government_area},${tractor?.state}`}
                       // location={tractor?.address}
                       // distance={"10"}
                       distance={tractor?.distance}

@@ -59,6 +59,21 @@ export const getTools = async (token: string) => {
   return res;
 };
 
+export const getApprovedTools = async (token: string) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const res = await axios.get(
+    `${process.env.NEXT_PUBLIC_URL}/addons/approved-for-hire`,
+    config
+  );
+
+  return res;
+};
+
 
 export const filterTools = async (params: string, token: string) => {
   const config = {
