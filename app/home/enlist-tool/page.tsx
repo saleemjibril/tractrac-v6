@@ -1428,8 +1428,8 @@ const tractorTypes = [
     value: "MULTI_SEED_THRESHER",
   },
   {
-    label: "Treadle pump - irrigation ",
-    value: "TREADLE_PUMP_IRRIGATION",
+    label: "Treadle pump",
+    value: "TREADLE_PUMP",
   },
 ];
 

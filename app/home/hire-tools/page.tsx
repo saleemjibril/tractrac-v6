@@ -64,7 +64,7 @@ const fileTypes = ["JPG", "PNG", "JPEG"];
 // const DynamicHeader = dynamic(() => import('../components/Sidenav'), {
 //     loading: () => <p>Loading...</p>,
 //   })
-const tractorTypes =[
+const tractorTypes = [
   { value: "solar_sprayer", label: "Solar Sprayer" },
   { value: "fertilizer_applicator", label: "Fertilizer Applicator" },
   { value: "soil_testing_kit", label: "Soil Testing Kit" },
@@ -221,7 +221,7 @@ export default function HireTractor() {
     setLga(null);
     setTractorType(null);
     handleGetTractors();
-  } 
+  }
 
   async function search() {
     // alert(state);
@@ -300,7 +300,7 @@ export default function HireTractor() {
                 mt="12px"
                 height="360px"
                 borderRadius="4px"
-                // w="111px"
+              // w="111px"
               />
             ) : (
               <Map
@@ -310,8 +310,8 @@ export default function HireTractor() {
             {/* <Image src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446725/map_punpe8.svg" alt="map image" /> */}
           </Stack>
           <Box mt="40px">
-          <SimpleGrid columns={{base: 2, lg: 4}} spacing="20px" width={"fit-content"}>
-                          {/* <InputGroup
+            <SimpleGrid columns={{ base: 2, lg: 4 }} spacing="20px" width={"fit-content"}>
+              {/* <InputGroup
                 width="140px"
                 border="1px"
                 borderColor="#FA9411"
@@ -439,25 +439,25 @@ export default function HireTractor() {
                 ))}
               </Select>
 
-              
-                        <Button
-                          bgColor="#FA9411"
-                          height="42px"
-                          borderRadius="4px"
-                          width="170px"
-                          color="white"
-                          as="a"
-                          _hover={{
-                            opacity: 0.8,
-                          }}
-                          onClick={clearFilters}
-                        >
-                          <Flex justifyContent="center" alignContent="center">
-                            <Text fontSize="14px">Clear filters</Text>
-                          </Flex>
-                        </Button>
 
-              
+              <Button
+                bgColor="#FA9411"
+                height="42px"
+                borderRadius="4px"
+                width="170px"
+                color="white"
+                as="a"
+                _hover={{
+                  opacity: 0.8,
+                }}
+                onClick={clearFilters}
+              >
+                <Flex justifyContent="center" alignContent="center">
+                  <Text fontSize="14px">Clear filters</Text>
+                </Flex>
+              </Button>
+
+
 
               {/* <Select
                 width="130px"
@@ -528,70 +528,70 @@ export default function HireTractor() {
                   ))}
                 </SimpleGrid>
               ) : // { location }
-              // <SimpleGrid
-              //   columns={{ base: 2, md: 4 }}
-              //   spacingX="20px"
-              //   spacingY="15px"
-              //   mt="30px"
-              // >
-              //   {
-              // searchData ? (
-              //   searchData?.length < 1 ? (
-              //     <EmptyDataPlaceholder isSearch={true} />
-              //   ) : (
-              //     <SimpleGrid
-              //       columns={{ base: 2, md: 4 }}
-              //       spacingX="20px"
-              //       spacingY="15px"
-              //       mt="30px"
-              //     >
-              //       {tractors.map((tractor: any) => (
-              //         <TractorCard
-              //           key={tractor?.id}
-              //           setTractorId={setTractorId}
-              //           id={tractor?.id}
-              //           name={`${tractor?.name}`}
-              //           image={tractor?.tractor_image}
-              //           capacity=" 105 to 135 HP"
-              //           location={tractor?.address}
-              //           distance={tractor?.distance}
-              //           tractor_type={tractor?.tractor_type}
-              //         />
-              //       ))}
-              //     </SimpleGrid>
-              //   )
-              // ) :
-              tractors?.length < 1 ? (
-                <EmptyDataPlaceholder isSearch={false} />
-              ) : (
-                <SimpleGrid
-                columns={{ base: 1, md: 4 }}
-                spacingX="20px"
-                  spacingY="15px"
-                  mt="30px"
-                >
-                  {tractors?.map((tractor: any) => (
-                    <TractorCard
-                      key={tractor?.id}
-                      setTractorId={setTractorId}
-                      id={tractor?.id}
-                      name={`${tractor?.name}`}
-                      image={tractor?.image_urls}
-                      capacity=" 105 to 135 HP"
-                      location={`${tractor?.local_government_area},${tractor?.state}`}
-                      // location={tractor?.address}
-                      // distance={"10"}
-                      distance={tractor?.distance}
-                      tractor_type={tractor?.tractor_type}
-                      status={tractor?.status}
-                      coordinates={{ 
-                        latitude: tractor?.current_location_lat, 
-                        longitude: tractor?.current_location_lng 
-                      }}
-                    />
-                  ))}
-                </SimpleGrid>
-              )
+                // <SimpleGrid
+                //   columns={{ base: 2, md: 4 }}
+                //   spacingX="20px"
+                //   spacingY="15px"
+                //   mt="30px"
+                // >
+                //   {
+                // searchData ? (
+                //   searchData?.length < 1 ? (
+                //     <EmptyDataPlaceholder isSearch={true} />
+                //   ) : (
+                //     <SimpleGrid
+                //       columns={{ base: 2, md: 4 }}
+                //       spacingX="20px"
+                //       spacingY="15px"
+                //       mt="30px"
+                //     >
+                //       {tractors.map((tractor: any) => (
+                //         <TractorCard
+                //           key={tractor?.id}
+                //           setTractorId={setTractorId}
+                //           id={tractor?.id}
+                //           name={`${tractor?.name}`}
+                //           image={tractor?.tractor_image}
+                //           capacity=" 105 to 135 HP"
+                //           location={tractor?.address}
+                //           distance={tractor?.distance}
+                //           tractor_type={tractor?.tractor_type}
+                //         />
+                //       ))}
+                //     </SimpleGrid>
+                //   )
+                // ) :
+                tractors?.length < 1 ? (
+                  <EmptyDataPlaceholder isSearch={false} />
+                ) : (
+                  <SimpleGrid
+                    columns={{ base: 1, md: 4 }}
+                    spacingX="20px"
+                    spacingY="15px"
+                    mt="30px"
+                  >
+                    {tractors?.map((tractor: any) => (
+                      <TractorCard
+                        key={tractor?.id}
+                        setTractorId={setTractorId}
+                        id={tractor?.id}
+                        name={`${tractor?.name}`}
+                        image={tractor?.image_urls}
+                        capacity=" 105 to 135 HP"
+                        location={`${tractor?.local_government_area},${tractor?.state}`}
+                        // location={tractor?.address}
+                        // distance={"10"}
+                        distance={tractor?.distance}
+                        tractor_type={tractor?.tractor_type}
+                        status={tractor?.status}
+                        coordinates={{
+                          latitude: tractor?.current_location_lat,
+                          longitude: tractor?.current_location_lng
+                        }}
+                      />
+                    ))}
+                  </SimpleGrid>
+                )
               //   }
               // </SimpleGrid>
             }
@@ -610,20 +610,20 @@ export function calculateDistance(
 ): number {
   // Earth's radius in kilometers
   const R = 6371;
-  
+
   // Convert latitude and longitude from degrees to radians
   const dLat = (lat2 - lat1) * (Math.PI / 180);
   const dLon = (lon2 - lon1) * (Math.PI / 180);
-  
+
   // Haversine formula
-  const a = 
+  const a =
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) * 
+    Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) *
     Math.sin(dLon / 2) * Math.sin(dLon / 2);
-  
+
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   let distance = R * c; // Distance in kilometers
-  
+
   return Math.round(distance * 10) / 10; // Round to 1 decimal place
 }
 
@@ -638,44 +638,44 @@ function TractorCard({
   status,
   coordinates
 }: ITractorCard) {
-  
+
   const [userCoordinates, setUserCoordinates] = useState<ICoordinates | null>(null);
   const [distance, setDistance] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-    // Get user's location on component mount
-    useEffect(() => {
-      console.log("coordinates", coordinates);
-      
-      if (!coordinates) return;
-  
-      if ("geolocation" in navigator) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const userCoords = {
-              latitude: position.coords.latitude,
-              longitude: position.coords.longitude,
-            };
-            setUserCoordinates(userCoords);
-            
-            // Calculate distance once we have user coordinates
-            const calculatedDistance = calculateDistance(
-              userCoords.latitude,
-              userCoords.longitude,
-              coordinates.latitude,
-              coordinates.longitude
-            );
-            setDistance(calculatedDistance);
-          },
-          (error) => {
-            console.log("Error getting user location:", error);
-            setError("Unable to get your location");
-          }
-        );
-      } else {
-        setError("Geolocation is not supported by your browser");
-      }
-    }, [coordinates]);
+  // Get user's location on component mount
+  useEffect(() => {
+    console.log("coordinates", coordinates);
+
+    if (!coordinates) return;
+
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const userCoords = {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          };
+          setUserCoordinates(userCoords);
+
+          // Calculate distance once we have user coordinates
+          const calculatedDistance = calculateDistance(
+            userCoords.latitude,
+            userCoords.longitude,
+            coordinates.latitude,
+            coordinates.longitude
+          );
+          setDistance(calculatedDistance);
+        },
+        (error) => {
+          console.log("Error getting user location:", error);
+          setError("Unable to get your location");
+        }
+      );
+    } else {
+      setError("Geolocation is not supported by your browser");
+    }
+  }, [coordinates]);
 
   return (
     <Box
@@ -775,8 +775,8 @@ function TractorCard({
               {status === "available"
                 ? "Book now"
                 : status === "in_use"
-                ? "Book ahead"
-                : "Book ahead"}
+                  ? "Book ahead"
+                  : "Book ahead"}
             </Text>
           </Box>
         )}
@@ -802,7 +802,7 @@ function HireTractorForm({ id }: { id: string }) {
   const { profileInfo } = useAppSelector((state) => state.auth);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const router = useRouter();
-  
+
 
   console.log("profileInfo", profileInfo);
 
@@ -857,29 +857,29 @@ function HireTractorForm({ id }: { id: string }) {
     setNdcCalendar(!ndcCalendar);
   };
 
-   // Helper function to check if there are any booked dates in the given range
-   const checkForBookedDatesInRange = (start: string, end: string) => {
+  // Helper function to check if there are any booked dates in the given range
+  const checkForBookedDatesInRange = (start: string, end: string) => {
     if (!bookedDates || bookedDates.length === 0) {
       return false;
     }
-    
+
     const startDate = new Date(start);
     const endDate = new Date(end);
-    
+
     // Go through each day between start and end to check if any are booked
     const currentDate = new Date(startDate);
-    
+
     while (currentDate <= endDate) {
       const dateString = currentDate.toISOString().split('T')[0]; // Format: YYYY-MM-DD
-      
+
       if (bookedDates.includes(dateString)) {
         return true; // Found a booked date in the range
       }
-      
+
       // Move to the next day
       currentDate.setDate(currentDate.getDate() + 1);
     }
-    
+
     return false; // No booked dates in the range
   };
 
@@ -889,19 +889,19 @@ function HireTractorForm({ id }: { id: string }) {
     if (bookedDates?.includes(date)) {
       return;
     }
-  
+
     // Get today's date for comparison
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    
+
     // Parse the selected date
     const selectedDate = new Date(date);
-    
+
     // Don't allow selection of today or past dates (additional safety check)
     if (selectedDate <= today) {
       return;
     }
-  
+
     if (!firstDate) {
       // Set first date if none is selected yet
       setFirstDate(date);
@@ -909,7 +909,7 @@ function HireTractorForm({ id }: { id: string }) {
       // Compare full dates instead of just the day part
       const firstDateObj = new Date(firstDate);
       const dateObj = new Date(date);
-      
+
       if (firstDateObj > dateObj) {
         // If the selected date is before the first date, swap them
         setLastDate(firstDate);
@@ -917,7 +917,7 @@ function HireTractorForm({ id }: { id: string }) {
       } else {
         // Before setting the last date, check if there are any booked dates in the range
         const hasBookedDatesInRange = checkForBookedDatesInRange(firstDate, date);
-        
+
         if (hasBookedDatesInRange) {
           // If there are booked dates in the range, reset the selection and use the new date as first date
           setFirstDate(date);
@@ -933,18 +933,18 @@ function HireTractorForm({ id }: { id: string }) {
       setLastDate(null);
     }
   };
-  
- 
+
+
   const renderCalendarGridRange = () => {
     const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     const startDay = new Date(currentYear, currentMonth, 1).getDay();
     const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
 
-      // Get today's date for comparison
-  const today = new Date();
-  const currentDay = today.getDate();
-  const currentRealMonth = today.getMonth();
-  const currentRealYear = today.getFullYear();
+    // Get today's date for comparison
+    const today = new Date();
+    const currentDay = today.getDate();
+    const currentRealMonth = today.getMonth();
+    const currentRealYear = today.getFullYear();
 
     const rows = [];
     let calendarDay = 1;
@@ -972,19 +972,17 @@ function HireTractorForm({ id }: { id: string }) {
           const isAvailable = !bookedDates?.includes(dateString);
           const isBooked = bookedDates?.includes(dateString);
 
-          const isPastOrToday = 
-          currentYear < currentRealYear || 
-          (currentYear === currentRealYear && currentMonth < currentRealMonth) || 
-          (currentYear === currentRealYear && currentMonth === currentRealMonth && calendarDay <= currentDay);
+          const isPastOrToday =
+            currentYear < currentRealYear ||
+            (currentYear === currentRealYear && currentMonth < currentRealMonth) ||
+            (currentYear === currentRealYear && currentMonth === currentRealMonth && calendarDay <= currentDay);
 
 
 
-          const cellClassName = `calendar-cell ndc-calendar-date${
-            isAvailable && !isPastOrToday ? " available" : ""
-          }${isBooked ? " booked" : ""}${
-            isPastOrToday ? " disabled" : ""
-          }`;
-  
+          const cellClassName = `calendar-cell ndc-calendar-date${isAvailable && !isPastOrToday ? " available" : ""
+            }${isBooked ? " booked" : ""}${isPastOrToday ? " disabled" : ""
+            }`;
+
 
           days.push(
             <Tooltip
@@ -1001,13 +999,13 @@ function HireTractorForm({ id }: { id: string }) {
                   firstDate === dateString
                     ? `active-date ${cellClassName}`
                     : lastDate === dateString
-                    ? `active-date ${cellClassName}`
-                    : parseInt(firstDate?.split("-")[2]) <
+                      ? `active-date ${cellClassName}`
+                      : parseInt(firstDate?.split("-")[2]) <
                         parseInt(dateString?.split("-")[2]) &&
-                      parseInt(lastDate?.split("-")[2]) >
+                        parseInt(lastDate?.split("-")[2]) >
                         parseInt(dateString?.split("-")[2])
-                    ? `subsidiary-date ${cellClassName}`
-                    : cellClassName
+                        ? `subsidiary-date ${cellClassName}`
+                        : cellClassName
                 }
                 onClick={() => handleDateRangeClick(dateString)}
               >
@@ -1108,6 +1106,11 @@ function HireTractorForm({ id }: { id: string }) {
           start_date: "",
           end_date: "",
           additional_info: "",
+          ward_district: "",
+          payment_method: "",
+          sex: "",
+          estimated_work_time: "",
+          age_bracket: "",
         }}
         onSubmit={async (values: any, { resetForm }) => {
           setError(null);
@@ -1125,23 +1128,23 @@ function HireTractorForm({ id }: { id: string }) {
           try {
             // alert('ss')
             console.log("values", {
-               ...values,
-                // farm_size: `${values?.farm_size} ${unit}`,
-                start_date: firstDate,
-                end_date: lastDate,
-                addon_ids: [id],
-                first_name: profileInfo?.name?.split(" ")[0],
-                    last_name: profileInfo?.name?.split(" ")[1],
-                    phone_number: profileInfo?.phone,
+              ...values,
+              // farm_size: `${values?.farm_size} ${unit}`,
+              start_date: firstDate,
+              end_date: lastDate,
+              addon_ids: [id],
+              first_name: profileInfo?.name?.split(" ")[0],
+              last_name: profileInfo?.name?.split(" ")[1],
+              phone_number: profileInfo?.phone,
             });
 
             console.log("unit", unit);
 
             console.log("hello", `${values?.farm_size} ${unit}`);
-if(!firstDate || !lastDate) {
-  toast.error("Please select a date range");
-  return;
-}
+            if (!firstDate || !lastDate) {
+              toast.error("Please select a date range");
+              return;
+            }
             const response = await hireTool(
               {
                 ...values,
@@ -1151,8 +1154,8 @@ if(!firstDate || !lastDate) {
                 addon_ids: [id],
                 estimated_work_time: `${values?.estimated_work_time}${unit}`,
                 first_name: profileInfo?.name?.split(" ")[0],
-                    last_name: profileInfo?.name?.split(" ")[1],
-                    phone_number: profileInfo?.phone,
+                last_name: profileInfo?.name?.split(" ")[1],
+                phone_number: profileInfo?.phone,
               },
               userToken as string
             );
@@ -1186,12 +1189,12 @@ if(!firstDate || !lastDate) {
               </Alert>
             )}
 
-            <Flex 
-             direction={{ base: "column", md: "row" }}
-  columnGap={{ base: "0", md: "30px" }}
-  rowGap={{ base: "20px", md: "0" }}
-  mt="20px"
-  width="100%"
+            <Flex
+              direction={{ base: "column", md: "row" }}
+              columnGap={{ base: "0", md: "30px" }}
+              rowGap={{ base: "20px", md: "0" }}
+              mt="20px"
+              width="100%"
             >
               <Field name="farm_size" validate={validateEmpty}>
                 {({ field, form }: { [x: string]: any }) => (
@@ -1212,51 +1215,51 @@ if(!firstDate || !lastDate) {
                       )
                     </FormLabel>
                     <InputGroup size="md">
-  <Input
-    {...field}
-    bgColor="#3232320D"
-    fontSize="12px"
-    color="#323232"
-    type="number"
-    paddingRight="0px"
-    borderRightRadius="0"
-  />
-  
-  <InputRightAddon 
-    padding="0" 
-    backgroundColor="transparent" 
-    border="1px solid" 
-    borderColor="inherit"
-    borderLeft="none"
-    height="40px" // Explicit height to match input
-    display="flex"
-    alignItems="center"
-  >
-    <Box position="relative" width="auto" minWidth="80px" height="40px"
-    display="flex"
-    alignItems="center"
-    >
-      <Select
-        fontSize="12px"
-        height="26px"
-        padding="0 8px"
-        background="transparent"
-        minWidth="100%"
-        width="auto"
-        value={unit}
-        onChange={(v) => {
-          setUnit(v?.currentTarget?.value);
-        }}
-      >
-        {landMeasurementUnits?.map((option) => (
-          <option value={option.value} key={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </Select>
-    </Box>
-  </InputRightAddon>
-</InputGroup>
+                      <Input
+                        {...field}
+                        bgColor="#3232320D"
+                        fontSize="12px"
+                        color="#323232"
+                        type="number"
+                        paddingRight="0px"
+                        borderRightRadius="0"
+                      />
+
+                      <InputRightAddon
+                        padding="0"
+                        backgroundColor="transparent"
+                        border="1px solid"
+                        borderColor="inherit"
+                        borderLeft="none"
+                        height="40px" // Explicit height to match input
+                        display="flex"
+                        alignItems="center"
+                      >
+                        <Box position="relative" width="auto" minWidth="80px" height="40px"
+                          display="flex"
+                          alignItems="center"
+                        >
+                          <Select
+                            fontSize="12px"
+                            height="26px"
+                            padding="0 8px"
+                            background="transparent"
+                            minWidth="100%"
+                            width="auto"
+                            value={unit}
+                            onChange={(v) => {
+                              setUnit(v?.currentTarget?.value);
+                            }}
+                          >
+                            {landMeasurementUnits?.map((option) => (
+                              <option value={option.value} key={option.value}>
+                                {option.label}
+                              </option>
+                            ))}
+                          </Select>
+                        </Box>
+                      </InputRightAddon>
+                    </InputGroup>
                     <FormErrorMessage>{form.errors.farm_size}</FormErrorMessage>
                   </FormControl>
                 )}
@@ -1285,7 +1288,7 @@ if(!firstDate || !lastDate) {
                           // Federal Capital Territory
                           setLgas(
                             nigerianStates.lgas("Federal Capital Territory") ??
-                              []
+                            []
                           );
                         } else {
                           setLgas(nigerianStates.lgas(state) ?? []);
@@ -1304,14 +1307,14 @@ if(!firstDate || !lastDate) {
               </Field>
             </Flex>
 
-            <Flex 
-             direction={{ base: "column", md: "row" }}
-  columnGap={{ base: "0", md: "30px" }}
-  rowGap={{ base: "20px", md: "0" }}
-  mt="20px"
-  width="100%"
+            <Flex
+              direction={{ base: "column", md: "row" }}
+              columnGap={{ base: "0", md: "30px" }}
+              rowGap={{ base: "20px", md: "0" }}
+              mt="20px"
+              width="100%"
             >
-               <Field name="estimated_work_time" validate={validateEmpty}>
+              <Field name="estimated_work_time" validate={validateEmpty}>
                 {({ field, form }: { [x: string]: any }) => (
                   <FormControl
                     isInvalid={form.errors.estimated_work_time && form.touched.estimated_work_time}
@@ -1320,51 +1323,51 @@ if(!firstDate || !lastDate) {
                       Estimated work time
                     </FormLabel>
                     <InputGroup size="md">
-  <Input
-    {...field}
-    bgColor="#3232320D"
-    fontSize="12px"
-    color="#323232"
-    paddingRight="0px"
-    borderRightRadius="0"
-  />
-  
-  <InputRightAddon 
-    padding="0" 
-    backgroundColor="transparent" 
-    border="1px solid" 
-    borderColor="inherit"
-    borderLeft="none"
-    height="40px" // Explicit height to match input
-    display="flex"
-    alignItems="center"
-  >
-    <Box position="relative" width="auto" minWidth="80px" height="40px"
-    display="flex"
-    alignItems="center"
-    >
-      <Select
-        fontSize="12px"
-        height="26px"
-        padding="0 8px"
-        background="transparent"
-        minWidth="100%"
-        width="auto"
-        value={unit}
-        onChange={(v) => {
-          setUnit(v?.currentTarget?.value);
-        }}
-      >
-          <option value="hours" key="hours">
-            Hours
-          </option>
-          <option value="minutes" key="minutes">
-            Minutes
-          </option>
-      </Select>
-    </Box>
-  </InputRightAddon>
-</InputGroup>
+                      <Input
+                        {...field}
+                        bgColor="#3232320D"
+                        fontSize="12px"
+                        color="#323232"
+                        paddingRight="0px"
+                        borderRightRadius="0"
+                      />
+
+                      <InputRightAddon
+                        padding="0"
+                        backgroundColor="transparent"
+                        border="1px solid"
+                        borderColor="inherit"
+                        borderLeft="none"
+                        height="40px" // Explicit height to match input
+                        display="flex"
+                        alignItems="center"
+                      >
+                        <Box position="relative" width="auto" minWidth="80px" height="40px"
+                          display="flex"
+                          alignItems="center"
+                        >
+                          <Select
+                            fontSize="12px"
+                            height="26px"
+                            padding="0 8px"
+                            background="transparent"
+                            minWidth="100%"
+                            width="auto"
+                            value={unit}
+                            onChange={(v) => {
+                              setUnit(v?.currentTarget?.value);
+                            }}
+                          >
+                            <option value="hours" key="hours">
+                              Hours
+                            </option>
+                            <option value="minutes" key="minutes">
+                              Minutes
+                            </option>
+                          </Select>
+                        </Box>
+                      </InputRightAddon>
+                    </InputGroup>
                     <FormErrorMessage>{form.errors.estimated_work_time}</FormErrorMessage>
                   </FormControl>
                 )}
@@ -1418,15 +1421,15 @@ if(!firstDate || !lastDate) {
                 )}
               </Field>
             </Flex>
-            <Flex 
-             direction={{ base: "column", md: "row" }}
-  columnGap={{ base: "0", md: "30px" }}
-  rowGap={{ base: "20px", md: "0" }}
-  mt="20px"
-  width="100%"
+            <Flex
+              direction={{ base: "column", md: "row" }}
+              columnGap={{ base: "0", md: "30px" }}
+              rowGap={{ base: "20px", md: "0" }}
+              mt="20px"
+              width="100%"
             >
-            
-<Field name="sex" validate={validateEmpty}>
+
+              <Field name="sex" validate={validateEmpty}>
                 {({ field, form }: { [x: string]: any }) => (
                   <FormControl
                     // my={4}
@@ -1454,12 +1457,12 @@ if(!firstDate || !lastDate) {
                         // setLgas(NaijaStates.lgas(state) ?? []);
                       }}
                     >
-                        <option key="male" value="male">
-                          Male
-                        </option>
-                        <option key="female" value="female">
-                          Female
-                        </option>
+                      <option key="male" value="male">
+                        Male
+                      </option>
+                      <option key="female" value="female">
+                        Female
+                      </option>
                     </Select>
                     {/* <Input
                         variant="flushed"
@@ -1503,12 +1506,12 @@ if(!firstDate || !lastDate) {
                         // setLgas(NaijaStates.lgas(state) ?? []);
                       }}
                     >
-                        {ageBrackets?.map((age) => 
+                      {ageBrackets?.map((age) =>
                         <option key={age} value={age}>
                           {age}
                         </option>
-                        )}
-                        
+                      )}
+
                     </Select>
                     {/* <Input
                         variant="flushed"
@@ -1524,7 +1527,7 @@ if(!firstDate || !lastDate) {
                 )}
               </Field>
             </Flex>
-            
+
 
             {/* <Flex 
              direction={{ base: "column", md: "row" }}
@@ -1553,12 +1556,12 @@ if(!firstDate || !lastDate) {
               </Field>
             </Flex> */}
 
-            <Flex 
-             direction={{ base: "column", md: "row" }}
-  columnGap={{ base: "0", md: "30px" }}
-  rowGap={{ base: "20px", md: "0" }}
-  mt="20px"
-  width="100%"
+            <Flex
+              direction={{ base: "column", md: "row" }}
+              columnGap={{ base: "0", md: "30px" }}
+              rowGap={{ base: "20px", md: "0" }}
+              mt="20px"
+              width="100%"
             >
               <Field name="community" validate={validateEmpty}>
                 {({ field, form }: { [x: string]: any }) => (
@@ -1774,14 +1777,14 @@ if(!firstDate || !lastDate) {
               </Field> */}
             </Flex>
 
-            <Flex 
-             direction={{ base: "column", md: "row" }}
-             columnGap={{ base: "0", md: "30px" }}
-             rowGap={{ base: "20px", md: "0" }}
-             my="40px"
-             width="100%"
+            <Flex
+              direction={{ base: "column", md: "row" }}
+              columnGap={{ base: "0", md: "30px" }}
+              rowGap={{ base: "20px", md: "0" }}
+              my="40px"
+              width="100%"
             >
-             <Field name="address" validate={validateEmpty}>
+              <Field name="address" validate={validateEmpty}>
                 {({ field, form }: { [x: string]: any }) => (
                   <FormControl
                     isInvalid={form.errors.address && form.touched.address}
@@ -1843,7 +1846,7 @@ if(!firstDate || !lastDate) {
                 )}
               </Field>
 
-              
+
 
               <Field name="nearest_landmark">
                 {({ field, form }: { [x: string]: any }) => (
@@ -1877,14 +1880,14 @@ if(!firstDate || !lastDate) {
                 )}
               </Field>
             </Flex>
-            <Flex 
-             direction={{ base: "column", md: "row" }}
-             columnGap={{ base: "0", md: "30px" }}
-             rowGap={{ base: "20px", md: "0" }}
-             my="40px"
-             width="100%"
+            <Flex
+              direction={{ base: "column", md: "row" }}
+              columnGap={{ base: "0", md: "30px" }}
+              rowGap={{ base: "20px", md: "0" }}
+              my="40px"
+              width="100%"
             >
-           <Field name="ward_district">
+              <Field name="ward_district" validate={validateEmpty}>
                 {({ field, form }: { [x: string]: any }) => (
                   <FormControl
                     isInvalid={
@@ -1947,6 +1950,66 @@ if(!firstDate || !lastDate) {
                   </FormControl>
                 )}
               </Field>
+            </Flex>
+
+            <Flex
+              direction={{ base: "column", md: "row" }}
+              columnGap={{ base: "0", md: "30px" }}
+              rowGap={{ base: "20px", md: "0" }}
+              mt="20px"
+              width="100%"
+            >
+
+              <Field name="payment_method" validate={validateEmpty}>
+                {({ field, form }: { [x: string]: any }) => (
+                  <FormControl
+                    // my={4}
+                    isInvalid={
+                      form.errors.payment_method &&
+                      form.touched.payment_method
+                    }
+                    mb="20px"
+                  >
+                    <FormLabel fontSize="12px" color="#323232">
+                      Payment Method
+                    </FormLabel>
+                    <Select
+                      bgColor="#3232320D"
+                      placeholder="Select Payment Method"
+                      fontSize="12px"
+                      color="#323232"
+                      _focusVisible={{
+                        borderColor: "#929292",
+                      }}
+                      onChange={(v) => {
+                        // const state = v.currentTarget.value || "";
+                        form.setFieldValue(field.name, v.currentTarget.value);
+                        // alert(props.values.state);
+                        // setLgas(NaijaStates.lgas(state) ?? []);
+                      }}
+                    >
+                      <option key="cash" value="cash">
+                        Cash
+                      </option>
+                      <option key="online " value="online">
+                        Online
+                      </option>
+                    </Select>
+                    {/* <Input
+                        variant="flushed"
+                        borderColor="orange"
+                        {...field}
+                        //  ref={initialRef}
+                        placeholder="Enter your L.G.A."
+                      /> */}
+                    <FormErrorMessage>
+                      {form.errors.payment_method}
+                    </FormErrorMessage>
+                  </FormControl>
+                )}
+              </Field>
+
+
             </Flex>
 
             <Flex>
@@ -2187,7 +2250,7 @@ const landMeasurementUnits = [
     label: "Hectare",
     value: "hectare",
   },
-  
+
   {
     label: "Square Foot",
     value: "square_foot",
