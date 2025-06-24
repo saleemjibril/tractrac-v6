@@ -163,10 +163,15 @@ export default function LoginInner() {
                       }
                     } catch (error) {
                       console.log("rejected", error);
-                      setError(
-                        (error as any).response?.data?.detail ||
-                          "An unknown error occurred"
-                      );
+                      if(error?.response?.data?.detail === "Inactive user. Please verify your account") {
+                        router.push(`/verification?phone=${values?.phone}`);
+                      }else {
+                        setError(
+                          (error as any).response?.data?.detail ||
+                            "An unknown error occurred"
+                        );
+                      }
+                      
                     }
                     // loginUser(values)
                     //   .unwrap()
