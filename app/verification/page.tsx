@@ -147,7 +147,7 @@ export default function Verification() {
               Verify Phone Number
             </Text>
             <Text textAlign="center">
-              Please enter the 4 digit code sent to +{phoneNumber} through SMS
+              Please enter the 4 digit code sent to {phoneNumber} through SMS
             </Text>
             <Formik
               // initialValues={{ name: 'Sasuke' }}
