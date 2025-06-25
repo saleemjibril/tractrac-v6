@@ -59,7 +59,7 @@ export const getTools = async (token: string) => {
   return res;
 };
 
-export const getApprovedTools = async (token: string) => {
+export const getApprovedTools = async (token: string, skip: number = 0, limit: number = 100) => {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -67,7 +67,7 @@ export const getApprovedTools = async (token: string) => {
   };
 
   const res = await axios.get(
-    `${process.env.NEXT_PUBLIC_URL}/addons/approved-for-hire`,
+    `${process.env.NEXT_PUBLIC_URL}/addons/approved-for-hire?skip=${skip}&limit=${limit}`,
     config
   );
 
@@ -83,7 +83,7 @@ export const filterTools = async (params: string, token: string) => {
   };
 
   const res = await axios.get(
-    `${process.env.NEXT_PUBLIC_URL}/addons/search?${params}`,
+    `${process.env.NEXT_PUBLIC_URL}/addons/search/group?${params}`,
     config
   );
 
