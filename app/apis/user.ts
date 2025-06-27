@@ -63,3 +63,19 @@ export const updateUserInfo = async (id: string, data: object, token: string) =>
   
     return res;
   };
+
+
+export const getGroupsMembers = async (group_id: string, token: string) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const res = await axios.get(
+    `${process.env.NEXT_PUBLIC_URL}/groups/groups/${group_id}/members`,
+    config
+  );
+
+  return res;
+};

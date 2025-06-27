@@ -54,7 +54,7 @@ import moment from "moment";
 import Link from "next/link";
 import { filterTools, getToolBookedDates, getApprovedTools, hireTool } from "@/app/apis/tools";
 import { getgroups } from "process";
-import { getGroups } from "@/app/apis/user";
+import { getGroups, getGroupsMembers } from "@/app/apis/user";
 
 const fileTypes = ["JPG", "PNG", "JPEG"];
 
@@ -80,6 +80,7 @@ interface ICoordinates {
 
 interface ITractorCard {
   id: string;
+  groupId: string;
   name: string;
   image: string;
   capacity: string;
@@ -87,6 +88,7 @@ interface ITractorCard {
   status: string;
   tractor_type: string;
   setTractorId: Dispatch<SetStateAction<string | null>>;
+  setGroupId: Dispatch<SetStateAction<string | null>>;
   coordinates: ICoordinates;
 }
 
@@ -111,6 +113,7 @@ export default function HireTractor() {
   const [tractorType, setTractorType] = useState<string | null>(null);
   const [groups, setGroups] = useState([]);
   const [group, setGroup] = useState("");
+  const [groupId, setGroupId] = useState("");
   
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
@@ -321,7 +324,7 @@ export default function HireTractor() {
   return (
     <SidebarWithHeader isAuth={true}>
       {tractorId ? (
-        <HireTractorForm id={tractorId} />
+        <HireTractorForm id={tractorId} groupId={groupId} />
       ) : (
         //
         <Box
@@ -589,7 +592,9 @@ export default function HireTractor() {
                     <TractorCard
                       key={tractor?.id}
                       setTractorId={setTractorId}
+                      setGroupId={setGroupId}
                       id={tractor?.id}
+                      groupId={tractor?.group_id}
                       name={`${tractor?.name}`}
                       image={tractor?.image_urls}
                       capacity=" 105 to 135 HP"
@@ -713,7 +718,9 @@ function TractorCard({
     location,
     tractor_type,
     setTractorId,
+    setGroupId,
     id,
+    groupId,
     status,
     coordinates
   }: ITractorCard) {
@@ -760,7 +767,10 @@ function TractorCard({
       <Box
         boxShadow="md"
         borderRadius="4px"
-        onClick={() => setTractorId(id)}
+        onClick={() => {
+          setTractorId(id)
+          setGroupId(groupId)
+        }}
         cursor="pointer"
       >
         <Box h="200px" position="relative">
@@ -864,7 +874,7 @@ function TractorCard({
     );
   }
   
-  function HireTractorForm({ id }: { id: string }) {
+  function HireTractorForm({ id, groupId }: { id: string, groupId: string }) {
     const [error, setError] = useState<string | null>(null);
     const { userToken } = useAppSelector((state) => state.auth);
     const [open, setOpen] = useState(false);
@@ -876,6 +886,7 @@ function TractorCard({
     const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
     const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
     const [bookedDates, setBookedDates] = useState([]);
+    const [groupMembers, setGroupMembers] = useState([]);
   
     const [inRangeLoading, setInRangeLoading] = useState(false);
     const { profileInfo } = useAppSelector((state) => state.auth);
@@ -919,10 +930,48 @@ function TractorCard({
   
       // setEvents(events);
     };
+    const handleGetGroupMembers = async (id: string) => {
+      try {
+        const response = await getGroupsMembers(id, userToken as string);
+        console.log("Group members response:", response);
+        setGroupMembers(response?.data || []);
+      } catch (error) {
+        console.log("ERROR Getting Group members:", error);
+      }
+      // if (response?.data?.statusCode === 200) {
+      //   setBookedDates(response?.data?.message[2]?.values);
+      // } else {
+      //   toast.error(response?.data?.message);
+      // }
+  
+      // Fetch data from backend or local storage and update state
+      // Available dates
+  
+      // const events = [
+      //   ...bookedDates.map((date) => ({
+      //     start: new Date(date),
+      //     end: new Date(date),
+      //     title: "Available",
+      //     isAvailable: true,
+      //   })),
+      //   ...bookedDates.map((date) => ({
+      //     start: new Date(date),
+      //     end: new Date(date),
+      //     title: "Booked",
+      //     isAvailable: false,
+      //   })),
+      // ];
+  
+      // setEvents(events);
+    };
   
     useEffect(() => {
       handleGetBookedDates();
     }, []);
+
+    useEffect(() => {
+      handleGetGroupMembers(groupId);
+    }, [groupId]);
   
     function validateEmpty(value: any) {
       let error;
@@ -2032,64 +2081,112 @@ function TractorCard({
               </Flex>
   
               <Flex
-                direction={{ base: "column", md: "row" }}
-                columnGap={{ base: "0", md: "30px" }}
-                rowGap={{ base: "20px", md: "0" }}
-                mt="20px"
-                width="100%"
-              >
-  
-                <Field name="payment_method" validate={validateEmpty}>
-                  {({ field, form }: { [x: string]: any }) => (
-                    <FormControl
-                      // my={4}
-                      isInvalid={
-                        form.errors.payment_method &&
-                        form.touched.payment_method
-                      }
-                      mb="20px"
-                    >
-                      <FormLabel fontSize="12px" color="#323232">
-                        Payment Method
-                      </FormLabel>
-                      <Select
-                        bgColor="#3232320D"
-                        placeholder="Select Payment Method"
-                        fontSize="12px"
-                        color="#323232"
-                        _focusVisible={{
-                          borderColor: "#929292",
-                        }}
-                        onChange={(v) => {
-                          // const state = v.currentTarget.value || "";
-                          form.setFieldValue(field.name, v.currentTarget.value);
-                          // alert(props.values.state);
-                          // setLgas(NaijaStates.lgas(state) ?? []);
-                        }}
-                      >
-                        <option key="cash" value="cash">
-                          Cash
-                        </option>
-                        <option key="online " value="online">
-                          Online
-                        </option>
-                      </Select>
-                      {/* <Input
-                          variant="flushed"
-                          borderColor="orange"
-                          {...field}
-                          //  ref={initialRef}
-                          placeholder="Enter your L.G.A."
-                        /> */}
-                      <FormErrorMessage>
-                        {form.errors.payment_method}
-                      </FormErrorMessage>
-                    </FormControl>
-                  )}
-                </Field>
-  
-  
-              </Flex>
+  direction={{ base: "column", md: "row" }}
+  columnGap={{ base: "0", md: "30px" }}
+  rowGap={{ base: "20px", md: "0" }}
+  mt="20px"
+  width="100%"
+>
+  <Field name="payment_method" validate={validateEmpty}>
+    {({ field, form }: { [x: string]: any }) => (
+      <FormControl
+        // my={4}
+        isInvalid={
+          form.errors.payment_method &&
+          form.touched.payment_method
+        }
+        mb="20px"
+      >
+        <FormLabel fontSize="12px" color="#323232">
+          Payment Method
+        </FormLabel>
+        <Select
+          bgColor="#3232320D"
+          placeholder="Select Payment Method"
+          fontSize="12px"
+          color="#323232"
+          _focusVisible={{
+            borderColor: "#929292",
+          }}
+          onChange={(v) => {
+            // const state = v.currentTarget.value || "";
+            form.setFieldValue(field.name, v.currentTarget.value);
+            // alert(props.values.state);
+            // setLgas(NaijaStates.lgas(state) ?? []);
+          }}
+        >
+          <option key="cash" value="cash">
+            Cash
+          </option>
+          <option key="online " value="online">
+            Online
+          </option>
+        </Select>
+        {/* <Input
+            variant="flushed"
+            borderColor="orange"
+            {...field}
+            //  ref={initialRef}
+            placeholder="Enter your L.G.A."
+          /> */}
+        <FormErrorMessage>
+          {form.errors.payment_method}
+        </FormErrorMessage>
+      </FormControl>
+    )}
+  </Field>
+
+  {/* Conditionally render agent_id field only when payment_method is 'cash' */}
+  {props.values.payment_method === 'cash' && (
+   <Field name="payment_agent_id" validate={validateEmpty}>
+   {({ field, form }: { [x: string]: any }) => (
+     <FormControl
+       // my={4}
+       isInvalid={
+         form.errors.payment_agent_id &&
+         form.touched.payment_agent_id
+       }
+       mb="20px"
+     >
+       <FormLabel fontSize="12px" color="#323232">
+         Agent
+       </FormLabel>
+       <Select
+         bgColor="#3232320D"
+         placeholder="Select Agent"
+         fontSize="12px"
+         color="#323232"
+         _focusVisible={{
+           borderColor: "#929292",
+         }}
+         onChange={(v) => {
+           // const state = v.currentTarget.value || "";
+           form.setFieldValue(field.name, v.currentTarget.value);
+           // alert(props.values.state);
+           // setLgas(NaijaStates.lgas(state) ?? []);
+         }}
+       >
+         {groupMembers?.map((agent) => 
+           <option key={agent?.user_id} value={agent?.user_id}>
+             {agent.user_name || agent.name}
+           </option>
+         )}
+       </Select>
+       {/* <Input
+           variant="flushed"
+           borderColor="orange"
+           {...field}
+           //  ref={initialRef}
+           placeholder="Enter your L.G.A."
+         /> */}
+       <FormErrorMessage>
+         {form.errors.payment_agent_id}
+       </FormErrorMessage>
+     </FormControl>
+   )}
+   </Field>
+  )}
+</Flex>
   
               <Flex>
                 <Button
@@ -2183,11 +2280,11 @@ function TractorCard({
             <Image src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446712/empty-state_tytpqr.svg" alt="Empty state image icon" />
           </Center>
           <Text color="#323232" fontWeight="700" fontSize="20px" mt="57px">
-            {isSearch ? "Search result is empty" : " Tractors list is empty"}
+            {isSearch ? "Search result is empty" : "Agro Tools list is empty"}
           </Text>
   
           <Text color="#323232" fontWeight="400" fontSize="18px">
-            Available tractors will be listed on this page
+            Available Agro Tools will be listed on this page
           </Text>
         </Box>
       </Flex>

@@ -898,9 +898,10 @@ Enlist your agro tools using the form below, and our team will reach out to get 
                             }
                           }}
                           options={{
-                            types: ["address"],
-                            // types: ["(regions)"],
+                            types: ["geocode", "establishment"], 
+                            // types: ["geocode"], // This includes all address types
                             componentRestrictions: { country: "ng" },
+                            
                           }}
                         />
                         <FormErrorMessage>
