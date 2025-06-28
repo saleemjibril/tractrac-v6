@@ -1332,7 +1332,8 @@ function TractorCard({
                       <FormLabel fontSize="12px" color="#323232">
                         Farm Size (Don't know your farm size?{" "}
                         <Link
-                          href="#"
+                           href="https://play.google.com/store/apps/details?id=com.tractrac.plus"
+                        target="_blank"
                           style={{
                             color: "#f8a730",
                             textDecoration: "underline",

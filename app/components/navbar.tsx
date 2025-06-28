@@ -39,6 +39,8 @@ export default function Navbar({ onOpen }: MobileProps) {
   }, []);
     const [isScrolled, setIsScrolled] = useState(false);
   
+    const Component = useBreakpointValue({ base: Flex, sm: Stack });
+
 
   const divider = useBreakpointValue({
     base: undefined,
@@ -117,6 +119,8 @@ useEffect(() => {
   minHeight={"96px"}
   alignItems={"center"}
   pb="40px"
+  pr={{base: "0", lg: "24px"}}
+  pl={{base: "20px", sm: "0"}}
   justifyContent={{ base: "start", lg: "end",  md: "space-between" }}
 >
         {/* <Box  width={"80vw"}
@@ -213,7 +217,7 @@ useEffect(() => {
         width="100%" 
         left="50%" 
         transform={"translateX(-50%)"}
-        maxWidth="1400px"
+        maxWidth="1350px"
                   overflowX={{base: "hidden", sm: "initial"}}
                   className="header-banner"
 
@@ -223,82 +227,70 @@ useEffect(() => {
         alignItems={"center"}
         padding={{ base: "8px 0", md: "0" } }
       >
-        <Stack
-          ml={{ base: "8px", lg: "30px" }}
-          mr={{ base: "4px", lg: "0px" }}
-          direction="row"
-          color="white"
-          divider={divider}
-          
-        >
-          <Box width={{base: "100vw", sm: "initial"}} className="header-banner__item" display={"flex"}>
-            <Image
-              src="/icons/call.svg"
-              alt="call icon"
-              // layout='fill'
-              // objectFit='cover'
-              // className={styles.vercelLogo}
-              width={{ base: "30px", lg: "40px" }}
-              // height={40}
-            />
-            <Box pl={{ base: "4px", lg: "10px" }}>
-              <Text
-                fontSize={{base: "18px", md: "xs"}}
-                opacity={0.8}
-                // display={{ base: "none", sm: "flex" }}
-              >
-                Call Now
-              </Text>
-              <Text fontWeight={[400, 700]} fontSize={{ base: "12px", md: "12px" }}>
-                +234 806 464 8720
-              </Text>
-            </Box>
-          </Box>
+     <Component
+      ml={{ base: "8px", lg: "30px" }}
+      mr={{ base: "4px", lg: "0px" }}
+      direction={"row"} // Flex direction for mobile, Stack direction for larger screens
+      color="white"
+      divider={divider}
+    >
+      <Box width={{base: "100vw", sm: "initial"}} className="header-banner__item" display={"flex"} ml={{ base: "10px", lg: "0" }}>
+        <Image
+          src="/icons/call.svg"
+          alt="call icon"
+          width={{ base: "30px", lg: "40px" }}
+        />
+        <Box pl={{ base: "4px", lg: "10px" }}>
+          <Text
+            fontSize={{base: "18px", md: "xs"}}
+            opacity={0.8}
+          >
+            Call Now
+          </Text>
+          <Text fontWeight={[400, 700]} fontSize={{ base: "12px", md: "12px" }}>
+            +234 806 464 8720
+          </Text>
+        </Box>
+      </Box>
 
-          <Box width={{base: "100vw", sm: "initial"}} className="header-banner__item" display={"flex"} ml={{ base: "0px", lg: "30px" }}  mt={{ base: "4px", md: "0" }}>
-            <Image
-              src="/icons/clock.svg"
-              alt="Clock Icon"
-              width={{ base: "30px", lg: "40px" }}
-              // width={40}
-              // height={40}
-            />
-            <Box pl={{ base: "4px", lg: "10px" }}>
-              <Text
-                fontSize={{base: "18px", md: "xs"}}
-                opacity={0.8}
-                // display={{ base: "none", sm: "flex" }}
-              >
-                Open Hours
-              </Text>
-              <Text fontWeight={[400, 700]} fontSize={{ base: "12px", md: "12px" }}>
-                24 Hours
-              </Text>
-            </Box>
-          </Box>
+      <Box width={{base: "100vw", sm: "initial"}} className="header-banner__item" display={"flex"} ml={{ base: "0px", lg: "30px" }} mt={{ base: "4px", md: "0" }}>
+        <Image
+          src="/icons/clock.svg"
+          alt="Clock Icon"
+          width={{ base: "30px", lg: "40px" }}
+        />
+        <Box pl={{ base: "4px", lg: "10px" }}>
+          <Text
+            fontSize={{base: "18px", md: "xs"}}
+            opacity={0.8}
+          >
+            Open Hours
+          </Text>
+          <Text fontWeight={[400, 700]} fontSize={{ base: "12px", md: "12px" }}>
+            24 Hours
+          </Text>
+        </Box>
+      </Box>
 
-          <Box width={{base: "100vw", sm: "initial"}} className="header-banner__item" display={"flex"} ml={{ base: "0px", lg: "30px" }} mt={{ base: "4px", md: "0" }}>
-            <Image
-              src="/icons/location.svg"
-              alt="Location icon"
-              width={{ base: "30px", lg: "40px" }}
-              // width={40}
-              // height={40}
-            />
-            <Box pl={{ base: "4px", lg: "10px" }}>
-              <Text
-                fontSize={{base: "18px", md: "xs"}}
-                opacity={0.8}
-                // display={{ base: "none", sm: "flex" }}
-              >
-                Address
-              </Text>
-              <Text fontWeight={[400, 700]} fontSize={{ base: "12px", md: "12px" }}>
-                11 Vanern St, Wuse, Abuja 904101, Federal Capital Territory
-              </Text>
-            </Box>
-          </Box>
-        </Stack>
+      <Box width={{base: "100vw", sm: "initial"}} className="header-banner__item" display={"flex"} ml={{ base: "0px", lg: "30px" }} mt={{ base: "4px", md: "0" }}>
+        <Image
+          src="/icons/location.svg"
+          alt="Location icon"
+          width={{ base: "30px", lg: "40px" }}
+        />
+        <Box pl={{ base: "4px", lg: "10px" }}>
+          <Text
+            fontSize={{base: "18px", md: "xs"}}
+            opacity={0.8}
+          >
+            Address
+          </Text>
+          <Text fontWeight={[400, 700]} fontSize={{ base: "12px", md: "12px" }}>
+            11 Vanern St, Wuse, Abuja 904101, Federal Capital Territory
+          </Text>
+        </Box>
+      </Box>
+    </Component>
       </Flex>
 
       {/* BOTTOM NAV */}
@@ -311,20 +303,22 @@ useEffect(() => {
      zIndex={1000}
      boxShadow={isScrolled ? "0 2px 4px rgba(0,0,0,0.1)" : "none"}
      transition="all 0.3s ease-in-out" 
+     padding={"0 24px"}
       >
         <Flex
           p={0}
           height={isScrolled ? "85px" : "105px"}
           pt={isScrolled ? 0 : "45px"}
-          pr="20px"
-          pl="20px"
+          // pr="20px"
+          // pl="20px"
           width={"100%"}
-          maxWidth={"1440px"}
+          maxWidth={"1350px"}
           margin={"0 auto"}
           // align={"center"}
           alignItems={isScrolled ? "center" : "none"}
           justifyContent="space-between"
           mt={isScrolled ? 0 : { base: "0", sm: "0px" }}
+
         >
           <Box display={"flex"} alignItems={"center"}>
             <Link href="/">
@@ -345,6 +339,7 @@ useEffect(() => {
               ml="32px"
               pt="4px"
               display={{ base: "none", lg: "flex" }}
+              
             >
               <Link
                 // p={2}

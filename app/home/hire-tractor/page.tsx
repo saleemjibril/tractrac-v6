@@ -1177,7 +1177,7 @@ if(!firstDate || !lastDate) {
                     <FormLabel fontSize="12px" color="#323232">
                       Farm Size (Don't know your farm size?{" "}
                       <Link
-                        href="https://play.google.com/store/apps/details?id=com.tractrac.trac_trac&hl=en_GB"
+                        href="https://play.google.com/store/apps/details?id=com.tractrac.plus"
                         target="_blank"
                         style={{
                           color: "#f8a730",
