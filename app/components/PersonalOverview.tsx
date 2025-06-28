@@ -19,6 +19,7 @@ export default function PersonalOverview() {
     handleGetUserStats();
   }, []);
   return (
+   <>
     <Box
       bgColor="#FFFFFF"
       mt="40px"
@@ -28,7 +29,7 @@ export default function PersonalOverview() {
       borderRadius="6px"
     >
       <Text color="#333333" fontWeight={700} fontSize="28px">
-        Personal Overview
+        Tractors Overview
       </Text>
 
       <SimpleGrid
@@ -39,33 +40,83 @@ export default function PersonalOverview() {
       >
         <StatisticsCard
           title="Total number of Tractors Hired"
-          amount={formatNumber(userStats?.tractors_hired_count || 0)}
+          amount={formatNumber(userStats?.total_tractor_hire_requests || 0)}
         />
         <StatisticsCard
           title="Total Amount Paid for Hired Tractors"
           amount={`₦${formatNumber(
-            userStats?.total_amount_paid || 0
+            userStats?.revenue_breakdown?.tractors?.paid || 0
           )}`}
         />
         <StatisticsCard
           title="Approved Leasing Request"
-          amount={formatNumber(userStats?.hire_status_counts?.approved || 0)}
+          amount={formatNumber(userStats?.tractor_hire_status_counts?.approved || 0)}
         />
         <StatisticsCard
           title="Total Tractors Enlisted"
-          // amount={formatNumber(result?.data?.total_tractors_enlisted || 0)}
-          amount={"0"}
+          amount={formatNumber(userStats?.tractors_enlisted_count || 0)}
+          // amount={"0"}
         />
         <StatisticsCard
           title="Total Tractors In-Use"
-          amount={formatNumber(userStats?.hire_status_counts?.in_progress || 0)}
+          amount={formatNumber(userStats?.tractor_hire_status_counts?.approved || 0)}
         />
         <StatisticsCard
-          title="Total Pending Requests"
-          amount={formatNumber(userStats?.hire_status_counts?.pending || 0)}
+          title="Total Pending Hire Requests"
+          amount={formatNumber(userStats?.tractor_hire_status_counts?.pending || 0)}
         />
       </SimpleGrid>
     </Box>
+
+    <Box
+      bgColor="#FFFFFF"
+      mt="40px"
+      //   mr={{ base: "0px", lg: "120px" }}
+      px={{base: "20px", lg: "66px"}}
+      py={{base: "20px", lg: "43px"}}
+      borderRadius="6px"
+    >
+      <Text color="#333333" fontWeight={700} fontSize="28px">
+        Agro Tools Overview
+      </Text>
+
+      <SimpleGrid
+        mt="20px"
+        columns={{ base: 2, lg: 3 }}
+        spacingX={{ base: "24px" }}
+        spacingY="20px"
+      >
+        <StatisticsCard
+          title="Total number of Agro Tools Hired"
+          amount={formatNumber(userStats?.total_addon_hire_requests || 0)}
+        />
+        <StatisticsCard
+          title="Total Amount Paid for Hired Agro Tools(Cash)"
+          amount={`₦${formatNumber(
+            userStats?.revenue_breakdown?.addons?.paid_online || 0
+          )}`}
+        />
+        <StatisticsCard
+          title="Total Amount Paid for Hired Agro Tools(Online)"
+          amount={`₦${formatNumber(
+            userStats?.revenue_breakdown?.addons?.paid_cash || 0
+          )}`}
+        />
+        <StatisticsCard
+          title="Approved Leasing Request"
+          amount={formatNumber(userStats?.addon_hire_status_counts?.approved || 0)}
+        />
+        <StatisticsCard
+          title="Total Agro Tools In-Use"
+          amount={formatNumber(userStats?.addon_hire_status_counts?.approved || 0)}
+        />
+        <StatisticsCard
+          title="Total Pending Hire Requests"
+          amount={formatNumber(userStats?.addon_hire_status_counts?.pending || 0)}
+        />
+      </SimpleGrid>
+    </Box>
+   </>
   );
 }
 

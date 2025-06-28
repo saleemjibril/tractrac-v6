@@ -25,7 +25,6 @@ import { useGetDashboardStatsQuery } from "@/redux/services/userApi";
 import LoginRequiredModal from "../components/LoginRequiredModal";
 import { toast } from "react-toastify";
 import Link from "next/link";
-import { getUserStats } from "../apis/user";
 import PersonalOverview from "../components/PersonalOverview";
 
 interface ItemProps {
@@ -140,24 +139,7 @@ console.log("profileInfo", profileInfo);
 
   console.log(result?.data);
 
-  const handleGetUserStats = async () => {
 
-    if (typeof userToken === 'string') {
-      const response = await getUserStats(profileInfo?.id, userToken);
-
-      console.log("getUserStats", response);
-    } else {
-      // Handle the case when userToken is not a string
-      console.log('User token is not a string');
-      // Maybe redirect to login or show an error
-    }
-  
-    
-  }
-
-  useEffect(() => {
-    handleGetUserStats();
-  }, [])
 
   /**
    * 
