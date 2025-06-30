@@ -231,7 +231,7 @@ export default function SignupInner() {
                       const response = await registerUser({
                         type: "registration",
                         email: values?.email,
-                        phone:  values?.phone?.toString(),
+                        phone:  values?.phone,
                         first_name: values?.first_name,
                         last_name: values?.last_name,
                         password: values?.password,
@@ -347,7 +347,7 @@ export default function SignupInner() {
                                 {...field}
                                 // placeholder="Enter your phone number"
                                 bgColor="#3232320D"
-                                type="number"
+                                // type="number"
                               />
                             </InputGroup>
 

@@ -162,7 +162,7 @@ export default function HiredTractors() {
               <Tbody>
                 {tractors?.map((tractor: any) => (
                   <Tr key={tractor?.id}>
-                    <Td>{tractor?.tractor?.name}</Td>
+                    <Td textTransform={"capitalize"}>{tractor?.addons[0]?.addon_type?.split("_")?.join(" ")}</Td>
                     {/* <Td>{tractor?.tractor?.model}</Td> */}
                     <Td>{tractor?.owner_name}</Td>
                     {/* <Td>{tractor?.address ?? "Nil"}</Td> */}
