@@ -76,7 +76,7 @@ export default function HiredTractors() {
         } catch (err) {
               const error = err as any;
               setError(error?.response?.data?.detail || "An unexpected error occurred")
-              console.log("Error fetching tractor", error);
+              console.log("Error fetching tool", error);
               setLoading(false)
         }
       };
@@ -84,10 +84,7 @@ export default function HiredTractors() {
       useEffect(() => {
         handleGetTractors();
       }, []);
-      useEffect(() => {
-       console.log("dont stop me now", tractors);
-       
-      }, [tractors]);
+     
 
 
 
@@ -149,8 +146,8 @@ export default function HiredTractors() {
             <Table variant="simple" bgColor="white">
               <Thead bgColor="#FA9411">
                 <Tr>
-                  <Th color="white">Tractor name</Th>
-                  {/* <Th color="white">Tractor model</Th> */}
+                  <Th color="white">Tool name</Th>
+                  {/* <Th color="white">Tool model</Th> */}
                   <Th color="white">Owner</Th>
                   <Th color="white">Address</Th>
                   <Th color="white">Farm Size</Th>
@@ -240,7 +237,7 @@ function EmptyTractorsPlaceholder() {
         </Text>
 
         <Text color="#323232" fontWeight="400" fontSize="18px">
-          All Hired tractors will be listed in this page
+          All Hired tools will be listed in this page
         </Text>
 
         {/* <Button

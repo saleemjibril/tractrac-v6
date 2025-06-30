@@ -86,7 +86,7 @@ interface ITractorCard {
   capacity: string;
   location: string;
   status: string;
-  tractor_type: string;
+  addon_type: string;
   setTractorId: Dispatch<SetStateAction<string | null>>;
   setGroupId: Dispatch<SetStateAction<string | null>>;
   coordinates: ICoordinates;
@@ -602,7 +602,7 @@ export default function HireTractor() {
                       // location={tractor?.address}
                       // distance={"10"}
                       distance={tractor?.distance}
-                      tractor_type={tractor?.tractor_type}
+                      addon_type={tractor?.addon_type}
                       status={tractor?.status}
                       coordinates={{
                         latitude: tractor?.current_location_lat,
@@ -716,7 +716,7 @@ function TractorCard({
     name,
     image,
     location,
-    tractor_type,
+    addon_type,
     setTractorId,
     setGroupId,
     id,
@@ -832,9 +832,9 @@ function TractorCard({
             mt="8px"
             lineHeight="12.1px"
           >
-            Tractor Type:{" "}
+            Tool Type:{" "}
             <Box fontWeight={500} as="span">
-              {tractor_type}
+            {addon_type?.split("_")?.join(" ")}
             </Box>
           </Text>
   
