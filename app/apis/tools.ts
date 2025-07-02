@@ -83,7 +83,7 @@ export const filterTools = async (params: string, token: string) => {
   };
 
   const res = await axios.get(
-    `${process.env.NEXT_PUBLIC_URL}/addons/search/group?${params}`,
+    `${process.env.NEXT_PUBLIC_URL}/addons/search?${params}`,
     config
   );
 

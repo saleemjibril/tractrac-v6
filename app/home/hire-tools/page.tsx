@@ -8,6 +8,8 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
+  VStack,
+  List,
   Image,
   Input,
   Stack,
@@ -31,12 +33,17 @@ import {
   Tooltip,
   Divider,
   HStack,
+  Collapse,
+  ListItem,
+  TagCloseButton,
+  TagLabel,
+  Tag,
 } from "@chakra-ui/react";
 import { SidebarWithHeader } from "../../components/Sidenav";
 import { Formik, Form, Field } from "formik";
 import { useRouter } from "next/navigation";
-import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
-import { AddIcon, ArrowForwardIcon, ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
+import { Dispatch, SetStateAction, useEffect, useMemo, useRef, useState } from "react";
+import { AddIcon, ArrowForwardIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, ChevronUpIcon } from "@chakra-ui/icons";
 import { useAppSelector } from "@/redux/hooks";
 import { toast } from "react-toastify";
 import { Select as MultiSelect } from "chakra-react-select";
@@ -92,6 +99,13 @@ interface ITractorCard {
   coordinates: ICoordinates;
 }
 
+interface Group {
+  id: string;
+  name: string;
+  description: string;
+}
+
+
 const statusTypes: Record<string, { title: string; color: string }> = {
   booked: { title: "Booked", color: "#FA9411" },
   available: { title: "Available", color: "#27AE60" },
@@ -100,6 +114,7 @@ const statusTypes: Record<string, { title: string; color: string }> = {
 
 export default function HireTractor() {
   const { userToken } = useAppSelector((state) => state.auth);
+  const groupDropdownRef = useRef<HTMLDivElement>(null);
   const [location, setLocation] = useState<any>(null);
   const [searchData, setSearchData] = useState<any>(null);
   const [tractors, setTractors] = useState([]);
@@ -111,10 +126,13 @@ export default function HireTractor() {
   const [brand, setBrand] = useState<string | null>(null);
   const [implement, setImplement] = useState<string | null>(null);
   const [tractorType, setTractorType] = useState<string | null>(null);
-  const [groups, setGroups] = useState([]);
   const [group, setGroup] = useState("");
   const [groupId, setGroupId] = useState("");
-  
+  const [isGroupDropdownOpen, setIsGroupDropdownOpen] = useState<boolean>(false);
+  const [groupSearchTerm, setGroupSearchTerm] = useState<string>("");
+  const [groups, setGroups] = useState<Group[]>([]);
+  const [selectedGroup, setSelectedGroup] = useState<string>("");
+
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(100);
@@ -167,27 +185,17 @@ export default function HireTractor() {
     }
   };
 
-  const handleGetGroups = async () => {
-    try {
-      const response = await getGroups(userToken as string);
-      console.log("getGroups", response);
-      setGroups(response?.data || []);
-    } catch (err) {
-      const error = err as any;
-      console.log("Error getting groups", error);
-    }
-  };
+
 
   useEffect(() => {
     handleGetTractors(currentPage, itemsPerPage);
-    handleGetGroups();
   }, [currentPage, itemsPerPage]);
 
   useEffect(() => {
     // Define an async function inside useEffect
     const fetchFilteredTractors = async () => {
       setLoading(true);
-      console.log("change", state, tractorType, lga);
+      console.log("change", state, tractorType, lga, selectedGroup);
 
       // Build query parameters
       const queryParams = new URLSearchParams();
@@ -196,7 +204,7 @@ export default function HireTractor() {
       if (state) queryParams.append("state", state);
       if (lga) queryParams.append("local_government_area", lga);
       if (tractorType) queryParams.append("addon_type", tractorType);
-      if (group) queryParams.append("group_id", group);
+      if (selectedGroup) queryParams.append("group_id", selectedGroup);
       
       // Add pagination parameters
       const skip = (currentPage - 1) * itemsPerPage;
@@ -206,7 +214,7 @@ export default function HireTractor() {
       // Convert URLSearchParams to string
       const queryString = queryParams.toString();
 
-      if (queryString && (state || lga || tractorType || group)) {
+      if (queryString && (state || lga || tractorType || selectedGroup)) {
         console.log("query parameters:", queryString);
 
         try {
@@ -236,7 +244,7 @@ export default function HireTractor() {
         } finally {
           setLoading(false);
         }
-      } else if (!state && !lga && !tractorType && !group) {
+      } else if (!state && !lga && !tractorType && !selectedGroup) {
         // If no filters are applied, get regular tractors with pagination
         handleGetTractors(currentPage, itemsPerPage);
       } else {
@@ -246,7 +254,7 @@ export default function HireTractor() {
 
     // Call the async function
     fetchFilteredTractors();
-  }, [state, lga, tractorType, group, userToken, currentPage, itemsPerPage]);
+  }, [state, lga, tractorType, selectedGroup, userToken, currentPage, itemsPerPage]);
 
   const handlePageChange = (newPage: number) => {
     if (newPage >= 1 && newPage <= totalPages) {
@@ -320,6 +328,95 @@ export default function HireTractor() {
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ");
   }
+
+
+
+
+
+
+  const handleGetGroups = async () => {
+    try {
+      const response = await getGroups(userToken as string);
+      console.log("getGroups", response);
+      setGroups(response?.data || []);
+    } catch (err) {
+      const error = err as any;
+      console.log("Error getting groups", error);
+      // toast({
+      //   title: "Error",
+      //   description:
+      //     error?.response?.data?.detail || "Failed to load groups",
+      //   status: "error",
+      //   duration: 5000,
+      //   isClosable: true,
+      // });
+    }
+  };
+  useEffect(() => {
+    handleGetGroups();
+  }, []);
+
+    // Handle click outside to close dropdowns
+    useEffect(() => {
+      const handleClickOutside = (event: MouseEvent) => {
+       
+        if (
+          groupDropdownRef.current &&
+          !groupDropdownRef.current.contains(event.target as Node)
+        ) {
+          setIsGroupDropdownOpen(false);
+        }
+      };
+  
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, []);
+// Handle group selection
+const handleGroupSelect = (groupId: string): void => {
+  setSelectedGroup(groupId.toString());
+  setIsGroupDropdownOpen(false);
+  setGroupSearchTerm("");
+
+  // Fetch members for the selected group
+  // handleGetGroupMembers(groupId);
+};
+  const toggleGroupDropdown = (): void => {
+    setIsGroupDropdownOpen(!isGroupDropdownOpen);
+    // if (!isGroupDropdownOpen) {
+    //   setIsUserDropdownOpen(false);
+    // }
+  };
+
+  // Get selected group name for display
+  const getSelectedGroupName = (): string => {
+    const group = groups.find((g) => g.id === selectedGroup);
+    console.log("yooop", {
+      selectedGroup,
+      groups,
+      group
+    });
+    return group ? group.name : "";
+  };
+
+  // Handle group input focus - close user dropdown when group dropdown opens
+  const handleGroupInputFocus = (): void => {
+    setIsGroupDropdownOpen(true);
+  };
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    setter: React.Dispatch<React.SetStateAction<string>>
+  ): void => {
+    setter(e.target.value);
+  };
+    // Filter groups based on search term
+    const filteredGroups: Group[] = groups.filter(
+      (group: Group) =>
+        group?.name?.toLowerCase()?.includes(groupSearchTerm.toLowerCase()) ||
+        group?.description?.toLowerCase()?.includes(groupSearchTerm.toLowerCase())
+    );
+
 
   return (
     <SidebarWithHeader isAuth={true}>
@@ -526,6 +623,133 @@ export default function HireTractor() {
                 ))}
               </Select>
 
+            </SimpleGrid>
+            {/* Group Selection */}
+
+<FormControl 
+padding={"24px 0"}
+>
+              <Flex justify="space-between" align="center" mb={3}>
+                <FormLabel fontSize="12px" color="#323232" mb={0}>
+                  Select Group
+                </FormLabel>
+               
+              </Flex>
+
+              {/* Selected Group Display */}
+              {selectedGroup && (
+                <Box mb={3}>
+                  <Text fontSize="12px" color="#666" mb={2}>
+                    Selected Group:
+                  </Text>
+                  <Tag size="md" colorScheme="green" variant="solid">
+                    <TagLabel>{getSelectedGroupName()}</TagLabel>
+                    <TagCloseButton onClick={() => setSelectedGroup("")} />
+                  </Tag>
+                </Box>
+              )}
+
+              {/* Groups Dropdown */}
+              <Box position="relative" ref={groupDropdownRef}>
+                <Input
+                  value={groupSearchTerm}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    handleInputChange(e, setGroupSearchTerm)
+                  }
+                  onFocus={handleGroupInputFocus}
+                  placeholder="Search and select a group..."
+                  bgColor="#3232320D"
+                  fontSize="12px"
+                  color="#323232"
+                />
+
+                <Button
+                  position="absolute"
+                  right={0}
+                  top={0}
+                  h="100%"
+                  bg="transparent"
+                  onClick={toggleGroupDropdown}
+                  _hover={{ bg: "transparent" }}
+                >
+                  {isGroupDropdownOpen ? (
+                    <ChevronUpIcon />
+                  ) : (
+                    <ChevronDownIcon />
+                  )}
+                </Button>
+
+                <Collapse in={isGroupDropdownOpen}>
+                  <Box
+                    position="absolute"
+                    top="100%"
+                    left={0}
+                    right={0}
+                    zIndex={10}
+                    bg="white"
+                    border="1px solid #E2E8F0"
+                    borderRadius="md"
+                    maxH="200px"
+                    overflowY="auto"
+                    mt={1}
+                    boxShadow="md"
+                  >
+                    <List>
+                      {filteredGroups.length > 0 ? (
+                        filteredGroups.map((group: Group) => (
+                          <ListItem key={group.id}>
+                            <Box
+                              p={3}
+                              cursor="pointer"
+                              _hover={{ bg: "gray.50" }}
+                              onClick={() => handleGroupSelect(group.id)}
+                              bg={
+                                selectedGroup === group.id.toString()
+                                  ? "blue.50"
+                                  : "white"
+                              }
+                            >
+                              <VStack align="start" spacing={0}>
+                                <HStack justify="space-between" w="100%">
+                                  <Text fontSize="14px" fontWeight="medium">
+                                    {group.name}
+                                  </Text>
+                                  {/* <Button
+                                    size="xs"
+                                    bg="transparent"
+                                    p={1}
+                                    minW="auto"
+                                    h="auto"
+                                    // onClick={(e) => handleCopyGroupId(group.id, group.name, e)}
+                                    _hover={{ bg: "gray.200" }}
+                                    _focus={{ bg: "gray.200" }}
+                                    title={`Copy Group ID: ${group.id}`}
+                                  >
+                                    <CopyIcon boxSize="12px" color="gray.600" />
+                                  </Button> */}
+                                </HStack>
+                                <Text fontSize="12px" color="gray.500">
+                                  {group.description}
+                                </Text>
+                                <Text fontSize="10px" color="gray.400" mt={1}>
+                                  ID: {group.id}
+                                </Text>
+                              </VStack>
+                            </Box>
+                          </ListItem>
+                        ))
+                      ) : (
+                        <ListItem p={3}>
+                          <Text fontSize="14px" color="gray.500">
+                            No groups found
+                          </Text>
+                        </ListItem>
+                      )}
+                    </List>
+                  </Box>
+                </Collapse>
+              </Box>
+            </FormControl>
               <Button
                 bgColor="#FA9411"
                 height="42px"
@@ -542,7 +766,6 @@ export default function HireTractor() {
                   <Text fontSize="14px">Clear filters</Text>
                 </Flex>
               </Button>
-            </SimpleGrid>
 
             {
               // searchResult?.isFetching ||
