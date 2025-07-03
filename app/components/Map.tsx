@@ -30,7 +30,7 @@ const Map = ({ addresses }: { addresses: string[] }) => {
               map: newMap,
               icon: {
                 // url: google.maps.Circle
-                url: "https://res.cloudinary.com/thewebplug/image/upload/v1751460708/WhatsApp_Image_2025-06-25_at_17.19.08_hl0em3.jpg",
+                url: "https://res.cloudinary.com/tractrac-global/image/upload/v1746446667/tractor-icon_nwbaf5.svg",
                 // fillColor: "#EB00FF",
                 // scale: 7,
                 // url: markerI.default,

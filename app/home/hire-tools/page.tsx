@@ -62,6 +62,7 @@ import Link from "next/link";
 import { filterTools, getToolBookedDates, getApprovedTools, hireTool } from "@/app/apis/tools";
 import { getgroups } from "process";
 import { getGroups, getGroupsMembers } from "@/app/apis/user";
+import ToolMap from "@/app/components/ToolMap";
 
 const fileTypes = ["JPG", "PNG", "JPEG"];
 
@@ -443,9 +444,13 @@ const handleGroupSelect = (groupId: string): void => {
               // w="111px"
               />
             ) : (
-              <Map
-                addresses={tractors.map((item: any) => item?.current_address)}
-              />
+              <ToolMap
+              coordinates={tractors.map((item: any) => ({
+                lat: item?.current_location_lat,
+                lng: item?.current_location_lng,
+                title: item?.name
+              }))}
+            />
             )}
             {/* <Image src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446725/map_punpe8.svg" alt="map image" /> */}
           </Stack>
