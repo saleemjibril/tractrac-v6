@@ -49,7 +49,7 @@ export default function SupportWidget() {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
 
-  console.log("profileInfo?.id", profileInfo?.id);
+  console.log("profileInfo?.id", profileInfo);
   const fileInputRef = useRef(null);
 
   const handleGetTickets = async () => {
@@ -456,7 +456,10 @@ export default function SupportWidget() {
                     onClick={() => setSelectedTicketId(ticket?.id)}
                   >
                     <div className="support__inner__card__group">
-                      <div className="support__inner__card__initials">SJ</div>
+                      <div className="support__inner__card__initials">
+                      {profileInfo?.name?.split(" ")[0]?.charAt(0)}
+                      {profileInfo?.name?.split(" ")[1]?.charAt(0)}
+                      </div>
 
                       <div>
                         <div className="support__inner__card__message">
@@ -631,7 +634,9 @@ export default function SupportWidget() {
                     </g>
                   </svg>
 
-                  <div className="support__chat__header__initials">SJ</div>
+                  <div className="support__chat__header__initials">
+                  {profileInfo?.name}
+                  </div>
                 </div>
 
                 <div className="support__chat__inner">
