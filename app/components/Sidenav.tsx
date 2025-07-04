@@ -113,7 +113,7 @@ const LinkItems: Array<LinkItemProps> = [
     iconDark: TractorPlusDark,
   },
   {
-    name: "Payment",
+    name: "Tractor Payment",
     imageLight: "pay-light",
     imageDark: "pay-dark",
     path: "/payment",

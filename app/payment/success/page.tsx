@@ -19,7 +19,7 @@ import { AddIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 // import { useMakePaymentMutation } from "@/redux/services/userApi";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAppSelector } from "@/redux/hooks";
-import { verifyPayment } from "@/app/apis/payment";
+import { verifyAgroToolPayment, verifyPayment } from "@/app/apis/payment";
 
 export default function PaymentSuccessful() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -34,8 +34,13 @@ export default function PaymentSuccessful() {
     console.log({
       reference, userToken
     });
+
+    if(reference?.includes("addon")) {
+      const response = await verifyAgroToolPayment(reference, userToken as string);
+        console.log("verifyAgroToolPayment", response);
+    }
     
-        const response = await verifyPayment(reference, userToken);
+        const response = await verifyPayment(reference, userToken as string);
         console.log("verifyPayment", response);
         
     
