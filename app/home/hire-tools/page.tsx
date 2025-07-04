@@ -1466,7 +1466,7 @@ function TractorCard({
             end_date: "",
             additional_info: "",
             ward_district: "",
-            payment_method: "",
+            payment_mode: "",
             sex: "",
             estimated_work_time: "",
             age_bracket: "",
@@ -2319,13 +2319,13 @@ function TractorCard({
   mt="20px"
   width="100%"
 >
-  <Field name="payment_method" validate={validateEmpty}>
+  <Field name="payment_mode" validate={validateEmpty}>
     {({ field, form }: { [x: string]: any }) => (
       <FormControl
         // my={4}
         isInvalid={
-          form.errors.payment_method &&
-          form.touched.payment_method
+          form.errors.payment_mode &&
+          form.touched.payment_mode
         }
         mb="20px"
       >
@@ -2362,14 +2362,14 @@ function TractorCard({
             placeholder="Enter your L.G.A."
           /> */}
         <FormErrorMessage>
-          {form.errors.payment_method}
+          {form.errors.payment_mode}
         </FormErrorMessage>
       </FormControl>
     )}
   </Field>
 
-  {/* Conditionally render agent_id field only when payment_method is 'cash' */}
-  {props.values.payment_method === 'cash' && (
+  {/* Conditionally render agent_id field only when payment_mode is 'cash' */}
+  {props.values.payment_mode === 'cash' && (
    <Field name="payment_agent_id" validate={validateEmpty}>
    {({ field, form }: { [x: string]: any }) => (
      <FormControl
