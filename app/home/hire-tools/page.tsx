@@ -1328,15 +1328,18 @@ function TractorCard({
             const isAvailable = !bookedDates?.includes(dateString);
             const isBooked = bookedDates?.includes(dateString);
   
-            const isPastOrToday =
+            // const isPastOrToday =
+            //   currentYear < currentRealYear ||
+            //   (currentYear === currentRealYear && currentMonth < currentRealMonth) ||
+            //   (currentYear === currentRealYear && currentMonth === currentRealMonth && calendarDay <= currentDay);
+  
+              const isPast =
               currentYear < currentRealYear ||
               (currentYear === currentRealYear && currentMonth < currentRealMonth) ||
-              (currentYear === currentRealYear && currentMonth === currentRealMonth && calendarDay <= currentDay);
+              (currentYear === currentRealYear && currentMonth === currentRealMonth && calendarDay < currentDay);
   
-  
-  
-            const cellClassName = `calendar-cell ndc-calendar-date${isAvailable && !isPastOrToday ? " available" : ""
-              }${isBooked ? " booked" : ""}${isPastOrToday ? " disabled" : ""
+            const cellClassName = `calendar-cell ndc-calendar-date${isAvailable && !isPast ? " available" : ""
+              }${isBooked ? " booked" : ""}${isPast ? " disabled" : ""
               }`;
   
   
@@ -1426,7 +1429,7 @@ function TractorCard({
       );
       if (checker?.length > 0) {
         toast.error(
-          "Some if the dates selected have a;ready been booked. Please select a range of available dates"
+          "Some if the dates selected have already been booked. Please select a range of available dates"
         );
       } else {
         setNdcCalendar(false);

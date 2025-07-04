@@ -961,17 +961,22 @@ function HireTractorForm({ id }: { id: string }) {
           const isAvailable = !bookedDates?.includes(dateString);
           const isBooked = bookedDates?.includes(dateString);
 
-          const isPastOrToday = 
-          currentYear < currentRealYear || 
-          (currentYear === currentRealYear && currentMonth < currentRealMonth) || 
-          (currentYear === currentRealYear && currentMonth === currentRealMonth && calendarDay <= currentDay);
+          // const isPastOrToday = 
+          // currentYear < currentRealYear || 
+          // (currentYear === currentRealYear && currentMonth < currentRealMonth) || 
+          // (currentYear === currentRealYear && currentMonth === currentRealMonth && calendarDay <= currentDay);
+
+          const isPast =
+          currentYear < currentRealYear ||
+          (currentYear === currentRealYear && currentMonth < currentRealMonth) ||
+          (currentYear === currentRealYear && currentMonth === currentRealMonth && calendarDay < currentDay);
 
 
 
           const cellClassName = `calendar-cell ndc-calendar-date${
-            isAvailable && !isPastOrToday ? " available" : ""
+            isAvailable && !isPast ? " available" : ""
           }${isBooked ? " booked" : ""}${
-            isPastOrToday ? " disabled" : ""
+            isPast ? " disabled" : ""
           }`;
   
 
