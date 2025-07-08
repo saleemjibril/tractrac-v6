@@ -60,6 +60,7 @@ import { userLogout } from "@/redux/features/auth/authActions";
 const statusTypes: Record<string, { title: string; color: string }> = {
   pending: { title: "Pending", color: "#FA9411" },
   approved: { title: "Approved", color: "#27AE60" },
+  maintenance: { title: "Maintenance", color: "#FF0000" },
   completed: { title: "Completed", color: "#27AE60" },
   in_use: { title: "In Use", color: "#F03B13" },
   not_approved: { title: "Not Approved", color: "#FE391E" },

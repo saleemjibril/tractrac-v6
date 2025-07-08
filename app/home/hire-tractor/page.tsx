@@ -85,7 +85,9 @@ interface ITractorCard {
 
 const statusTypes: Record<string, { title: string; color: string }> = {
   booked: { title: "Booked", color: "#FA9411" },
+  maintenance: { title: "Maintenance", color: "#FF0000" },
   available: { title: "Available", color: "#27AE60" },
+  maintenance: { title: "Maintenance", color: "#FF0000" },
   in_use: { title: "In Use", color: "#FA9411" },
 };
 export default function HireTractor() {
@@ -765,6 +767,8 @@ function TractorCard({
                 ? "Book now"
                 : status === "in_use"
                 ? "Book ahead"
+                : status === "maintenance"
+                ? "Maintenance"
                 : "Book ahead"}
             </Text>
           </Box>

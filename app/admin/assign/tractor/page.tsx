@@ -43,6 +43,7 @@ import { useGetTractorsQuery } from "@/redux/services/tractorApi";
 
 const statusTypes: Record<string, { title: string; color: string }> = {
   pending: { title: "Pending", color: "#FA9411" },
+  maintenance: { title: "Maintenance", color: "#FF0000" },
   approved: { title: "Approved", color: "#27AE60" },
   completed: { title: "Completed", color: "#27AE60" },
   in_use: { title: "In Use", color: "#F03B13" },

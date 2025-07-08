@@ -38,6 +38,7 @@ const statusTypes: Record<string, { title: string; color: string }> = {
   approved: { title: "Approved", color: "#27AE60" },
   completed: { title: "Completed", color: "#27AE60" },
   in_progress: { title: "In Progress", color: "#27AE60" },
+  maintenance: { title: "Maintenance", color: "#FF0000" },
   rejected: { title: "Rejected", color: "#FE391E" },
   paid: { title: "Paid", color: "#27AE60" },
   cancelled: { title: "Cancelled", color: "#FE391E" },

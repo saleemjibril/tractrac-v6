@@ -36,6 +36,7 @@ const statusTypes: Record<string, { title: string; color: string }> = {
   pending: { title: "Pending", color: "#FA9411" },
   payment_pending: { title: "Payment Pending", color: "#FA9411" },
   approved: { title: "Approved", color: "#27AE60" },
+  maintenance: { title: "Maintenance", color: "#FF0000" },
   completed: { title: "Completed", color: "#27AE60" },
   in_progress: { title: "In Progress", color: "#27AE60" },
   rejected: { title: "Rejected", color: "#FE391E" },

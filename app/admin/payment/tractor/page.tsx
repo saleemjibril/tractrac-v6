@@ -54,6 +54,7 @@ const statusTypes: Record<string, { title: string; color: string }> = {
   approved: { title: "Approved", color: "#27AE60" },
   completed: { title: "Completed", color: "#27AE60" },
   in_use: { title: "In Use", color: "#F03B13" },
+  maintenance: { title: "Maintenance", color: "#FF0000" },
   not_approved: { title: "Not Approved", color: "#FE391E" },
 };
 

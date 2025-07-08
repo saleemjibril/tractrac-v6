@@ -110,6 +110,7 @@ interface Group {
 const statusTypes: Record<string, { title: string; color: string }> = {
   booked: { title: "Booked", color: "#FA9411" },
   available: { title: "Available", color: "#27AE60" },
+  maintenance: { title: "Maintenance", color: "#FF0000" },
   in_use: { title: "In Use", color: "#FA9411" },
 };
 

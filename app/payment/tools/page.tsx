@@ -32,6 +32,7 @@ import moment from "moment";
 const statusTypes: Record<string, { title: string; color: string }> = {
   pending: { title: "Pending", color: "#FA9411" },
   success: { title: "Success", color: "#27AE60" },
+  maintenance: { title: "Maintenance", color: "#FF0000" },
   failed: { title: "Failed", color: "#FE391E" },
 };
 

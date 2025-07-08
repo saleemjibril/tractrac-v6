@@ -40,6 +40,7 @@ interface ITractorCard {
 const statusTypes: Record<string, { title: string; color: string }> = {
   pending: { title: "Pending", color: "#FA9411" },
   verified: { title: "Verified", color: "#27AE60" },
+  maintenance: { title: "Maintenance", color: "#FF0000" },
   in_use: { title: "In Use", color: "#F03B13" },
 };
 
