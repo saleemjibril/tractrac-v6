@@ -16,6 +16,7 @@ import { ChakraWrapper } from "@/app/chakraUIWrapper";
 import Header from "@/app/components/header";
 import FooterComponent from "@/app/components/footer";
 import relatedBlogs from "../blog/related";
+import { useEffect, useState } from "react";
 
 interface Post {
   id: string;
@@ -47,14 +48,23 @@ interface BlogPostDetailProps {
   post: Post;
 }
 
-export default async function BlogPostDetail({ post }: BlogPostDetailProps) {
+export default function BlogPostDetail({ post }: BlogPostDetailProps) {
+  const [relatedPosts, setRelatedPosts] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchRelatedPosts = async () => {
+      const posts = await relatedBlogs(post.id);
+      setRelatedPosts(posts);
+    };
+    
+    fetchRelatedPosts();
+  }, [post.id]);
+
   const formattedDate = new Date(post.modified).toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",
   });
-
-  const relatedPosts = relatedBlogs(post.id);
 
   return (
     <ChakraWrapper>
@@ -256,7 +266,7 @@ export default async function BlogPostDetail({ post }: BlogPostDetailProps) {
                 spacingX={{ base: "0px", md: "30px" }} // No horizontal spacing on small screens
                 spacingY="30px" // Vertical spacing remains consistent
               >
-                {(await relatedPosts).map((blog, index) => (
+                {relatedPosts.map((blog, index) => (
                   <Box
                     key={blog.id}
                     as="a"
