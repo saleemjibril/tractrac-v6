@@ -27,6 +27,8 @@ interface BlogInnerProps {
 }
 
 export default function BlogInner({ posts }: BlogInnerProps) {
+  console.log("posts published", posts);
+  
   return (
     <ChakraWrapper>
       <Box position={"relative"}>
