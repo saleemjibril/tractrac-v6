@@ -59,7 +59,7 @@ export async function generateMetadata() {
   return {
     title: "Blog",
     description:
-      "Facilitating access to mechanization services for all farmers in Africa.",
+      "Facilitatings access to mechanization services for all farmers in Africa.",
   };
 }
 
