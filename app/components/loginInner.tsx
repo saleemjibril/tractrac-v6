@@ -133,17 +133,14 @@ export default function LoginInner() {
                     try {
                       // alert('ss')
                       console.log(typeof values);
-                      let parsePhoneNumber = values?.phone
-                        .toString()
-                        .startsWith("0")
-                        ? values?.phone.toString().substr("0")
-                        : values?.phone;
-                      let phoneNumber = `${countryCode}${parsePhoneNumber}`;
+                      let parsePhoneNumber = values?.phone.startsWith("0") ? values?.phone : "0" + values?.phone;
+
+                      // let phoneNumber = `${countryCode}${parsePhoneNumber}`;
 
                       console.log("values", values);
 
                       const response = await loginUser({
-                        username: values?.phone,
+                        username: parsePhoneNumber,
                         password: values?.password,
                       });
 

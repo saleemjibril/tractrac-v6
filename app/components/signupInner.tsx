@@ -164,7 +164,7 @@ export default function SignupInner() {
                     // objectFit='cover'
                     // className={styles.vercelLogo}
                     width={{ base: "150px", lg: "210px" }}
-                    // height={40}
+                  // height={40}
                   />
                 </ChakraLink>
               </Center>
@@ -173,8 +173,8 @@ export default function SignupInner() {
                 p={{ base: "20px", md: "40px" }}
                 // height="calc(100vh - 100px)"
                 justifyContent="center"
-                // width={{ base: "100%", md: "60%", xl: "40%" }}
-                // maxW={{ base: "100%", md: "500px" }}
+              // width={{ base: "100%", md: "60%", xl: "40%" }}
+              // maxW={{ base: "100%", md: "500px" }}
               >
                 <Text
                   fontSize={{ base: "20px", md: "24px" }}
@@ -209,17 +209,13 @@ export default function SignupInner() {
                       //   interests: JSON.stringify(values.interests),
                       //   gender,
                       // }).unwrap();
-                      let parsePhoneNumber = values?.phone
-                        .toString()
-                        .startsWith("0")
-                        ? values?.phone.toString().substr("0")
-                        : values?.phone;
-                      let phoneNumber = `${countryCode}${parsePhoneNumber}`;
-                      console.log(phoneNumber);
+                      // let ƒ = values?.phone.toString();
+                      let parsePhoneNumber = values?.phone.startsWith("0") ? values?.phone : "0" + values?.phone;
+                      // let phoneNumber = `${countryCode}${parsePhoneNumber}`;
 
                       console.log("values", values);
 
-                      
+
                       // const response = await sendOtp({
                       //   type: "registration",
                       //   phone: phoneNumber,
@@ -231,7 +227,7 @@ export default function SignupInner() {
                       const response = await registerUser({
                         type: "registration",
                         email: values?.email,
-                        phone:  values?.phone,
+                        phone: parsePhoneNumber,
                         first_name: values?.first_name,
                         last_name: values?.last_name,
                         password: values?.password,
@@ -252,10 +248,10 @@ export default function SignupInner() {
                         })
                       );
 
-                        // toast.success(response.message);
-                        // const user = response?.data[0];
-                        toast.success("Registration successful")
-                        router.push(`/verification?phone=${values?.phone}`);
+                      // toast.success(response.message);
+                      // const user = response?.data[0];
+                      toast.success("Registration successful")
+                      router.push(`/verification?phone=${values?.phone}`);
                       // } else {
                       //   setError("An unknown error occured");
                       // }
@@ -282,7 +278,7 @@ export default function SignupInner() {
                         {({ field, form }: { [x: string]: any }) => (
                           <FormControl
                             mb="24px"
-                            // isInvalid={form.errors.email && form.touched.email}
+                          // isInvalid={form.errors.email && form.touched.email}
                           >
                             <FormLabel fontSize="12px" color="#323232">
                               Email Address
@@ -347,7 +343,7 @@ export default function SignupInner() {
                                 {...field}
                                 // placeholder="Enter your phone number"
                                 bgColor="#3232320D"
-                                // type="number"
+                              // type="number"
                               />
                             </InputGroup>
 
@@ -581,7 +577,7 @@ export default function SignupInner() {
                         {({ field, form }: { [x: string]: any }) => (
                           <FormControl
                             mb="24px"
-                            // isInvalid={form.errors.referring_agent_id && form.touched.referring_agent_id}
+                          // isInvalid={form.errors.referring_agent_id && form.touched.referring_agent_id}
                           >
                             <FormLabel fontSize="12px" color="#323232">
                               Agent ID
@@ -625,7 +621,7 @@ export default function SignupInner() {
                                   option.map((e) => e.value)
                                 );
                               }}
-                              // id="roles-select-field"
+                            // id="roles-select-field"
                             />
                             <FormErrorMessage>
                               {form.errors.interests}
@@ -673,7 +669,7 @@ export default function SignupInner() {
                           color="#F8A730"
                           borderRadius={0}
                           flex={1}
-                          // onClick={() => router.push("/login", {prefetch: false})}
+                        // onClick={() => router.push("/login", {prefetch: false})}
                         >
                           Login
                         </Button>
