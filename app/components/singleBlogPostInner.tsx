@@ -211,6 +211,19 @@ export default function BlogPostDetail({ post }: BlogPostDetailProps) {
                       marginBottom: '0.5rem',
                       fontSize: '1rem !important',
                     },
+                    '& a': {
+  color: '#fa9411', // Your brand orange color
+  textDecoration: 'underline',
+  fontWeight: '500',
+  transition: 'color 0.2s ease',
+},
+'& a:hover': {
+  color: '#e8850f', // Darker shade for hover
+  textDecoration: 'none',
+},
+'& a:visited': {
+  color: '#d4780d', // Slightly different shade for visited links
+},
                     '& strong, & b': {
                       fontWeight: 'bold',
                       fontSize: '20px !important', // Prevent strong tags from making text larger
