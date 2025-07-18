@@ -48,8 +48,53 @@ interface BlogPostDetailProps {
   post: Post;
 }
 
+// Helper function to decode HTML entities
+const decodeHtmlEntities = (text) => {
+  if (typeof window === 'undefined') return text; // SSR safety
+  const textarea = document.createElement('textarea');
+  textarea.innerHTML = text;
+  return textarea.value;
+};
+
+// Helper function to clean and fix HTML content
+const cleanHtmlContent = (content) => {
+  if (!content) return '';
+  
+  return content
+    // Fix common HTML entities
+    .replace(/&#8217;/g, "'")
+    .replace(/&#8221;/g, '"')
+    .replace(/&#8216;/g, "'")
+    .replace(/&#8220;/g, '"')
+    .replace(/&#8211;/g, "–")
+    .replace(/&#8212;/g, "—")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    // Fix malformed id attributes that start with >
+    .replace(/id=">[^"]*"/g, '')
+    // Fix malformed data-content attributes
+    .replace(/data-content="[^"]*"/g, 'data-content="true"')
+    // Clean up any remaining malformed attributes
+    .replace(/="[^"]*&#8221;[^"]*"/g, '=""')
+    // Remove any remaining HTML entity artifacts
+    .replace(/&#\d+;/g, (match) => {
+      try {
+        const num = parseInt(match.slice(2, -1));
+        return String.fromCharCode(num);
+      } catch {
+        return match;
+      }
+    });
+};
+
 export default function BlogPostDetail({ post }: BlogPostDetailProps) {
   const [relatedPosts, setRelatedPosts] = useState<any[]>([]);
+  const [cleanedContent, setCleanedContent] = useState('');
+  
+  console.log("my blog post", post);
 
   useEffect(() => {
     const fetchRelatedPosts = async () => {
@@ -59,6 +104,13 @@ export default function BlogPostDetail({ post }: BlogPostDetailProps) {
     
     fetchRelatedPosts();
   }, [post.id]);
+
+  useEffect(() => {
+    if (post?.content) {
+      const cleaned = cleanHtmlContent(post.content);
+      setCleanedContent(cleaned);
+    }
+  }, [post?.content]);
 
   const formattedDate = new Date(post.modified).toLocaleDateString("en-US", {
     year: "numeric",
@@ -107,7 +159,7 @@ export default function BlogPostDetail({ post }: BlogPostDetailProps) {
                   textAlign="left"
                   mt={{ base: "10px", md: "10px", lg: "50px" }} // Adjusted margin-top
                 >
-                  {post?.title}
+                  {decodeHtmlEntities(post?.title)}
                 </Text>
 
                 <Text
@@ -123,9 +175,113 @@ export default function BlogPostDetail({ post }: BlogPostDetailProps) {
 
                 <Box
                   mt={{ base: "20px", md: "50px" }}
-                  fontSize={{ base: "14px", md: "16px" }}
+                  fontSize={{ base: "1.4rem", md: "1rem" }}
                   lineHeight="30px"
-                  dangerouslySetInnerHTML={{ __html: post.content }}
+                  dangerouslySetInnerHTML={{ __html: cleanedContent }}
+                  sx={{
+                    // Additional CSS to ensure proper rendering and consistent text sizes
+                    '& p': {
+                      marginBottom: '1rem',
+                      fontSize: '16px !important', // Override any inline font sizes
+                      fontWeight: "400"
+                    },
+                    '& h1, & h2, & h3, & h4, & h5, & h6': {
+                      marginTop: '1.5rem',
+                      marginBottom: '1rem',
+                      fontWeight: 'bold',
+                    },
+                    '& h2': {
+                      fontSize: '1.5rem !important',
+                    },
+                    '& h3': {
+                      fontSize: '1.25rem !important',
+                    },
+                    '& h4': {
+                      fontSize: '1.125rem !important',
+                    },
+                    '& h5, & h6': {
+                      fontSize: '1rem !important',
+                    },
+                    '& ul, & ol': {
+                      marginLeft: '1.5rem',
+                      marginBottom: '1rem',
+                      fontSize: '1rem !important',
+                    },
+                    '& li': {
+                      marginBottom: '0.5rem',
+                      fontSize: '1rem !important',
+                    },
+                    '& strong, & b': {
+                      fontWeight: 'bold',
+                      fontSize: '20px !important', // Prevent strong tags from making text larger
+                      // background: "yellow"
+                    },
+                    '& img': {
+                      maxWidth: '100%',
+                      height: 'auto',
+                      marginBottom: "20px",
+                      marginTop: "60px"
+                    },
+                    '& table': {
+                      marginTop: "40px"
+                    },
+                    '& table, & .wp-block-table table': {
+                      width: '100%',
+                      borderCollapse: 'collapse',
+                      marginBottom: '1rem',
+                      fontSize: '16px !important',
+                    },
+                    '& th, & td': {
+                      border: '1px solid #ddd',
+                      padding: '8px',
+                      textAlign: 'left',
+                      fontSize: '16px !important', // Ensure table cells use inherited font size
+                      fontWeight: 'normal',
+                    },
+                    '& th': {
+                      backgroundColor: '#f5f5f5',
+                      fontWeight: 'bold',
+                    },
+                    '& tbody th': {
+                      fontWeight: 'bold',
+                    },
+                    // WordPress specific overrides
+                    '& .wp-block-table': {
+                      fontSize: '16px !important',
+                    },
+                    '& .wp-block-list': {
+                      fontSize: '16px !important',
+                    },
+                    '& .has-small-font-size': {
+                      fontSize: '0.875rem !important',
+                    },
+                    '& .has-medium-font-size': {
+                      fontSize: '1rem !important',
+                    },
+                    '& .has-large-font-size': {
+                      fontSize: '1.125rem !important',
+                    },
+                    // Override any potential inline styles
+                    '& *': {
+                      fontSize: '16px !important',
+                    },
+                    // But restore proper heading sizes
+                    '& h1': {
+                      fontSize: '2rem !important',
+                    },
+                    '& h2': {
+                      fontSize: '1.5rem !important',
+                    },
+                    '& h3': {
+                      fontSize: '1.25rem !important',
+                    },
+                    '& h4': {
+                      fontSize: '1.125rem !important',
+                    },
+                    '& h5, & h6': {
+                      fontSize: '1rem !important',
+                    },
+                  }}
                 ></Box>
 
                 {/* Author Details */}
@@ -158,9 +314,8 @@ export default function BlogPostDetail({ post }: BlogPostDetailProps) {
                         mt="5px"
                         lineHeight="1.5"
                         dangerouslySetInnerHTML={{
-                          __html: post.author.node.description.replace(
-                            /\r\n/g,
-                            "<br />"
+                          __html: decodeHtmlEntities(
+                            post.author.node.description.replace(/\r\n/g, "<br />")
                           ),
                         }}
                       />
@@ -217,7 +372,7 @@ export default function BlogPostDetail({ post }: BlogPostDetailProps) {
                     textDecoration="underline"
                     _hover={{ color: "#fa9411" }}
                   >
-                    {item.content}
+                    {decodeHtmlEntities(item.content)}
                   </Text>
                 </Flex>
               ))}
@@ -306,7 +461,7 @@ export default function BlogPostDetail({ post }: BlogPostDetailProps) {
                         fontWeight={800}
                         lineHeight="25px"
                       >
-                        {blog.title}
+                        {decodeHtmlEntities(blog.title)}
                       </Text>
 
                       <Text
@@ -324,7 +479,9 @@ export default function BlogPostDetail({ post }: BlogPostDetailProps) {
                           WebkitBoxOrient: "vertical",
                         }}
                       >
-                        {blog.excerpt.replace("<p>", "").replace("</p>", "")}
+                        {decodeHtmlEntities(
+                          blog.excerpt?.replace("<p>", "").replace("</p>", "") || ""
+                        )}
                       </Text>
 
                       <Box

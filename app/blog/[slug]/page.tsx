@@ -96,6 +96,7 @@ const FetchBlogSlug = async (slug: string) => {
 
 export default async function BlogPostPage({ params }: { params: { slug: string } }) {
   const post = await FetchBlogSlug(params.slug);
+  
 
   if (!post) {
     return <div>Post not found</div>;
