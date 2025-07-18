@@ -59,7 +59,7 @@ const decodeHtmlEntities = (text) => {
 // Helper function to clean and fix HTML content
 const cleanHtmlContent = (content) => {
   if (!content) return '';
-  
+
   return content
     // Fix common HTML entities
     .replace(/&#8217;/g, "'")
@@ -93,7 +93,7 @@ const cleanHtmlContent = (content) => {
 export default function BlogPostDetail({ post }: BlogPostDetailProps) {
   const [relatedPosts, setRelatedPosts] = useState<any[]>([]);
   const [cleanedContent, setCleanedContent] = useState('');
-  
+
   console.log("my blog post", post);
 
   useEffect(() => {
@@ -101,7 +101,7 @@ export default function BlogPostDetail({ post }: BlogPostDetailProps) {
       const posts = await relatedBlogs(post.id);
       setRelatedPosts(posts);
     };
-    
+
     fetchRelatedPosts();
   }, [post.id]);
 
@@ -230,6 +230,17 @@ export default function BlogPostDetail({ post }: BlogPostDetailProps) {
                       borderCollapse: 'collapse',
                       marginBottom: '1rem',
                       fontSize: '16px !important',
+                    },
+                    '@media (max-width: 768px)': {
+                      '& table, & .wp-block-table table': {
+                        width: '100%',
+                        borderCollapse: 'collapse',
+                        marginBottom: '1rem',
+                        fontSize: '16px !important',
+                        display: 'block',
+                        overflowX: 'auto',
+                        whiteSpace: 'nowrap',
+                      },
                     },
                     '& th, & td': {
                       border: '1px solid #ddd',
