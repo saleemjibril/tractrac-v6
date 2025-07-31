@@ -20,16 +20,20 @@ import {
   FlexProps,
   CloseButton,
   Img,
-  // NavItem,
+  SimpleGrid,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-// import { MdCheckCircle } from "@chakra-ui/icons";
 import {
   FaFacebookF,
   FaTwitter,
   FaInstagram,
   FaLinkedinIn,
-
+  FaUsers,
+  FaLightbulb,
+  FaShieldAlt,
+  FaLeaf,
+  FaHandshake,
+  FaHeart,
 } from "react-icons/fa";
 import { openModal } from "@/redux/features/modalSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
@@ -38,7 +42,6 @@ import { FiMenu } from "react-icons/fi";
 import FooterComponent from "../components/footer";
 import Header from "../components/header";
 import { ChakraWrapper } from "../chakraUIWrapper";
-
 
 interface MobileProps extends FlexProps {
   onOpen: () => void;
@@ -59,26 +62,62 @@ const LinkItems: Array<{ name: string; path: string }> = [
     name: "Contact Us",
     path: "/contact",
   },
-  // {
-  //   name: "Careers",
-  //   path: "#",
-  // },
   {
     name: "Blog",
     path: "/blog",
   },
 ];
 
+const coreValues = [
+  {
+    icon: FaUsers,
+    title: "Inclusion",
+    description: "We believe in creating opportunities for all farmers, regardless of their size or resources, ensuring equal access to mechanization services across Africa.",
+    color: "#f8a730"
+  },
+  {
+    icon: FaLightbulb,
+    title: "Innovation",
+    description: "We continuously develop cutting-edge solutions and technologies to transform agricultural mechanization and improve farming efficiency.",
+    color: "#f8a730"
+  },
+  {
+    icon: FaShieldAlt,
+    title: "Accountability",
+    description: "We take responsibility for our actions and commitments, maintaining transparency and trust with our stakeholders and farming communities.",
+    color: "#f8a730"
+  },
+  {
+    icon: FaLeaf,
+    title: "Sustainability",
+    description: "We promote environmentally responsible practices and long-term solutions that protect the land while enhancing agricultural productivity.",
+    color: "#f8a730"
+  },
+  {
+    icon: FaHandshake,
+    title: "Collaboration",
+    description: "We foster partnerships with farmers, investors, and stakeholders to create a unified approach to agricultural mechanization.",
+    color: "#f8a730"
+  },
+  {
+    icon: FaHeart,
+    title: "Respect",
+    description: "We honor the dignity and expertise of farmers, treating every individual with consideration and valuing their contribution to food security.",
+    color: "#f8a730"
+  },
+];
+
 export default function AboutInner() {
-      const dispatch = useAppDispatch();
-      const { isOpen, onOpen, onClose } = useDisclosure();
-    
-      const showModal = (type: string) => {
-        dispatch(openModal(type));
-      };
-    return (
-        <ChakraWrapper>
-        <Box position={"relative"}>
+  const dispatch = useAppDispatch();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const showModal = (type: string) => {
+    dispatch(openModal(type));
+  };
+
+  return (
+    <ChakraWrapper>
+      <Box position={"relative"}>
         <Header />
         <Center mb="30px">
           <Stack mt="60px" textAlign="center">
@@ -87,7 +126,6 @@ export default function AboutInner() {
               fontFamily="cursive"
               color="#FA9411"
               display="block"
-              //   mb="16px"
             >
               About the Idea
             </Text>
@@ -104,19 +142,6 @@ export default function AboutInner() {
           width={"100%"}
           maxWidth={"1440px"}
         >
-          {/* <Flex gap="24px" mb="30px" flexDir={{ base: "column", md: "row" }}>
-            <Box width={{ base: "100%", md: "60%" }}>
-              <Image
-                src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446761/about-banner-1_vx2uae.svg"
-                alt="About page banner one"
-                w="100%"
-                borderRadius="50px"
-              />
-            </Box>
-            <Box width={{ base: "100%", md: "40%" }}>
-              <Image src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446755/about-2_zjdjko.svg" alt="About page banner two" />
-            </Box>
-          </Flex> */}
           <Text color="#858A8F" fontSize="16px" textAlign="center" mb="50px">
             Our vision is to improve the lives of small holder farmers by
             facilitating a convergence for private sector investments in the
@@ -144,7 +169,6 @@ export default function AboutInner() {
                 fontFamily="cursive"
                 color="#FA9411"
                 display="block"
-                //   mb="16px"
               >
                 Our Mission
               </Text>
@@ -171,7 +195,6 @@ export default function AboutInner() {
               for investors to participate in the Agric mechanization space,
               ensure tractors are available to users and make a good return.
             </Text>
-            {/* <Image src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446761/about-3_uc4qzw.svg" alt="About page banner three" /> */}
           </Flex>
 
           <Center my="30px">
@@ -181,7 +204,6 @@ export default function AboutInner() {
                 fontFamily="cursive"
                 color="#FA9411"
                 display="block"
-                //   mb="16px"
               >
                 Our Vision
               </Text>
@@ -222,49 +244,159 @@ export default function AboutInner() {
               />
             </Box>
           </Flex>
+
+          {/* Core Values Section */}
+          <Center my="60px">
+            <Stack textAlign="center">
+              <Text
+                fontSize="24px"
+                fontFamily="cursive"
+                color="#FA9411"
+                display="block"
+              >
+                Our Core Values
+              </Text>
+              <Text fontWeight={600} lineHeight={"18px"} fontSize="20px">
+                The principles that guide <br />
+                everything we do
+              </Text>
+            </Stack>
+          </Center>
+
+          <Box mb="100px">
+            <SimpleGrid
+              columns={{ base: 1, md: 2, lg: 3 }}
+              spacing={{ base: "30px", md: "40px" }}
+              mt="40px"
+            >
+              {coreValues.map((value, index) => (
+                <CoreValueCard
+                  key={index}
+                  icon={value.icon}
+                  title={value.title}
+                  description={value.description}
+                  color={value.color}
+                  delay={index * 0.1}
+                />
+              ))}
+            </SimpleGrid>
+          </Box>
         </Box>
 
         <FooterComponent />
-
-        
       </Box>
-      </ChakraWrapper>
-    )
+    </ChakraWrapper>
+  );
 }
 
-
 function VisionComponent({
-    counter,
-    title,
-    content,
-  }: {
-    counter: string;
-    title: string;
-    content: string;
-  }) {
-    return (
-      <Box bgColor="#F9F9F9" py="39px" px="27px" borderRadius="30px">
-        <Flex
-          gap={{ base: "20px", md: "40px" }}
+  counter,
+  title,
+  content,
+}: {
+  counter: string;
+  title: string;
+  content: string;
+}) {
+  return (
+    <Box bgColor="#F9F9F9" py="39px" px="27px" borderRadius="30px">
+      <Flex
+        gap={{ base: "20px", md: "40px" }}
+        alignItems="center"
+        flexDir={{ base: "column", md: "row" }}
+      >
+        <Box bgColor="#FA9411" borderRadius="23px" px="12px" py="18px">
+          <Center>
+            <Text fontSize="60px" fontWeight="700" color="white">
+              {counter}
+            </Text>
+          </Center>
+        </Box>
+        <Stack textAlign={{ base: "center", md: "left" }}>
+          <Text fontWeight={700} fontSize="25px" lineHeight="24px">
+            {title}
+          </Text>
+          <Text fontSize="16px" color="#797979" mt="4px">
+            {content}
+          </Text>
+        </Stack>
+      </Flex>
+    </Box>
+  );
+}
+
+function CoreValueCard({
+  icon: IconComponent,
+  title,
+  description,
+  color,
+  delay,
+}: {
+  icon: any;
+  title: string;
+  description: string;
+  color: string;
+  delay: number;
+}) {
+  return (
+    <Box
+      bgColor="white"
+      borderRadius="20px"
+      p="30px"
+      boxShadow="0 4px 20px rgba(0, 0, 0, 0.08)"
+      border="1px solid #f0f0f0"
+      transition="all 0.3s ease"
+      _hover={{
+        transform: "translateY(-5px)",
+        boxShadow: "0 8px 30px rgba(0, 0, 0, 0.12)",
+      }}
+      position="relative"
+      overflow="hidden"
+    >
+      {/* Background decoration */}
+      <Box
+        position="absolute"
+        top="-20px"
+        right="-20px"
+        width="60px"
+        height="60px"
+        bgColor={color}
+        opacity="0.1"
+        borderRadius="50%"
+      />
+      
+      <Stack spacing="20px" align="center" textAlign="center">
+        <Box
+          bgColor={color}
+          borderRadius="50%"
+          p="20px"
+          display="flex"
           alignItems="center"
-          flexDir={{ base: "column", md: "row" }}
+          justifyContent="center"
+          boxShadow={`0 4px 15px ${color}30`}
         >
-          <Box bgColor="#FA9411" borderRadius="23px" px="12px" py="18px">
-            <Center>
-              <Text fontSize="60px" fontWeight="700" color="white">
-                {counter}
-              </Text>
-            </Center>
-          </Box>
-          <Stack textAlign={{ base: "center", md: "left" }}>
-            <Text fontWeight={700} fontSize="25px" lineHeight="24px">
-              {title}
-            </Text>
-            <Text fontSize="16px" color="#797979" mt="4px">
-              {content}
-            </Text>
-          </Stack>
-        </Flex>
-      </Box>
-    );
-  }
+          <IconComponent size="28px" color="white" />
+        </Box>
+        
+        <Stack spacing="12px">
+          <Text
+            fontSize="22px"
+            fontWeight="700"
+            color="#2D3748"
+            lineHeight="26px"
+          >
+            {title}
+          </Text>
+          <Text
+            fontSize="14px"
+            color="#666"
+            lineHeight="20px"
+            textAlign="center"
+          >
+            {description}
+          </Text>
+        </Stack>
+      </Stack>
+    </Box>
+  );
+}
