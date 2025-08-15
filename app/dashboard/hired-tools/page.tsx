@@ -163,7 +163,8 @@ export default function HiredTractors() {
               <Tbody>
                 {tractors?.map((tractor: any) => (
                   <Tr key={tractor?.id}>
-                    <Td textTransform={"capitalize"}>{tractor?.addons[0]?.addon_type?.split("_")?.join(" ")}</Td>
+                    {/* <Td textTransform={"capitalize"}>{tractor?.addons[0]?.addon_type?.split("_")?.join(" ")}</Td> */}
+                    <Td textTransform={"capitalize"}>{tractor?.pricing_details?.addon_costs[0]?.addon_name}</Td>
                     {/* <Td>{tractor?.tractor?.model}</Td> */}
                     <Td>{tractor?.owner_name}</Td>
                     {/* <Td>{tractor?.address ?? "Nil"}</Td> */}

@@ -7,6 +7,7 @@ import SupportWidget from "./components/support";
 import GoogleAnalytics from "./components/googleAnalytics";
 import PageTracker from "./components/pageTracker";
 import { AuthProvider } from "./components/AuthProvider";
+import FacebookPixel from "./components/facebookPixel";
 
 const inter = Inter({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -23,6 +24,7 @@ export default function RootLayout({
     <html lang="en">
       <head>
       <GoogleAnalytics />
+      <FacebookPixel />
       </head>
       <body className={inter.className} style={{scrollBehavior: "smooth"}}>
         <Providers>
