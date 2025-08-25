@@ -15,10 +15,15 @@ export const createTractor = async (data: object, token: string) => {
       formData.append(key, value);
     } else if (Array.isArray(value)) {
       // Handle arrays - append each item separately or as a single value
-      if (key === 'implement_types' || key === 'implement_types') {
+      if (key === 'implement_types') {
         // For implementType, send each value separately
         value.forEach((item) => {
           formData.append(key, String(item));
+        });
+      } else if (key === 'tractor_image_files') {
+        // For tractor_image_files, append each file separately
+        value.forEach((file: File) => {
+          formData.append(key, file);
         });
       } else {
         // For other arrays, you might want to send as JSON string
@@ -42,9 +47,9 @@ export const createTractor = async (data: object, token: string) => {
 
   // Log FormData entries
   console.log("FormData contents:");
-  for (const pair of formData.entries()) {
-    console.log(typeof pair[1], pair[0], pair[1]);
-  }
+  formData.forEach((value, key) => {
+    console.log(typeof value, key, value);
+  });
   
   const res = await axios.post(
     `${process.env.NEXT_PUBLIC_URL}/tractors`,

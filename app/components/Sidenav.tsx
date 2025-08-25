@@ -131,6 +131,15 @@ const LinkItems: Array<LinkItemProps> = [
     requiresAuth: true,
   },
   {
+    name: "Tracker Payment",
+    imageLight: "pay-light",
+    imageDark: "pay-dark",
+    path: "/payment/tracker-payment",
+    iconLight: PaymentWhite,
+    iconDark: Payment,
+    requiresAuth: true,
+  },
+  {
     name: "Account",
     imageLight: "user-light",
     imageDark: "user-dark",

@@ -74,7 +74,7 @@ interface ICoordinates {
 interface ITractorCard {
   id: string;
   name: string;
-  image: string;
+  image: string | string[];
   capacity: string;
   location: string;
   status: string;
@@ -87,7 +87,6 @@ const statusTypes: Record<string, { title: string; color: string }> = {
   booked: { title: "Booked", color: "#FA9411" },
   maintenance: { title: "Maintenance", color: "#FF0000" },
   available: { title: "Available", color: "#27AE60" },
-  maintenance: { title: "Maintenance", color: "#FF0000" },
   in_use: { title: "In Use", color: "#FA9411" },
 };
 export default function HireTractor() {
@@ -99,7 +98,7 @@ export default function HireTractor() {
   const [tractorId, setTractorId] = useState<string | null>(null);
   const [state, setState] = useState<string | null>(null);
   const [lgas, setLgas] = useState<string[]>([]);
-  const [lga, setLga] = useState<string[]>(null);
+  const [lga, setLga] = useState<string | null>(null);
   const [brand, setBrand] = useState<string | null>(null);
   const [implement, setImplement] = useState<string | null>(null);
   const [tractorType, setTractorType] = useState<string | null>(null);
@@ -588,12 +587,9 @@ export default function HireTractor() {
                         setTractorId={setTractorId}
                         id={tractor?.id}
                         name={`${tractor?.name}`}
-                        image={tractor?.tractor_image}
+                        image={tractor?.tractor_image_files || tractor?.tractor_image}
                         capacity=" 105 to 135 HP"
                         location={`${tractor?.lga},${tractor?.state}`}
-                        // location={tractor?.address}
-                        // distance={"10"}
-                        distance={tractor?.distance}
                         tractor_type={tractor?.tractor_type}
                         status={tractor?.status}
                         coordinates={{
@@ -654,6 +650,8 @@ function TractorCard({
   const [userCoordinates, setUserCoordinates] = useState<ICoordinates | null>(null);
   const [distance, setDistance] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [showImageGallery, setShowImageGallery] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   // Get user's location on component mount
   useEffect(() => {
@@ -689,24 +687,82 @@ function TractorCard({
     }
   }, [coordinates]);
 
+  const handleCardClick = () => {
+    setTractorId(id);
+  };
+
+  const handleImageClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (Array.isArray(image) && image.length > 1) {
+      setShowImageGallery(true);
+    }
+  };
+
+  const nextImage = () => {
+    if (Array.isArray(image)) {
+      setCurrentImageIndex((prev) => (prev + 1) % image.length);
+    }
+  };
+
+  const prevImage = () => {
+    if (Array.isArray(image)) {
+      setCurrentImageIndex((prev) => (prev - 1 + image.length) % image.length);
+    }
+  };
+
   return (
-    <Box
-      boxShadow="md"
-      borderRadius="4px"
-      onClick={() => setTractorId(id)}
-      cursor="pointer"
-    >
-      <Box h="200px" position="relative">
-        <Image
-          borderTopRadius="4px"
-          src={
-            image?.startsWith("https") ? image : "https://res.cloudinary.com/tractrac-global/image/upload/v1746446723/man-with-tractor_dxf5ly.svg"
-          }
-          alt="Tractor image"
-          height="100%"
-          width="100%"
-          objectFit="cover"
-        />
+    <>
+      <Box
+        boxShadow="md"
+        borderRadius="4px"
+        onClick={handleCardClick}
+        cursor="pointer"
+      >
+        <Box h="200px" position="relative">
+        {Array.isArray(image) && image.length > 0 ? (
+          // Multiple images - show first image with indicator
+          <>
+            <Image
+              borderTopRadius="4px"
+              src={
+                image[0]?.startsWith("https") ? image[0] : "https://res.cloudinary.com/tractrac-global/image/upload/v1746446723/man-with-tractor_dxf5ly.svg"
+              }
+              alt="Tractor image"
+              height="100%"
+              width="100%"
+              objectFit="cover"
+              onClick={handleImageClick}
+              cursor={image.length > 1 ? "pointer" : "default"}
+            />
+            {image.length > 1 && (
+              <Box
+                bgColor="rgba(0, 0, 0, 0.7)"
+                borderRadius="6px"
+                py="2px"
+                px="8px"
+                position="absolute"
+                top="4"
+                right="2"
+              >
+                <Text fontSize="12px" color="white">
+                  +{image.length - 1} more
+                </Text>
+              </Box>
+            )}
+          </>
+        ) : (
+          // Single image or fallback
+          <Image
+            borderTopRadius="4px"
+            src={
+              typeof image === 'string' && image[0]?.startsWith("https") ? image[0] : "https://res.cloudinary.com/tractrac-global/image/upload/v1746446723/man-with-tractor_dxf5ly.svg"
+            }
+            alt="Tractor image"
+            height="100%"
+            width="100%"
+            objectFit="cover"
+          />
+        )}
         {distance && (
           <Box
             bgColor="#FA9411"
@@ -796,6 +852,95 @@ function TractorCard({
         )}
       </Box>
     </Box>
+
+      {/* Image Gallery Modal */}
+      {showImageGallery && Array.isArray(image) && image.length > 1 && (
+        <ChakraModal
+          isOpen={showImageGallery}
+          onClose={() => setShowImageGallery(false)}
+          size="xl"
+          isCentered
+        >
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>
+              <Flex justifyContent="space-between" alignItems="center">
+                <Text>{name} - Images</Text>
+                <Button
+                  size="sm"
+                  onClick={() => setShowImageGallery(false)}
+                  variant="ghost"
+                >
+                  ✕
+                </Button>
+              </Flex>
+            </ModalHeader>
+            <ModalBody pb={6}>
+              <Box position="relative" textAlign="center">
+                <Image
+                  src={
+                    image[currentImageIndex]?.startsWith("https") 
+                      ? image[currentImageIndex] 
+                      : "https://res.cloudinary.com/tractrac-global/image/upload/v1746446723/man-with-tractor_dxf5ly.svg"
+                  }
+                  alt={`Tractor image ${currentImageIndex + 1}`}
+                  maxH="400px"
+                  mx="auto"
+                  objectFit="contain"
+                />
+                
+                {image.length > 1 && (
+                  <>
+                    <Button
+                      position="absolute"
+                      left="2"
+                      top="50%"
+                      transform="translateY(-50%)"
+                      onClick={prevImage}
+                      size="sm"
+                      colorScheme="orange"
+                      variant="solid"
+                    >
+                      ‹
+                    </Button>
+                    <Button
+                      position="absolute"
+                      right="2"
+                      top="50%"
+                      transform="translateY(-50%)"
+                      onClick={nextImage}
+                      size="sm"
+                      colorScheme="orange"
+                      variant="solid"
+                    >
+                      ›
+                    </Button>
+                  </>
+                )}
+                
+                <Flex justifyContent="center" mt={4} gap={2}>
+                  {image.map((_, index) => (
+                    <Box
+                      key={index}
+                      w="8px"
+                      h="8px"
+                      borderRadius="full"
+                      bg={index === currentImageIndex ? "#FA9411" : "#E2E8F0"}
+                      cursor="pointer"
+                      onClick={() => setCurrentImageIndex(index)}
+                    />
+                  ))}
+                </Flex>
+                
+                <Text fontSize="sm" color="gray.600" mt={2}>
+                  {currentImageIndex + 1} of {image.length}
+                </Text>
+              </Box>
+            </ModalBody>
+          </ModalContent>
+        </ChakraModal>
+      )}
+    </>
   );
 }
 

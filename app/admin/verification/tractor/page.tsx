@@ -117,7 +117,7 @@ export default function PaymentPage() {
                     borderRadius="4px"
                     // src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446723/man-with-tractor_dxf5ly.svg"
                     src={
-                      result?.data?.data?.image?.startsWith("https")
+                      result?.data?.data?.image[0]?.startsWith("https")
                         ? result?.data.data.image
                         : "https://res.cloudinary.com/tractrac-global/image/upload/v1746446723/man-with-tractor_dxf5ly.svg"
                     }

@@ -142,7 +142,7 @@ export default function AssignSingleTractorPage() {
                     borderRadius="4px"
                     // src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446723/man-with-tractor_dxf5ly.svg"
                     src={
-                      resultData?.tractor?.tractor_image?.startsWith("https")
+                      resultData?.tractor?.tractor_image[0]?.startsWith("https")
                         ?  resultData?.tractor?.tractor_image
                         : "https://res.cloudinary.com/tractrac-global/image/upload/v1746446723/man-with-tractor_dxf5ly.svg"
                     }

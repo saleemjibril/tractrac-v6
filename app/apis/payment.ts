@@ -101,6 +101,70 @@ export const initialisePayment = async (
   return res;
 };
 
+export const initialiseTrackerPayment = async (
+  tractor_id: string,
+  invoice_number: string,
+  amount: number,
+  token: string
+) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  console.log({
+    tractor_id,
+    invoice_number,
+    amount,
+    payment_type: "card",
+  });
+
+  const res = await axios.post(
+    `${process.env.NEXT_PUBLIC_URL}/payments/tracker/initialize`,
+    {
+      tractor_id,
+      invoice_number,
+      amount,
+      payment_type: "card",
+    },
+    config
+  );
+
+  return res;
+};
+
+export const getTrackerInvoiceDetails = async (tractor_id: string, token: string) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const res = await axios.get(
+    `${process.env.NEXT_PUBLIC_URL}/payments/tracker/${tractor_id}/invoice`,
+    config
+  );
+
+  return res;
+  
+};
+
+export const verifyTrackerPayment = async (tractor_id: string, reference: string, token: string) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const res = await axios.get(
+    `${process.env.NEXT_PUBLIC_URL}/api/v1/tractors/${tractor_id}/confirm-payment?payment_reference=${reference}`,
+    config
+  );
+
+  return res;
+};
+
 export const getUserPayments = async (token: string) => {
   const config = {
     headers: {

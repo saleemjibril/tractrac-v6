@@ -51,6 +51,7 @@ import { usePlacesWidget } from "react-google-autocomplete";
 import Autocomplete from "react-google-autocomplete";
 import { createTractor } from "@/app/apis/tractor";
 import { getBanks, verifyBankAccount } from "@/app/apis/payment";
+import { tractorMediaUploadService } from "@/app/services/mediaUploadService";
 
 import { useFormikContext } from "formik";
 
@@ -93,6 +94,7 @@ const BankFieldsMonitor = ({ onAllBankFieldsFilled }) => {
 };
 
 const fileTypes = ["JPG", "PNG", "JPEG"];
+const videoTypes = ["MP4", "AVI", "MOV", "WMV"];
 
 // const DynamicHeader = dynamic(() => import('../components/Sidenav'), {
 //     loading: () => <p>Loading...</p>,
@@ -123,7 +125,8 @@ export default function BecomeAnAgent() {
     success: requestSuccessful,
   } = useAppSelector((state) => state.user);
 
-  const inputRef = useRef<any>();
+  const imageInputRef = useRef<any>();
+  const videoInputRef = useRef<any>();
 
   const [collaborate] = useCollaborateMutation();
 
@@ -144,20 +147,31 @@ export default function BecomeAnAgent() {
     return error;
   }
 
-  function validateImage(value: any) {
-    // alert('jjj')
-    // let error;
-    if (!value) {
-      setTractorImageError("This field is required");
+  function validateImages(value: any) {
+    if (!value || value.length === 0) {
+      setTractorImageError("At least one image is required");
+    } else if (value.length > 4) {
+      setTractorImageError("Maximum 4 images allowed");
     } else {
       setTractorImageError(null);
     }
-    // return error;
   }
 
-  const [file, setFile] = useState(null);
+  function validateVideo(value: any) {
+    // Video is optional, so no validation needed
+    return null;
+  }
+
+  function isAnyMediaUploading(values: any): boolean {
+    // Only check video uploads since images are handled as files
+    const videoUploading = values?.tractor_video?.uploading || false;
+    return videoUploading;
+  }
+
+  const [files, setFiles] = useState<File[]>([]);
+  const [videoFile, setVideoFile] = useState<File | null>(null);
   const handleChange = (file: any) => {
-    setFile(file);
+    setFiles([file]);
   };
 
   function snakeToCamelWithSpaces(str: string): string {
@@ -240,10 +254,10 @@ export default function BecomeAnAgent() {
               horsepower: "",
               chassis_vin: "",
               plate_number: "",
-              is_insured: "",
+              is_insured: false,
               insurance_company: "",
               insurance_expiry: "",
-              has_tracker: "",
+              has_tracker: false,
               tractor_type: "",
               implement_types: "",
               bank_account_name: "",
@@ -254,13 +268,20 @@ export default function BecomeAnAgent() {
               current_address: "",
               state: "",
               lga: "",
-              tractor_image_file: "",
+              tractor_image_files: [],
+              tractor_video: "",
               group_id: ""
             }}
             onSubmit={async (values: any, { resetForm }) => {
               setError(null);
 
-              if (values?.is_insured == "yes") {
+              // Check if any media is currently uploading
+              if (isAnyMediaUploading(values)) {
+                toast.error("Please wait for all media to finish uploading before submitting.");
+                return;
+              }
+
+              if (values?.is_insured == true) {
                 if (!values?.insurance_expiry) {
                   // if (!values?.insurance_company || !values?.insurance_expiry) {
                   toast.error(
@@ -275,45 +296,55 @@ export default function BecomeAnAgent() {
               try {
                 // alert('ss')
                 console.log(values);
-                const formData = new FormData();
-                formData.append("user_id", profileInfo?.id);
-                formData.append("brand", values?.brand);
-                formData.append("model", values?.model);
-                formData.append("address", values?.address);
-                formData.append("lga", values?.lga);
-                formData.append("state", values?.state);
-                formData.append("tractor_type", values?.tractor_type);
-                formData.append("implement_types", values?.implement_types);
-                formData.append("purchase_year", values?.purchase_year);
-                formData.append("plate_number", values?.plate_number);
-                formData.append("chasis_serial_vn", values?.chasis);
-                formData.append("rating", values?.rating);
-                formData.append("manufactured_year", values?.manufactured_year);
-                formData.append("insured", values?.insured);
-                formData.append("insurance_company", values?.insurance_company);
-                formData.append("tracker", values?.tracker);
-                formData.append("insurance_expiry", values?.insurance_expiry);
-                formData.append("image", values?.image);
-                formData.append("group_id", values?.group_id);
-                console.log("formData", formData);
+                // Prepare data for backend submission
+                const submissionData = {
+                  user_id: profileInfo?.id,
+                  brand: values?.brand,
+                  model: values?.model,
+                  address: values?.current_address,
+                  lga: values?.lga,
+                  state: values?.state,
+                  tractor_type: values?.tractor_type,
+                  implement_types: values?.implement_types,
+                  purchase_year: values?.purchase_year,
+                  plate_number: values?.plate_number,
+                  chasis_serial_vn: values?.chassis_vin,
+                  rating: values?.horsepower,
+                  manufactured_year: values?.year,
+                  is_insured: values?.is_insured,
+                  insurance_company: values?.insurance_company,
+                  has_tracker: values?.has_tracker,
+                  insurance_expiry: values?.insurance_expiry,
+                  // Images remain as files, video is Cloudinary URL
+                  tractor_images: values?.tractor_image_files || [],
+                  tractor_video: values?.tractor_video?.url || values?.tractor_video || "",
+                  group_id: values?.group_id,
+                  current_location_lat: values?.current_location_lat,
+                  current_location_lng: values?.current_location_lng,
+                  bank_account_type: values?.bank_account_type,
+                  bank: values?.bank,
+                  bank_account_number: values?.bank_account_number,
+                  bank_account_name: values?.bank_account_name,
+                };
+                
+                console.log("Submission data:", submissionData);
 
                 console.log("userToken", userToken);
                 if(!values?.current_location_lat || !values?.current_location_lng) {
                   toast.error("Please enter a valid location for your tractor")
                 }
 
-                const response = await createTractor(
-                  {...values
-                  },
-                  userToken as string
-                );
+                // const response = await createTractor(
+                //   submissionData,
+                //   userToken as string
+                // );
 
-                console.log("createTractor", response);
+                // console.log("createTractor", response);
 
-                toast.success("Enlisting successful");
-                setTimeout(() => {
-                  router.push("/dashboard");
-                }, 2000);
+                // toast.success("Enlisting successful");
+                // setTimeout(() => {
+                //   router.push("/dashboard");
+                // }, 2000);
 
                 // dispatch(enlistTractor(formData));
 
@@ -704,13 +735,18 @@ export default function BecomeAnAgent() {
                         </FormLabel>
                         <Select
                           {...field}
+                          onChange={(e) => {
+                            const boolValue = e.target.value === "true";
+                            form.setFieldValue(field.name, boolValue);
+                          }}
+                          value={field.value?.toString()}
                           bgColor="#3232320D"
                           placeholder="Select"
                           fontSize="12px"
                           color="#323232"
                         >
-                          <option value="yes">Yes</option>
-                          <option value="no">No</option>
+                          <option value="true">Yes</option>
+                          <option value="false">No</option>
                         </Select>
                         <FormErrorMessage>
                           {form.errors.is_insured}
@@ -799,13 +835,18 @@ export default function BecomeAnAgent() {
                         </FormLabel>
                         <Select
                           {...field}
+                          onChange={(e) => {
+                            const boolValue = e.target.value === "true";
+                            form.setFieldValue(field.name, boolValue);
+                          }}
+                          value={field.value?.toString()}
                           bgColor="#3232320D"
                           placeholder="Select"
                           fontSize="12px"
                           color="#323232"
                         >
-                          <option value="yes">Yes</option>
-                          <option value="no">No</option>
+                          <option value="true">Yes</option>
+                          <option value="false">No</option>
                         </Select>
                         <FormErrorMessage>
                           {form.errors.has_tracker}
@@ -1264,107 +1305,146 @@ export default function BecomeAnAgent() {
                 {/* </Flex> */}
 
                 <Flex 
-                 direction={{ base: "column", md: "row" }}
-                 columnGap={{ base: "0", md: "30px" }}
-                 rowGap={{ base: "20px", md: "0" }}
+                 direction={"column"}
+                 columnGap={"30px"}
+                 rowGap={"20px"}
                  my="30px"
                  width="100%"
                 >
                   <Field
-                    name="tractor_image_file"
-                    validate={(e: any) => validateImage(e)}
+                    name="tractor_image_files"
+                    validate={(e: any) => validateImages(e)}
                   >
                     {({ field, form }: { [x: string]: any }) => (
                       <FormControl
                         isInvalid={
-                          form.errors.tractor_image_file &&
-                          form.touched.tractor_image_file
+                          form.errors.tractor_image_files &&
+                          form.touched.tractor_image_files
                         }
                         isRequired
                         width="100%"
                       >
                         <InputGroup>
-                          {/*<InputLeftElement
-                          pointerEvents="none"
-                          children={
-                            <>
-                             
-                            </>
-                          }
-                        /> */}
                           <input
                             type="file"
-                            // accept={["png", "jpg"]}
-                            //   name={name}
-                            ref={inputRef}
+                            multiple
+                            accept="image/*"
+                            ref={imageInputRef}
                             onChange={(event) => {
-                              const files = event?.currentTarget?.files;
-                              if (files) {
-                                const file = files[0];
-                                if (file.size > MAX_IMAGE_SIZE_BYTES) {
-                                  toast.error(
-                                    "Image size exceeds the maximum allowed size (2MB). Please select a smaller image."
-                                  );
+                              const selectedFiles = event?.currentTarget?.files;
+                              if (selectedFiles) {
+                                const fileArray = Array.from(selectedFiles);
+                                
+                                // Check if more than 4 files are selected
+                                if (fileArray.length > 4) {
+                                  toast.error("Maximum 4 images allowed");
                                   return;
                                 }
-                                form.setFieldValue(field.name, file);
+                                
+                                // Check file sizes
+                                for (const file of fileArray) {
+                                  if (file.size > MAX_IMAGE_SIZE_BYTES) {
+                                    toast.error(
+                                      `${file.name} exceeds the maximum allowed size (2MB). Please select a smaller image.`
+                                    );
+                                    return;
+                                  }
+                                }
+                                
+                                // Get current files and add new ones
+                                const currentFiles = field.value || [];
+                                const newFiles = [...currentFiles, ...fileArray];
+                                
+                                // Ensure we don't exceed 4 files total
+                                if (newFiles.length > 4) {
+                                  toast.error("Maximum 4 images allowed");
+                                  return;
+                                }
+                                
+                                form.setFieldValue(field.name, newFiles);
                               }
                             }}
-                            // {...field}
                             style={{ display: "none" }}
                           ></input>
                           <Box
-                            onClick={() => inputRef.current?.click()}
+                            onClick={() => imageInputRef.current?.click()}
                             borderWidth="1px"
                             borderColor="#929292"
                             borderRightWidth="0.5px"
                             borderRadius={0}
                             width="100%"
-                            py={field.value ? "0px" : "8px"}
+                            py={field.value && field.value.length > 0 ? "0px" : "8px"}
                             px="12px"
-                            // overflow="hidden"
-                            // height="50px"
                           >
-                            {field.value ? (
-                              <Flex
-                                justifyContent="center"
-                                alignItems="center"
-                                alignContent="center"
-                                my="4px"
-                                columnGap="10px"
-                                
-                              >
-                                {/* <FiFile color="#FA9411" /> */}
-                                <Icon
-                                  as={FiFile}
-                                  boxSize="20px"
-                                  color="#FA9411"
-                                />
-
-                                <Stack alignItems="start" gap="2px">
-                                  <Text
-                                    // lineHeight="20px"
-                                    color="#929292"
-                                    fontSize="13px"
-                                    fontWeight={400}
-                                    // maxW="200px"
-                                    // textOverflow="ellipsis"
-                                    // wordBreak="break-word"
+                            {field.value && field.value.length > 0 ? (
+                              <Stack spacing="2" my="4px">
+                                <Text fontSize="12px" color="#323232" fontWeight={600}>
+                                  Selected Images ({field.value.length}/4):
+                                </Text>
+                                {field.value.map((file: File, index: number) => (
+                                  <Flex
+                                    key={index}
+                                    justifyContent="space-between"
+                                    alignItems="center"
+                                    columnGap="10px"
+                                    p="2"
+                                    border="1px solid #E2E8F0"
+                                    borderRadius="md"
                                   >
-                                    {field.value?.name}
-                                  </Text>
-                                  <Text
-                                    color="#929292"
-                                    fontSize="12px"
-                                    fontWeight={400}
-                                  >
-                                    {(
-                                      parseFloat(field.value?.size) / 1000
-                                    ).toFixed(2)}{" "}
-                                    KB
-                                  </Text>
-                                </Stack>
-                              </Flex>
+                                    <Flex alignItems="center" columnGap="10px">
+                                      <Box
+                                        width="40px"
+                                        height="40px"
+                                        borderRadius="md"
+                                        overflow="hidden"
+                                        bg="gray.100"
+                                        display="flex"
+                                        alignItems="center"
+                                        justifyContent="center"
+                                      >
+                                        <Image
+                                          src={URL.createObjectURL(file)}
+                                          alt={`Preview ${index + 1}`}
+                                          width="100%"
+                                          height="100%"
+                                          objectFit="cover"
+                                        />
+                                      </Box>
+                                      <Stack alignItems="start" gap="2px">
+                                        <Text
+                                          color="#323232"
+                                          fontSize="13px"
+                                          fontWeight={500}
+                                          maxW="200px"
+                                          textOverflow="ellipsis"
+                                          whiteSpace="nowrap"
+                                        >
+                                          {file.name}
+                                        </Text>
+                                        <Text
+                                          color="#929292"
+                                          fontSize="12px"
+                                          fontWeight={400}
+                                        >
+                                          {(parseFloat(file.size.toString()) / 1000).toFixed(2)} KB
+                                        </Text>
+                                      </Stack>
+                                    </Flex>
+                                    <Button
+                                      size="sm"
+                                      colorScheme="red"
+                                      variant="ghost"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        const newFiles = field.value.filter((_: File, i: number) => i !== index);
+                                        form.setFieldValue(field.name, newFiles);
+                                      }}
+                                    >
+                                      Remove
+                                    </Button>
+                                  </Flex>
+                                ))}
+                              </Stack>
                             ) : (
                               <Flex
                                 justifyContent="center"
@@ -1372,16 +1452,59 @@ export default function BecomeAnAgent() {
                                 alignContent="center"
                               >
                                 <FiUpload color="#FA9411" />
-
                                 <Text
                                   ml="8px"
                                   color="#929292"
                                   fontSize="16px"
                                   fontWeight={400}
                                 >
-                                  Tractor Image
+                                  Tractor Images (Max 4)
                                 </Text>
+                                {field.value && field.value.length > 0 && (
+                                  <Text
+                                    ml="8px"
+                                    color="#FA9411"
+                                    fontSize="14px"
+                                    fontWeight={600}
+                                  >
+                                    ({field.value.length}/4)
+                                  </Text>
+                                )}
                               </Flex>
+                            )}
+                            
+                            {/* Show "Add More Images" button if there are already some images */}
+                            {field.value && field.value.length > 0 && field.value.length < 4 && (
+                              <Button
+                                size="sm"
+                                colorScheme="blue"
+                                variant="ghost"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  imageInputRef.current?.click();
+                                }}
+                                mt="2"
+                                width="100%"
+                              >
+                                Add More Images ({field.value.length}/4)
+                              </Button>
+                            )}
+                            
+                            {/* Show "Clear All" button if there are images */}
+                            {field.value && field.value.length > 0 && (
+                              <Button
+                                size="sm"
+                                colorScheme="red"
+                                variant="ghost"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  form.setFieldValue(field.name, []);
+                                }}
+                                mt="2"
+                                width="100%"
+                              >
+                                Clear All Images
+                              </Button>
                             )}
                           </Box>
                         </InputGroup>
@@ -1390,6 +1513,156 @@ export default function BecomeAnAgent() {
                             {tractorImageError}
                           </Text>
                         )}
+                      </FormControl>
+                    )}
+                  </Field>
+
+                  <Field
+                    name="tractor_video"
+                    validate={(e: any) => validateVideo(e)}
+                  >
+                    {({ field, form }: { [x: string]: any }) => (
+                      <FormControl
+                        isInvalid={
+                          form.errors.tractor_video &&
+                          form.touched.tractor_video
+                        }
+                        width="100%"
+                      >
+                        <FormLabel fontSize="12px" color="#323232">
+                          Tractor Video (Optional)
+                        </FormLabel>
+                        <InputGroup>
+                          <input
+                            type="file"
+                            accept="video/*"
+                            onChange={async (event) => {
+                              const selectedFile = event?.currentTarget?.files?.[0];
+                              if (selectedFile) {
+                                // Check file size (10MB max for video)
+                                const MAX_VIDEO_SIZE_BYTES = 10 * 1024 * 1024;
+                                if (selectedFile.size > MAX_VIDEO_SIZE_BYTES) {
+                                  toast.error(
+                                    "Video size exceeds the maximum allowed size (10MB). Please select a smaller video."
+                                  );
+                                  return;
+                                }
+                                
+                                // Show loading state
+                                form.setFieldValue(field.name, { ...selectedFile, uploading: true });
+                                
+                                try {
+                                  // Upload video to Cloudinary using the service
+                                  const uploadedVideo = await tractorMediaUploadService.uploadSingleVideo(selectedFile);
+                                  
+                                  if (uploadedVideo) {
+                                    // Store the Cloudinary URL instead of the file
+                                    form.setFieldValue(field.name, {
+                                      ...uploadedVideo,
+                                      originalFile: selectedFile
+                                    });
+                                    toast.success("Video uploaded successfully!");
+                                  } else {
+                                    toast.error("Failed to upload video. Please try again.");
+                                    form.setFieldValue(field.name, "");
+                                  }
+                                } catch (error) {
+                                  console.error("Error uploading video:", error);
+                                  toast.error("Error uploading video. Please try again.");
+                                  form.setFieldValue(field.name, "");
+                                }
+                              }
+                            }}
+                            style={{ display: "none" }}
+                            ref={videoInputRef}
+                          ></input>
+                          <Box
+                            onClick={() => videoInputRef.current?.click()}
+                            borderWidth="1px"
+                            borderColor="#929292"
+                            borderRightWidth="0.5px"
+                            borderRadius={0}
+                            width="100%"
+                            py={field.value ? "0px" : "8px"}
+                            px="12px"
+                          >
+                            {field.value ? (
+                              <Flex
+                                justifyContent="space-between"
+                                alignItems="center"
+                                columnGap="10px"
+                              >
+                                <Flex alignItems="center" columnGap="10px">
+                                  <Icon
+                                    as={FiFile}
+                                    boxSize="20px"
+                                    color="#FA9411"
+                                  />
+                                  <Stack alignItems="start" gap="2px">
+                                    <Text
+                                      color="#929292"
+                                      fontSize="13px"
+                                      fontWeight={400}
+                                      maxW="200px"
+                                      textOverflow="ellipsis"
+                                      whiteSpace="nowrap"
+                                    >
+                                      {field.value.fileName || field.value.name || "Video file"}
+                                    </Text>
+                                    <Text
+                                      color="#929292"
+                                      fontSize="12px"
+                                      fontWeight={400}
+                                    >
+                                      {field.value.fileSize || 
+                                        (field.value.size ? 
+                                          (parseFloat(field.value.size.toString()) / (1024 * 1024)).toFixed(2) + " MB" : 
+                                          "Unknown size"
+                                        )
+                                      }
+                                    </Text>
+                                    {field.value.uploading && (
+                                      <Text
+                                        color="#FA9411"
+                                        fontSize="12px"
+                                        fontWeight={500}
+                                      >
+                                        Uploading...
+                                      </Text>
+                                    )}
+                                  </Stack>
+                                </Flex>
+                                <Button
+                                  size="sm"
+                                  colorScheme="red"
+                                  variant="ghost"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    form.setFieldValue(field.name, "");
+                                  }}
+                                >
+                                  Remove
+                                </Button>
+                              </Flex>
+                            ) : (
+                              <Flex
+                                justifyContent="center"
+                                alignItems="center"
+                                alignContent="center"
+                              >
+                                <FiUpload color="#FA9411" />
+                                <Text
+                                  ml="8px"
+                                  color="#929292"
+                                  fontSize="16px"
+                                  fontWeight={400}
+                                >
+                                  Tractor Video (Optional)
+                                </Text>
+                              </Flex>
+                            )}
+                          </Box>
+                        </InputGroup>
                       </FormControl>
                     )}
                   </Field>
@@ -1404,7 +1677,8 @@ export default function BecomeAnAgent() {
                     // mb="16px"
                     // mt="40px"
                     minH="40px"
-                    isLoading={props.isSubmitting || loading}
+                    isLoading={props.isSubmitting || loading || 
+                      props.values?.tractor_video?.uploading}
                     isDisabled={success}
                     type="submit"
                     _disabled={{
