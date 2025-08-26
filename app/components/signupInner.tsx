@@ -242,7 +242,7 @@ export default function SignupInner() {
                         "user_data",
                         JSON.stringify({
                           ...values,
-                          phone: phoneNumber,
+                          phone: parsePhoneNumber,
                           gender,
                           id: response?.data?.id
                         })
