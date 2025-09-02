@@ -332,7 +332,7 @@ export default function BlogPostDetail({ post }: BlogPostDetailProps) {
                       <Text fontSize="20px" fontWeight="bold" color="#213343">
                         {post?.author?.node?.name}
                       </Text>
-                      <Box
+                      {!!post?.author?.node?.description && <Box
                         fontSize="16px"
                         color="#555"
                         mt="5px"
@@ -342,7 +342,7 @@ export default function BlogPostDetail({ post }: BlogPostDetailProps) {
                             post?.author?.node?.description?.replace(/\r\n/g, "<br />")
                           ),
                         }}
-                      />
+                      />}
                     </Box>
                   </Stack>
                 </Box>
