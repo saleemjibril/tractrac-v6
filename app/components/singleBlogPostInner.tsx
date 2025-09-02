@@ -98,21 +98,21 @@ export default function BlogPostDetail({ post }: BlogPostDetailProps) {
 
   useEffect(() => {
     const fetchRelatedPosts = async () => {
-      const posts = await relatedBlogs(post.id);
+      const posts = await relatedBlogs(post?.id);
       setRelatedPosts(posts);
     };
 
     fetchRelatedPosts();
-  }, [post.id]);
+  }, [post?.id]);
 
   useEffect(() => {
     if (post?.content) {
-      const cleaned = cleanHtmlContent(post.content);
+      const cleaned = cleanHtmlContent(post?.content);
       setCleanedContent(cleaned);
     }
   }, [post?.content]);
 
-  const formattedDate = new Date(post.modified).toLocaleDateString("en-US", {
+  const formattedDate = new Date(post?.modified).toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",
@@ -130,13 +130,13 @@ export default function BlogPostDetail({ post }: BlogPostDetailProps) {
           px={{ base: "20px", md: "0px" }}
           display="flex"
           flexDirection={{ base: "column", md: "row" }}
-          justifyContent={post.toc && post.toc.length > 0 ? "flex-start" : "center"} // Center content if TOC is empty
+          justifyContent={post?.toc && post?.toc?.length > 0 ? "flex-start" : "center"} // Center content if TOC is empty
         >
           {/* Main Content */}
           <Box
             flex={{ base: "1", md: "0 0 70%" }} // 70% width on tablets
             width={{ base: "100%", md: "70%" }}
-            pr={post.toc && post.toc.length > 0 ? { base: "0px", md: "100px" } : "0px"} // Set padding-right to 0 when TOC is empty
+            pr={post?.toc && post?.toc?.length > 0 ? { base: "0px", md: "100px" } : "0px"} // Set padding-right to 0 when TOC is empty
           >
             {!post ? (
               <>
@@ -322,15 +322,15 @@ export default function BlogPostDetail({ post }: BlogPostDetailProps) {
                     spacing="20px"
                   >
                     <Image
-                      src={post.author.node.avatar.url}
-                      alt={`${post.author.node.name}'s avatar`}
+                      src={post?.author?.node?.avatar?.url}
+                      alt={`${post?.author?.node?.name}'s avatar`}
                       borderRadius="full"
                       boxSize="100px"
                       objectFit="cover"
                     />
                     <Box>
                       <Text fontSize="20px" fontWeight="bold" color="#213343">
-                        {post.author.node.name}
+                        {post?.author?.node?.name}
                       </Text>
                       <Box
                         fontSize="16px"
@@ -339,7 +339,7 @@ export default function BlogPostDetail({ post }: BlogPostDetailProps) {
                         lineHeight="1.5"
                         dangerouslySetInnerHTML={{
                           __html: decodeHtmlEntities(
-                            post.author.node.description.replace(/\r\n/g, "<br />")
+                            post?.author?.node?.description?.replace(/\r\n/g, "<br />")
                           ),
                         }}
                       />
@@ -351,7 +351,7 @@ export default function BlogPostDetail({ post }: BlogPostDetailProps) {
           </Box>
 
           {/* Table of Contents */}
-          {post.toc && post.toc.length > 0 && (
+          {post?.toc && post?.toc?.length > 0 && (
             <Box
               flex={{ base: "0", md: "0 0 30%" }} // 30% width on tablets
               width={{ base: "100%", md: "30%" }}
@@ -367,7 +367,7 @@ export default function BlogPostDetail({ post }: BlogPostDetailProps) {
               <Text fontWeight="bold" fontSize="18px" mb="10px">
                 In this Article
               </Text>
-              {post.toc.map((item) => (
+              {post?.toc?.map((item) => (
                 <Flex
                   key={item.id}
                   align="center"
