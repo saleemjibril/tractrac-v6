@@ -47,6 +47,8 @@ export default function Payments() {
     try {
       // TODO: Replace with a function that specifically gets tracker payments if available.
       const response = await getUserPayments(userToken as string);
+      console.log("getUserPayments", response);
+      
       // Filter for tracker payments if the general getUserPayments is used
       const trackerPayments = response.data.filter(
         (payment: any) => payment.type === 'tracker'

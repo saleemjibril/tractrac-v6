@@ -2083,10 +2083,10 @@ const implementTypes = [
     value: "harrow",
     // colorScheme: "red", // This is allowed because of the key in the `OptionBase` type
   },
-  {
-    label: "Plow",
-    value: "plow",
-  },
+  // {
+  //   label: "Plow",
+  //   value: "plow",
+  // },
   {
     label: "Ridger",
     value: "ridger",

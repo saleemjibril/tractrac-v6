@@ -19,7 +19,7 @@ import { createElement, Dispatch, SetStateAction, useState } from "react";
 import { AddIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 import { useMakePaymentMutation } from "@/redux/services/userApi";
 import { useAppSelector } from "@/redux/hooks";
-import { getTrackerInvoiceDetails, initialiseTrackerPayment, verifyTrackerPayment } from "@/app/apis/payment";
+import { getTrackerInvoiceDetails, initialiseTrackerPayment, initializeTrackerPayment, verifyTrackerPayment } from "@/app/apis/payment";
 import { toast } from "react-toastify";
 import { usePaystackPayment } from "react-paystack";
 import dynamic from 'next/dynamic';
@@ -41,21 +41,18 @@ export default function Pay() {
   const { userToken } = useAppSelector((state) => state.auth);
 
   const [invoice, setInvoice] = useState("");
+  const [tractorId, setTractorId] = useState("");
 
   const handleGetInvoiceDetails = async () => {
     try {
       setIsLoading(true);
       setError(null);
-      const response = await getTrackerInvoiceDetails(invoice, userToken as string);
+      const response = await initializeTrackerPayment(invoice, tractorId, userToken as string);
       console.log("getTrackerInvoiceDetails", response);
 
-      setData(response?.data);
-      // if (response?.status == "success") {
-      // } else {
-      //   setError(
-      //     response?.message || "An unknown error occured, try again!"
-      //   );
-      // }
+         if (typeof window !== 'undefined') {
+      window.open(response?.data.authorization_url);
+    }
     } catch (err) {
       const error = err as any;
       toast.error(
@@ -74,6 +71,7 @@ export default function Pay() {
           onClickFunction={handleGetInvoiceDetails}
           setData={setData}
           setInvoice={setInvoice}
+          setTractorId={setTractorId}
           error={error}
           isLoading={isLoading}
         />
@@ -88,6 +86,7 @@ function EnterInvoice({
   onClickFunction,
   setData,
   setInvoice,
+  setTractorId,
   error,
   isLoading,
 }: {
@@ -130,6 +129,18 @@ function EnterInvoice({
             borderBottom="1px"
             borderBottomColor="#000000"
             onChange={(e) => setInvoice(e.target.value)}
+            textAlign={"center"}
+            mb={"14px"}
+          />
+        <Text color="#00000090" fontWeight={600} mt="12px">
+          Enter Tractor Id
+        </Text>
+          <Input
+            mt="0"
+            variant="flushed"
+            borderBottom="1px"
+            borderBottomColor="#000000"
+            onChange={(e) => setTractorId(e.target.value)}
             textAlign={"center"}
           />
         </Box>

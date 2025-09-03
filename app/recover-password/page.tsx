@@ -143,10 +143,12 @@ function SendOtpComponent({
       initialValues={{ phone: "" }}
       onSubmit={async (values: any, actions) => {
         try {
-          const response = await forgotPassword(values?.phone?.toString());
+          let parsePhoneNumber = values?.phone.startsWith("0") ? values?.phone : "0" + values?.phone;
+
+          const response = await forgotPassword(parsePhoneNumber);
           // if (response.status && response.status == "success") {
           setPasswordResetVisibility(false);
-          setPhoneNumber(values?.phone?.toString());
+          setPhoneNumber(parsePhoneNumber);
           setUserId(response?.data?.user_id);
           toast.success("OTP sent successfully");
           // router.replace("/login");
@@ -221,7 +223,7 @@ function SendOtpComponent({
                                              {...field}
                                              // placeholder="Enter your phone number"
                                              bgColor="#3232320D"
-                                             type="number"
+                                            //  type="number"
                                            />
                                          </InputGroup>
              

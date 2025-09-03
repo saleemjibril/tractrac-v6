@@ -149,6 +149,28 @@ export const getTrackerInvoiceDetails = async (tractor_id: string, token: string
   return res;
   
 };
+export const initializeTrackerPayment = async (invoice_number: string, tractor_id: string, token: string) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const res = await axios.post(
+    `${process.env.NEXT_PUBLIC_URL}/payments/initialize`,
+    {
+      tractor_id,
+      payment_type: "tracker_installation",
+      invoice_number,
+      amount: 150000, // This is a fixed amount for tracker payment
+
+    },
+    config
+  );
+
+  return res;
+  
+};
 
 export const verifyTrackerPayment = async (tractor_id: string, reference: string, token: string) => {
   const config = {

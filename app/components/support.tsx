@@ -48,6 +48,11 @@ export default function SupportWidget() {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   console.log("profileInfo?.id", profileInfo);
   const fileInputRef = useRef(null);
@@ -302,6 +307,7 @@ export default function SupportWidget() {
   };
 
   return (
+    isClient &&
     userToken && (
       <div className="support">
           <div

@@ -73,6 +73,23 @@ export const getTractors = async (token: string) => {
 
   return res;
 };
+
+
+export const getTractor = async (id: string, token: string) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const res = await axios.get(
+    `${process.env.NEXT_PUBLIC_URL}/tractors/${id}`,
+    config
+  );
+
+  return res;
+};
+
 export const getApprovedTractors = async (token: string) => {
   const config = {
     headers: {

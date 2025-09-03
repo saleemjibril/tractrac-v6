@@ -257,7 +257,7 @@ export default function BecomeAnAgent() {
               is_insured: false,
               insurance_company: "",
               insurance_expiry: "",
-              has_tracker: false,
+              // has_tracker: false,
               tractor_type: "",
               implement_types: "",
               bank_account_name: "",
@@ -298,25 +298,26 @@ export default function BecomeAnAgent() {
                 console.log(values);
                 // Prepare data for backend submission
                 const submissionData = {
+                  name: values?.name,
                   user_id: profileInfo?.id,
                   brand: values?.brand,
                   model: values?.model,
-                  address: values?.current_address,
+                  current_address: values?.current_address,
                   lga: values?.lga,
                   state: values?.state,
                   tractor_type: values?.tractor_type,
                   implement_types: values?.implement_types,
                   purchase_year: values?.purchase_year,
                   plate_number: values?.plate_number,
-                  chasis_serial_vn: values?.chassis_vin,
-                  rating: values?.horsepower,
-                  manufactured_year: values?.year,
+                  chassis_vin: values?.chassis_vin,
+                  horsepower: values?.horsepower,
+                  year: values?.year,
                   is_insured: values?.is_insured,
                   insurance_company: values?.insurance_company,
-                  has_tracker: values?.has_tracker,
+                  has_tracker: false,
                   insurance_expiry: values?.insurance_expiry,
                   // Images remain as files, video is Cloudinary URL
-                  tractor_images: values?.tractor_image_files || [],
+                  tractor_image_files: values?.tractor_image_files || [],
                   tractor_video: values?.tractor_video?.url || values?.tractor_video || "",
                   group_id: values?.group_id,
                   current_location_lat: values?.current_location_lat,
@@ -334,17 +335,17 @@ export default function BecomeAnAgent() {
                   toast.error("Please enter a valid location for your tractor")
                 }
 
-                // const response = await createTractor(
-                //   submissionData,
-                //   userToken as string
-                // );
+                const response = await createTractor(
+                  submissionData,
+                  userToken as string
+                );
 
-                // console.log("createTractor", response);
+                console.log("createTractor", response);
 
-                // toast.success("Enlisting successful");
-                // setTimeout(() => {
-                //   router.push("/dashboard");
-                // }, 2000);
+                toast.success("Enlisting successful");
+                setTimeout(() => {
+                  router.push("/dashboard");
+                }, 2000);
 
                 // dispatch(enlistTractor(formData));
 
@@ -605,22 +606,19 @@ export default function BecomeAnAgent() {
                         <FormLabel fontSize="12px" color="#323232">
                           Purchase year
                         </FormLabel>
-                        <Input
+                        <Select
                           {...field}
                           bgColor="#3232320D"
                           placeholder="Select year"
                           fontSize="12px"
                           color="#323232"
-                          type="date"
-                        />
-                        {/* <Select
-                          bgColor="#3232320D"
-                          placeholder="Select year"
-                          fontSize="12px"
-                          color="#323232"
                         >
-                          <option value="trc1">Year one</option>
-                        </Select> */}
+                          {years.map((year) => (
+                            <option key={year} value={year}>
+                              {year}
+                            </option>
+                          ))}
+                        </Select>
                         <FormErrorMessage>
                           {form.errors.purchase_year}
                         </FormErrorMessage>
@@ -822,7 +820,7 @@ export default function BecomeAnAgent() {
   rowGap={{ base: "20px", md: "0" }}
   mt="20px"
   width="100%">
-                  <Field name="has_tracker" validate={validateEmpty}>
+                  {/* <Field name="has_tracker" validate={validateEmpty}>
                     {({ field, form }: { [x: string]: any }) => (
                       <FormControl
                         isInvalid={
@@ -853,7 +851,7 @@ export default function BecomeAnAgent() {
                         </FormErrorMessage>
                       </FormControl>
                     )}
-                  </Field>
+                  </Field> */}
 
                   <Field name="state" validate={validateEmpty}>
                     {({ field, form }: { [x: string]: any }) => (
@@ -1802,10 +1800,10 @@ const implementTypes = [
     value: "harrow",
     // colorScheme: "red", // This is allowed because of the key in the `OptionBase` type
   },
-  {
-    label: "Plow",
-    value: "plow",
-  },
+  // {
+  //   label: "Plow",
+  //   value: "plow",
+  // },
   {
     label: "Ridger",
     value: "ridger",

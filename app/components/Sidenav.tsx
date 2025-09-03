@@ -267,8 +267,8 @@ const NavItem = ({
         cursor="pointer"
         gap="6px"
         alignItems="end"
-        color={`${pathname.startsWith(path) ? "white" : "#828282"}`}
-        bg={`${pathname.startsWith(path) ? "#FA9411" : "transparent"}`}
+        color={`${pathname == path  ? "white" : "#828282"}`}
+        bg={`${pathname == path ? "#FA9411" : "transparent"}`}
         _hover={{
           bg: "#FA9411",
           // bg: "#FA941122",

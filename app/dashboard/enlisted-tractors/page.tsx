@@ -27,15 +27,9 @@ import PersonalOverview from "@/app/components/PersonalOverview";
 import { useGetEnlistedTractorsQuery } from "@/redux/services/tractorApi";
 import { useAppSelector } from "@/redux/hooks";
 import { getMyTractors, getTractors } from "@/app/apis/tractor";
+import TractorCard from "@/app/components/TractorCard";
 
-interface ITractorCard {
-  name: string;
-  capacity: string;
-  type: string;
-  location: string;
-  status: string;
-  image: string;
-}
+
 
 const statusTypes: Record<string, { title: string; color: string }> = {
   pending: { title: "Pending", color: "#FA9411" },
@@ -181,12 +175,14 @@ export default function EnlistedTractors() {
             {tractors?.map((tractor: any) => (
               <TractorCard
                 key={tractor?.id}
-                name={`${tractor?.name}`}
-                capacity=" 105 to 135 HP"
-                type={tractor?.tractor_type}
-                location={tractor?.address}
-                image={tractor?.tractor_image}
-                status={tractor?.status}
+                  id={tractor?.id}
+                  name={`${tractor?.name}`}
+                  capacity={tractor?.horsepower}
+                  brand={tractor?.brand}
+                  type={tractor?.tractor_type}
+                  location={`${tractor?.lga},${tractor?.state}`}
+                  image={tractor?.tractor_image}
+                  status={tractor?.status}
               />
             ))}
           </SimpleGrid>
@@ -263,80 +259,7 @@ export default function EnlistedTractors() {
   );
 }
 
-function TractorCard({ name, type, location, status, image }: ITractorCard) {
-  return (
-    <Box boxShadow="md" borderRadius="4px">
-      <Box h="200px">
-        <Image
-          borderTopRadius="4px"
-          // src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446723/man-with-tractor_dxf5ly.svg"
-          src={
-            image?.startsWith("https") ? image : "https://res.cloudinary.com/tractrac-global/image/upload/v1746446723/man-with-tractor_dxf5ly.svg"
-          }
-          alt="Man with a tractor image"
-          height="100%"
-          width="100%"
-          objectFit="cover"
-        />
-      </Box>
 
-      <Box p="12px" bgColor="white">
-        <Text
-          fontSize="13px"
-          color="#FA9411"
-          fontWeight={500}
-          lineHeight="14.52px"
-        >
-          {name}
-        </Text>
-        <Text
-          fontSize="12px"
-          color="#323232"
-          fontWeight={700}
-          mt="8px"
-          lineHeight="12.1px"
-        >
-          Type:{" "}
-          <Box fontWeight={500} as="span">
-            {type}
-          </Box>
-        </Text>
-        {/* <Text
-          fontSize="12px"
-          color="#323232"
-          fontWeight={700}
-          mt="8px"
-          lineHeight="12.1px"
-        >
-          Capacity:
-          <Box fontWeight={500} as="span">
-            {capacity}
-          </Box>
-        </Text> */}
-        <Text fontSize="12px" color="#323232" fontWeight={700} mt="8px">
-          Location:{" "}
-          <Box fontWeight={500} as="span">
-            {location?.length < 1 ? "Nil" : location}
-          </Box>
-        </Text>
-        {statusTypes[status]?.color && (
-          <Box
-            mt="10px"
-            bgColor={statusTypes[status].color}
-            py="2px"
-            textAlign="center"
-            borderRadius="4px"
-            w="111px"
-          >
-            <Text fontSize="14px" color="white">
-              {statusTypes[status].title}
-            </Text>
-          </Box>
-        )}
-      </Box>
-    </Box>
-  );
-}
 
 function EmptyTractorsPlaceholder() {
   return (
