@@ -1804,18 +1804,18 @@ const implementTypes = [
   //   label: "Plow",
   //   value: "plow",
   // },
-  {
-    label: "Ridger",
-    value: "ridger",
-  },
-  {
-    label: "Harvester",
-    value: "harvester",
-  },
-  {
-    label: "Seeder",
-    value: "seeder",
-  },
+  // {
+  //   label: "Ridger",
+  //   value: "ridger",
+  // },
+  // {
+  //   label: "Harvester",
+  //   value: "harvester",
+  // },
+  // {
+  //   label: "Seeder",
+  //   value: "seeder",
+  // },
   {
     label: "Plough",
     value: "plough",
@@ -1825,9 +1825,13 @@ const implementTypes = [
     value: "planter",
   },
   {
-    label: "Sprayer",
-    value: "sprayer",
-  },
+    label: "Farm Carrier",
+    value: "farm_carrier",
+  }
+  // {
+  //   label: "Sprayer",
+  //   value: "sprayer",
+  // },
   // ,
   // {
   //   label: "Other",
