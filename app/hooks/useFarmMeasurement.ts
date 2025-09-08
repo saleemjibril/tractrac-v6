@@ -29,7 +29,7 @@ export const useFarmMeasurement = () => {
           position.latitude,
           position.longitude
         );
-        if (distance < 2) return prev; // Skip if too close
+        if (distance < 1) return prev; // Skip if too close
       }
 
       return [...prev, position];
@@ -93,8 +93,17 @@ export const useFarmMeasurement = () => {
       // Reload saved paths after sync
       const paths = JSON.parse(localStorage.getItem('farmPaths') || '[]');
       setSavedPaths(paths);
+      
+      // Show success message if there were paths to sync
+      if (paths.length === 0) {
+        alert('All measurements have been synced successfully!');
+      }
     } catch (error) {
       console.error('Failed to sync offline measurements:', error);
+      
+      // Show user-friendly error message
+      const errorMessage = error instanceof Error ? error.message : 'Failed to sync measurements. Please try again later.';
+      alert(errorMessage);
     }
   }, [measurementService]);
 

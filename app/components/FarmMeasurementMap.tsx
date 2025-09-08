@@ -84,7 +84,7 @@ export const FarmMeasurementMap: React.FC<FarmMeasurementMapProps> = ({
         icon: {
           path: google.maps.SymbolPath.CIRCLE,
           scale: 8,
-          fillColor: '#4285F4',
+          fillColor: '#FA9411',
           fillOpacity: 1,
           strokeColor: '#ffffff',
           strokeWeight: 2,
@@ -134,7 +134,7 @@ export const FarmMeasurementMap: React.FC<FarmMeasurementMapProps> = ({
       const newPath = new google.maps.Polyline({
         path: pathCoordinates,
         geodesic: true,
-        strokeColor: '#FF0000',
+        strokeColor: '#FA9411',
         strokeOpacity: 1.0,
         strokeWeight: 4,
       });
@@ -288,7 +288,10 @@ export const FarmMeasurementMap: React.FC<FarmMeasurementMapProps> = ({
           <button
             onClick={handleStartMeasurement}
             disabled={!position}
-            className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white px-6 py-3 rounded-lg font-semibold shadow-lg transition-colors"
+            className="disabled:bg-gray-400 disabled:cursor-not-allowed text-white px-6 py-3 rounded-lg font-semibold shadow-lg transition-colors"
+            style={{backgroundColor: !position ? '#9ca3af' : '#FA9411'}}
+            onMouseEnter={(e) => position && (e.currentTarget.style.backgroundColor = '#e67e00')}
+            onMouseLeave={(e) => position && (e.currentTarget.style.backgroundColor = '#FA9411')}
           >
             Start Measuring
           </button>
@@ -296,7 +299,8 @@ export const FarmMeasurementMap: React.FC<FarmMeasurementMapProps> = ({
           <>
             <button
               onClick={isPaused ? resumeTracking : pauseTracking}
-              className="bg-white hover:bg-gray-50 text-blue-600 border-2 border-blue-600 px-4 py-3 rounded-lg font-semibold shadow-lg transition-colors"
+              className="bg-white hover:bg-gray-50 px-4 py-3 rounded-lg font-semibold shadow-lg transition-colors border-2"
+              style={{color: '#FA9411', borderColor: '#FA9411'}}
               title={isPaused ? 'Resume tracking' : 'Pause tracking'}
             >
               {isPaused ? (
@@ -311,7 +315,10 @@ export const FarmMeasurementMap: React.FC<FarmMeasurementMapProps> = ({
             </button>
             <button
               onClick={handleFinishMeasurement}
-              className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold shadow-lg transition-colors"
+              className="text-white px-6 py-3 rounded-lg font-semibold shadow-lg transition-colors"
+              style={{backgroundColor: '#FA9411'}}
+              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#e67e00'}
+              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#FA9411'}
             >
               Finish
             </button>

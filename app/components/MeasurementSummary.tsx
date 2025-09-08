@@ -5,20 +5,22 @@ import { FarmPath, MeasurementUnit } from '../types/farm-measurement';
 interface MeasurementSummaryProps {
   measurement: FarmPath;
   onClose: () => void;
+  returnContext?: 'home' | 'tractor-booking';
 }
 
 const measurementUnits: MeasurementUnit[] = [
   { fullname: 'Square Metres (sq m)', unit: 'sq m' },
-  { fullname: 'Hectares (ha)', unit: 'ha' },
-  { fullname: 'Acres', unit: 'acres' },
-  { fullname: 'Plots', unit: 'plots' },
-  { fullname: 'Square Feet (sq ft)', unit: 'sq ft' },
-  { fullname: 'Square Yards (sq yd)', unit: 'sq yd' },
+  // { fullname: 'Hectares (ha)', unit: 'ha' },
+  // { fullname: 'Acres', unit: 'acres' },
+  // { fullname: 'Plots', unit: 'plots' },
+  // { fullname: 'Square Feet (sq ft)', unit: 'sq ft' },
+  // { fullname: 'Square Yards (sq yd)', unit: 'sq yd' },
 ];
 
 export const MeasurementSummary: React.FC<MeasurementSummaryProps> = ({
   measurement,
-  onClose
+  onClose,
+  returnContext = 'home'
 }) => {
   const [selectedUnit, setSelectedUnit] = useState<MeasurementUnit>(measurementUnits[0]);
   const [showUnitSelector, setShowUnitSelector] = useState(false);
@@ -49,7 +51,7 @@ export const MeasurementSummary: React.FC<MeasurementSummaryProps> = ({
   return (
     <div className="max-w-md mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
       {/* Header Image */}
-      <div className="h-48 bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center">
+      <div className="h-48 flex items-center justify-center" style={{background: 'linear-gradient(135deg, #FA9411, #e67e00)'}}>
         <div className="text-white text-center">
           <svg className="w-16 h-16 mx-auto mb-2" fill="currentColor" viewBox="0 0 20 20">
             <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
@@ -88,7 +90,10 @@ export const MeasurementSummary: React.FC<MeasurementSummaryProps> = ({
 
         <button
           onClick={handleCopyArea}
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg font-semibold mb-4 flex items-center justify-center space-x-2"
+          className="w-full text-white py-3 px-4 rounded-lg font-semibold mb-4 flex items-center justify-center space-x-2"
+          style={{backgroundColor: '#FA9411'}}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#e67e00'}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#FA9411'}
         >
           <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
             <path d="M8 2a1 1 0 000 2h2a1 1 0 100-2H8z" />
@@ -100,15 +105,21 @@ export const MeasurementSummary: React.FC<MeasurementSummaryProps> = ({
         <div className="flex space-x-3">
           <button
             onClick={onClose}
-            className="flex-1 border border-blue-600 text-blue-600 hover:bg-blue-50 py-2 px-4 rounded-lg font-semibold"
+            className="flex-1 border py-2 px-4 rounded-lg font-semibold"
+            style={{borderColor: '#FA9411', color: '#FA9411'}}
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#FA941110'}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
           >
             Redo
           </button>
           <button
             onClick={onClose}
-            className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-semibold"
+            className="flex-1 text-white py-2 px-4 rounded-lg font-semibold"
+            style={{backgroundColor: '#FA9411'}}
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#e67e00'}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#FA9411'}
           >
-            Back to Home
+            {returnContext === 'tractor-booking' ? 'Continue Booking' : 'Back to Home'}
           </button>
         </div>
       </div>

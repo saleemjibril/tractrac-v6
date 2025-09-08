@@ -35,9 +35,9 @@ export const OfflineIndicator: React.FC<OfflineIndicatorProps> = ({ onSync }) =>
   if (!hasUnsyncedData && isOnline) return null;
 
   return (
-    <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-4">
+    <div className="border rounded-lg p-4 mb-4" style={{backgroundColor: '#FA941110', borderColor: '#FA941150'}}>
       <div className="flex items-center space-x-3">
-        <div className="text-orange-600">
+        <div style={{color: '#FA9411'}}>
           {!isOnline ? (
             <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" clipRule="evenodd" />
@@ -49,20 +49,23 @@ export const OfflineIndicator: React.FC<OfflineIndicatorProps> = ({ onSync }) =>
           )}
         </div>
         <div className="flex-1">
-          <p className="font-semibold text-orange-800">
+          <p className="font-semibold" style={{color: '#d97706'}}>
             {!isOnline ? 'You are offline' : 'You have unsynced farm measurements'}
           </p>
-          <p className="text-sm text-orange-600">
+          <p className="text-sm" style={{color: '#FA9411'}}>
             {!isOnline 
               ? 'Measurements will be saved locally and synced when connection is restored'
-              : 'Your recent measurements need to be synced to get results'
+              : 'Your recent measurements need to be synced to the server'
             }
           </p>
         </div>
         {isOnline && hasUnsyncedData && onSync && (
           <button
             onClick={onSync}
-            className="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors"
+            className="text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors"
+            style={{backgroundColor: '#FA9411'}}
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#e67e00'}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#FA9411'}
           >
             Sync Now
           </button>

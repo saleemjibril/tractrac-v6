@@ -14,7 +14,7 @@ export const GPSQualityAlert: React.FC<GPSQualityAlertProps> = ({
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg max-w-md mx-4 p-6">
-        <h3 className="text-lg font-semibold text-red-600 mb-4">Poor GPS Signal</h3>
+        <h3 className="text-lg font-semibold mb-4" style={{color: '#FA9411'}}>Poor GPS Signal</h3>
         
         <div className="space-y-3 mb-6">
           <p className="text-gray-700">
@@ -42,7 +42,10 @@ export const GPSQualityAlert: React.FC<GPSQualityAlertProps> = ({
           </button>
           <button
             onClick={onContinue}
-            className="flex-1 bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg font-semibold"
+            className="flex-1 text-white py-2 px-4 rounded-lg font-semibold"
+            style={{backgroundColor: '#FA9411'}}
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#e67e00'}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#FA9411'}
           >
             Continue Anyway
           </button>
