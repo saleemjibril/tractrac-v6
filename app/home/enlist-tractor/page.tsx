@@ -1079,14 +1079,16 @@ export default function BecomeAnAgent() {
   rowGap={{ base: "20px", md: "0" }}
   mt="20px"
   width="100%">
-                  <Field name="bank_account_type" validate={validateEmpty}>
+                  <Field name="bank_account_type" 
+                  // validate={validateEmpty}
+                  >
                     {({ field, form }: { [x: string]: any }) => (
                       <FormControl
                         isInvalid={
                           form.errors.bank_account_type &&
                           form.touched.bank_account_type
                         }
-                        isRequired
+                        // isRequired
                       >
                         <FormLabel fontSize="12px" color="#323232">
                           Bank account type
@@ -1108,11 +1110,13 @@ export default function BecomeAnAgent() {
                     )}
                   </Field>
 
-                  <Field name="bank" validate={validateEmpty}>
+                  <Field name="bank" 
+                  // validate={validateEmpty}
+                  >
                     {({ field, form }: { [x: string]: any }) => (
                       <FormControl
                         isInvalid={form.errors.bank && form.touched.bank}
-                        isRequired
+                        // isRequired
                       >
                         <FormLabel fontSize="12px" color="#323232">
                           Bank
@@ -1140,14 +1144,15 @@ export default function BecomeAnAgent() {
   rowGap={{ base: "20px", md: "0" }}
   mt="20px"
   width="100%">
-                  <Field name="bank_account_number" validate={validateEmpty}>
+                  <Field name="bank_account_number" // validate={validateEmpty}
+                  >
                     {({ field, form }: { [x: string]: any }) => (
                       <FormControl
                         isInvalid={
                           form.errors.bank_account_number &&
                           form.touched.bank_account_number
                         }
-                        isRequired
+                        // isRequired
                       >
                         <FormLabel fontSize="12px" color="#323232">
                           Bank account number
@@ -1173,7 +1178,8 @@ export default function BecomeAnAgent() {
                     )}
                   </Field>
 
-                  <Field name="bank_account_name" validate={validateEmpty}>
+                  <Field name="bank_account_name" // validate={validateEmpty}
+                  >
                     {({ field, form }: { [x: string]: any }) => (
                       <FormControl
                         isInvalid={
