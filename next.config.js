@@ -4,7 +4,7 @@
 
 const nextConfig = {
   env: {
-    NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
+    NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: 'AIzaSyBWo_tQ4rjQkZz1kN5WXfnemHCaF0gQ8BU',
     NEXT_PUBLIC_URL: process.env.NEXT_PUBLIC_URL || 'http://localhost:3000/api/v1',
   },
   compiler: {
