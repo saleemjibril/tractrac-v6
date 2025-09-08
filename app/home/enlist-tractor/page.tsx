@@ -54,6 +54,7 @@ import { getBanks, verifyBankAccount } from "@/app/apis/payment";
 import { tractorMediaUploadService } from "@/app/services/mediaUploadService";
 
 import { useFormikContext } from "formik";
+import { implementTypes } from "@/app/utils/implementTypes";
 
 // Component to monitor the specific fields
 const BankFieldsMonitor = ({ onAllBankFieldsFilled }) => {
@@ -1800,47 +1801,4 @@ const states = [
   "Zamfara",
 ];
 
-const implementTypes = [
-  {
-    label: "Harrow",
-    value: "harrow",
-    // colorScheme: "red", // This is allowed because of the key in the `OptionBase` type
-  },
-  // {
-  //   label: "Plow",
-  //   value: "plow",
-  // },
-  // {
-  //   label: "Ridger",
-  //   value: "ridger",
-  // },
-  // {
-  //   label: "Harvester",
-  //   value: "harvester",
-  // },
-  // {
-  //   label: "Seeder",
-  //   value: "seeder",
-  // },
-  {
-    label: "Plough",
-    value: "plough",
-  },
-  {
-    label: "Planter",
-    value: "planter",
-  },
-  {
-    label: "Farm Carrier",
-    value: "farm_carrier",
-  }
-  // {
-  //   label: "Sprayer",
-  //   value: "sprayer",
-  // },
-  // ,
-  // {
-  //   label: "Other",
-  //   value: "other",
-  // },
-];
+
