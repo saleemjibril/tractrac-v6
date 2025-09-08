@@ -57,6 +57,9 @@
   "devDependencies": {
     "@types/google.maps": "^3.54.0",
     "@types/nprogress": "^0.2.1",
-    "@types/qs": "^6.9.18"
+    "@types/qs": "^6.9.18",
+    "autoprefixer": "^10.0.0",
+    "postcss": "^8.0.0",
+    "tailwindcss": "^3.0.0"
   }
 }

@@ -9,6 +9,7 @@ import PageTracker from "./components/pageTracker";
 import { AuthProvider } from "./components/AuthProvider";
 import FacebookPixel from "./components/facebookPixel";
 
+
 const inter = Inter({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
   subsets: ["latin"],
@@ -25,6 +26,11 @@ export default function RootLayout({
       <head>
       <GoogleAnalytics />
       <FacebookPixel />
+      <script
+          async
+          defer
+          src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=geometry`}
+        ></script>
       </head>
       <body className={inter.className} style={{scrollBehavior: "smooth"}}>
         <Providers>
