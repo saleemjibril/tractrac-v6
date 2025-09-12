@@ -59,6 +59,7 @@ interface Tractor {
   insurance_expiry?: string;
   current_address?: string;
   tracker?: string;
+  tracker_id?: string;
 }
 
 export default function PaymentPage() {
@@ -199,7 +200,7 @@ export default function PaymentPage() {
                 >
                   Current Location
                 </Text>
-                <Box borderRadius="12px" overflow="hidden" boxShadow="md">
+                <Box borderRadius="12px" overflow="hidden" boxShadow="md" onClick={() => window.open(`/tracking?tractorId=${tractor?.tracker_id}`, '_blank')}>
                   <Map addresses={[tractor?.current_address]} />
                 </Box>
               </Box>
@@ -207,7 +208,7 @@ export default function PaymentPage() {
               {/* Full Specifications Table */}
               <Box>
                 <TableContainer
-                  // border="1px solid #E2E8F0"
+                  // border="1px solid #E2E8F0" 
                   // borderRadius="12px"
                   // boxShadow="sm"
                   bg="white"

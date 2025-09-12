@@ -160,7 +160,7 @@ export default function LoginInner() {
                       }
                     } catch (error) {
                       console.log("rejected", error);
-                      if(error?.response?.data?.detail === "Inactive user. Please verify your account") {
+                      if(error?.response?.data?.detail?.message === "Inactive user. Please verify your account") {
                         router.push(`/verification?phone=${values?.phone}`);
                       }else {
                         setError(
