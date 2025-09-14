@@ -29,7 +29,7 @@ export const useFarmMeasurement = () => {
           position.latitude,
           position.longitude
         );
-        if (distance < 1) return prev; // Skip if too close
+        if (distance < 2) return prev; // Skip if too close
       }
 
       return [...prev, position];
