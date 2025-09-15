@@ -9,6 +9,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 
 export default function FarmMeasurementPage() {
   const [measurementResult, setMeasurementResult] = useState<FarmPath | null>(null);
+  const [serverId, setServerId] = useState<string | null>(null);
   const [showSummary, setShowSummary] = useState(false);
   const { syncOfflineMeasurements } = useFarmMeasurement();
 
@@ -16,22 +17,27 @@ export default function FarmMeasurementPage() {
   const searchParams = useSearchParams();
   const tractorId = searchParams.get('tractorId');
 
-  const handleMeasurementComplete = (result: FarmPath) => {
-    setMeasurementResult(result);
+  const handleMeasurementComplete = (result: { path: FarmPath; serverId: string }) => {
+    setMeasurementResult(result.path);
+    setServerId(result.serverId);
     setShowSummary(true);
   };
 
   const handleCloseSummary = () => {
     setShowSummary(false);
-    setMeasurementResult(null);
     
     // If we have a tractorId, redirect back to that specific tractor page with the measurement data
     if (tractorId && measurementResult) {
-      router.push(`/home/hire-tractor/${tractorId}?farm_size=${measurementResult.areaSquareMeters}`);
+      const farmSize = measurementResult.areaSquareMeters;
+      const idParam = serverId ? `&measurement_id=${encodeURIComponent(serverId)}` : '';
+      router.push(`/home/hire-tractor/${tractorId}?farm_size=${farmSize}${idParam}`);
     } else {
       // Fallback to the general hire-tractor page
       router.push(`/home/hire-tractor`);
     }
+    
+    setMeasurementResult(null);
+    setServerId(null);
   };
 
   if (showSummary && measurementResult) {

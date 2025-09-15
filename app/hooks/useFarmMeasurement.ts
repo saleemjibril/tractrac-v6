@@ -77,6 +77,10 @@ export const useFarmMeasurement = () => {
     return path;
   }, [trackPoints]);
 
+  const createMeasurementOnServer = useCallback(async (path: FarmPath) => {
+    return measurementService.createMeasurement(path);
+  }, [measurementService]);
+
   const loadLastSavedPath = useCallback(() => {
     const paths = JSON.parse(localStorage.getItem('farmPaths') || '[]');
     return paths.length > 0 ? paths[paths.length - 1] : null;
@@ -118,6 +122,7 @@ export const useFarmMeasurement = () => {
     resumeTracking,
     stopTracking,
     savePath,
+    createMeasurementOnServer,
     loadLastSavedPath,
     clearSavedPaths,
     syncOfflineMeasurements

@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useGeolocation } from '../hooks/useGeolocation';
 import { useFarmMeasurement } from '../hooks/useFarmMeasurement';
-import { Position } from '../types/farm-measurement';
+import { Position, FarmPath } from '../types/farm-measurement';
 import { GPSQualityAlert } from './GPSQualityAlert';
 import loader from '../googleMapsLoader';
 
 interface FarmMeasurementMapProps {
-  onMeasurementComplete?: (result: any) => void;
+  onMeasurementComplete?: (result: { path: FarmPath; serverId: string }) => void;
 }
 
 export const FarmMeasurementMap: React.FC<FarmMeasurementMapProps> = ({
@@ -34,7 +34,8 @@ export const FarmMeasurementMap: React.FC<FarmMeasurementMapProps> = ({
     pauseTracking,
     resumeTracking,
     stopTracking,
-    savePath
+    savePath,
+    createMeasurementOnServer
   } = useFarmMeasurement();
 
   // Initialize map
@@ -177,7 +178,9 @@ export const FarmMeasurementMap: React.FC<FarmMeasurementMapProps> = ({
     try {
       stopTracking();
       const savedPath = await savePath();
-      onMeasurementComplete?.(savedPath);
+      const serverRes = await createMeasurementOnServer(savedPath);
+      const serverId: string = serverRes?.id || '';
+      onMeasurementComplete?.({ path: savedPath, serverId });
     } catch (error) {
       console.error('Error saving measurement:', error);
       alert('Error saving measurement. Please try again.');
