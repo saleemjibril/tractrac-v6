@@ -179,6 +179,9 @@ export const FarmMeasurementMap: React.FC<FarmMeasurementMapProps> = ({
       stopTracking();
       const savedPath = await savePath();
       const serverRes = await createMeasurementOnServer(savedPath);
+
+      console.log('createMeasurementOnServer', serverRes);
+      
       const serverId: string = serverRes?.id || '';
       onMeasurementComplete?.({ path: savedPath, serverId });
     } catch (error) {
