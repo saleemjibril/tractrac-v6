@@ -18,6 +18,7 @@ export default function FarmMeasurementPage() {
   const tractorId = searchParams.get('tractorId');
 
   const handleMeasurementComplete = (result: { path: FarmPath; serverId: string }) => {
+    console.log('handleMeasurementComplete', result);
     setMeasurementResult(result.path);
     setServerId(result.serverId);
     setShowSummary(true);
@@ -30,6 +31,8 @@ export default function FarmMeasurementPage() {
     if (tractorId && measurementResult) {
       const farmSize = measurementResult.areaSquareMeters;
       const idParam = serverId ? `&measurement_id=${encodeURIComponent(serverId)}` : '';
+      console.log('handleCloseSummary', {farmSize, idParam});
+      
       router.push(`/home/hire-tractor/${tractorId}?farm_size=${farmSize}${idParam}`);
     } else {
       // Fallback to the general hire-tractor page

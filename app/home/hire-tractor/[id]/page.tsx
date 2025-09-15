@@ -76,6 +76,7 @@ export default function HireTractorForm() {
     const { isOpen, onOpen, onClose } = useDisclosure();
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [farmId, setFarmId] = useState<string | null>(null);
 
   const { id } = useParams();
   
@@ -124,12 +125,17 @@ export default function HireTractorForm() {
   // Show success message when farm size is populated from measurement
   useEffect(() => {
     const farmSizeFromMeasurement = searchParams.get('farm_size');
+    const measurementIdFromUrl = searchParams.get('measurement_id');
+    if (measurementIdFromUrl) {
+      setFarmId(measurementIdFromUrl);
+    }
     if (farmSizeFromMeasurement) {
       toast.success(`Farm measurement completed! Area: ${farmSizeFromMeasurement} square meters`);
       
-      // Clean up the URL by removing the farm_size parameter after showing the message
+      // Clean up the URL by removing parameters after showing the message and capturing IDs
       const newUrl = new URL(window.location.href);
       newUrl.searchParams.delete('farm_size');
+      if (measurementIdFromUrl) newUrl.searchParams.delete('measurement_id');
       window.history.replaceState({}, '', newUrl.toString());
     }
   }, [searchParams]);
@@ -479,6 +485,7 @@ export default function HireTractorForm() {
                   start_date: firstDate,
                   end_date: lastDate,
                   tractor_id: id,
+                  farm_id: farmId,
                 },
                 userToken as string
               );
