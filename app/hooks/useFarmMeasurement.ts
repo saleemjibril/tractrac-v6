@@ -77,8 +77,8 @@ export const useFarmMeasurement = () => {
     return path;
   }, [trackPoints]);
 
-  const createMeasurementOnServer = useCallback(async (path: FarmPath) => {
-    return measurementService.createMeasurement(path);
+  const createMeasurementOnServer = useCallback(async (path: FarmPath, token: string) => {
+    return measurementService.createMeasurement(path, token);
   }, [measurementService]);
 
   const loadLastSavedPath = useCallback(() => {

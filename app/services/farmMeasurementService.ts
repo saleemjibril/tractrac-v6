@@ -4,11 +4,11 @@ import { createFarmMeasurement } from "../apis/farmMeasurement";
 export class FarmMeasurementService {
   constructor() {}
 
-  async createMeasurement(farmPath): Promise<any> {
+  async createMeasurement(farmPath, token: string): Promise<any> {
     try {
       const res = await createFarmMeasurement(
         farmPath.coordinates,
-        this.getAuthToken()
+        token
       );
       return res.data;
     } catch (error) {

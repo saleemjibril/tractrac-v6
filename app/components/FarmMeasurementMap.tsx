@@ -4,6 +4,7 @@ import { useFarmMeasurement } from '../hooks/useFarmMeasurement';
 import { Position, FarmPath } from '../types/farm-measurement';
 import { GPSQualityAlert } from './GPSQualityAlert';
 import loader from '../googleMapsLoader';
+import { useAppSelector } from '@/redux/hooks';
 
 interface FarmMeasurementMapProps {
   onMeasurementComplete?: (result: { path: FarmPath; serverId: string }) => void;
@@ -12,6 +13,7 @@ interface FarmMeasurementMapProps {
 export const FarmMeasurementMap: React.FC<FarmMeasurementMapProps> = ({
   onMeasurementComplete
 }) => {
+  const { userToken } = useAppSelector((state) => state.auth);
   const mapRef = useRef<HTMLDivElement>(null);
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const [path, setPath] = useState<google.maps.Polyline | null>(null);
@@ -178,7 +180,7 @@ export const FarmMeasurementMap: React.FC<FarmMeasurementMapProps> = ({
     try {
       stopTracking();
       const savedPath = await savePath();
-      const serverRes = await createMeasurementOnServer(savedPath);
+      const serverRes = await createMeasurementOnServer(savedPath, userToken as string);
 
       console.log('createMeasurementOnServer', serverRes);
       
