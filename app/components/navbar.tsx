@@ -390,7 +390,7 @@ useEffect(() => {
               >
                 Careers
               </Link> */}
-              {/* <Link
+              <Link
                 // p={2}
                 href={"/blog"}
                 style={{ fontSize: "14px", fontWeight: "700" }}
@@ -398,7 +398,7 @@ useEffect(() => {
                 prefetch={true}
               >
                 Blog
-              </Link> */}
+              </Link>
             </Stack>
           </Box>
           <Box pt="5px" display={{ base: "none", lg: "flex" }}>
