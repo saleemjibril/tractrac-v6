@@ -48,7 +48,6 @@ async function getPostsWithMedia(): Promise<Post[]> {
 
 export default async function BlogCarouselSection() {
   const posts = await getPostsWithMedia();
-  console.log("getPostsWithMedia", posts);
   if (!posts || posts.length === 0) return null;
   return (
     <ChakraWrapper>
