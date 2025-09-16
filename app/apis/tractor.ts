@@ -124,19 +124,37 @@ export const hireTractor = async (data: object, token: string) => {
 
   console.log("hireTractor request", data);
   
-  // const config = {
-  //   headers: {
-  //     Authorization: `Bearer ${token}`,
-  //   },
-  // };
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
 
-  // const res = await axios.post(
-  //   `${process.env.NEXT_PUBLIC_URL}/hire_tractor/hire`,
-  //   data,
-  //   config
-  // );
+  const res = await axios.post(
+    `${process.env.NEXT_PUBLIC_URL}/hire_tractor/hire`,
+    data,
+    config
+  );
 
-  // return res;
+  return res;
+};
+export const hireTractorWithoutFarmSize = async (data: object, token: string) => {
+
+  console.log("hireTractor request", data);
+  
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const res = await axios.post(
+    `${process.env.NEXT_PUBLIC_URL}/hire_tractor/hire-without-farm-size`,
+    data,
+    config
+  );
+
+  return res;
 };
 
 

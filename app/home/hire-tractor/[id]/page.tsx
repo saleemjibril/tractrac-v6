@@ -51,12 +51,13 @@ import {
   filterTractors,
   getApprovedTractors,
   getBookedDates,
+  getTractor,
   getTractors,
   hireTractor,
+  hireTractorWithoutFarmSize,
 } from "@/app/apis/tractor";
 import moment from "moment";
 import Link from "next/link";
-import { implementTypes } from "@/app/utils/implementTypes";
 import { states } from "@/app/utils/states";
 
 export default function HireTractorForm() {
@@ -70,6 +71,7 @@ export default function HireTractorForm() {
     const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
     const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
     const [bookedDates, setBookedDates] = useState([]);
+    const [tractorImplements, setTractorImplements] = useState([]);
   
     const [inRangeLoading, setInRangeLoading] = useState(false);
     const { profileInfo } = useAppSelector((state) => state.auth);
@@ -117,9 +119,44 @@ export default function HireTractorForm() {
   
       // setEvents(events);
     };
+    const handleGetTractor = async () => {
+      try {
+        const response = await getTractor(id as string, userToken as string);
+        console.log("getTractor", response);
+        setTractorImplements(response?.data?.implement_types);
+      } catch (error) {
+        console.log("ERROR GETTING TRACTOR IMPLEMENTS", error);
+      }
+      // if (response?.data?.statusCode === 200) {
+      //   setBookedDates(response?.data?.message[2]?.values);
+      // } else {
+      //   toast.error(response?.data?.message);
+      // }
+  
+      // Fetch data from backend or local storage and update state
+      // Available dates
+  
+      // const events = [
+      //   ...bookedDates.map((date) => ({
+      //     start: new Date(date),
+      //     end: new Date(date),
+      //     title: "Available",
+      //     isAvailable: true,
+      //   })),
+      //   ...bookedDates.map((date) => ({
+      //     start: new Date(date),
+      //     end: new Date(date),
+      //     title: "Booked",
+      //     isAvailable: false,
+      //   })),
+      // ];
+  
+      // setEvents(events);
+    };
   
   useEffect(() => {
     handleGetBookedDates();
+    handleGetTractor();
   }, []);
 
   // Show success message when farm size is populated from measurement
@@ -463,9 +500,11 @@ export default function HireTractorForm() {
           onSubmit={async (values: any, { resetForm }) => {
             setError(null);
 
-            // Check if farm measurement is completed
+            // Check if farm measurement is completed (not needed for farm_carrier)
             const farmSize = searchParams.get('farm_size');
-            if (!farmSize) {
+            const hasFarmCarrier = values.implement_types?.includes('farm_carrier');
+            
+            if (!farmSize && !hasFarmCarrier) {
               toast.error("Please measure your farm before submitting the form");
               return;
             }
@@ -478,14 +517,18 @@ export default function HireTractorForm() {
                 toast.error("Please select a date range");
                 return;
               }
-              const response = await hireTractor(
+              // Use different API based on implement type
+              const hasFarmCarrier = values.implement_types?.includes('farm_carrier');
+              const hireFunction = hasFarmCarrier ? hireTractorWithoutFarmSize : hireTractor;
+              
+              const response = await hireFunction(
                 {
                   ...values,
-                  farm_size: `${farmSize} square_meter`,
+                  farm_size: farmSize ? `${farmSize} square_meter` : undefined,
                   start_date: firstDate,
                   end_date: lastDate,
                   tractor_id: id,
-                  farm_id: farmId,
+                  farm_id: farmId ? farmId : undefined
                 },
                 userToken as string
               );
@@ -519,6 +562,88 @@ export default function HireTractorForm() {
                 </Alert>
               )}
   
+              {!props.values.implement_types?.includes('farm_carrier') && (
+                <Flex
+                  direction={{ base: "column", md: "row" }}
+                  columnGap={{ base: "0", md: "30px" }}
+                  rowGap={{ base: "20px", md: "0" }}
+                  mt="20px"
+                  width="100%"
+                >
+                  <Box width="100%">
+                    <FormLabel fontSize="12px" color="#323232" mb="8px">
+                      Farm Size Measurement (Required)
+                    </FormLabel>
+                    
+                    {searchParams.get('farm_size') ? (
+                      // Show measured farm size
+                      <Box
+                        border="1px solid"
+                        borderColor="#FA9411"
+                        borderRadius="6px"
+                        p="12px"
+                        bgColor="#FA941110"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="space-between"
+                      >
+                        <Box>
+                          <Text fontSize="14px" fontWeight="600" color="#323232">
+                            Measured Area: {searchParams.get('farm_size')} square meters
+                          </Text>
+                          <Text fontSize="12px" color="#666" mt="2px">
+                            ✓ Farm measurement completed successfully
+                          </Text>
+                        </Box>
+                        <Link
+                          href={`/farm-measurement?tractorId=${id}`}
+                          style={{
+                            color: "#FA9411",
+                            fontSize: "12px",
+                            textDecoration: "underline",
+                          }}
+                        >
+                          Re-measure
+                        </Link>
+                      </Box>
+                    ) : (
+                      // Show measurement requirement
+                      <Box
+                        border="1px solid"
+                        borderColor="#FA9411"
+                        borderRadius="6px"
+                        p="12px"
+                        bgColor="#FFF"
+                        textAlign="center"
+                      >
+                        <Text fontSize="14px" color="#323232" mb="8px">
+                          You need to measure your farm before proceeding
+                        </Text>
+                        <Button
+                          as={Link}
+                          href={`/farm-measurement?tractorId=${id}`}
+                          bgColor="#FA9411"
+                          color="white"
+                          fontSize="14px"
+                          height="40px"
+                          px="20px"
+                          _hover={{
+                            bgColor: "#e67e00",
+                          }}
+                          leftIcon={
+                            <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                              <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+                            </svg>
+                          }
+                        >
+                          Measure Your Farm
+                        </Button>
+                      </Box>
+                    )}
+                  </Box>
+                </Flex>
+              )}
+  
               <Flex
                 direction={{ base: "column", md: "row" }}
                 columnGap={{ base: "0", md: "30px" }}
@@ -526,78 +651,6 @@ export default function HireTractorForm() {
                 mt="20px"
                 width="100%"
               >
-                <Box width="100%">
-                  <FormLabel fontSize="12px" color="#323232" mb="8px">
-                    Farm Size Measurement (Required)
-                  </FormLabel>
-                  
-                  {searchParams.get('farm_size') ? (
-                    // Show measured farm size
-                    <Box
-                      border="1px solid"
-                      borderColor="#FA9411"
-                      borderRadius="6px"
-                      p="12px"
-                      bgColor="#FA941110"
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="space-between"
-                    >
-                      <Box>
-                        <Text fontSize="14px" fontWeight="600" color="#323232">
-                          Measured Area: {searchParams.get('farm_size')} square meters
-                        </Text>
-                        <Text fontSize="12px" color="#666" mt="2px">
-                          ✓ Farm measurement completed successfully
-                        </Text>
-                      </Box>
-                      <Link
-                        href={`/farm-measurement?tractorId=${id}`}
-                        style={{
-                          color: "#FA9411",
-                          fontSize: "12px",
-                          textDecoration: "underline",
-                        }}
-                      >
-                        Re-measure
-                      </Link>
-                    </Box>
-                  ) : (
-                    // Show measurement requirement
-                    <Box
-                      border="1px solid"
-                      borderColor="#FA9411"
-                      borderRadius="6px"
-                      p="12px"
-                      bgColor="#FFF"
-                      textAlign="center"
-                    >
-                      <Text fontSize="14px" color="#323232" mb="8px">
-                        You need to measure your farm before proceeding
-                      </Text>
-                      <Button
-                        as={Link}
-                        href={`/farm-measurement?tractorId=${id}`}
-                        bgColor="#FA9411"
-                        color="white"
-                        fontSize="14px"
-                        height="40px"
-                        px="20px"
-                        _hover={{
-                          bgColor: "#e67e00",
-                        }}
-                        leftIcon={
-                          <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
-                          </svg>
-                        }
-                      >
-                        Measure Your Farm
-                      </Button>
-                    </Box>
-                  )}
-                </Box>
-  
                 <Field name="state" validate={validateEmpty}>
                   {({ field, form }: { [x: string]: any }) => (
                     <FormControl
@@ -662,14 +715,42 @@ export default function HireTractorForm() {
                         // {...field}
                         name="Roles"
                         isMulti
-                        options={implementTypes}
+                        options={(() => {
+                          const currentValues = form.values.implement_types || [];
+                          const hasFarmCarrier = currentValues.includes('farm_carrier');
+                          const hasOtherImplements = currentValues.some((value: string) => value !== 'farm_carrier');
+                          
+                          // Filter options based on current selection
+                          let filteredImplements = tractorImplements || [];
+                          
+                          if (hasFarmCarrier) {
+                            // If farm_carrier is selected, only show farm_carrier
+                            filteredImplements = filteredImplements.filter((implement: any) => implement === 'farm_carrier');
+                          } else if (hasOtherImplements) {
+                            // If other implements are selected, hide farm_carrier
+                            filteredImplements = filteredImplements.filter((implement: any) => implement !== 'farm_carrier');
+                          }
+                          
+                          return filteredImplements.map((implement: any) => ({
+                            value: implement,
+                            label: implement.replace(/_/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase())
+                          }));
+                        })()}
                         placeholder="Select implements"
                         onChange={(option) => {
                           console.log(option.at(0));
-                          form.setFieldValue(
-                            field.name,
-                            option.map((e) => e.value)
-                          );
+                          const selectedValues = option.map((e: any) => e.value);
+                          
+                          // Check if farm_carrier is being added
+                          const isAddingFarmCarrier = selectedValues.includes('farm_carrier');
+                          
+                          if (isAddingFarmCarrier) {
+                            // If farm_carrier is being added, clear all other selections
+                            form.setFieldValue(field.name, ['farm_carrier']);
+                          } else {
+                            // Normal selection
+                            form.setFieldValue(field.name, selectedValues);
+                          }
                         }}
                       // id="roles-select-field"
                       />
@@ -1080,7 +1161,7 @@ export default function HireTractorForm() {
               </Flex>
   
               <Flex direction="column" alignItems="flex-end">
-                {!searchParams.get('farm_size') && (
+                {!searchParams.get('farm_size') && !props.values.implement_types?.includes('farm_carrier') && (
                   <Text fontSize="12px" color="#F04438" mb="8px" textAlign="right">
                     Please measure your farm to enable form submission
                   </Text>
@@ -1093,13 +1174,13 @@ export default function HireTractorForm() {
                   fontWeight={600}
                   minH="40px"
                   isLoading={props.isSubmitting}
-                  isDisabled={props.isSubmitting || !searchParams.get('farm_size')}
+                  isDisabled={props.isSubmitting || (!searchParams.get('farm_size') && !props.values.implement_types?.includes('farm_carrier'))}
                   type="submit"
                   _disabled={{
                     bgColor: "#F8A73088",
                   }}
                   _hover={{
-                    bgColor: !searchParams.get('farm_size') ? "#F8A73088" : "#F8A73088",
+                    bgColor: (!searchParams.get('farm_size') && !props.values.implement_types?.includes('farm_carrier')) ? "#F8A73088" : "#F8A73088",
                   }}
                   _focus={{
                     bgColor: "#F8A73088",

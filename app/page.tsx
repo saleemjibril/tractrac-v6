@@ -10,6 +10,7 @@ import HomeBanner from "./components/homeBanner";
 import ContactUsComponent from "./components/contactUs";
 import ClientPreloader from './components/clientPreLoader';
 import { Box } from '@chakra-ui/react';
+import BlogCarouselSection from "./components/blogCarouselSection";
 
 export async function generateMetadata() {
   return {
@@ -25,6 +26,7 @@ export default function Home() {
       <div style={{position: "relative"}}>
         <Header />
         <HomeBanner />
+        <BlogCarouselSection />
         <ServicesComponent />
         <HowItWorksComponent />
         <FaqComponent />
