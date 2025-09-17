@@ -32,10 +32,10 @@ export const implementTypes = [
       label: "Sprayer",
       value: "sprayer",
     },
-    // {
-    //   label: "Farm Carrier",
-    //   value: "farm_carrier",
-    // }
+    {
+      label: "Farm Carrier",
+      value: "farm_carrier",
+    }
     // ,
     // {
     //   label: "Other",
