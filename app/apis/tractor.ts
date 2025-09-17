@@ -16,10 +16,9 @@ export const createTractor = async (data: object, token: string) => {
     } else if (Array.isArray(value)) {
       // Handle arrays - append each item separately or as a single value
       if (key === 'implement_types') {
-        // For implementType, send each value separately
-        value.forEach((item) => {
-          formData.append(key, String(item));
-        });
+        // Follow mobile app: send as a single comma-separated string
+        const joined = value.map((v) => String(v).toLowerCase()).join(',');
+        formData.append(key, joined);
       } else if (key === 'tractor_image_files') {
         // For tractor_image_files, append each file separately
         value.forEach((file: File) => {
