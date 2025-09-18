@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { Box, Flex, Image, Text, useBreakpointValue } from "@chakra-ui/react";
+import { Box, Flex, Image, Text, useBreakpointValue, IconButton } from "@chakra-ui/react";
+import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 
 interface Post {
   id: string;
@@ -23,7 +24,7 @@ interface BlogCarouselProps {
 }
 
 export default function BlogCarousel({ posts, heading = "Latest insights" }: BlogCarouselProps) {
-  const visibleCount = useBreakpointValue({ base: 1, md: 2, lg: 2 }) || 1;
+  const visibleCount = useBreakpointValue({ base: 1, md: 3, lg: 4 }) || 1;
   const [index, setIndex] = useState(0);
   const maxIndex = Math.max(0, posts.length - visibleCount);
   const trackRef = useRef<HTMLDivElement>(null);
@@ -57,6 +58,13 @@ export default function BlogCarousel({ posts, heading = "Latest insights" }: Blo
 
   return (
     <Box width="100%" maxWidth="1440px" mx="auto" px="20px" my="40px">
+      <Text
+            fontFamily={"cursive"}
+            fontSize={{ base: "20px", md: "28px" }}
+            color={"#FA9411"}
+          >
+            News
+          </Text>
       <Flex align="center" justify="space-between" mb="16px">
         <Text fontWeight={800} fontSize={{ base: "22px", lg: "32px" }}>{heading}</Text>
         <Box as="a" href="/blog" color="#FA9411" fontWeight={600} fontSize={{ base: "14px", lg: "16px" }}>
@@ -65,6 +73,39 @@ export default function BlogCarousel({ posts, heading = "Latest insights" }: Blo
       </Flex>
 
       <Box position="relative" overflow="hidden" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
+        {/* Navigation Buttons */}
+        <IconButton
+          aria-label="Previous"
+          icon={<ArrowBackIcon color="#FA9411" />}
+          position="absolute"
+          top="50%"
+          left="8px"
+          transform="translateY(-50%)"
+          zIndex={1}
+          size="sm"
+          isDisabled={index <= 0}
+          onClick={() => setIndex((prev) => Math.max(0, prev - 1))}
+          bg="white"
+          _hover={{ bg: "white", boxShadow: "md" }}
+          _disabled={{ opacity: 0.4, cursor: "not-allowed" }}
+          boxShadow="sm"
+        />
+        <IconButton
+          aria-label="Next"
+          icon={<ArrowForwardIcon color="#FA9411" />}
+          position="absolute"
+          top="50%"
+          right="8px"
+          transform="translateY(-50%)"
+          zIndex={1}
+          size="sm"
+          isDisabled={index >= maxIndex}
+          onClick={() => setIndex((prev) => Math.min(maxIndex, prev + 1))}
+          bg="white"
+          _hover={{ bg: "white", boxShadow: "md" }}
+          _disabled={{ opacity: 0.4, cursor: "not-allowed" }}
+          boxShadow="sm"
+        />
         <Flex
           ref={trackRef}
           transition="transform 0.35s ease"
@@ -79,41 +120,54 @@ export default function BlogCarousel({ posts, heading = "Latest insights" }: Blo
               minW={slideWidthCss}
               maxW={slideWidthCss}
               flexShrink={0}
-              borderRadius="6px"
-              border="1px"
-              borderColor="#F0F2F5"
+              borderRadius="4px"
+              border="2px"
+              borderColor="#F5F6FA"
               backgroundColor="#fbfbfb"
-              _hover={{ boxShadow: "md" }}
+              transition="transform 0.2s ease, box-shadow 0.2s ease"
+              _hover={{ transform: "scale(1.05)", boxShadow: "lg" }}
             >
-              <Flex direction={{ base: "column", md: "row" }} p="12px" gap={{ base: "10px", md: "16px" }} align="stretch">
-                <Box w={{ base: "100%", md: "40%" }}>
-                  <Box h={{ base: "180px", md: "160px" }}>
-                    <Image
-                      borderRadius="6px"
-                      src={blog.featuredImage.node.sourceUrl}
-                      alt={blog.featuredImage.node.altText || `Blog image ${blog.id}`}
-                      height="100%"
-                      width="100%"
-                      objectFit="cover"
-                    />
-                  </Box>
-                  <Text mt="10px" fontSize="16px" color="#333333" fontWeight={700} noOfLines={2}>
-                    {blog.title}
-                  </Text>
+              <Box h="250px">
+                <Image
+                  borderTopRadius="4px"
+                  src={blog.featuredImage.node.sourceUrl}
+                  alt={blog.featuredImage.node.altText || `Blog image ${blog.id}`}
+                  height="100%"
+                  width="100%"
+                  objectFit="cover"
+                />
+              </Box>
+
+              <Box p="12px" bgColor="transparent" mt="10px">
+                <Text
+                  fontSize="18px"
+                  color="#333333"
+                  fontWeight={800}
+                  lineHeight="25px"
+                  noOfLines={2}
+                >
+                  {blog.title}
+                </Text>
+
+                <Text
+                  fontSize="12px"
+                  color="#858A8F"
+                  fontWeight={500}
+                  my="12px"
+                  lineHeight="15px"
+                  noOfLines={2}
+                  overflow="hidden"
+                  textOverflow="ellipsis"
+                  display="-webkit-box"
+                  css={{ WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}
+                  dangerouslySetInnerHTML={{ __html: blog.excerpt }}
+                >
+                </Text>
+
+                <Box color="#FA9411" as="span" fontSize="14px" fontWeight={600}>
+                  Read story →
                 </Box>
-                <Box flex="1" display="flex" flexDirection="column">
-                  <Text
-                    fontSize="12px"
-                    color="#858A8F"
-                    fontWeight={500}
-                    lineHeight="18px"
-                    dangerouslySetInnerHTML={{ __html: blog.excerpt }}
-                  />
-                  <Text mt="10px" color="#FA9411" fontSize="14px" fontWeight={600}>
-                    Read story →
-                  </Text>
-                </Box>
-              </Flex>
+              </Box>
             </Box>
           ))}
         </Flex>

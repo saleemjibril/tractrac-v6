@@ -8,8 +8,6 @@ import GetMobileAppComponent from "./components/getMobileAppComponent";
 import OutPartnersComponent from "./components/outPartnersComponent";
 import HomeBanner from "./components/homeBanner";
 import ContactUsComponent from "./components/contactUs";
-import ClientPreloader from './components/clientPreLoader';
-import { Box } from '@chakra-ui/react';
 import BlogCarouselSection from "./components/blogCarouselSection";
 
 export async function generateMetadata() {
@@ -22,21 +20,17 @@ export async function generateMetadata() {
 
 export default function Home() {
   return (
-    <ClientPreloader>
-      <div style={{position: "relative"}}>
-        <Header />
-        <HomeBanner />
-        <BlogCarouselSection />
-        <ServicesComponent />
-        <HowItWorksComponent />
-        <FaqComponent />
-        <GetMobileAppComponent />
-        <OutPartnersComponent />
-        <ContactUsComponent />
-        <FooterComponent />
-      </div>
-
-     
-    </ClientPreloader>
+    <div style={{position: "relative"}}>
+      <Header />
+      <HomeBanner />
+      <ServicesComponent />
+      <HowItWorksComponent />
+      <FaqComponent />
+      <BlogCarouselSection />
+      <GetMobileAppComponent />
+      <OutPartnersComponent />
+      <ContactUsComponent />
+      <FooterComponent />
+    </div>
   );
 }

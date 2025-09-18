@@ -399,6 +399,15 @@ useEffect(() => {
               >
                 Blog
               </Link>
+              <Link
+                // p={2}
+                href={"/careers"}
+                style={{ fontSize: "14px", fontWeight: "700" }}
+                // color={linkColor}
+                prefetch={true}
+              >
+                Careers
+              </Link>
             </Stack>
           </Box>
           <Box pt="5px" display={{ base: "none", lg: "flex" }}>

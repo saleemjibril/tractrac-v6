@@ -122,6 +122,7 @@ export default function FooterComponent() {
           justifyContent="center"
         >
           <Link href="/about">About us</Link>
+          <Link href="/careers">Careers</Link>
           <Link href="/contact">Contact us</Link>
           <Link href="https://www.linkedin.com/company/tractrac">LinkedIn</Link>
           <Link href="https://web.facebook.com/tractracglobal">Facebook</Link>
