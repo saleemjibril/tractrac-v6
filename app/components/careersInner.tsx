@@ -109,15 +109,15 @@ export default function CareersInner() {
   }, []);
 
   const galleryImages = [
-    "https://res.cloudinary.com/tractrac-global/image/upload/v1758188891/Gallery_Photo_2_p5h99p.jpg",
-    "https://res.cloudinary.com/tractrac-global/image/upload/v1758189025/Gallery_Photo_zpsnzj.jpg",
-    "https://res.cloudinary.com/tractrac-global/image/upload/v1758188949/Gallery_Photo_3_ken4fm.jpg",
-    "https://res.cloudinary.com/tractrac-global/image/upload/v1758189029/Gallery_Photo_8_gobhks.jpg",
-    "https://res.cloudinary.com/tractrac-global/image/upload/v1758188936/Gallery_Photo_1_cfqveu.jpg",
-    "https://res.cloudinary.com/tractrac-global/image/upload/v1758188939/Gallery_Photo_5_ib1bie.jpg",
-    "https://res.cloudinary.com/tractrac-global/image/upload/v1758188984/Gallery_Photo_7_zdjzdu.jpg",
-    "https://res.cloudinary.com/tractrac-global/image/upload/v1758188983/Gallery_Photo_6_wim0on.jpg",
-    "https://res.cloudinary.com/tractrac-global/image/upload/v1758188929/Gallery_Photo_4_viuy7q.jpg",
+    "https://res.cloudinary.com/tractrac-global/image/upload/v1758235937/WhatsApp_Image_2025-09-18_at_23.50.39_fbbd4b.jpg",
+    "https://res.cloudinary.com/tractrac-global/image/upload/v1758235938/WhatsApp_Image_2025-09-18_at_23.50.06_pthawc.jpg",
+    "https://res.cloudinary.com/tractrac-global/image/upload/v1758235937/WhatsApp_Image_2025-09-18_at_23.50.40_1_elt91v.jpg",
+    "https://res.cloudinary.com/tractrac-global/image/upload/v1758235941/WhatsApp_Image_2025-09-18_at_23.50.43_qkplde.jpg",
+    "https://res.cloudinary.com/tractrac-global/image/upload/v1758235937/WhatsApp_Image_2025-09-18_at_23.50.40_fybud0.jpg",
+    "https://res.cloudinary.com/tractrac-global/image/upload/v1758235942/WhatsApp_Image_2025-09-18_at_23.50.41_1_zr5zcu.jpg",
+    "https://res.cloudinary.com/tractrac-global/image/upload/v1758235940/WhatsApp_Image_2025-09-18_at_23.50.42_1_gtic8y.jpg",
+    "https://res.cloudinary.com/tractrac-global/image/upload/v1758235939/WhatsApp_Image_2025-09-18_at_23.50.42_lkzjfb.jpg",
+    "https://res.cloudinary.com/tractrac-global/image/upload/v1758235938/WhatsApp_Image_2025-09-18_at_23.50.41_qqlw9u.jpg",
   ];
   return (
     <ChakraWrapper>
@@ -129,7 +129,7 @@ export default function CareersInner() {
         <Box position="relative" margin={"0 auto"} width={"100%"} height={"600px"} bgColor={"#F8F8F0"}>
 
           <Image
-            src="https://res.cloudinary.com/tractrac-global/image/upload/v1758234338/WhatsApp_Image_2025-09-18_at_23.24.35_jn4rlf.jpg"
+            src="https://res.cloudinary.com/tractrac-global/image/upload/v1758236320/WhatsApp_Image_2025-09-18_at_23.57.56_ab2zgq.jpg"
             alt="Careers banner"
             objectFit="cover"
             layout="fill"
@@ -425,7 +425,7 @@ export default function CareersInner() {
             </Text>
             <SimpleGrid columns={{ base: 1, md: 2 }} spacing="30px" maxW="1200px" mx="auto">
               <Box>
-                <Text fontWeight={600} mb="16px" textAlign="center">FCT Abuja Office?</Text>
+                <Text fontWeight={600} mb="16px" textAlign="center">FCT Abuja Office</Text>
                 <Box height="600px" bgColor="white" borderRadius="8px" overflow="hidden">
                   <Image
                     src="https://res.cloudinary.com/tractrac-global/image/upload/v1758235395/WhatsApp_Image_2025-09-18_at_23.42.29_cpq5j0.jpg"
@@ -440,7 +440,7 @@ export default function CareersInner() {
                 <Text fontWeight={600} mb="16px" textAlign="center">Nasarawa State Office</Text>
                 <Box height="600px" bgColor="white" borderRadius="8px" overflow="hidden">
                   <Image
-                    src="https://res.cloudinary.com/tractrac-global/image/upload/v1758191985/Nasarawa_Location_vkkcyy_mspgod.jpg"
+                    src="https://res.cloudinary.com/tractrac-global/image/upload/v1758235940/WhatsApp_Image_2025-09-18_at_23.49.47_bpvtav.jpg"
                     alt="Nasarawa Office"
                     width={600}
                     height={600}
