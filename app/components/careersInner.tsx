@@ -142,12 +142,13 @@ export default function CareersInner() {
             bottom="0"
             bg="rgba(0,0,0,0.4)"
             display="flex"
-            alignItems="center"
+            alignItems="start"
             justifyContent="center"
+            pt={"120px"}
           >
             <Stack textAlign="center" color="white" maxW="800px" px="20px">
             <Text
-                fontSize={{ base: "28px", md: "36px" }}
+                fontSize={{ base: "28px", md: "48px" }}
               fontFamily="cursive"
               color="#FA9411"
               fontWeight={600}
@@ -155,13 +156,33 @@ export default function CareersInner() {
             >
               Join the Humans of TracTrac
             </Text>
-            <Text
+            
+              
+          </Stack>
+          </Box>
+        </Box>
+
+
+
+        <Box
+          pr="20px"
+          pl="20px"
+          width={"100%"}
+          maxWidth={"1440px"}
+          margin={"0 auto"}
+        >
+
+          <Box  gap="20px" display={"grid"} gridTemplateColumns={{ base: "1fr", md: "1fr 2fr" }} py={"40px"} maxW="1200px" margin={"0 auto"}>
+          <Text
               fontWeight={600}
-                fontSize={{ base: "20px", md: "24px" }}
+                fontSize={{ base: "20px", md: "32px" }}
                 mb="16px"
+                color="#FA9411"
               >
                 All of us at TracTrac are on the same mission:
               </Text>
+
+              <Box>
               <Text
                 fontWeight={500}
                 fontSize={{ base: "18px", md: "22px" }}
@@ -179,11 +200,12 @@ export default function CareersInner() {
               <Text
                 fontSize={{ base: "16px", md: "18px" }}
                 mb="24px"
-                fontWeight={500}
+                fontWeight={600}
               >
                 Ready to do work you care about with people who care?
             </Text>
-              <Button
+
+            <Button
                 as={Link}
                 href="#open-positions"
                 size="lg"
@@ -196,17 +218,8 @@ export default function CareersInner() {
               >
                 See open roles
               </Button>
-          </Stack>
+              </Box>
           </Box>
-        </Box>
-
-        <Box
-          pr="20px"
-          pl="20px"
-          width={"100%"}
-          maxWidth={"1440px"}
-          margin={"0 auto"}
-        >
           {/* Block 2: Why Join Us */}
           <Box py="60px">
             <Text
