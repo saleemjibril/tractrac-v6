@@ -425,7 +425,7 @@ export default function CareersInner() {
             </Text>
             <SimpleGrid columns={{ base: 1, md: 2 }} spacing="30px" maxW="1200px" mx="auto">
               <Box>
-                <Text fontWeight={600} mb="16px" textAlign="center">FCT Abuja Office</Text>
+                <Text fontWeight={600} mb="16px" textAlign="center">FCT Abuja Office?</Text>
                 <Box height="600px" bgColor="white" borderRadius="8px" overflow="hidden">
                   <Image
                     src="https://res.cloudinary.com/tractrac-global/image/upload/v1758235395/WhatsApp_Image_2025-09-18_at_23.42.29_cpq5j0.jpg"
