@@ -119,18 +119,6 @@ export default function CareersInner() {
     "https://res.cloudinary.com/tractrac-global/image/upload/v1758188983/Gallery_Photo_6_wim0on.jpg",
     "https://res.cloudinary.com/tractrac-global/image/upload/v1758188929/Gallery_Photo_4_viuy7q.jpg",
   ];
-
-  // Function to get optimized image URL with fallback
-  const getOptimizedImageUrl = (url: string) => {
-    if (!url) return '';
-    
-    // For Cloudinary URLs, add optimization parameters
-    if (url.includes('cloudinary.com')) {
-      return url.replace('/upload/', '/upload/w_auto,f_auto,q_auto/');
-    }
-    
-    return url;
-  };
   return (
     <ChakraWrapper>
       <Box position={"relative"}>
@@ -141,16 +129,10 @@ export default function CareersInner() {
         <Box position="relative" margin={"0 auto"} width={"100%"} height={"600px"} bgColor={"#F8F8F0"}>
 
           <Image
-            src="https://res.cloudinary.com/tractrac-global/image/upload/w_auto,f_auto,q_auto/v1758189008/Main_Banner_Photo_amllvb.jpg"
+            src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446556/hero_banner_jh5hui.jpg"
             alt="Careers banner"
-            fill
-            style={{ objectFit: "cover" }}
-            priority
-            sizes="100vw"
-            onError={(e) => {
-              console.error('Failed to load banner image');
-              e.currentTarget.src = "https://res.cloudinary.com/tractrac-global/image/upload/v1758189008/Main_Banner_Photo_amllvb.jpg";
-            }}
+            objectFit="cover"
+            layout="fill"
           />
           <Box
             position="absolute"
@@ -446,16 +428,11 @@ export default function CareersInner() {
                 <Text fontWeight={600} mb="16px" textAlign="center">FCT Abuja Office</Text>
                 <Box height="600px" bgColor="white" borderRadius="8px" overflow="hidden">
                   <Image
-                    src="https://res.cloudinary.com/tractrac-global/image/upload/w_auto,f_auto,q_auto/v1758191983/Abuja_Location_oufheu.jpg"
+                    src="https://res.cloudinary.com/tractrac-global/image/upload/v1758191983/Abuja_Location_oufheu.jpg"
                     alt="Abuja Office"
                     width={600}
                     height={600}
                     style={{ objectFit: 'cover', width: '100%', height: '100%' }}
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
-                    onError={(e) => {
-                      console.error('Failed to load Abuja office image');
-                      e.currentTarget.src = "https://res.cloudinary.com/tractrac-global/image/upload/v1758191983/Abuja_Location_oufheu.jpg";
-                    }}
                   />
                 </Box>
               </Box>
@@ -463,16 +440,11 @@ export default function CareersInner() {
                 <Text fontWeight={600} mb="16px" textAlign="center">Nasarawa State Office</Text>
                 <Box height="600px" bgColor="white" borderRadius="8px" overflow="hidden">
                   <Image
-                    src="https://res.cloudinary.com/tractrac-global/image/upload/w_auto,f_auto,q_auto/v1758191985/Nasarawa_Location_vkkcyy_mspgod.jpg"
+                    src="https://res.cloudinary.com/tractrac-global/image/upload/v1758191985/Nasarawa_Location_vkkcyy_mspgod.jpg"
                     alt="Nasarawa Office"
                     width={600}
                     height={600}
                     style={{ objectFit: 'cover', width: '100%', height: '100%' }}
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
-                    onError={(e) => {
-                      console.error('Failed to load Nasarawa office image');
-                      e.currentTarget.src = "https://res.cloudinary.com/tractrac-global/image/upload/v1758191985/Nasarawa_Location_vkkcyy_mspgod.jpg";
-                    }}
                   />
                 </Box>
               </Box>
@@ -554,20 +526,11 @@ export default function CareersInner() {
                     cursor="pointer"
                   >
                     <Image
-                      src={getOptimizedImageUrl(src)}
+                      src={src}
                       alt={`Life at TracTrac ${idx + 1}`}
                       width={300}
                       height={250}
                       style={{ objectFit: 'cover', width: '100%', height: '100%' }}
-                      sizes="(max-width: 768px) 90vw, (max-width: 1200px) 30vw, 300px"
-                      loading="lazy"
-                      onError={(e) => {
-                        console.error(`Failed to load image: ${src}`);
-                        // Fallback to original URL if optimized fails
-                        if (e.currentTarget.src !== src) {
-                          e.currentTarget.src = src;
-                        }
-                      }}
                     />
                   </Box>
                 );
