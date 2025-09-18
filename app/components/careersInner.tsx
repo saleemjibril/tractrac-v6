@@ -154,7 +154,7 @@ export default function CareersInner() {
               fontWeight={600}
                 mb="20px"
             >
-              Join the Humans of TracTrac
+              Join the Humans of TracTra
             </Text>
             
               
