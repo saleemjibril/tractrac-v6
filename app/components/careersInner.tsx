@@ -154,7 +154,7 @@ export default function CareersInner() {
               fontWeight={600}
                 mb="20px"
             >
-              Join the Humans of Tr
+              Join the Humans of TracTrac
             </Text>
             
               
@@ -428,7 +428,7 @@ export default function CareersInner() {
                 <Text fontWeight={600} mb="16px" textAlign="center">FCT Abuja Office</Text>
                 <Box height="600px" bgColor="white" borderRadius="8px" overflow="hidden">
                   <Image
-                    src="https://res.cloudinary.com/tractrac-global/image/upload/v1758191983/Abuja_Location_oufheu.jpg"
+                    src="https://res.cloudinary.com/tractrac-global/image/upload/v1758234802/Abuja_Location_1_mbnohp.jpg"
                     alt="Abuja Office"
                     width={600}
                     height={600}
