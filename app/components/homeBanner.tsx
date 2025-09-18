@@ -61,7 +61,7 @@ export default function HomeBanner() {
         ref={bannerRef}
         position={"relative"}
         height={{ base: "350px", md: "535px" }}
-        bgImage="linear-gradient(to left, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://res.cloudinary.com/tractrac-global/image/upload/v1746446556/hero_banner_jh5hui.jpg')"
+        bgImage="linear-gradient(to left, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://res.cloudinary.com/tractrac-global/image/upload/v1758210352/Main_Banner_Photo_2_rxccuz.jpg')"
         bgPosition="center"
         bgSize="cover"
         bgAttachment="fixed"
