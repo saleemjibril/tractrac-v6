@@ -129,7 +129,7 @@ export default function CareersInner() {
         <Box position="relative" margin={"0 auto"} width={"100%"} height={"600px"} bgColor={"#F8F8F0"}>
 
           <Image
-            src="https://res.cloudinary.com/tractrac-global/image/upload/v1758232946/Main_Banner_Photo_1_1_bavjro.jpg"
+            src="https://res.cloudinary.com/tractrac-global/image/upload/v1758233550/Main_Banner_Photo_1_iyyc93.png"
             alt="Careers banner"
             objectFit="cover"
             layout="fill"
@@ -154,7 +154,7 @@ export default function CareersInner() {
               fontWeight={600}
                 mb="20px"
             >
-              Join the Humans of TracTracc
+              Join the Humans of TracTra
             </Text>
             
               
