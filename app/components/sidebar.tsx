@@ -31,11 +31,11 @@ import { useRouter } from "next/navigation";
       path: "/contact",
       active: false,
     },
-    // {
-    //   name: "Careers",
-    //   path: "#",
-    //   active: false,
-    // },
+    {
+      name: "Careers",
+      path: "/careers",
+      active: false,
+    },
     {
       name: "Blog",
       path: "/blog",
