@@ -1,6 +1,7 @@
 import BlogPostDetail from '@/app/components/singleBlogPostInner';
 import { graphQLClient } from '../../utils/graphql';
 import { JSDOM } from 'jsdom';
+import type { Metadata } from 'next';
 
 interface PostResponse {
   post: {
@@ -93,6 +94,44 @@ const FetchBlogSlug = async (slug: string) => {
     return null;
   }
 };
+
+function getTextFromHtml(html: string): string {
+  if (!html) return '';
+  return html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+export async function generateMetadata(
+  { params }: { params: { slug: string } }
+): Promise<Metadata> {
+  const post = await FetchBlogSlug(params.slug);
+
+  const siteUrl = 'https://tractrac.co/';
+  const base = siteUrl ? siteUrl.replace(/\/$/, '') : '';
+  const canonicalUrl = base ? `${base}/blog/${params.slug}` : undefined;
+
+  const title = post?.title || 'Blog';
+  const description = post?.content ? getTextFromHtml(post.content).slice(0, 160) : undefined;
+  const image = post?.featuredImage?.node?.sourceUrl;
+
+  return {
+    title,
+    description,
+    alternates: canonicalUrl ? { canonical: canonicalUrl } : undefined,
+    openGraph: {
+      title,
+      description,
+      url: canonicalUrl,
+      type: 'article',
+      images: image ? [image] : undefined,
+    },
+    twitter: {
+      card: image ? 'summary_large_image' : 'summary',
+      title,
+      description,
+      images: image ? [image] : undefined,
+    },
+  };
+}
 
 export default async function BlogPostPage({ params }: { params: { slug: string } }) {
   const post = await FetchBlogSlug(params.slug);

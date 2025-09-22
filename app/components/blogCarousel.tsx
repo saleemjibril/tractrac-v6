@@ -82,13 +82,13 @@ export default function BlogCarousel({ posts, heading = "Latest insights" }: Blo
           left="8px"
           transform="translateY(-50%)"
           zIndex={1}
-          size="sm"
+          size="md"
           isDisabled={index <= 0}
           onClick={() => setIndex((prev) => Math.max(0, prev - 1))}
           bg="white"
           _hover={{ bg: "white", boxShadow: "md" }}
           _disabled={{ opacity: 0.4, cursor: "not-allowed" }}
-          boxShadow="sm"
+          boxShadow="md"
         />
         <IconButton
           aria-label="Next"
@@ -98,13 +98,13 @@ export default function BlogCarousel({ posts, heading = "Latest insights" }: Blo
           right="8px"
           transform="translateY(-50%)"
           zIndex={1}
-          size="sm"
+          size="md"
           isDisabled={index >= maxIndex}
           onClick={() => setIndex((prev) => Math.min(maxIndex, prev + 1))}
           bg="white"
           _hover={{ bg: "white", boxShadow: "md" }}
           _disabled={{ opacity: 0.4, cursor: "not-allowed" }}
-          boxShadow="sm"
+          boxShadow="md"
         />
         <Flex
           ref={trackRef}
