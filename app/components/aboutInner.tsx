@@ -42,6 +42,7 @@ import { FiMenu } from "react-icons/fi";
 import FooterComponent from "../components/footer";
 import Header from "../components/header";
 import { ChakraWrapper } from "../chakraUIWrapper";
+import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 
 interface MobileProps extends FlexProps {
   onOpen: () => void;
