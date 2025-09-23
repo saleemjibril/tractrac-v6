@@ -129,6 +129,7 @@ export default function SignupInner() {
   }
 
   function validateRoles(value: any) {
+    console.log("validateRoles", value);
     let error;
     if (!value) {
       error = "Select at least one interest";
@@ -194,6 +195,7 @@ export default function SignupInner() {
                     first_name: "",
                     last_name: "",
                     confirm_password: "",
+                    interests: []
                   }}
                   onSubmit={async (values: any, actions) => {
                     if (values.password != values.confirm_password) {
@@ -637,9 +639,9 @@ export default function SignupInner() {
                         <Box as="span" fontSize="12px" lineHeight="5px">
                           By clicking Create account, I agree that I have read
                           and accepted the{" "}
-                          <ChakraLink color="#1373E6">Terms of Use</ChakraLink>{" "}
+                          <ChakraLink color="#1373E6" href="/terms-and-conditions">Terms of Use</ChakraLink>{" "}
                           and{" "}
-                          <ChakraLink color="#1373E6">
+                          <ChakraLink color="#1373E6" href="/privacy-policy">
                             Privacy Policy
                           </ChakraLink>
                           .
