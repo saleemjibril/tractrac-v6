@@ -1005,9 +1005,11 @@ function TractorCard({
         <Box h="200px" position="relative">
           <Image
             borderTopRadius="4px"
-            src={
-              image?.startsWith("https") ? image[0] : "https://res.cloudinary.com/tractrac-global/image/upload/v1746446723/man-with-tractor_dxf5ly.svg"
-            }
+             src={
+            image?.startsWith("https")
+              ? image
+              : "https://res.cloudinary.com/tractrac-global/image/upload/v1746446723/man-with-tractor_dxf5ly.svg"
+          }
             alt="Tractor image"
             height="100%"
             width="100%"
