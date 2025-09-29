@@ -100,36 +100,11 @@ function getTextFromHtml(html: string): string {
   return html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
 }
 
-export async function generateMetadata(
-  { params }: { params: { slug: string } }
-): Promise<Metadata> {
-  const post = await FetchBlogSlug(params.slug);
-
-  const siteUrl = 'https://tractrac.co/';
-  const base = siteUrl ? siteUrl.replace(/\/$/, '') : '';
-  const canonicalUrl = base ? `${base}/blog/${params.slug}` : undefined;
-
-  const title = post?.title || 'Blog';
-  const description = post?.content ? getTextFromHtml(post.content).slice(0, 160) : undefined;
-  const image = post?.featuredImage?.node?.sourceUrl;
-
+export async function generateMetadata() {
   return {
-    title,
-    description,
-    alternates: canonicalUrl ? { canonical: canonicalUrl } : undefined,
-    openGraph: {
-      title,
-      description,
-      url: canonicalUrl,
-      type: 'article',
-      images: image ? [image] : undefined,
-    },
-    twitter: {
-      card: image ? 'summary_large_image' : 'summary',
-      title,
-      description,
-      images: image ? [image] : undefined,
-    },
+    title: "TracTrac Mechanization Forum 2025: The State of the Mechanization Ecosystem in Nigeria.",
+    description:
+      "TracTrac is set to host the TracTrac Mechanization Forum 2025 — a landmark event to spark National dialogue, foster partnerships, and chart a roadmap for transforming Nigeria’s agricultural landscape.",
   };
 }
 
