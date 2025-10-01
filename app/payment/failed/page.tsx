@@ -1,7 +1,6 @@
 "use client";
 import {
   Box,
-  Image,
   ComponentWithAs,
   Flex,
   Text,
@@ -11,8 +10,9 @@ import {
   ModalOverlay,
   ModalContent,
   ModalBody,
-  useDisclosure,
-} from "@chakra-ui/react";
+  useDisclosure
+} from "@chakra-ui/react";;
+import Image from "@/app/components/Image";
 import { SidebarWithHeader } from "../../components/Sidenav";
 import { useEffect, useState } from "react";
 import { AddIcon, ArrowForwardIcon } from "@chakra-ui/icons";

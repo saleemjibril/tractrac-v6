@@ -1,7 +1,6 @@
 "use client";
 import {
   Box,
-  Image,
   Flex,
   Text,
   Center,
@@ -16,8 +15,9 @@ import {
   SkeletonText,
   Input,
   InputGroup,
-  InputLeftElement,
-} from "@chakra-ui/react";
+  InputLeftElement
+} from "@chakra-ui/react";;
+import Image from "@/app/components/Image";
 import { useState } from "react";
 import { SearchIcon } from "@chakra-ui/icons";
 import { useGetEntriesQuery } from "@/redux/services/adminApi";

@@ -1,7 +1,6 @@
 "use client";
 import {
   Box,
-  Image,
   ComponentWithAs,
   Flex,
   IconProps,
@@ -12,8 +11,9 @@ import {
   Input,
   Alert,
   AlertIcon,
-  AlertTitle,
-} from "@chakra-ui/react";
+  AlertTitle
+} from "@chakra-ui/react";;
+import Image from "@/app/components/Image";
 import { SidebarWithHeader } from "../../../components/Sidenav";
 import { createElement, Dispatch, SetStateAction, useState } from "react";
 import { AddIcon, ArrowForwardIcon } from "@chakra-ui/icons";

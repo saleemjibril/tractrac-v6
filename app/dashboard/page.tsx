@@ -1,13 +1,13 @@
 "use client";
 import {
   Box,
-  Image,
   ComponentWithAs,
   Flex,
   IconProps,
   SimpleGrid,
-  Text,
-} from "@chakra-ui/react";
+  Text
+} from "@chakra-ui/react";;
+import Image from "@/app/components/Image";
 import { SidebarWithHeader } from "../components/Sidenav";
 import {
   TaskList,

@@ -2,9 +2,9 @@
 import {
   Flex,
   Text,
-  Image,
   Box
-} from "@chakra-ui/react";
+} from "@chakra-ui/react";;
+import Image from "@/app/components/Image";
 import { ChakraWrapper } from "../chakraUIWrapper";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";

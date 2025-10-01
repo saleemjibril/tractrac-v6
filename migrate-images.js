@@ -148,7 +148,7 @@ function updateFile(filePath) {
       insertPosition = firstImportEnd !== -1 ? firstImportEnd + 1 : content.length;
     }
     
-    const optimizedImport = 'import Image from "./Image";\n';
+    const optimizedImport = 'import Image from "@/app/components/Image";\n';
     content = content.slice(0, insertPosition) + optimizedImport + content.slice(insertPosition);
     updated = true;
   }

@@ -1,7 +1,14 @@
 "use client";
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { Box, Flex, Image, Text, useBreakpointValue, IconButton } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Text,
+  useBreakpointValue,
+  IconButton
+} from "@chakra-ui/react";;
+import Image from "@/app/components/Image";
 import { ArrowBackIcon, ArrowForwardIcon, ChevronRightIcon } from "@chakra-ui/icons";
 
 interface Post {

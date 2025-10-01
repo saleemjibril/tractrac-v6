@@ -4,13 +4,13 @@ import {
   Box,
   Stack,
   Text,
-  Image,
   Center,
   Skeleton,
   SkeletonText,
   SimpleGrid,
-  Flex,
-} from "@chakra-ui/react";
+  Flex
+} from "@chakra-ui/react";;
+import Image from "@/app/components/Image";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import { ChakraWrapper } from "@/app/chakraUIWrapper";
 import Header from "@/app/components/header";

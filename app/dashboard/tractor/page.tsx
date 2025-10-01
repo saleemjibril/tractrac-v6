@@ -2,7 +2,6 @@
 import { Dispatch, SetStateAction } from "react";
 import {
   Box,
-  Image,
   Flex,
   FormLabel,
   FormControl,
@@ -28,8 +27,9 @@ import {
   GridItem,
   Grid,
   VStack,
-  Badge,
-} from "@chakra-ui/react";
+  Badge
+} from "@chakra-ui/react";;
+import Image from "@/app/components/Image";
 import { useEffect, useState } from "react";
 import { CloseIcon, SearchIcon } from "@chakra-ui/icons";
 import { useAppSelector } from "@/redux/hooks";

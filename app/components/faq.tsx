@@ -8,9 +8,9 @@ import {
   AccordionItem,
   AccordionButton,
   AccordionPanel,
-  AccordionIcon,
-  Image,
-} from "@chakra-ui/react";
+  AccordionIcon
+} from "@chakra-ui/react";;
+import Image from "@/app/components/Image";
 import { ChakraWrapper } from "../chakraUIWrapper";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";

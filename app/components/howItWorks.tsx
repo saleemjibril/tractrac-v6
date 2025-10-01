@@ -5,13 +5,13 @@ import {
   Flex,
   Text,
   Button,
-  Image,
   Tabs,
   TabList,
   TabPanels,
   Tab,
-  TabPanel,
-} from "@chakra-ui/react";
+  TabPanel
+} from "@chakra-ui/react";;
+import Image from "@/app/components/Image";
 import { useRouter } from "next/navigation";
 import { ReactNode, useRef, useEffect, useState } from "react";
 import { gsap } from "gsap";

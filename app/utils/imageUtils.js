@@ -14,27 +14,27 @@ export function getOptimizedImageUrl(url, options = {}) {
     optimizations.push('f_auto'); // Auto format
     optimizations.push('q_auto'); // Auto quality
     
-    // Add width constraint if specified
-    if (options.width) {
-      optimizations.push(`w_${options.width}`);
-    }
+    // // Add width constraint if specified
+    // if (options.width) {
+    //   optimizations.push(`w_${options.width}`);
+    // }
     
-    // Add height constraint if specified
-    if (options.height) {
-      optimizations.push(`h_${options.height}`);
-    }
+    // // Add height constraint if specified
+    // if (options.height) {
+    //   optimizations.push(`h_${options.height}`);
+    // }
     
-    // Add crop mode if specified
-    if (options.crop) {
-      optimizations.push(`c_${options.crop}`);
-    } else {
-      optimizations.push('c_limit'); // Default crop mode
-    }
+    // // Add crop mode if specified
+    // if (options.crop) {
+    //   optimizations.push(`c_${options.crop}`);
+    // } else {
+    //   optimizations.push('c_limit'); // Default crop mode
+    // }
     
-    // Add any additional transformations
-    if (options.transformations) {
-      optimizations.push(options.transformations);
-    }
+    // // Add any additional transformations
+    // if (options.transformations) {
+    //   optimizations.push(options.transformations);
+    // }
     
     return `${baseUrl}/upload/${optimizations.join(',')}/${imageParams}`;
   }

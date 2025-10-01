@@ -5,10 +5,10 @@ import {
   Text,
   ComponentWithAs,
   IconProps,
-  Image,
   Box,
-  Button,
-} from "@chakra-ui/react";
+  Button
+} from "@chakra-ui/react";;
+import Image from "@/app/components/Image";
 import { SidebarWithHeader } from "../components/Sidenav";
 import {
   Money_2,

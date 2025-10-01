@@ -7,6 +7,7 @@ import {
     FlexProps,
     CloseButton
   } from "@chakra-ui/react";
+import Image from "@/app/components/Image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 

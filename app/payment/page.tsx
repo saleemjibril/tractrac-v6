@@ -1,7 +1,6 @@
 "use client";
 import {
   Box,
-  Image,
   Stack,
   Table,
   TableCaption,
@@ -18,8 +17,9 @@ import {
   Text,
   Button,
   Center,
-  SkeletonText,
-} from "@chakra-ui/react";
+  SkeletonText
+} from "@chakra-ui/react";;
+import Image from "@/app/components/Image";
 import { SidebarWithHeader } from "../components/Sidenav";
 import { createElement, useEffect, useState } from "react";
 import Link from "next/link";

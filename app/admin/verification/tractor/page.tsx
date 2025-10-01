@@ -2,7 +2,6 @@
 import { Dispatch, SetStateAction } from "react";
 import {
   Box,
-  Image,
   Flex,
   FormLabel,
   FormControl,
@@ -24,8 +23,9 @@ import {
   Skeleton,
   SkeletonText,
   Divider,
-  ButtonGroup,
-} from "@chakra-ui/react";
+  ButtonGroup
+} from "@chakra-ui/react";;
+import Image from "@/app/components/Image";
 import { useEffect, useState } from "react";
 import { CloseIcon, SearchIcon } from "@chakra-ui/icons";
 import { useAppSelector } from "@/redux/hooks";

@@ -26,9 +26,9 @@ import {
   AlertTitle,
   Select as ChakraSelect,
   FormErrorMessage,
-  Image,
-  InputLeftElement,
-} from "@chakra-ui/react";
+  InputLeftElement
+} from "@chakra-ui/react";;
+import Image from "@/app/components/Image";
 import { Field, Form, Formik } from "formik";
 import { useRouter } from "next/navigation";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";

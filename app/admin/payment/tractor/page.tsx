@@ -2,7 +2,6 @@
 import { Dispatch, SetStateAction } from "react";
 import {
   Box,
-  Image,
   Flex,
   FormLabel,
   FormControl,
@@ -31,8 +30,9 @@ import {
   ModalBody,
   ModalContent,
   ModalOverlay,
-  IconButton,
-} from "@chakra-ui/react";
+  IconButton
+} from "@chakra-ui/react";;
+import Image from "@/app/components/Image";
 import { useEffect, useState } from "react";
 import { CloseIcon, SearchIcon } from "@chakra-ui/icons";
 import { useAppSelector } from "@/redux/hooks";

@@ -3,9 +3,9 @@ import {
   Box,
   Stack,
   Flex,
-  Text,
-  Image,
-} from "@chakra-ui/react";
+  Text
+} from "@chakra-ui/react";;
+import Image from "@/app/components/Image";
 import Link from "next/link";
 import { ChakraWrapper } from "../chakraUIWrapper";
 import { useEffect, useRef } from "react";

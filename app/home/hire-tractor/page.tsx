@@ -8,7 +8,6 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
-  Image,
   Input,
   Stack,
   Text,
@@ -28,8 +27,9 @@ import {
   InputRightAddon,
   Skeleton,
   SkeletonText,
-  Tooltip,
-} from "@chakra-ui/react";
+  Tooltip
+} from "@chakra-ui/react";;
+import Image from "@/app/components/Image";
 import { SidebarWithHeader } from "../../components/Sidenav";
 import { Formik, Form, Field } from "formik";
 import { useRouter } from "next/navigation";

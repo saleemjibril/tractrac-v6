@@ -10,7 +10,6 @@ import {
   FormLabel,
   VStack,
   List,
-  Image,
   Input,
   Stack,
   Text,
@@ -37,8 +36,9 @@ import {
   ListItem,
   TagCloseButton,
   TagLabel,
-  Tag,
-} from "@chakra-ui/react";
+  Tag
+} from "@chakra-ui/react";;
+import Image from "@/app/components/Image";
 import { SidebarWithHeader } from "../../components/Sidenav";
 import { Formik, Form, Field } from "formik";
 import { useRouter } from "next/navigation";

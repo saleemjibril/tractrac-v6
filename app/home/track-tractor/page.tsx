@@ -8,11 +8,11 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
-  Image,
   Input,
   Text,
-  Box,
-} from "@chakra-ui/react";
+  Box
+} from "@chakra-ui/react";;
+import Image from "@/app/components/Image";
 import { SidebarWithHeader } from "../../components/Sidenav";
 import { Formik, Form, Field } from "formik";
 import { useState } from "react";

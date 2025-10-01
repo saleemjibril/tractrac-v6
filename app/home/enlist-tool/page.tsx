@@ -9,7 +9,6 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
-  Image,
   Input,
   Stack,
   Text,
@@ -23,8 +22,9 @@ import {
   ModalContent,
   Textarea,
   Icon,
-  InputGroup,
-} from "@chakra-ui/react";
+  InputGroup
+} from "@chakra-ui/react";;
+import Image from "@/app/components/Image";
 import * as nigerianStates from "nigerian-states-and-lgas";
 import { SidebarWithHeader } from "../../components/Sidenav";
 import { Formik, Form, Field } from "formik";

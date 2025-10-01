@@ -8,7 +8,6 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
-  Image,
   Input,
   Stack,
   Text,
@@ -23,8 +22,9 @@ import {
   Textarea,
   InputGroup,
   InputLeftElement,
-  Icon,
-} from "@chakra-ui/react";
+  Icon
+} from "@chakra-ui/react";;
+import Image from "@/app/components/Image";
 import { SidebarWithHeader } from "../../components/Sidenav";
 import { saveLoginInfo } from "@/redux/features/auth/authActions";
 import { Formik, Form, Field } from "formik";

@@ -175,7 +175,8 @@ const SidebarContent = ({
       <Box pl="18px" pt="24px" as="a" href="/" display="block">
         <Image
           display={{ base: "none", md: "flex" }}
-          src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446664/logo_ofzooy.svg"
+          src="https://res.cloudinary.com/tractrac-global/image/upload/v1747644706/tractrac_logo_png_vfhoy7.png"
+          width={120}
           fill="red"
           alt="Logo"
         />

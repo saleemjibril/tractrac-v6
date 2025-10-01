@@ -8,7 +8,6 @@ import {
   FormControl,
   FormErrorMessage,
   ModalContent,
-  Image,
   Input,
   Modal as ChakraModal,
   Stack,
@@ -16,8 +15,9 @@ import {
   Box,
   ModalOverlay,
   useDisclosure,
-  ModalBody,
-} from "@chakra-ui/react";
+  ModalBody
+} from "@chakra-ui/react";;
+import Image from "@/app/components/Image";
 // const DynamicComponent = dynamic(() => import('../../components/Sidenav'))
 import { SidebarWithHeader } from "../../components/Sidenav";
 import { Formik, Form, Field } from "formik";

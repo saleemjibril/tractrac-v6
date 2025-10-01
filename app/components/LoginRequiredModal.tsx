@@ -4,12 +4,12 @@ import {
   Modal as ChakraModal,
   ModalOverlay,
   ModalContent,
-  Image,
   Text,
   Button,
   Flex,
-  ModalBody,
-} from "@chakra-ui/react";
+  ModalBody
+} from "@chakra-ui/react";;
+import Image from "@/app/components/Image";
 import { RootState } from "@/redux/store";
 import { closeModal } from "@/redux/features/modalSlice";
 import { useAppSelector, useAppDispatch } from "@/redux/hooks";

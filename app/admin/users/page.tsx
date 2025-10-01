@@ -2,7 +2,6 @@
 import { Dispatch, SetStateAction, useMemo } from "react";
 import {
   Box,
-  Image,
   Flex,
   Text,
   Center,
@@ -23,8 +22,9 @@ import {
   Avatar,
   Button,
   Icon,
-  ButtonGroup,
-} from "@chakra-ui/react";
+  ButtonGroup
+} from "@chakra-ui/react";;
+import Image from "@/app/components/Image";
 import { useState } from "react";
 import { SearchIcon } from "@chakra-ui/icons";
 import { useAppSelector } from "@/redux/hooks";

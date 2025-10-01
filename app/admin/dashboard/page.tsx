@@ -1,13 +1,13 @@
 "use client";
 import {
   Box,
-  Image,
   ComponentWithAs,
   Flex,
   IconProps,
   SimpleGrid,
-  Text,
-} from "@chakra-ui/react";
+  Text
+} from "@chakra-ui/react";;
+import Image from "@/app/components/Image";
 import { AdminSidebarWithHeader } from "../../components/AdminSidenav";
 import { createElement, useEffect, useState } from "react";
 import { useAppSelector } from "@/redux/hooks";

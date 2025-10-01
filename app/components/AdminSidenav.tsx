@@ -21,14 +21,14 @@ import {
   MenuDivider,
   MenuItem,
   MenuList,
-  Image,
   Spacer,
   ComponentWithAs,
   IconProps,
   Button,
   Show,
-  ListIcon,
-} from "@chakra-ui/react";
+  ListIcon
+} from "@chakra-ui/react";;
+import Image from "@/app/components/Image";
 import {
   FiHome,
   FiTrendingUp,

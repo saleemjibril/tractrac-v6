@@ -1,6 +1,13 @@
 "use client";
 
-import { Box, Stack, Text, Image, Center, SimpleGrid } from "@chakra-ui/react";
+import {
+  Box,
+  Stack,
+  Text,
+  Center,
+  SimpleGrid
+} from "@chakra-ui/react";;
+import Image from "@/app/components/Image";
 
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import Header from "./header";

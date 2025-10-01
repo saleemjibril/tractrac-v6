@@ -22,7 +22,7 @@ import { useEffect, useState } from "react";
 import Header from "./header";
 import FooterComponent from "./footer";
 import { ChakraWrapper } from "../chakraUIWrapper";
-import Image from "next/image";
+import Image from "@/app/components/Image";
 import Link from "next/link";
 import { FaGlobe, FaChartLine, FaHeart, FaRocket, FaMapMarkerAlt } from "react-icons/fa";
 import BlogCarousel from "./blogCarousel";

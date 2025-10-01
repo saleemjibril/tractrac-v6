@@ -1,7 +1,6 @@
 "use client";
 import {
   Box,
-  Image,
   ComponentWithAs,
   Flex,
   IconProps,
@@ -19,8 +18,9 @@ import {
   Thead,
   Tr,
   Skeleton,
-  SkeletonText,
-} from "@chakra-ui/react";
+  SkeletonText
+} from "@chakra-ui/react";;
+import Image from "@/app/components/Image";
 import { SidebarWithHeader } from "../../components/Sidenav";
 import { createElement, useEffect, useState } from "react";
 import PersonalOverview from "@/app/components/PersonalOverview";

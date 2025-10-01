@@ -20,10 +20,10 @@ import {
   InputRightElement,
   Select as ChakraSelect,
   Link,
-  Image,
   Stack,
-  Center,
-} from "@chakra-ui/react";
+  Center
+} from "@chakra-ui/react";;
+import Image from "@/app/components/Image";
 import { saveLoginInfo } from "@/redux/features/auth/authActions";
 import { Formik, Form, Field } from "formik";
 import { useRouter, useSearchParams } from "next/navigation";
