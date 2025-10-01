@@ -10,9 +10,9 @@ import {
   Stack,
   Flex,
   Text,
-  Link,
-  Image
+  Link
 } from "@chakra-ui/react";
+import Image from "./Image";
 import {
   FaCheckCircle
 } from "react-icons/fa";
