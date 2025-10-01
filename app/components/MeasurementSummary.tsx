@@ -1,3 +1,4 @@
+"use client";
 // components/MeasurementSummary.tsx
 import React, { useState } from 'react';
 import { FarmPath, MeasurementUnit } from '../types/farm-measurement';

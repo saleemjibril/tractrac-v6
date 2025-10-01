@@ -1,3 +1,4 @@
+"use client";
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Position } from '../types/farm-measurement';
 import { calculateDistance } from '../utils/farmMeasurementUtils';

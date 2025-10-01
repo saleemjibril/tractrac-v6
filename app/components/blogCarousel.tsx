@@ -2,7 +2,7 @@
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Box, Flex, Image, Text, useBreakpointValue, IconButton } from "@chakra-ui/react";
-import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
+import { ArrowBackIcon, ArrowForwardIcon, ChevronRightIcon } from "@chakra-ui/icons";
 
 interface Post {
   id: string;
@@ -57,7 +57,7 @@ export default function BlogCarousel({ posts, heading = "Latest insights" }: Blo
   }
 
   return (
-    <Box width="100%" maxWidth="1440px" mx="auto" px="20px" my="40px">
+    <Box width="100%" maxWidth="1440px" mx="auto" px="20px" py="80px">
       <Text
             fontFamily={"cursive"}
             fontSize={{ base: "20px", md: "28px" }}
@@ -68,7 +68,20 @@ export default function BlogCarousel({ posts, heading = "Latest insights" }: Blo
       <Flex align="center" justify="space-between" mb="16px">
         <Text fontWeight={800} fontSize={{ base: "22px", lg: "32px" }}>{heading}</Text>
         <Box as="a" href="/blog" color="#FA9411" fontWeight={600} fontSize={{ base: "14px", lg: "16px" }}>
-          View all
+          {/* Desktop: Show "View all" text */}
+          <Text display={{ base: "none", md: "block" }}>View all</Text>
+          {/* Mobile: Show arrow icon */}
+          <IconButton
+            display={{ base: "flex", md: "none" }}
+            aria-label="View all blogs"
+            icon={<ChevronRightIcon />}
+            variant="ghost"
+            color="#FA9411"
+            size="lg"
+            _hover={{ bg: "transparent" }}
+            _active={{ bg: "transparent" }}
+            as="span"
+          />
         </Box>
       </Flex>
 

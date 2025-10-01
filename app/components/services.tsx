@@ -197,7 +197,7 @@ export default function ServicesComponent() {
             />
           </Box>
           <Image
-            src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446531/tractor_q5dtvz.jpg"
+            src="https://res.cloudinary.com/tractrac-global/image/upload/f_auto,q_auto,w_1200,c_limit/v1746446531/tractor_q5dtvz.jpg"
             alt="Tractor image"
             width={"328px"}
           />
@@ -417,13 +417,27 @@ export default function ServicesComponent() {
             </Text>
 
             <Flex
-              mt="40px"
-              mb="20px"
-              px="30px"
               justifyContent="center"
               fontWeight={700}
+              bg={"#FA9411"}
+              color={"white"}
+              borderRadius={"10px"}
+              py="10px"
+              px="20px"
+              width={"fit-content"}
+              margin={"auto"}
+              mt="40px"
+              mb="-25px"
+              _hover={{
+                bg: "#FA9411",
+                // opacity: ".8",
+                transform: "scale(1.05)",
+                transition: "transform 0.3s ease"
+              }}
             >
-              <Link href="/services">Explore more services</Link>
+              <Link 
+                            textDecoration={"none"}
+              href="/services">Explore more services</Link>
             </Flex>
           </Box>
         </Box>

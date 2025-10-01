@@ -56,6 +56,7 @@ import { toast } from "react-toastify";
 import { getUserInfo, updateUserInfo } from "../apis/user";
 import { useRouter } from "next/navigation";
 import { userLogout } from "@/redux/features/auth/authActions";
+import { tractorMediaUploadService } from "../services/mediaUploadService";
 
 const statusTypes: Record<string, { title: string; color: string }> = {
   pending: { title: "Pending", color: "#FA9411" },
@@ -73,6 +74,10 @@ export default function AccountPage() {
 
   const [modalState, setModalState] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [profileImage, setProfileImage] = useState<string | null>(null);
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const [userDetails, setUserDetails] = useState<any>(null);
+  const [loadingUserDetails, setLoadingUserDetails] = useState(false);
 
   const [error, setError] = useState<string | null>(null);
   const [deleteError, setDeleteError] = useState<string | null>(null);
@@ -94,9 +99,60 @@ const dispatch = useAppDispatch();
     return error;
   }
 
-  const handleGetUserInfo = () => {
-    const response = getUserInfo(profileInfo?.id, userToken as string);
+  const handleProfileImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please select a valid image file');
+      return;
+    }
+
+    // Validate file size (5MB limit)
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('Image size should be less than 5MB');
+      return;
+    }
+
+    setIsUploadingImage(true);
+    try {
+      const uploadedUrl = await tractorMediaUploadService.uploadTractorMedia(file, 'image');
+      if (uploadedUrl) {
+        setProfileImage(uploadedUrl);
+        toast.success('Profile image uploaded successfully');
+      } else {
+        toast.error('Failed to upload image. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error uploading profile image:', error);
+      toast.error('Failed to upload image. Please try again.');
+    } finally {
+      setIsUploadingImage(false);
+    }
+  };
+
+  const handleGetUserInfo = async () => {
+    if (!profileInfo?.id || !userToken) return;
+    
+    setLoadingUserDetails(true);
+    try {
+      const response = await getUserInfo(profileInfo?.id, userToken as string);
     console.log("getUserInfo", response);
+      
+      if (response && response.data) {
+        setUserDetails(response.data);
+        // Set profile image if available
+        if (response.data.photo) {
+          setProfileImage(response.data.photo);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching user details:", error);
+      toast.error("Failed to load user details");
+    } finally {
+      setLoadingUserDetails(false);
+    }
   };
 
   useEffect(() => {
@@ -141,35 +197,68 @@ const dispatch = useAppDispatch();
                   <Text fontWeight={700} fontSize="28px" mt="12px">
                     Edit Profile
                   </Text>
-                  {mounted && (
+                  {loadingUserDetails ? (
+                    <Box textAlign="center" py="40px">
+                      <Text color="#929292">Loading user details...</Text>
+                    </Box>
+                  ) : mounted && (
+                    <Box position="relative" display="inline-block">
                     <Avatar
                       my="30px"
                       size="xl"
-                      name={`${profileInfo?.name?.split(" ")[0]} ${
-                        profileInfo?.name?.split(" ")[1]
+                        name={`${userDetails?.name?.split(" ")[0] || ""} ${
+                          userDetails?.name?.split(" ")[1] || ""
                       }`}
-                      src={undefined}
+                        src={profileImage || undefined}
                     >
-                      {/* <AvatarBadge
+                        <AvatarBadge
                       cursor="pointer"
                       boxSize="1.1em"
                       bg="#F8A730"
                       onClick={() => {
-                        alert("hello");
+                            document.getElementById('profile-image-input')?.click();
                       }}
                     >
                       <Edit2 color="white" size="18px" />
-                    </AvatarBadge> */}
+                        </AvatarBadge>
                     </Avatar>
+                      <input
+                        id="profile-image-input"
+                        type="file"
+                        accept="image/*"
+                        style={{ display: 'none' }}
+                        onChange={handleProfileImageUpload}
+                        disabled={isUploadingImage}
+                      />
+                      {isUploadingImage && (
+                        <Box
+                          position="absolute"
+                          top="50%"
+                          left="50%"
+                          transform="translate(-50%, -50%)"
+                          bg="rgba(0,0,0,0.7)"
+                          color="white"
+                          px="3"
+                          py="1"
+                          borderRadius="md"
+                          fontSize="sm"
+                        >
+                          Uploading...
+                        </Box>
+                      )}
+                    </Box>
                   )}
 
+                  {!loadingUserDetails && userDetails && (
                   <Formik
+                    enableReinitialize={true}
                     initialValues={{
-                      phone: profileInfo?.phone,
-                      fname: profileInfo?.name?.split(" ")[0],
-                      lname: profileInfo?.name?.split(" ")[1],
-                      email: profileInfo?.email,
-                      gender: profileInfo?.gender,
+                      phone: userDetails?.phone || "",
+                      fname: userDetails?.name?.split(" ")[0] || "",
+                      lname: userDetails?.name?.split(" ")[1] || "",
+                      email: userDetails?.email || "",
+                      gender: userDetails?.gender || "",
+                      photo: profileImage,
                     }}
                     onSubmit={async (values: any, { resetForm }) => {
                       setError(null);
@@ -182,9 +271,12 @@ const dispatch = useAppDispatch();
                           profileInfo?.id,
                           {
                             ...values,
+                            photo: profileImage,
                           },
                           userToken as string
                         );
+                        console.log("updateUserInfo", response);
+                        
                         toast.success("Profile updated successfully");
                         resetForm();
                         // .unwrap();
@@ -286,11 +378,11 @@ const dispatch = useAppDispatch();
                           </Field>
                         </Flex>
 
-                        <Field name="email" validate={validateEmpty}>
+                        <Field name="email" validate={userDetails?.email ? undefined : validateEmpty}>
                           {({ field, form }: { [x: string]: any }) => (
                             <FormControl
                               mt="20px"
-                              // isDisabled={true}
+                              isDisabled={!!userDetails?.email}
                               isInvalid={
                                 form.errors.email && form.touched.email
                               }
@@ -305,6 +397,11 @@ const dispatch = useAppDispatch();
                                 fontSize="12px"
                                 color="#323232"
                               />
+                              {userDetails?.email && (
+                                <Text fontSize="10px" color="#929292" mt="4px">
+                                  Email is set from your account. Contact support to change it.
+                                </Text>
+                              )}
                               <FormErrorMessage>
                                 {form.errors.email}
                               </FormErrorMessage>
@@ -371,6 +468,7 @@ const dispatch = useAppDispatch();
                       </Form>
                     )}
                   </Formik>
+                  )}
                 </Box>
               </TabPanel>
 

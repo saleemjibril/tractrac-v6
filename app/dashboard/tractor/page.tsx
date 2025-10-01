@@ -201,7 +201,7 @@ export default function PaymentPage() {
                   Current Location
                 </Text>
                 <Box borderRadius="12px" overflow="hidden" boxShadow="md" onClick={() => window.open(`/tracking?tractorId=${tractor?.tracker_id}`, '_blank')}>
-                  <Map addresses={[tractor?.current_address]} />
+                  <Map />
                 </Box>
               </Box>
 

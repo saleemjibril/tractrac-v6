@@ -72,6 +72,7 @@ interface ICoordinates {
   longitude: number;
 }
 
+
 interface ITractorCard {
   id: string;
   name: string;
@@ -82,6 +83,7 @@ interface ITractorCard {
   tractor_type: string;
   setTractorId: Dispatch<SetStateAction<string | null>>;
   coordinates: ICoordinates;
+  userCoordinates?: ICoordinates | null;
 }
 
 const statusTypes: Record<string, { title: string; color: string }> = {
@@ -90,6 +92,58 @@ const statusTypes: Record<string, { title: string; color: string }> = {
   available: { title: "Available", color: "#27AE60" },
   in_use: { title: "In Use", color: "#FA9411" },
 };
+
+/**
+ * Gets the user's current location and returns the principalSubdivision (state)
+ * @returns Promise<string | null> - The principalSubdivision or null if not found
+ */
+async function getCurrentLocationState(): Promise<string | null> {
+  return new Promise((resolve, reject) => {
+    // Check if geolocation is supported
+    if (!navigator.geolocation) {
+      resolve(null);
+      return;
+    }
+
+    // Get current position
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        try {
+          const { latitude, longitude } = position.coords;
+
+          // Get principalSubdivision using reverse geocoding
+          const response = await fetch(
+            `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`
+          );
+          
+          if (!response.ok) {
+            resolve(null);
+            return;
+          }
+          
+          const data = await response.json();
+          console.log("getCurrentLocationState", data);
+          const principalSubdivision = data.principalSubdivision;
+          
+          resolve(principalSubdivision || null);
+        } catch (error) {
+          console.error('Error getting location state:', error);
+          resolve(null);
+        }
+      },
+      (error) => {
+        // Silently handle geolocation errors - don't show error to user
+        console.log('Geolocation error:', error.message);
+        resolve(null);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 300000 // 5 minutes
+      }
+    );
+  });
+}
 export default function HireTractor() {
   const { userToken } = useAppSelector((state) => state.auth);
   const [location, setLocation] = useState<any>(null);
@@ -104,6 +158,7 @@ export default function HireTractor() {
   const [implement, setImplement] = useState<string | null>(null);
   const [tractorType, setTractorType] = useState<string | null>(null);
   const [tractorSearchTerm, setTractorSearchTerm] = useState<string | null>(null);
+  const [userCoordinates, setUserCoordinates] = useState<ICoordinates | null>(null);
   // const [getTractors, result] = useLazyGetTractorsQuery();
   const [result] = useLazyGetTractorsQuery();
   const [trigger, searchResult] = useLazyGetSearchTractorsQuery({});
@@ -113,7 +168,14 @@ export default function HireTractor() {
     try {
       if (typeof userToken === "string") {
         const response = await getApprovedTractors(userToken);
-        setTractors(response?.data);
+        const tractorsData = response?.data || [];
+        console.log("handleGetTractors: Got tractors data:", tractorsData.length);
+        
+        // Sort tractors by distance before setting state
+        console.log("handleGetTractors: About to sort tractors...");
+        const sortedTractorsData = await sortTractorsByDistance(tractorsData);
+        console.log("handleGetTractors: Sorted tractors:", sortedTractorsData.length);
+        setTractors(sortedTractorsData);
         console.log("getTractorss", response);
       } else {
         // Handle the case when userToken is not a string
@@ -129,6 +191,7 @@ export default function HireTractor() {
 
   useEffect(() => {
     handleGetTractors();
+    setLocationBasedState(); // Automatically set state and LGA based on user's location
   }, []);
 
   // useEffect(() => {
@@ -190,7 +253,11 @@ export default function HireTractor() {
             userToken as string
           );
           console.log("filterTractors", response);
-          setTractors(response?.data);
+          const tractorsData = response?.data || [];
+          
+          // Sort tractors by distance before setting state
+          const sortedTractorsData = await sortTractorsByDistance(tractorsData);
+          setTractors(sortedTractorsData);
 
           // Assuming response has a data property
           // setSearchData(response?.data || []);
@@ -209,11 +276,52 @@ export default function HireTractor() {
     fetchFilteredTractors();
   }, [state, lga, tractorType, tractorSearchTerm, userToken]);
 
-  const clearFilters = () => {
+  const clearFilters = async () => {
     setState(null);
     setLga(null);
     setTractorType(null);
-    handleGetTractors();
+    await handleGetTractors();
+  }
+  // Function to automatically set state and LGA based on user's location
+  const setLocationBasedState = async () => {
+    try {
+      const principalSubdivision = await getCurrentLocationState();
+      console.log("principalSubdivision", principalSubdivision);
+      
+      if (principalSubdivision) {
+        if (principalSubdivision.toLowerCase().includes("abuja")) {
+          // Federal Capital Territory
+          setState("fct - abuja");
+          setLgas(nigerianStates.lgas("fct - abuja") ?? []);
+        } else {
+          setState(principalSubdivision.toLowerCase());
+          setLgas(nigerianStates.lgas(principalSubdivision.toLowerCase()) ?? []);
+        }
+      }
+
+      // Also get user coordinates for distance calculations
+      if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const userCoords = {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+            };
+            setUserCoordinates(userCoords);
+          },
+          (error) => {
+            console.log("Error getting user coordinates:", error);
+          },
+          {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 300000 // 5 minutes
+          }
+        );
+      }
+    } catch (error) {
+      console.error('Error setting location-based state:', error);
+    }
   }
 
   async function search() {
@@ -271,6 +379,91 @@ export default function HireTractor() {
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ");
   }
+
+  // Function to get user coordinates if not already available
+  const getUserCoordinates = (): Promise<ICoordinates | null> => {
+    return new Promise((resolve) => {
+      console.log("getUserCoordinates called, current userCoordinates:", userCoordinates);
+      
+      // If we already have user coordinates, return them
+      if (userCoordinates) {
+        console.log("Using existing user coordinates:", userCoordinates);
+        resolve(userCoordinates);
+        return;
+      }
+
+      // If geolocation is not supported, resolve with null
+      if (!navigator.geolocation) {
+        console.log("Geolocation not supported");
+        resolve(null);
+        return;
+      }
+
+      console.log("Requesting user location for sorting...");
+      // Get current position
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const coords = {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          };
+          console.log("Got user coordinates for sorting:", coords);
+          setUserCoordinates(coords); // Store for future use
+          resolve(coords);
+        },
+        (error) => {
+          console.log("Error getting user coordinates for sorting:", error);
+          resolve(null);
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 300000 // 5 minutes
+        }
+      );
+    });
+  };
+
+  // Function to sort tractors by distance from user
+  const sortTractorsByDistance = async (tractorsArray: any[]): Promise<any[]> => {
+    console.log("sortTractorsByDistance called with tractors:", tractorsArray.length);
+    
+    if (tractorsArray.length === 0) {
+      console.log("No tractors to sort");
+      return tractorsArray;
+    }
+
+    // Get user coordinates (either from state or by requesting them)
+    const coords = await getUserCoordinates();
+    console.log("Got coordinates for sorting:", coords);
+    
+    if (!coords) {
+      // If we can't get user coordinates, return tractors as-is
+      console.log("No coordinates available, returning tractors unsorted");
+      return tractorsArray;
+    }
+
+    const sortedTractors = tractorsArray
+      .map((tractor) => {
+        if (tractor?.current_location_lat && tractor?.current_location_lng) {
+          const distance = calculateDistance(
+            coords.latitude,
+            coords.longitude,
+            tractor.current_location_lat,
+            tractor.current_location_lng
+          );
+          console.log(`Tractor ${tractor.name}: ${distance}km away`);
+          return { ...tractor, distanceFromUser: distance };
+        }
+        console.log(`Tractor ${tractor.name}: no coordinates`);
+        return { ...tractor, distanceFromUser: Infinity }; // Put tractors without coordinates at the end
+      })
+      .sort((a, b) => a.distanceFromUser - b.distanceFromUser);
+    
+    console.log("Sorted tractors by distance:", sortedTractors.map(t => ({ name: t.name, distance: t.distanceFromUser })));
+    return sortedTractors;
+  };
+
   return (
     <SidebarWithHeader isAuth={true}>
         <Box
@@ -292,9 +485,7 @@ export default function HireTractor() {
               // w="111px"
               />
             ) : (
-              <Map
-                addresses={tractors.map((item: any) => item?.current_address)}
-              />
+              <Map />
             )}
             {/* <Image src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446725/map_punpe8.svg" alt="map image" /> */}
           </Stack>
@@ -345,6 +536,7 @@ export default function HireTractor() {
                   // alert(e?.target?.value);
                   const state = e.currentTarget.value || "";
                   if (!!state) {
+                    console.log("state???", state);
                     setState(e?.currentTarget?.value);
                     // search();
                     if (state.includes("abuja")) {
@@ -593,6 +785,7 @@ export default function HireTractor() {
                           latitude: tractor?.current_location_lat,
                           longitude: tractor?.current_location_lng
                         }}
+                        userCoordinates={userCoordinates}
                       />
                     ))}
                   </SimpleGrid>
@@ -640,10 +833,10 @@ function TractorCard({
   setTractorId,
   id,
   status,
-  coordinates
+  coordinates,
+  userCoordinates
 }: ITractorCard) {
 
-  const [userCoordinates, setUserCoordinates] = useState<ICoordinates | null>(null);
   const [distance, setDistance] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [showImageGallery, setShowImageGallery] = useState(false);
@@ -651,39 +844,26 @@ function TractorCard({
 
   const router = useRouter();
 
-  // Get user's location on component mount
+  // Calculate distance when user coordinates are available
   useEffect(() => {
-    console.log("coordinates", coordinates);
-
-    if (!coordinates) return;
-
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const userCoords = {
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-          };
-          setUserCoordinates(userCoords);
-
-          // Calculate distance once we have user coordinates
-          const calculatedDistance = calculateDistance(
-            userCoords.latitude,
-            userCoords.longitude,
-            coordinates.latitude,
-            coordinates.longitude
-          );
-          setDistance(calculatedDistance);
-        },
-        (error) => {
-          console.log("Error getting user location:", error);
-          setError("Unable to get your location");
-        }
-      );
-    } else {
-      setError("Geolocation is not supported by your browser");
+    if (!coordinates || !userCoordinates) {
+      setDistance(null);
+      return;
     }
-  }, [coordinates]);
+
+    try {
+      const calculatedDistance = calculateDistance(
+        userCoordinates.latitude,
+        userCoordinates.longitude,
+        coordinates.latitude,
+        coordinates.longitude
+      );
+      setDistance(calculatedDistance);
+    } catch (error) {
+      console.log("Error calculating distance:", error);
+      setError("Unable to calculate distance");
+    }
+  }, [coordinates, userCoordinates]);
 
   const handleCardClick = () => {
     router.push(`/home/hire-tractor/${id}`);

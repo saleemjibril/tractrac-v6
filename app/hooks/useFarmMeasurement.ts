@@ -1,3 +1,4 @@
+"use client";
 import { useState, useCallback } from 'react';
 import { Position, FarmPath } from '../types/farm-measurement';
 import { calculateDistance, calculatePerimeter, calculatePolygonArea } from '../utils/farmMeasurementUtils';

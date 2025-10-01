@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useRef, useState } from 'react';
 import { useGeolocation } from '../hooks/useGeolocation';
 import { useFarmMeasurement } from '../hooks/useFarmMeasurement';
@@ -46,6 +47,8 @@ export const FarmMeasurementMap: React.FC<FarmMeasurementMapProps> = ({
 
     const initializeMap = async () => {
       try {
+        // Ensure Google Maps JS API is fully loaded before accessing window.google
+        await loader.load();
         await loader.importLibrary("maps");
         
         const initialMap = new google.maps.Map(mapRef.current!, {
