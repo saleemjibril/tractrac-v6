@@ -62,7 +62,7 @@ export default function EnlistedTractors() {
         if (typeof userToken === 'string') {
           const response = await getMyTractors(userToken);
           setTractors(response?.data);
-        console.log("getTractors", response?.data);
+        console.log("getMyTractors", response?.data);
         setLoading(false)
         } else {
           console.log('User token is not a string');

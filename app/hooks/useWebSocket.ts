@@ -29,6 +29,7 @@ export const useWebSocket = ({ ticketId, token, profileId, onMessage, onSystemEv
   const ws = useRef<WebSocket | null>(null);
   const [isConnected, setIsConnected] = useState(false);
   const [connectionError, setConnectionError] = useState<string | null>(null);
+  const reconnectTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const connect = useCallback(() => {
     try {
@@ -70,7 +71,10 @@ export const useWebSocket = ({ ticketId, token, profileId, onMessage, onSystemEv
         console.log('WebSocket disconnected');
         setIsConnected(false);
         // Auto-reconnect after 3 seconds
-        setTimeout(connect, 3000);
+        if (reconnectTimeoutRef.current) {
+          clearTimeout(reconnectTimeoutRef.current);
+        }
+        reconnectTimeoutRef.current = setTimeout(connect, 3000);
       };
 
       ws.current.onerror = (error) => {
@@ -97,6 +101,10 @@ export const useWebSocket = ({ ticketId, token, profileId, onMessage, onSystemEv
     if (ws.current) {
       ws.current.close();
       ws.current = null;
+    }
+    if (reconnectTimeoutRef.current) {
+      clearTimeout(reconnectTimeoutRef.current);
+      reconnectTimeoutRef.current = null;
     }
   }, []);
 

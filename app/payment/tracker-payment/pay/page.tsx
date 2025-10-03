@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";;
 import Image from "@/app/components/Image";
 import { SidebarWithHeader } from "../../../components/Sidenav";
-import { createElement, Dispatch, SetStateAction, useState } from "react";
+import { createElement, Dispatch, SetStateAction, useEffect, useState } from "react";
 import { AddIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 import { useMakePaymentMutation } from "@/redux/services/userApi";
 import { useAppSelector } from "@/redux/hooks";
@@ -23,6 +23,7 @@ import { getTrackerInvoiceDetails, initialiseTrackerPayment, initializeTrackerPa
 import { toast } from "react-toastify";
 import { usePaystackPayment } from "react-paystack";
 import dynamic from 'next/dynamic';
+import { useSearchParams } from "next/navigation";
 
 const PaystackHook = dynamic(
   () => import('react-paystack').then(mod => mod.usePaystackPayment),
@@ -42,6 +43,16 @@ export default function Pay() {
 
   const [invoice, setInvoice] = useState("");
   const [tractorId, setTractorId] = useState("");
+
+  const searchParams = useSearchParams();
+
+  // Get tractor_id from URL parameters
+  useEffect(() => {
+    const tractorIdFromParams = searchParams.get('tractor_id');
+    if (tractorIdFromParams) {
+      setTractorId(tractorIdFromParams);
+    }
+  }, [searchParams]);
 
   const handleGetInvoiceDetails = async () => {
     try {

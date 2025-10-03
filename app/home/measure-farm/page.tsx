@@ -53,6 +53,10 @@ export default function MapTracker() {
     });
 
     return () => {
+      // Ensure geolocation watch is cleared on unmount
+      if (watchId !== null) {
+        try { navigator.geolocation.clearWatch(watchId); } catch {}
+      }
       mapRef.current?.remove();
     };
   }, []);

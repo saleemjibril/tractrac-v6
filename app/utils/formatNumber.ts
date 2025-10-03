@@ -17,3 +17,15 @@ export default function formatNumber(numberString: string) {
     return number.toLocaleString();
   }
 }
+
+
+export const formatPhoneNumber = (phoneNumber: string) => {
+  return phoneNumber?.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
+};
+
+
+export const formatAmount: (value: string) => string = (value: string) => {
+  const numericValue = parseFloat(value?.toString().replace(/,/g, "")) || 0;
+  const formatted = numericValue.toLocaleString();
+  return formatted;
+};

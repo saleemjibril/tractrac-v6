@@ -442,10 +442,30 @@ export default function HireTractorForm() {
               Form Progress
             </Text>
             <Text fontSize="12px" color="#666">
-              {searchParams.get('farm_size') ? '1/2 completed' : '0/2 completed'}
+              {searchParams.get('farm_size') ? '2/2 completed' : '1/2 completed'}
             </Text>
           </Flex>
           <Flex alignItems="center" gap="12px">
+            <Box
+              w="24px"
+              h="24px"
+              borderRadius="full"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              bg="#FA9411"
+              color="white"
+              fontSize="12px"
+              fontWeight="600"
+            >
+              1
+            </Box>
+            <Text fontSize="12px" color="#FA9411">
+              Form Details
+            </Text>
+            
+            <Box w="40px" h="2px" bg="#E2E8F0" />
+            
             <Box
               w="24px"
               h="24px"
@@ -458,30 +478,10 @@ export default function HireTractorForm() {
               fontSize="12px"
               fontWeight="600"
             >
-              {searchParams.get('farm_size') ? '✓' : '1'}
+              {searchParams.get('farm_size') ? '✓' : '2'}
             </Box>
             <Text fontSize="12px" color={searchParams.get('farm_size') ? '#FA9411' : '#666'}>
               Farm Measurement
-            </Text>
-            
-            <Box w="40px" h="2px" bg="#E2E8F0" />
-            
-            <Box
-              w="24px"
-              h="24px"
-              borderRadius="full"
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              bg="#E2E8F0"
-              color="#666"
-              fontSize="12px"
-              fontWeight="600"
-            >
-              2
-            </Box>
-            <Text fontSize="12px" color="#666">
-              Form Submission
             </Text>
           </Flex>
         </Box>
@@ -562,87 +562,6 @@ export default function HireTractorForm() {
                 </Alert>
               )}
   
-              {!props.values.implement_types?.includes('farm_carrier') && (
-                <Flex
-                  direction={{ base: "column", md: "row" }}
-                  columnGap={{ base: "0", md: "30px" }}
-                  rowGap={{ base: "20px", md: "0" }}
-                  mt="20px"
-                  width="100%"
-                >
-                  <Box width="100%">
-                    <FormLabel fontSize="12px" color="#323232" mb="8px">
-                      Farm Size Measurement (Required)
-                    </FormLabel>
-                    
-                    {searchParams.get('farm_size') ? (
-                      // Show measured farm size
-                      <Box
-                        border="1px solid"
-                        borderColor="#FA9411"
-                        borderRadius="6px"
-                        p="12px"
-                        bgColor="#FA941110"
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="space-between"
-                      >
-                        <Box>
-                          <Text fontSize="14px" fontWeight="600" color="#323232">
-                            Measured Area: {searchParams.get('farm_size')} square meters
-                          </Text>
-                          <Text fontSize="12px" color="#666" mt="2px">
-                            ✓ Farm measurement completed successfully
-                          </Text>
-                        </Box>
-                        <Link
-                          href={`/farm-measurement?tractorId=${id}`}
-                          style={{
-                            color: "#FA9411",
-                            fontSize: "12px",
-                            textDecoration: "underline",
-                          }}
-                        >
-                          Re-measure
-                        </Link>
-                      </Box>
-                    ) : (
-                      // Show measurement requirement
-                      <Box
-                        border="1px solid"
-                        borderColor="#FA9411"
-                        borderRadius="6px"
-                        p="12px"
-                        bgColor="#FFF"
-                        textAlign="center"
-                      >
-                        <Text fontSize="14px" color="#323232" mb="8px">
-                          You need to measure your farm before proceeding
-                        </Text>
-                        <Button
-                          as={Link}
-                          href={`/farm-measurement?tractorId=${id}`}
-                          bgColor="#FA9411"
-                          color="white"
-                          fontSize="14px"
-                          height="40px"
-                          px="20px"
-                          _hover={{
-                            bgColor: "#e67e00",
-                          }}
-                          leftIcon={
-                            <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
-                              <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
-                            </svg>
-                          }
-                        >
-                          Measure Your Farm
-                        </Button>
-                      </Box>
-                    )}
-                  </Box>
-                </Flex>
-              )}
   
               <Flex
                 direction={{ base: "column", md: "row" }}
@@ -1160,6 +1079,97 @@ export default function HireTractorForm() {
                 </Field>
               </Flex>
   
+              {/* Farm Measurement Section - Last Step */}
+              {!props.values.implement_types?.includes('farm_carrier') && 
+               props.values.state && 
+               props.values.local_government_area && 
+               props.values.community && 
+               props.values.implement_types && 
+               props.values.implement_types.length > 0 && 
+               props.values.address && 
+               firstDate && 
+               lastDate && (
+                <Flex
+                  direction={{ base: "column", md: "row" }}
+                  columnGap={{ base: "0", md: "30px" }}
+                  rowGap={{ base: "20px", md: "0" }}
+                  mt="20px"
+                  width="100%"
+                >
+                  <Box width="100%">
+                    <FormLabel fontSize="12px" color="#323232" mb="8px">
+                      Farm Size Measurement (Required)
+                    </FormLabel>
+                    
+                    {searchParams.get('farm_size') ? (
+                      // Show measured farm size
+                      <Box
+                        border="1px solid"
+                        borderColor="#FA9411"
+                        borderRadius="6px"
+                        p="12px"
+                        bgColor="#FA941110"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="space-between"
+                      >
+                        <Box>
+                          <Text fontSize="14px" fontWeight="600" color="#323232">
+                            Measured Area: {searchParams.get('farm_size')} square meters
+                          </Text>
+                          <Text fontSize="12px" color="#666" mt="2px">
+                            ✓ Farm measurement completed successfully
+                          </Text>
+                        </Box>
+                        <Link
+                          href={`/farm-measurement?tractorId=${id}`}
+                          style={{
+                            color: "#FA9411",
+                            fontSize: "12px",
+                            textDecoration: "underline",
+                          }}
+                        >
+                          Re-measure
+                        </Link>
+                      </Box>
+                    ) : (
+                      // Show measurement requirement
+                      <Box
+                        border="1px solid"
+                        borderColor="#FA9411"
+                        borderRadius="6px"
+                        p="12px"
+                        bgColor="#FFF"
+                        textAlign="center"
+                      >
+                        <Text fontSize="14px" color="#323232" mb="8px">
+                          You need to measure your farm before proceeding
+                        </Text>
+                        <Button
+                          as={Link}
+                          href={`/farm-measurement?tractorId=${id}`}
+                          bgColor="#FA9411"
+                          color="white"
+                          fontSize="14px"
+                          height="40px"
+                          px="20px"
+                          _hover={{
+                            bgColor: "#e67e00",
+                          }}
+                          leftIcon={
+                            <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                              <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+                            </svg>
+                          }
+                        >
+                          Measure Your Farm
+                        </Button>
+                      </Box>
+                    )}
+                  </Box>
+                </Flex>
+              )}
+
               <Flex direction="column" alignItems="flex-end">
                 {!searchParams.get('farm_size') && !props.values.implement_types?.includes('farm_carrier') && (
                   <Text fontSize="12px" color="#F04438" mb="8px" textAlign="right">

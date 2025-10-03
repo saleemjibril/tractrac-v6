@@ -31,6 +31,8 @@ export default function ServicesComponent() {
   const serviceCardsRef = useRef(null);
   const serviceBoxesRef = useRef([]);
   const bottomQuoteRef = useRef(null);
+  const enterHandlersRef = useRef<Array<() => void>>([]);
+  const leaveHandlersRef = useRef<Array<() => void>>([]);
 
   useEffect(() => {
     const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
@@ -130,12 +132,12 @@ export default function ServicesComponent() {
               toggleActions: "play none none none"
             },
             onComplete: () => {
-              box.addEventListener("mouseenter", () => {
-                gsap.to(box, { y: -10, duration: 0.3 });
-              });
-              box.addEventListener("mouseleave", () => {
-                gsap.to(box, { y: 0, duration: 0.3 });
-              });
+              const onEnter = () => { gsap.to(box, { y: -10, duration: 0.3 }); };
+              const onLeave = () => { gsap.to(box, { y: 0, duration: 0.3 }); };
+              enterHandlersRef.current[index] = onEnter;
+              leaveHandlersRef.current[index] = onLeave;
+              box.addEventListener("mouseenter", onEnter);
+              box.addEventListener("mouseleave", onLeave);
             }
           }
         );
@@ -159,6 +161,14 @@ export default function ServicesComponent() {
 
     // Cleanup function
     return () => {
+      serviceBoxesRef.current.forEach((box, index) => {
+        if (box) {
+          const onEnter = enterHandlersRef.current[index];
+          const onLeave = leaveHandlersRef.current[index];
+          if (onEnter) box.removeEventListener("mouseenter", onEnter);
+          if (onLeave) box.removeEventListener("mouseleave", onLeave);
+        }
+      });
       if (typeof window !== "undefined") {
         ScrollTrigger.getAll().forEach(trigger => trigger.kill());
       }

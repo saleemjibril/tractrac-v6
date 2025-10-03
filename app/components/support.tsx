@@ -306,6 +306,15 @@ export default function SupportWidget() {
     }
   };
 
+  // Revoke preview URL when it changes or on unmount to prevent memory leaks
+  useEffect(() => {
+    return () => {
+      if (imagePreview) {
+        try { URL.revokeObjectURL(imagePreview); } catch {}
+      }
+    };
+  }, [imagePreview]);
+
   return (
     isClient &&
     userToken && (
@@ -777,6 +786,9 @@ export default function SupportWidget() {
                       fill="#f8a730"
 
                       onClick={() => {
+                        if (imagePreview) {
+                          try { URL.revokeObjectURL(imagePreview); } catch {}
+                        }
                         setImagePreview(null);
                         setSelectedImage(null);
                       }}

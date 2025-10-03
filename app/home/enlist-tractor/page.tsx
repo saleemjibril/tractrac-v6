@@ -103,6 +103,33 @@ const videoTypes = ["MP4", "AVI", "MOV", "WMV"];
 
 const MAX_IMAGE_SIZE_BYTES = 2 * 1024 * 1024;
 
+function PreviewImage({ file }: { file: File }) {
+  const [dataUrl, setDataUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    let isMounted = true;
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (isMounted) setDataUrl(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+    return () => {
+      isMounted = false;
+    };
+  }, [file]);
+
+  if (!dataUrl) return null;
+  return (
+    <Image
+      src={dataUrl}
+      alt={"Preview"}
+      width="100%"
+      height="100%"
+      objectFit="cover"
+    />
+  );
+}
+
 export default function BecomeAnAgent() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
@@ -1407,13 +1434,8 @@ export default function BecomeAnAgent() {
                                         alignItems="center"
                                         justifyContent="center"
                                       >
-                                        <Image
-                                          src={URL.createObjectURL(file)}
-                                          alt={`Preview ${index + 1}`}
-                                          width="100%"
-                                          height="100%"
-                                          objectFit="cover"
-                                        />
+                                        {/* Avoid creating object URLs in render; use FileReader for previews */}
+                                        <PreviewImage file={file} />
                                       </Box>
                                       <Stack alignItems="start" gap="2px">
                                         <Text

@@ -70,21 +70,19 @@ function TabContent({
       }, "-=0.2");
       
       const button = buttonRef.current;
+      const mouseEnter = () => { if (button) gsap.to(button, { scale: 1.05, duration: 0.2 }); };
+      const mouseLeave = () => { if (button) gsap.to(button, { scale: 1, duration: 0.2 }); };
       if (button) {
-        button.addEventListener("mouseenter", () => {
-          gsap.to(button, { scale: 1.05, duration: 0.2 });
-        });
-        button.addEventListener("mouseleave", () => {
-          gsap.to(button, { scale: 1, duration: 0.2 });
-        });
+        button.addEventListener("mouseenter", mouseEnter);
+        button.addEventListener("mouseleave", mouseLeave);
       }
       
       // Cleanup function
       return () => {
         tl.kill();
         if (button) {
-          button.removeEventListener("mouseenter", () => {});
-          button.removeEventListener("mouseleave", () => {});
+          button.removeEventListener("mouseenter", mouseEnter);
+          button.removeEventListener("mouseleave", mouseLeave);
         }
       };
     }
@@ -226,19 +224,29 @@ export default function HowItWorksComponent() {
       }
     );
     
-    tabButtonsRef.current.forEach((button) => {
+    const enterHandlers: Array<() => void> = [];
+    const leaveHandlers: Array<() => void> = [];
+    tabButtonsRef.current.forEach((button, index) => {
       if (button) {
-        button.addEventListener("mouseenter", () => {
-          gsap.to(button, { y: -5, duration: 0.2 });
-        });
-        button.addEventListener("mouseleave", () => {
-          gsap.to(button, { y: 0, duration: 0.2 });
-        });
+        const onEnter = () => { gsap.to(button, { y: -5, duration: 0.2 }); };
+        const onLeave = () => { gsap.to(button, { y: 0, duration: 0.2 }); };
+        enterHandlers[index] = onEnter;
+        leaveHandlers[index] = onLeave;
+        button.addEventListener("mouseenter", onEnter);
+        button.addEventListener("mouseleave", onLeave);
       }
     });
     
     // Cleanup
     return () => {
+      tabButtonsRef.current.forEach((button, index) => {
+        if (button) {
+          const onEnter = enterHandlers[index];
+          const onLeave = leaveHandlers[index];
+          if (onEnter) button.removeEventListener("mouseenter", onEnter);
+          if (onLeave) button.removeEventListener("mouseleave", onLeave);
+        }
+      });
       if (typeof window !== "undefined") {
         ScrollTrigger.getAll().forEach(trigger => trigger.kill());
       }

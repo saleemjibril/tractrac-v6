@@ -165,7 +165,22 @@ export const getMyTractors = async (token: string) => {
   };
 
   const res = await axios.get(
-    `${process.env.NEXT_PUBLIC_URL}/tractors/my-tractors`,
+    `${process.env.NEXT_PUBLIC_URL}/tractors/my-tractors?status=verified`,
+    config
+  );
+
+  return res;
+};
+
+export const getMyTractorsPendingReview = async (token: string) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const res = await axios.get(
+    `${process.env.NEXT_PUBLIC_URL}/tractors/my-tractors/pending-review`,
     config
   );
 

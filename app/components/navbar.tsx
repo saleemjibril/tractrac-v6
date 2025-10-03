@@ -2,10 +2,10 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
   FaFacebookF,
-  FaTwitter,
+  FaXTwitter,
   FaInstagram,
   FaLinkedinIn,
-} from "react-icons/fa";
+} from "react-icons/fa6";
 import {
   Box,
   ButtonGroup,
@@ -166,7 +166,7 @@ useEffect(() => {
               size={"sm"}
               aria-label="Twitter Icon"
               bg="#FFFFFF"
-              icon={<FaTwitter />}
+              icon={<FaXTwitter />}
               isRound={true}
             />
           </Link>
