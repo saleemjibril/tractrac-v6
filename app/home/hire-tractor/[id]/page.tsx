@@ -175,7 +175,7 @@ export default function HireTractorForm() {
       const newUrl = new URL(window.location.href);
       newUrl.searchParams.delete('farm_size');
       if (measurementIdFromUrl) newUrl.searchParams.delete('measurement_id');
-      if (prefilledAddress) newUrl.searchParams.delete('address');
+      // if (prefilledAddress) newUrl.searchParams.delete('address');
       window.history.replaceState({}, '', newUrl.toString());
     }
   }, [searchParams]);
