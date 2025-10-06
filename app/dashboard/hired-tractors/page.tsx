@@ -167,7 +167,8 @@ export default function HiredTractors() {
                     <Td>{tractor?.owner_name}</Td>
                     {/* <Td>{tractor?.address ?? "Nil"}</Td> */}
                     <Td 
-                    whiteSpace="break-spaces"
+                    // whiteSpace="break-spaces"
+                    width={"400px"}
                     // maxW="100px" 
                     // display="inline-block"
                     //  wordBreak="break-word"
@@ -218,7 +219,7 @@ export default function HiredTractors() {
           </TableContainer>
         )}
 
-        <PersonalOverview />
+        {/* <PersonalOverview /> */}
       </Box>
     </SidebarWithHeader>
   );

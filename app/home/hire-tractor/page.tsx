@@ -509,10 +509,8 @@ export default function HireTractor() {
             tractor.current_location_lat,
             tractor.current_location_lng
           );
-          console.log(`Tractor ${tractor.name}: ${distance}km away`);
           return { ...tractor, distanceFromUser: distance };
         }
-        console.log(`Tractor ${tractor.name}: no coordinates`);
         return { ...tractor, distanceFromUser: Infinity }; // Put tractors without coordinates at the end
       })
       .sort((a, b) => a.distanceFromUser - b.distanceFromUser);

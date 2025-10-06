@@ -73,6 +73,17 @@ export default function HireTractorForm() {
     const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
     const [bookedDates, setBookedDates] = useState([]);
     const [tractorImplements, setTractorImplements] = useState([]);
+    const [currentStep, setCurrentStep] = useState(1);
+    const [formData, setFormData] = useState({
+      implement_types: [],
+      start_date: "",
+      end_date: "",
+      state: "",
+      local_government_area: "",
+      community: "",
+      address: "",
+      additional_info: "",
+    });
   
     const [inRangeLoading, setInRangeLoading] = useState(false);
     const { profileInfo } = useAppSelector((state) => state.auth);
@@ -158,6 +169,18 @@ export default function HireTractorForm() {
   useEffect(() => {
     handleGetBookedDates();
     handleGetTractor();
+    
+    // Load form data from localStorage on component mount
+    const savedFormData = localStorage.getItem(`tractor-hire-${id}`);
+    if (savedFormData) {
+      const parsedData = JSON.parse(savedFormData);
+      setFormData(parsedData);
+      if (parsedData.start_date) setFirstDate(parsedData.start_date);
+      if (parsedData.end_date) setLastDate(parsedData.end_date);
+      if (parsedData.state) {
+        setLgas(nigerianStates.lgas(parsedData.state) ?? []);
+      }
+    }
   }, []);
 
   // Show success message when farm size is populated from measurement
@@ -170,6 +193,9 @@ export default function HireTractorForm() {
     }
     if (farmSizeFromMeasurement) {
       toast.success(`Farm measurement completed! Area: ${farmSizeFromMeasurement} square meters`);
+      
+      // Move to step 4 after farm measurement
+      setCurrentStep(4);
       
       // Clean up the URL by removing parameters after showing the message and capturing IDs
       const newUrl = new URL(window.location.href);
@@ -474,12 +500,80 @@ export default function HireTractorForm() {
         );
       } else {
         setNdcCalendar(false);
+        // Update form data with selected dates
+        const updatedFormData = {
+          ...formData,
+          start_date: firstDate,
+          end_date: lastDate,
+        };
+        setFormData(updatedFormData);
+        localStorage.setItem(`tractor-hire-${id}`, JSON.stringify(updatedFormData));
       }
   
       console.log({
         firstDate,
         lastDate,
       });
+    };
+
+    // Step navigation functions
+    const nextStep = () => {
+      if (currentStep < 4) {
+        // Skip step 3 (farm measurement) if farm_carrier is selected
+        if (currentStep === 2 && formData.implement_types?.includes('farm_carrier')) {
+          setCurrentStep(4);
+        } else {
+          setCurrentStep(currentStep + 1);
+        }
+      }
+    };
+
+    const prevStep = () => {
+      if (currentStep > 1) {
+        // Skip step 3 (farm measurement) if farm_carrier is selected
+        if (currentStep === 4 && formData.implement_types?.includes('farm_carrier')) {
+          setCurrentStep(2);
+        } else {
+          setCurrentStep(currentStep - 1);
+        }
+      }
+    };
+
+    const goToStep = (step: number) => {
+      // Skip step 3 (farm measurement) if farm_carrier is selected
+      if (step === 3 && formData.implement_types?.includes('farm_carrier')) {
+        setCurrentStep(4);
+      } else {
+        setCurrentStep(step);
+      }
+    };
+
+    // Save form data to localStorage
+    const saveFormData = (data: any) => {
+      const updatedData = { ...formData, ...data };
+      setFormData(updatedData);
+      localStorage.setItem(`tractor-hire-${id}`, JSON.stringify(updatedData));
+    };
+
+    // Clear localStorage after successful submission
+    const clearStoredData = () => {
+      localStorage.removeItem(`tractor-hire-${id}`);
+    };
+
+    // Check if current step is valid
+    const isStepValid = (step: number) => {
+      switch (step) {
+        case 1:
+          return formData.implement_types && formData.implement_types.length > 0;
+        case 2:
+          return firstDate && lastDate;
+        case 3:
+          return formData.implement_types?.includes('farm_carrier') || searchParams.get('farm_size');
+        case 4:
+          return formData.state && formData.local_government_area && formData.community;
+        default:
+          return false;
+      }
     };
     return (
         <SidebarWithHeader isAuth={true}>
@@ -505,10 +599,17 @@ export default function HireTractorForm() {
               Form Progress
             </Text>
             <Text fontSize="12px" color="#666">
-              {searchParams.get('farm_size') ? '2/2 completed' : '1/2 completed'}
+              Step {currentStep} of 4
             </Text>
           </Flex>
-          <Flex alignItems="center" gap="12px">
+          <Flex alignItems="center" gap="12px" flexWrap="wrap">
+            {[
+              { step: 1, label: "Choose Implements" },
+              { step: 2, label: "Select Dates" },
+              { step: 3, label: "Measure Farm" },
+              { step: 4, label: "Location & Info" }
+            ].map((item, index) => (
+              <Flex key={item.step} alignItems="center" gap="12px">
             <Box
               w="24px"
               h="24px"
@@ -516,48 +617,38 @@ export default function HireTractorForm() {
               display="flex"
               alignItems="center"
               justifyContent="center"
-              bg="#FA9411"
-              color="white"
+                  bg={currentStep >= item.step ? '#FA9411' : '#E2E8F0'}
+                  color={currentStep >= item.step ? 'white' : '#666'}
               fontSize="12px"
               fontWeight="600"
+                  cursor="pointer"
+                  onClick={() => goToStep(item.step)}
             >
-              1
+                  {currentStep > item.step ? '✓' : item.step}
             </Box>
-            <Text fontSize="12px" color="#FA9411">
-              Form Details
-            </Text>
-            
-            <Box w="40px" h="2px" bg="#E2E8F0" />
-            
-            <Box
-              w="24px"
-              h="24px"
-              borderRadius="full"
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              bg={searchParams.get('farm_size') ? '#FA9411' : '#E2E8F0'}
-              color={searchParams.get('farm_size') ? 'white' : '#666'}
+                <Text 
               fontSize="12px"
-              fontWeight="600"
+                  color={currentStep >= item.step ? '#FA9411' : '#666'}
+                  cursor="pointer"
+                  onClick={() => goToStep(item.step)}
             >
-              {searchParams.get('farm_size') ? '✓' : '2'}
-            </Box>
-            <Text fontSize="12px" color={searchParams.get('farm_size') ? '#FA9411' : '#666'}>
-              Farm Measurement
+                  {item.label}
             </Text>
+                {index < 3 && <Box w="20px" h="2px" bg="#E2E8F0" />}
+              </Flex>
+            ))}
           </Flex>
         </Box>
         <Formik
           initialValues={{
-            state: "",
-            local_government_area: "",
-            community: "",
-            implement_types: [],
-            address: (typeof window !== 'undefined' ? (new URL(window.location.href).searchParams.get('address') || "") : ""),
-            start_date: "",
-            end_date: "",
-            additional_info: "",
+            state: formData.state,
+            local_government_area: formData.local_government_area,
+            community: formData.community,
+            implement_types: formData.implement_types,
+            address: formData.address || (typeof window !== 'undefined' ? (new URL(window.location.href).searchParams.get('address') || "") : ""),
+            start_date: formData.start_date,
+            end_date: formData.end_date,
+            additional_info: formData.additional_info,
           }}
           enableReinitialize={true}
           onSubmit={async (values: any, { resetForm }) => {
@@ -591,13 +682,14 @@ export default function HireTractorForm() {
                   start_date: firstDate,
                   end_date: lastDate,
                   tractor_id: id,
-                  farm_id: farmId ? farmId : "farmId"
+                  farm_id: farmId ? farmId : "1"
                 },
                 userToken as string
               );
   
               console.log("hireTractor", response);
               setOpen(true);
+              clearStoredData(); // Clear localStorage after successful submission
   
               // if (response.status == "success") {
               //   //   // router.replace("/login");
@@ -624,63 +716,12 @@ export default function HireTractorForm() {
                 </Alert>
               )}
   
-  
-              <Flex
-                direction={{ base: "column", md: "row" }}
-                columnGap={{ base: "0", md: "30px" }}
-                rowGap={{ base: "20px", md: "0" }}
-                mt="20px"
-                width="100%"
-              >
-                <Field name="state" validate={validateEmpty}>
-                  {({ field, form }: { [x: string]: any }) => (
-                    <FormControl
-                      isInvalid={form.errors.state && form.touched.state}
-                    >
-                      <FormLabel fontSize="12px" color="#323232">
-                        State currently located
-                      </FormLabel>
-  
-                      <Select
-                        //   {...field}
-                        bgColor="#3232320D"
-                        fontSize="12px"
-                        color="#323232"
-                        placeholder="Select type"
-                        onChange={(v) => {
-                          const state = v.currentTarget.value || "";
-                          form.setFieldValue(field.name, v.currentTarget.value);
-                          // alert(props.values.state);
-                          if (state.includes("abuja")) {
-                            // Federal Capital Territory
-                            setLgas(
-                              nigerianStates.lgas("Federal Capital Territory") ??
-                              []
-                            );
-                          } else {
-                            setLgas(nigerianStates.lgas(state) ?? []);
-                          }
-                        }}
-                      >
-                        {states.map((state) => (
-                          <option key={state} value={state.toLowerCase()}>
-                            {state}
-                          </option>
-                        ))}
-                      </Select>
-                      <FormErrorMessage>{form.errors.state}</FormErrorMessage>
-                    </FormControl>
-                  )}
-                </Field>
-              </Flex>
-  
-              <Flex
-                direction={{ base: "column", md: "row" }}
-                columnGap={{ base: "0", md: "30px" }}
-                rowGap={{ base: "20px", md: "0" }}
-                mt="20px"
-                width="100%"
-              >
+              {/* Step 1: Choose Implement Types */}
+              {currentStep === 1 && (
+                <Box>
+                  <Text fontSize="18px" fontWeight="600" color="#323232" mb="20px">
+                    Step 1: Choose Implement Types
+                  </Text>
                 <Field name="implement_types" validate={validateEmpty}>
                   {({ field, form }: { [x: string]: any }) => (
                     <FormControl
@@ -693,7 +734,6 @@ export default function HireTractorForm() {
                         Implement Type
                       </FormLabel>
                       <MultiSelect
-                        // {...field}
                         name="Roles"
                         isMulti
                         options={(() => {
@@ -732,8 +772,10 @@ export default function HireTractorForm() {
                             // Normal selection
                             form.setFieldValue(field.name, selectedValues);
                           }
+                            
+                            // Save to form data
+                            saveFormData({ implement_types: selectedValues });
                         }}
-                      // id="roles-select-field"
                       />
                       <FormErrorMessage>
                         {form.errors.implement_types}
@@ -741,108 +783,15 @@ export default function HireTractorForm() {
                     </FormControl>
                   )}
                 </Field>
-  
-                <Field name="local_government_area" validate={validateEmpty}>
-                  {({ field, form }: { [x: string]: any }) => (
-                    <FormControl
-                      // my={4}
-                      isInvalid={
-                        form.errors.local_government_area &&
-                        form.touched.local_government_area
-                      }
-                      mb="20px"
-                    >
-                      <FormLabel fontSize="12px" color="#323232">
-                        Local Government Area
-                      </FormLabel>
-                      <Select
-                        bgColor="#3232320D"
-                        placeholder="Local Government Area"
-                        fontSize="12px"
-                        color="#323232"
-                        _focusVisible={{
-                          borderColor: "#929292",
-                        }}
-                        onChange={(v) => {
-                          // const state = v.currentTarget.value || "";
-                          form.setFieldValue(field.name, v.currentTarget.value);
-                          // alert(props.values.state);
-                          // setLgas(NaijaStates.lgas(state) ?? []);
-                        }}
-                      >
-                        {lgas.map((state) => (
-                          <option key={state} value={state.toLowerCase()}>
-                            {state}
-                          </option>
-                        ))}
-                      </Select>
-                      {/* <Input
-                          variant="flushed"
-                          borderColor="orange"
-                          {...field}
-                          //  ref={initialRef}
-                          placeholder="Enter your L.G.A."
-                        /> */}
-                      <FormErrorMessage>
-                        {form.errors.local_government_area}
-                      </FormErrorMessage>
-                    </FormControl>
-                  )}
-                </Field>
-              </Flex>
-  
-              {/* <Flex 
-               direction={{ base: "column", md: "row" }}
-    columnGap={{ base: "0", md: "30px" }}
-    rowGap={{ base: "20px", md: "0" }}
-    mt="20px"
-    width="100%"
-              >
-                <Field name="community" validate={validateEmpty}>
-                  {({ field, form }: { [x: string]: any }) => (
-                    <FormControl
-                      isInvalid={form.errors.community && form.touched.community}
-                    >
-                      <FormLabel fontSize="12px" color="#323232">
-                        Community
-                      </FormLabel>
-                      <Input
-                        {...field}
-                        bgColor="#3232320D"
-                        fontSize="12px"
-                        color="#323232"
-                      />
-                      <FormErrorMessage>{form.errors.community}</FormErrorMessage>
-                    </FormControl>
-                  )}
-                </Field>
-              </Flex> */}
-  
-              <Flex
-                direction={{ base: "column", md: "row" }}
-                columnGap={{ base: "0", md: "30px" }}
-                rowGap={{ base: "20px", md: "0" }}
-                mt="20px"
-                width="100%"
-              >
-                <Field name="community" validate={validateEmpty}>
-                  {({ field, form }: { [x: string]: any }) => (
-                    <FormControl
-                      isInvalid={form.errors.community && form.touched.community}
-                    >
-                      <FormLabel fontSize="12px" color="#323232">
-                        Community
-                      </FormLabel>
-                      <Input
-                        {...field}
-                        bgColor="#3232320D"
-                        fontSize="12px"
-                        color="#323232"
-                      />
-                      <FormErrorMessage>{form.errors.community}</FormErrorMessage>
-                    </FormControl>
-                  )}
-                </Field>
+                </Box>
+              )}
+
+              {/* Step 2: Select Booking Dates */}
+              {currentStep === 2 && (
+                <Box>
+                  <Text fontSize="18px" fontWeight="600" color="#323232" mb="20px">
+                    Step 2: Select Booking Dates
+                  </Text>
                 <Field name="start_date">
                   {({ field, form }: { [x: string]: any }) => (
                     <FormControl
@@ -992,51 +941,171 @@ export default function HireTractorForm() {
                     </FormControl>
                   )}
                 </Field>
-                {/* <Field name="start_date" validate={validateEmpty}>
+                </Box>
+              )}
+
+              {/* Step 3: Measure Farm (conditional) */}
+              {currentStep === 3 && !formData.implement_types?.includes('farm_carrier') && (
+                <Box>
+                  <Text fontSize="18px" fontWeight="600" color="#323232" mb="20px">
+                    Step 3: Measure Your Farm
+                  </Text>
+                  <Box
+                    border="1px solid"
+                    borderColor="#FA9411"
+                    borderRadius="6px"
+                    p="12px"
+                    bgColor="#FFF"
+                    textAlign="center"
+                  >
+                    <Text fontSize="14px" color="#323232" mb="8px">
+                      You need to measure your farm before proceeding
+                    </Text>
+                    <Button
+                      as={Link}
+                      href={`/farm-measurement?tractorId=${id}`}
+                      bgColor="#FA9411"
+                      color="white"
+                      fontSize="14px"
+                      height="40px"
+                      px="20px"
+                      _hover={{
+                        bgColor: "#e67e00",
+                      }}
+                      leftIcon={
+                        <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                          <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+                        </svg>
+                      }
+                    >
+                      Measure Your Farm
+                    </Button>
+                  </Box>
+                </Box>
+              )}
+
+              {/* Step 4: Location and Additional Information */}
+              {currentStep === 4 && (
+                <Box>
+                  <Text fontSize="18px" fontWeight="600" color="#323232" mb="20px">
+                    Step 4: Location and Additional Information
+                  </Text>
+                  
+                  <Flex
+                    direction={{ base: "column", md: "row" }}
+                    columnGap={{ base: "0", md: "30px" }}
+                    rowGap={{ base: "20px", md: "0" }}
+                    mt="20px"
+                    width="100%"
+                  >
+                    <Field name="state" validate={validateEmpty}>
+                      {({ field, form }: { [x: string]: any }) => (
+                        <FormControl
+                          isInvalid={form.errors.state && form.touched.state}
+                        >
+                          <FormLabel fontSize="12px" color="#323232">
+                            State currently located
+                          </FormLabel>
+
+                          <Select
+                            bgColor="#3232320D"
+                            fontSize="12px"
+                            color="#323232"
+                            placeholder="Select state"
+                            onChange={(v) => {
+                              const state = v.currentTarget.value || "";
+                              form.setFieldValue(field.name, v.currentTarget.value);
+                              saveFormData({ state: v.currentTarget.value });
+                              if (state.includes("abuja")) {
+                                // Federal Capital Territory
+                                setLgas(
+                                  nigerianStates.lgas("Federal Capital Territory") ??
+                                  []
+                                );
+                              } else {
+                                setLgas(nigerianStates.lgas(state) ?? []);
+                              }
+                            }}
+                          >
+                            {states.map((state) => (
+                              <option key={state} value={state.toLowerCase()}>
+                                {state}
+                              </option>
+                            ))}
+                          </Select>
+                          <FormErrorMessage>{form.errors.state}</FormErrorMessage>
+                        </FormControl>
+                      )}
+                    </Field>
+                  </Flex>
+
+                  <Flex
+                    direction={{ base: "column", md: "row" }}
+                    columnGap={{ base: "0", md: "30px" }}
+                    rowGap={{ base: "20px", md: "0" }}
+                    mt="20px"
+                    width="100%"
+                  >
+                    <Field name="local_government_area" validate={validateEmpty}>
                   {({ field, form }: { [x: string]: any }) => (
                     <FormControl
                       isInvalid={
-                        form.errors.start_date && form.touched.start_date
+                            form.errors.local_government_area &&
+                            form.touched.local_government_area
                       }
+                          mb="20px"
                     >
                       <FormLabel fontSize="12px" color="#323232">
-                        Start Date
+                            Local Government Area
                       </FormLabel>
-                      <Input
-                        {...field}
+                          <Select
                         bgColor="#3232320D"
-                        placeholder="Select year"
+                            placeholder="Local Government Area"
                         fontSize="12px"
                         color="#323232"
-                        type="date"
-                      />
+                            _focusVisible={{
+                              borderColor: "#929292",
+                            }}
+                            onChange={(v) => {
+                              form.setFieldValue(field.name, v.currentTarget.value);
+                              saveFormData({ local_government_area: v.currentTarget.value });
+                            }}
+                          >
+                            {lgas.map((state) => (
+                              <option key={state} value={state.toLowerCase()}>
+                                {state}
+                              </option>
+                            ))}
+                          </Select>
                       <FormErrorMessage>
-                        {form.errors.start_date}
+                            {form.errors.local_government_area}
                       </FormErrorMessage>
                     </FormControl>
                   )}
-                </Field> */}
+                    </Field>
   
-                {/* <Field name="end_date" validate={validateEmpty}>
+                    <Field name="community" validate={validateEmpty}>
                   {({ field, form }: { [x: string]: any }) => (
                     <FormControl
-                      isInvalid={form.errors.end_date && form.touched.end_date}
+                          isInvalid={form.errors.community && form.touched.community}
                     >
                       <FormLabel fontSize="12px" color="#323232">
-                        End date
+                            Community
                       </FormLabel>
                       <Input
                         {...field}
                         bgColor="#3232320D"
-                        placeholder="Select year"
                         fontSize="12px"
                         color="#323232"
-                        type="date"
+                            onChange={(e) => {
+                              form.setFieldValue(field.name, e.target.value);
+                              saveFormData({ community: e.target.value });
+                            }}
                       />
-                      <FormErrorMessage>{form.errors.end_date}</FormErrorMessage>
+                          <FormErrorMessage>{form.errors.community}</FormErrorMessage>
                     </FormControl>
                   )}
-                </Field> */}
+                    </Field>
               </Flex>
   
               <Flex
@@ -1054,13 +1123,65 @@ export default function HireTractorForm() {
                       <FormLabel fontSize="12px" color="#323232">
                         Address
                       </FormLabel>
+                         {formData.implement_types?.includes('farm_carrier') ? 
+                      <Autocomplete
+                      style={{
+                        padding: "0px 10px 0px 10px",
+                        borderRadius: "6px",
+                        width: "100%",
+                        fontSize: "12px",
+                        color: "#929292",
+                        height: "39px",
+                        backgroundColor: "#3232320D",
+                      }}
+                      placeholder=""
+                      apiKey={"AIzaSyBWo_tQ4rjQkZz1kN5WXfnemHCaF0gQ8BU"}
+                      onChange={(e) => {
+                        form.setFieldValue(field.name, e.currentTarget?.value);
+                            saveFormData({ address: e.currentTarget?.value });
+                      }}
+                      onPlaceSelected={(place) => {
+                        console.log("Address:", place.formatted_address);
+
+                        // Extract latitude and longitude
+                        if (place.geometry && place.geometry.location) {
+                          const current_location_lat =
+                            place.geometry.location.lat();
+                          const current_location_lng =
+                            place.geometry.location.lng();
+                          console.log("Latitude:", current_location_lat);
+                          console.log("Longitude:", current_location_lng);
+
+                          // Update form with address and coordinates
+                          form.setFieldValue(
+                            field.name,
+                            place.formatted_address
+                          );
+                          form.setFieldValue(
+                            "current_location_lat",
+                            current_location_lat
+                          );
+                          form.setFieldValue(
+                            "current_location_lng",
+                            current_location_lng
+                          );
+                              saveFormData({ address: place.formatted_address });
+                        }
+                      }}
+                      options={{
+                        types: ["address"],
+                        componentRestrictions: { country: "ng" },
+                      }}
+                    />
+                      : 
                       <Input
-                        {...field}
-                        bgColor="#3232320D"
-                        fontSize="12px"
-                        color="#323232"
-                        disabled
-                      />
+                      {...field}
+                      bgColor="#3232320D"
+                      fontSize="12px"
+                      color="#323232"
+                      disabled
+                    />
+                      }
                       <FormErrorMessage>{form.errors.address}</FormErrorMessage>
                     </FormControl>
                   )}
@@ -1082,15 +1203,11 @@ export default function HireTractorForm() {
                         bgColor="#3232320D"
                         fontSize="12px"
                         color="#323232"
-                      />
-                      {/* <Select
-                      bgColor="#3232320D"
-                      placeholder="Select"
-                      fontSize="12px"
-                      color="#323232"
-                    >
-                      <option value="trc1">2 weeks</option>
-                    </Select> */}
+                            onChange={(e) => {
+                              form.setFieldValue(field.name, e.target.value);
+                              saveFormData({ additional_info: e.target.value });
+                            }}
+                          />
                       <FormErrorMessage>
                         {form.errors.additional_info}
                       </FormErrorMessage>
@@ -1098,119 +1215,52 @@ export default function HireTractorForm() {
                   )}
                 </Field>
               </Flex>
-  
-              {/* Farm Measurement Section - Last Step */}
-              {!props.values.implement_types?.includes('farm_carrier') && 
-               props.values.state && 
-               props.values.local_government_area && 
-               props.values.community && 
-               props.values.implement_types && 
-               props.values.implement_types.length > 0 && 
-              //  props.values.address && 
-               firstDate && 
-               lastDate && (
-                <Flex
-                  direction={{ base: "column", md: "row" }}
-                  columnGap={{ base: "0", md: "30px" }}
-                  rowGap={{ base: "20px", md: "0" }}
-                  mt="20px"
-                  width="100%"
+                </Box>
+              )}
+
+              {/* Navigation Buttons */}
+              <Flex justifyContent="space-between" mt="30px">
+                <Button
+                  onClick={prevStep}
+                  isDisabled={currentStep === 1}
+                  variant="outline"
+                  color="#FA9411"
+                        borderColor="#FA9411"
+                  _hover={{
+                    bgColor: "#FA9411",
+                    color: "white"
+                  }}
                 >
-                  <Box width="100%">
-                    <FormLabel fontSize="12px" color="#323232" mb="8px">
-                      Farm Size Measurement (Required)
-                    </FormLabel>
-                    
-                    {searchParams.get('farm_size') ? (
-                      // Show measured farm size
-                      <Box
-                        border="1px solid"
-                        borderColor="#FA9411"
-                        borderRadius="6px"
-                        p="12px"
-                        bgColor="#FA941110"
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="space-between"
-                      >
-                        <Box>
-                          <Text fontSize="14px" fontWeight="600" color="#323232">
-                            Measured Area: {searchParams.get('farm_size')} square meters
-                          </Text>
-                          <Text fontSize="12px" color="#666" mt="2px">
-                            ✓ Farm measurement completed successfully
-                          </Text>
-                        </Box>
-                        <Link
-                          href={`/farm-measurement?tractorId=${id}`}
-                          style={{
-                            color: "#FA9411",
-                            fontSize: "12px",
-                            textDecoration: "underline",
-                          }}
-                        >
-                          Re-measure
-                        </Link>
-                      </Box>
-                    ) : (
-                      // Show measurement requirement
-                      <Box
-                        border="1px solid"
-                        borderColor="#FA9411"
-                        borderRadius="6px"
-                        p="12px"
-                        bgColor="#FFF"
-                        textAlign="center"
-                      >
-                        <Text fontSize="14px" color="#323232" mb="8px">
-                          You need to measure your farm before proceeding
-                        </Text>
+                  Previous
+                </Button>
+                
+                {currentStep < 4 ? (
                         <Button
-                          as={Link}
-                          href={`/farm-measurement?tractorId=${id}`}
+                    onClick={nextStep}
+                    isDisabled={!isStepValid(currentStep)}
                           bgColor="#FA9411"
                           color="white"
-                          fontSize="14px"
-                          height="40px"
-                          px="20px"
                           _hover={{
                             bgColor: "#e67e00",
                           }}
-                          leftIcon={
-                            <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
-                              <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
-                            </svg>
-                          }
                         >
-                          Measure Your Farm
+                    Next
                         </Button>
-                      </Box>
-                    )}
-                  </Box>
-                </Flex>
-              )}
-
-              <Flex direction="column" alignItems="flex-end">
-                {!searchParams.get('farm_size') && !props.values.implement_types?.includes('farm_carrier') && (
-                  <Text fontSize="12px" color="#F04438" mb="8px" textAlign="right">
-                    Please measure your farm to enable form submission
-                  </Text>
-                )}
+                ) : (
                 <Button
                   bgColor="#F8A730"
                   color="white"
-                  width={{ base: "100%", md: "50%" }}
                   fontSize="16px"
                   fontWeight={600}
                   minH="40px"
                   isLoading={props.isSubmitting}
-                  isDisabled={props.isSubmitting || (!searchParams.get('farm_size') && !props.values.implement_types?.includes('farm_carrier'))}
+                    isDisabled={props.isSubmitting || !isStepValid(4)}
                   type="submit"
                   _disabled={{
                     bgColor: "#F8A73088",
                   }}
                   _hover={{
-                    bgColor: (!searchParams.get('farm_size') && !props.values.implement_types?.includes('farm_carrier')) ? "#F8A73088" : "#F8A73088",
+                      bgColor: "#F8A73088",
                   }}
                   _focus={{
                     bgColor: "#F8A73088",
@@ -1221,9 +1271,8 @@ export default function HireTractorForm() {
                   </Box>
                   <ArrowForwardIcon boxSize="18px" />
                 </Button>
+                )}
               </Flex>
-  
-              {/* </Flex> */}
             </Form>
           )}
         </Formik>

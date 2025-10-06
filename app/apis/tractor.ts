@@ -202,6 +202,21 @@ export const getMyHiredTractors = async (token: string) => {
   return res;
 };
 
+export const getUserPendingHireRequests = async (token: string) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const res = await axios.get(
+    `${process.env.NEXT_PUBLIC_URL}/hire_tractor/hire?status=pending`,
+    config
+  );
+
+  return res;
+};
+
 export const filterTractors = async (params: string, token: string) => {
   const config = {
     headers: {

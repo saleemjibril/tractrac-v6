@@ -237,7 +237,7 @@ export default function EnlistedTractors() {
                         display="block"
                         bgColor="#FFD900"
                         as="a"
-                        href="/home/track-tractor"
+                        href={`/dashboard/track-tractor-progress?id=${tractor.id}`}
                         py="4px"
                         textAlign="center"
                         borderRadius="4px"
@@ -255,7 +255,7 @@ export default function EnlistedTractors() {
           </Table>
         </TableContainer>
 
-        <PersonalOverview />
+        {/* <PersonalOverview /> */}
       </Box>
     </SidebarWithHeader>
   );

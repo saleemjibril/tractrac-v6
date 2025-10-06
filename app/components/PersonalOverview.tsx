@@ -35,8 +35,8 @@ export default function PersonalOverview() {
   const stats = [
     {
       icon: <TractorsMini width="26" height="26" />,
-      title: "Total Number of Tractors Hired",
-      value: userStats?.tractors_hired_count || 0,
+      title: "Total Number of Tractors Enlisted",
+      value: 0,
       borderColor: "#BBD9FF",
       backgroundColor: "#EFF6FF80",
       color: "#898989",
@@ -44,12 +44,21 @@ export default function PersonalOverview() {
     },
     {
       icon: <TractorsMini width="26" height="26" />,
+      title: "Total Number of Tractors Hired",
+      value: userStats?.tractors_hired_count || 0,
+      borderColor: "#BBD9FF",
+      backgroundColor: "#EFF6FF80",
+      color: "#898989",
+      link: "/dashboard/hired-tractors",
+    },
+    {
+      icon: <InUseMini width="26" height="26" />,
       title: "Total Number of Agro Tools Hired",
       value: userStats?.addons_hired_count || 0,
       borderColor: "#BBD9FF",
       backgroundColor: "#EFF6FF80",
       color: "#898989",
-      link: "/dashboard/enlisted-tractors",
+      link: "/dashboard/hired-tools",
     },
     {
       icon: <VerifiedMini width="26" height="26" />,
@@ -58,6 +67,7 @@ export default function PersonalOverview() {
       borderColor: "#BBD9FF",
       backgroundColor: "#EFF6FF80",
       color: "#898989",
+      link: "/dashboard/hired-tractors",
     },
     {
       icon: <CancelledMini width="26" height="26" />,
@@ -383,7 +393,7 @@ export default function PersonalOverview() {
               borderRadius={"10px"}
               // bg={item?.backgroundColor}
               bg="#FFF"
-              padding={"17px 26px"}
+              padding={{base: "24px 26px", md: "17px 26px"}}
               cursor={item?.link ? "pointer" : "default"}
               onClick={() => {
                 if (item?.link) {
