@@ -34,6 +34,7 @@ import {
   useCollaborateMutation,
 } from "@/redux/services/userApi";
 import { toast } from "react-toastify";
+import { getErrorMessage } from "@/app/utils/errorUtils";
 import { collaborateWithUs } from "@/app/apis/general";
 
 // const DynamicHeader = dynamic(() => import('../components/Sidenav'), {
@@ -191,10 +192,8 @@ export default function BecomeAnAgent() {
                 // console.log("fulfilled", response?.data[0]);
               } catch (err) {
                 const error = err as any;
-                toast.error(
-                  error?.response?.data?.detail ||
-                    "An unexpected error occurred"
-                );
+                const errorMessage = getErrorMessage(error, "An unexpected error occurred");
+                toast.error(errorMessage);
                 console.log("Error submitting form", error);
               }
             }}

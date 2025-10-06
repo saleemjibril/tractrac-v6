@@ -26,11 +26,6 @@ export default function RootLayout({
       <head>
       <GoogleAnalytics />
       <FacebookPixel />
-      <script
-          async
-          defer
-          src={`https://maps.googleapis.com/maps/api/js?key=AIzaSyBWo_tQ4rjQkZz1kN5WXfnemHCaF0gQ8BU&libraries=places,geometry`}
-        ></script>
       </head>
       <body className={inter.className} style={{scrollBehavior: "smooth"}}>
         <Providers>

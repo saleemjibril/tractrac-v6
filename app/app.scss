@@ -135,6 +135,27 @@
         width: 20px;
       }
 
+      .booked {
+        color: #999;
+        cursor: not-allowed;
+        position: relative;
+        background: #f5f5f5;
+        border-radius: 50%;
+        width: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .booked-icon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1;
+        pointer-events: none;
+      }
+
     }
   
     .calendar-header {

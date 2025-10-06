@@ -39,6 +39,7 @@ import {
   // useTractorOnboardingMutation,
 } from "@/redux/services/userApi";
 import { toast } from "react-toastify";
+import { getErrorMessage } from "@/app/utils/errorUtils";
 import { FiFile, FiUpload } from "react-icons/fi";
 import { FaUpload } from "react-icons/fa";
 import { tractorOnboarding } from "@/app/apis/general";
@@ -191,10 +192,8 @@ export default function BecomeAnAgent() {
                 // dispatch(tractorOnboarding(formData));
               } catch (err) {
                 const error = err as any;
-                toast.error(
-                  error?.response?.data?.detail ||
-                    "An unexpected error occurred"
-                );
+                const errorMessage = getErrorMessage(error, "An unexpected error occurred");
+                toast.error(errorMessage);
                 console.log("Error submitting form", error);
               }
             }}

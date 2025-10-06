@@ -1,5 +1,6 @@
 "use client";
 import { toast } from "react-toastify";
+import { getErrorMessage } from "@/app/utils/errorUtils";
 import {
   useSubscribeMutation,
 } from "@/redux/services/userApi";
@@ -87,7 +88,8 @@ export default function FooterComponent() {
                 // }
               } catch (err) {
                 const error = err as any;
-                toast.error(error?.response?.data?.message || "An unexpected error occurred");
+                const errorMessage = getErrorMessage(error, "An unexpected error occurred");
+                toast.error(errorMessage);
                 // // alert('error')
                 // if (error?.data?.errors) {
                 //   // setError(error?.data?.errors[0])

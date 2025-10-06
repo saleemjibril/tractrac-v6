@@ -37,6 +37,7 @@ import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
 import { AddIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 import { useAppSelector } from "@/redux/hooks";
 import { toast } from "react-toastify";
+import { getErrorMessage } from "@/app/utils/errorUtils";
 import { Select as MultiSelect } from "chakra-react-select";
 import * as nigerianStates from "nigerian-states-and-lgas";
 import { ArrowDown2, Filter } from "iconsax-react";
@@ -347,6 +348,25 @@ export default function HireTractorForm() {
                   onClick={() => handleDateRangeClick(dateString)}
                 >
                   {calendarDay}
+                  {isBooked && (
+                    <div className="booked-icon">
+                      <svg
+                        width="12"
+                        height="12"
+                        viewBox="0 0 12 12"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M9 3L3 9M3 3L9 9"
+                          stroke="#DC2626"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </div>
+                  )}
                 </div>
               </Tooltip>
             );
@@ -362,15 +382,56 @@ export default function HireTractorForm() {
       }
   
       return (
-        <div className="calendar-grid">
-          <div className="ndc-calendar-row calendar-header">
-            {daysOfWeek.map((day, index) => (
-              <div key={`header-${index}`} className="calendar-cell">
-                {day}
-              </div>
-            ))}
+        <div>
+          <div className="calendar-grid">
+            <div className="ndc-calendar-row calendar-header">
+              {daysOfWeek.map((day, index) => (
+                <div key={`header-${index}`} className="calendar-cell">
+                  {day}
+                </div>
+              ))}
+            </div>
+            {rows}
           </div>
-          {rows}
+          
+          {/* Calendar Indicators */}
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'center', 
+            gap: '20px', 
+            marginTop: '15px',
+            flexWrap: 'wrap'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <div style={{
+                width: '12px',
+                height: '12px',
+                backgroundColor: '#999',
+                borderRadius: '50%'
+              }}></div>
+              <span style={{ fontSize: '12px', color: '#666' }}>Past Date</span>
+            </div>
+            
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <div style={{
+                width: '12px',
+                height: '12px',
+                backgroundColor: '#DC2626',
+                borderRadius: '50%'
+              }}></div>
+              <span style={{ fontSize: '12px', color: '#666' }}>Booked Date</span>
+            </div>
+            
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <div style={{
+                width: '12px',
+                height: '12px',
+                backgroundColor: '#FA9411',
+                borderRadius: '50%'
+              }}></div>
+              <span style={{ fontSize: '12px', color: '#666' }}>Selected Date</span>
+            </div>
+          </div>
         </div>
       );
     };
@@ -524,11 +585,11 @@ export default function HireTractorForm() {
               const response = await hireFunction(
                 {
                   ...values,
-                  farm_size: farmSize ? `${farmSize} square_meter` : undefined,
+                  farm_size: farmSize ? farmSize : 1,
                   start_date: firstDate,
                   end_date: lastDate,
                   tractor_id: id,
-                  farm_id: farmId ? farmId : undefined
+                  farm_id: farmId ? farmId : "farmId"
                 },
                 userToken as string
               );
@@ -546,9 +607,8 @@ export default function HireTractorForm() {
               // }
             } catch (err) {
               const error = err as any;
-              toast.error(
-                error?.response?.data?.detail || "An unexpected error occurred"
-              );
+              const errorMessage = getErrorMessage(error, "An unexpected error occurred");
+              toast.error(errorMessage);
               console.log("Error hiring tractor", error);
             }
           }}

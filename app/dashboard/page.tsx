@@ -26,6 +26,7 @@ import { usePathname } from "next/navigation";
 import { useGetDashboardStatsQuery } from "@/redux/services/userApi";
 import LoginRequiredModal from "../components/LoginRequiredModal";
 import { toast } from "react-toastify";
+import { getErrorMessage } from "@/app/utils/errorUtils";
 import Link from "next/link";
 import PersonalOverview from "../components/PersonalOverview";
 import { getMyHiredTractors, getMyTractors } from "@/app/apis/tractor";
@@ -143,7 +144,8 @@ export default function Dashboard() {
       setPayments(response?.data?.items);
     } catch (err) {
       const error = err as any;
-      setError(error?.response?.data?.detail || "An unexpected error occurred");
+      const errorMessage = getErrorMessage(error, "An unexpected error occurred");
+      setError(errorMessage);
       console.log("Error fetching tractor", error);
       setLoading(false);
     } finally {
@@ -183,9 +185,8 @@ export default function Dashboard() {
       }
     } catch (err) {
       const error = err as any;
-      setTractorError(
-        error?.response?.data?.detail || "An unexpected error occurred"
-      );
+      const errorMessage = getErrorMessage(error, "An unexpected error occurred");
+      setTractorError(errorMessage);
       console.log("Error fetching tractors", error);
       setLoadingTractors(false);
     }
@@ -219,9 +220,9 @@ export default function Dashboard() {
             width="30px"
             alt="Sun image icon"
           />
-          <Text fontSize="18px" color="#929292" fontWeight={400}>
+          <Text fontSize="18px" color="#FA9411" fontWeight={400}>
             Good day,{" "}
-            <Box as="span" fontWeight={600} color="#929292">
+            <Box as="span" fontWeight={600} color="#FA9411">
               {profileInfo?.name?.split(" ")[0] || "Guest"}
             </Box>
           </Text>
@@ -313,8 +314,10 @@ export default function Dashboard() {
       {/* Enlistments in Review Section */}
 
       <PersonalOverview />
-      <Grid templateColumns={"2.76fr 1fr"} gap={"33px"}>
-        <Box mb={"100px"}>
+      <Grid templateColumns={{ base: "1fr", lg: "2.76fr 1fr" }} gap={{base: "10px", lg: "33px"}}>
+        <Box
+        //  mb={"100px"}
+         >
           <Text fontSize="24px" fontWeight={600} color="#929292" mb="20px">
             Enlistments in Review
           </Text>
@@ -427,6 +430,7 @@ export default function Dashboard() {
             padding={"20px"}
             boxShadow={"0px 0px 4px 0px #FF8E291A"}
             mb="20px"
+            minHeight={"200px"}
           >
             <Flex
               justifyContent={"space-between"}

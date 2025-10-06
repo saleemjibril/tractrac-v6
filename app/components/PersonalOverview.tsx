@@ -33,142 +33,177 @@ export default function PersonalOverview() {
   }, []);
 
   const stats = [
-          {
-            icon: <InvestedMini width="26" height="26" />,
-            title: "Revenue",
-            value: userStats?.total_revenue_tractors || 0,
-            borderColor: "#BBD9FF",
-            backgroundColor: "#EFF6FF80",
-            color: "#898989",
-            link: "/payment",
+    {
+      icon: <TractorsMini width="26" height="26" />,
+      title: "Total Number of Tractors Hired",
+      value: userStats?.tractors_hired_count || 0,
+      borderColor: "#BBD9FF",
+      backgroundColor: "#EFF6FF80",
+      color: "#898989",
+      link: "/dashboard/enlisted-tractors",
+    },
+    {
+      icon: <TractorsMini width="26" height="26" />,
+      title: "Total Number of Agro Tools Hired",
+      value: userStats?.addons_hired_count || 0,
+      borderColor: "#BBD9FF",
+      backgroundColor: "#EFF6FF80",
+      color: "#898989",
+      link: "/dashboard/enlisted-tractors",
+    },
+    {
+      icon: <VerifiedMini width="26" height="26" />,
+      title: "Approved Leasing Requests",
+      value: userStats?.tractor_hire_status_counts?.approved || 0,
+      borderColor: "#BBD9FF",
+      backgroundColor: "#EFF6FF80",
+      color: "#898989",
+    },
+    {
+      icon: <CancelledMini width="26" height="26" />,
+      title: "Total cancelled Request",
+      value: userStats?.tractor_hire_status_counts?.cancelled || 0,
+      borderColor: "#BBD9FF",
+      backgroundColor: "#EFF6FF80",
+      color: "#898989",
+      // link: "/verification?type=tractor&status=cancelled",
+    },
+          // {
+          //   icon: <InvestedMini width="26" height="26" />,
+          //   title: "Revenue",
+          //   value: userStats?.total_revenue_tractors || 0,
+          //   borderColor: "#BBD9FF",
+          //   backgroundColor: "#EFF6FF80",
+          //   color: "#898989",
+          //   link: "/payment",
 
-          },
-          {
-            icon: <DemandFullFiledMini width="26" height="26" />,
-            title: "Total Demand fulfilled",
-            value: userStats?.tractor_demands_fulfilled || 0,
-            borderColor: "#BBD9FF",
-            backgroundColor: "#EFF6FF80",
-            color: "#898989",
-          },
-          {
-            icon: <VerifiedMini width="26" height="26" />,
-            title: "Verified Tractors",
-            value: userStats?.total_tractors_verified || 0,
-            borderColor: "#BBD9FF",
-            backgroundColor: "#EFF6FF80",
-            color: "#898989",
-          },
-          {
-            icon: <InUseMini width="26" height="26" />,
-            title: "Number of Tractors In Use",
-            value: userStats?.total_tractors_in_use || 0,
-            borderColor: "#BBD9FF",
-            backgroundColor: "#EFF6FF80",
-            color: "#898989",
-            // link: "/verification?type=tractor&status=in_use",
-          },
-          {
-            icon: <AvailableMini width="26" height="26" />,
-            title: "Available Tractors",
-            value: userStats?.available_tractors_count || 0,
-            borderColor: "#BBD9FF",
-            backgroundColor: "#EFF6FF80",
-            color: "#898989",
-            // link: "/verification?type=tractor&status=available",
-          },
-          {
-            icon: <CalendarMini width="26" height="26" />,
-            title: "Hired Tractors",
-            value: userStats?.total_number_tractors_hired || 0,
-            borderColor: "#BBD9FF",
-            backgroundColor: "#EFF6FF80",
-            color: "#898989",
-            link: "/dashboard/hired-tractors",
-          },
-          {
-            icon: <TractorsMini width="26" height="26" />,
-            title: "Number of Tractors",
-            value: userStats?.total_tractors_enlisted || 0,
-            borderColor: "#BBD9FF",
-            backgroundColor: "#EFF6FF80",
-            color: "#898989",
-            link: "/dashboard/enlisted-tractors",
-          },
-          {
-            icon: <CancelledMini width="26" height="26" />,
-            title: "Total cancelled Request",
-            value: userStats?.cancelled_tractor_requests || 0,
-            borderColor: "#BBD9FF",
-            backgroundColor: "#EFF6FF80",
-            color: "#898989",
-            // link: "/verification?type=tractor&status=cancelled",
-          },
-          {
-            icon: <DemandFullFiledMini width="26" height="26" />,
-            title: "Total Demand fulfilled",
-            value: userStats?.addon_demands_fulfilled || 0,
-            borderColor: "#BBD9FF",
-            backgroundColor: "#EFF6FF80",
-            color: "#898989",
-          },
-          {
-            // dont have
-            icon: <VerifiedMini width="26" height="26" />,
-            title: "Verified Agro Tools", 
-            value:  0,
-            borderColor: "#BBD9FF",
-            backgroundColor: "#EFF6FF80",
-            color: "#898989",
-            // link: "/verification?type=agro-tool&status=verified",
-          },
-          {
-            icon: <InUseMini width="26" height="26" />,
-            title: "Number of Agro In Use",
-            value: userStats?.total_agro_tools_in_use || 0,
-            borderColor: "#BBD9FF",
-            backgroundColor: "#EFF6FF80",
-            color: "#898989",
-            // link: "/verification?type=agro-tool&status=in_use",
-          },
-          {
-            // dont have
-            icon: <AvailableMini width="26" height="26" />,
-            title: "Available Agro Tools",
-            value: 0,
-            borderColor: "#BBD9FF",
-            backgroundColor: "#EFF6FF80",
-            color: "#898989",
-            // link: "/verification?type=agro-tool&status=available",
-          },
-          {
-            icon: <CalendarMini width="26" height="26" />,
-            title: "Hired Agro Tools",
-            value: userStats?.total_number_agro_tools_hired || 0,
-            borderColor: "#BBD9FF",
-            backgroundColor: "#EFF6FF80",
-            color: "#898989",
-            link: "/dashboard/hired-tools",
-          },
-          {
-            // dont have
-            icon: <TractorsMini width="26" height="26" />,
-            title: "Number of Agro Tools",
-            value: "1,433",
-            borderColor: "#BBD9FF",
-            backgroundColor: "#EFF6FF80",
-            color: "#898989",
-            // link: "/verification?type=agro-tool",
-          },
-          {
-            icon: <CancelledMini width="26" height="26" />,
-            title: "Total cancelled Request",
-            value: userStats?.cancelled_addon_requests || 0,
-            borderColor: "#BBD9FF",
-            backgroundColor: "#EFF6FF80",
-            color: "#898989",
-            // link: "/verification?type=agro-tool&status=cancelled",
-          },
+          // },
+          // {
+          //   icon: <DemandFullFiledMini width="26" height="26" />,
+          //   title: "Total Demand fulfilled",
+          //   value: userStats?.tractor_demands_fulfilled || 0,
+          //   borderColor: "#BBD9FF",
+          //   backgroundColor: "#EFF6FF80",
+          //   color: "#898989",
+          // },
+          // {
+          //   icon: <VerifiedMini width="26" height="26" />,
+          //   title: "Verified Tractors",
+          //   value: userStats?.total_tractors_verified || 0,
+          //   borderColor: "#BBD9FF",
+          //   backgroundColor: "#EFF6FF80",
+          //   color: "#898989",
+          // },
+          // {
+          //   icon: <InUseMini width="26" height="26" />,
+          //   title: "Number of Tractors In Use",
+          //   value: userStats?.total_tractors_in_use || 0,
+          //   borderColor: "#BBD9FF",
+          //   backgroundColor: "#EFF6FF80",
+          //   color: "#898989",
+          //   // link: "/verification?type=tractor&status=in_use",
+          // },
+          // {
+          //   icon: <AvailableMini width="26" height="26" />,
+          //   title: "Available Tractors",
+          //   value: userStats?.available_tractors_count || 0,
+          //   borderColor: "#BBD9FF",
+          //   backgroundColor: "#EFF6FF80",
+          //   color: "#898989",
+          //   // link: "/verification?type=tractor&status=available",
+          // },
+          // {
+          //   icon: <CalendarMini width="26" height="26" />,
+          //   title: "Hired Tractors",
+          //   value: userStats?.total_number_tractors_hired || 0,
+          //   borderColor: "#BBD9FF",
+          //   backgroundColor: "#EFF6FF80",
+          //   color: "#898989",
+          //   link: "/dashboard/hired-tractors",
+          // },
+          // {
+          //   icon: <TractorsMini width="26" height="26" />,
+          //   title: "Number of Tractors",
+          //   value: userStats?.total_tractors_enlisted || 0,
+          //   borderColor: "#BBD9FF",
+          //   backgroundColor: "#EFF6FF80",
+          //   color: "#898989",
+          //   link: "/dashboard/enlisted-tractors",
+          // },
+          // {
+          //   icon: <CancelledMini width="26" height="26" />,
+          //   title: "Total cancelled Request",
+          //   value: userStats?.cancelled_tractor_requests || 0,
+          //   borderColor: "#BBD9FF",
+          //   backgroundColor: "#EFF6FF80",
+          //   color: "#898989",
+          //   // link: "/verification?type=tractor&status=cancelled",
+          // },
+          // {
+          //   icon: <DemandFullFiledMini width="26" height="26" />,
+          //   title: "Total Demand fulfilled",
+          //   value: userStats?.addon_demands_fulfilled || 0,
+          //   borderColor: "#BBD9FF",
+          //   backgroundColor: "#EFF6FF80",
+          //   color: "#898989",
+          // },
+          // {
+          //   // dont have
+          //   icon: <VerifiedMini width="26" height="26" />,
+          //   title: "Verified Agro Tools", 
+          //   value:  0,
+          //   borderColor: "#BBD9FF",
+          //   backgroundColor: "#EFF6FF80",
+          //   color: "#898989",
+          //   // link: "/verification?type=agro-tool&status=verified",
+          // },
+          // {
+          //   icon: <InUseMini width="26" height="26" />,
+          //   title: "Number of Agro In Use",
+          //   value: userStats?.total_agro_tools_in_use || 0,
+          //   borderColor: "#BBD9FF",
+          //   backgroundColor: "#EFF6FF80",
+          //   color: "#898989",
+          //   // link: "/verification?type=agro-tool&status=in_use",
+          // },
+          // {
+          //   // dont have
+          //   icon: <AvailableMini width="26" height="26" />,
+          //   title: "Available Agro Tools",
+          //   value: 0,
+          //   borderColor: "#BBD9FF",
+          //   backgroundColor: "#EFF6FF80",
+          //   color: "#898989",
+          //   // link: "/verification?type=agro-tool&status=available",
+          // },
+          // {
+          //   icon: <CalendarMini width="26" height="26" />,
+          //   title: "Hired Agro Tools",
+          //   value: userStats?.total_number_agro_tools_hired || 0,
+          //   borderColor: "#BBD9FF",
+          //   backgroundColor: "#EFF6FF80",
+          //   color: "#898989",
+          //   link: "/dashboard/hired-tools",
+          // },
+          // {
+          //   // dont have
+          //   icon: <TractorsMini width="26" height="26" />,
+          //   title: "Number of Agro Tools",
+          //   value: "1,433",
+          //   borderColor: "#BBD9FF",
+          //   backgroundColor: "#EFF6FF80",
+          //   color: "#898989",
+          //   // link: "/verification?type=agro-tool",
+          // },
+          // {
+          //   icon: <CancelledMini width="26" height="26" />,
+          //   title: "Total cancelled Request",
+          //   value: userStats?.cancelled_addon_requests || 0,
+          //   borderColor: "#BBD9FF",
+          //   backgroundColor: "#EFF6FF80",
+          //   color: "#898989",
+          //   // link: "/verification?type=agro-tool&status=cancelled",
+          // },
         ] 
 
   // const stats = [
@@ -289,14 +324,14 @@ export default function PersonalOverview() {
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 768) {
-        setItemsPerSlide(2); // Mobile: 2 items per slide (1 row of 2)
+        setItemsPerSlide(1); // Mobile: 1 item per slide (1 row of 1)
       } else if (window.innerWidth < 1024) {
         setItemsPerSlide(4); // Tablet: 4 items per slide (1 row of 4)
       } else {
         setItemsPerSlide(8); // Desktop: 8 items per slide (2 rows of 4)
       }
     };
-    
+
     handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
@@ -334,12 +369,12 @@ export default function PersonalOverview() {
         <Grid
           width={"100%"}
           templateColumns={{
-            base: "1fr 1fr", // Mobile: 2 columns
+            base: "1fr", // Mobile: 1 column
             md: "1fr 1fr 1fr 1fr", // Tablet: 4 columns
             lg: "1fr 1fr 1fr 1fr", // Desktop: 4 columns
           }}
           gap={"10px"}
-          mb={"10px"}
+          mb={{ base: "0", md: "10px" }}
         >
           {getCurrentSlideItems()?.slice(0, 4).map((item, index) => (
             <GridItem
@@ -360,6 +395,7 @@ export default function PersonalOverview() {
                 boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
               }}
               transition="all 0.2s ease-in-out"
+              display={{ base: index === 0 ? "block" : "none", md: "block" }}
             >
               <Flex
                 gap={"10px"}
@@ -385,15 +421,16 @@ export default function PersonalOverview() {
           ))}
         </Grid>
 
-        {/* Second Row */}
+        {/* Second Row - Hidden on mobile */}
         <Grid
           width={"100%"}
           templateColumns={{
-            base: "1fr 1fr", // Mobile: 2 columns
+            base: "1fr", // Mobile: 1 column
             md: "1fr 1fr 1fr 1fr", // Tablet: 4 columns
             lg: "1fr 1fr 1fr 1fr", // Desktop: 4 columns
           }}
           gap={"10px"}
+          display={{ base: "none", md: "grid" }}
         >
           {getCurrentSlideItems()?.slice(4, 8).map((item, index) => (
             <GridItem

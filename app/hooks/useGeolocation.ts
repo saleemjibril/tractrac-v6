@@ -17,6 +17,10 @@ export const useGeolocation = (options: UseGeolocationOptions = {}) => {
   const [position, setPosition] = useState<Position | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [rawAccuracy, setRawAccuracy] = useState<number | null>(null);
+  const [isAccuracyPoor, setIsAccuracyPoor] = useState<boolean>(false);
+  const [isRecoverableError, setIsRecoverableError] = useState<boolean>(false);
+  const [retryCount, setRetryCount] = useState<number>(0);
   const watchId = useRef<number | null>(null);
   const recentPositionsRef = useRef<Position[]>([]);
   const accurateFixesRef = useRef<number>(0);
@@ -39,6 +43,8 @@ export const useGeolocation = (options: UseGeolocationOptions = {}) => {
     }
 
     const handleSuccess = (pos: GeolocationPosition) => {
+      // We received a GPS update; stop showing the initial loader even if accuracy is still poor
+      setIsLoading(false);
       const newPosition: Position = {
         latitude: pos.coords.latitude,
         longitude: pos.coords.longitude,
@@ -46,12 +52,27 @@ export const useGeolocation = (options: UseGeolocationOptions = {}) => {
         timestamp: pos.timestamp
       };
 
+      console.log("newPosition",{
+        latitude: pos.coords.latitude,
+        longitude: pos.coords.longitude,
+        accuracy: pos.coords.accuracy,
+        timestamp: pos.timestamp
+      });
+      
+
+      // Always record the latest reported accuracy for UI purposes
+      setRawAccuracy(newPosition.accuracy);
+        console.log("vinii", newPosition.accuracy > minAccuracyThreshold);
+        
       // Accuracy gating: require sufficiently accurate fixes
-      if (newPosition.accuracy > minAccuracyThreshold) {
-        accurateFixesRef.current = 0;
-        // Ignore poor accuracy updates to reduce jitter
-        return;
-      }
+      // if (newPosition.accuracy > minAccuracyThreshold) {
+      //   accurateFixesRef.current = 0;
+      //   // Ignore poor accuracy updates to reduce jitter
+      //   setIsAccuracyPoor(true);
+      //   return;
+      // }
+
+      setIsAccuracyPoor(false);
 
       // Count consecutive accurate fixes to ensure stability
       accurateFixesRef.current = Math.min(
@@ -101,11 +122,40 @@ export const useGeolocation = (options: UseGeolocationOptions = {}) => {
 
       setPosition(smoothedPosition);
       setError(null);
-      setIsLoading(false);
     };
 
     const handleError = (err: GeolocationPositionError) => {
-      setError(err.message);
+      const message = err?.message || '';
+      const isPositionUnavailable = err?.code === 2 || /kCLErrorLocationUnknown/i.test(message);
+
+      if (isPositionUnavailable) {
+        // Treat as transient; auto-retry with simple backoff
+        setIsRecoverableError(true);
+        setError('Position update is unavailable. Retrying...');
+
+        const nextRetry = Math.min(5000, 1000 * Math.pow(2, retryCount));
+        setRetryCount((c) => c + 1);
+        setIsLoading(true);
+
+        // Restart watch after a short delay
+        try {
+          if (watchId.current !== null) {
+            navigator.geolocation.clearWatch(watchId.current);
+            watchId.current = null;
+          }
+        } catch {}
+
+        setTimeout(() => {
+          // Only restart if we still have a recoverable error and haven't received a good fix yet
+          if (!position) {
+            startWatching();
+          }
+        }, nextRetry);
+        return;
+      }
+
+      setIsRecoverableError(false);
+      setError(message || 'Geolocation error');
       setIsLoading(false);
     };
 
@@ -126,6 +176,20 @@ export const useGeolocation = (options: UseGeolocationOptions = {}) => {
       watchId.current = null;
     }
   }, []);
+
+  const restartWatching = useCallback(() => {
+    setRetryCount(0);
+    setIsRecoverableError(false);
+    setError(null);
+    try {
+      if (watchId.current !== null) {
+        navigator.geolocation.clearWatch(watchId.current);
+        watchId.current = null;
+      }
+    } catch {}
+    setIsLoading(true);
+    startWatching();
+  }, [startWatching]);
 
   const getCurrentPosition = useCallback(() => {
     return new Promise<Position>((resolve, reject) => {
@@ -159,8 +223,13 @@ export const useGeolocation = (options: UseGeolocationOptions = {}) => {
     position,
     error,
     isLoading,
+    isAccuracyPoor,
+    rawAccuracy,
+    isRecoverableError,
+    retryCount,
     startWatching,
     stopWatching,
+    restartWatching,
     getCurrentPosition
   };
 };

@@ -27,7 +27,8 @@ import {
   InputRightAddon,
   Skeleton,
   SkeletonText,
-  Tooltip
+  Tooltip,
+  Collapse
 } from "@chakra-ui/react";;
 import Image from "@/app/components/Image";
 import { SidebarWithHeader } from "../../components/Sidenav";
@@ -58,6 +59,7 @@ import {
 import moment from "moment";
 import Link from "next/link";
 import { states } from "@/app/utils/states";
+import { implementTypes } from "@/app/utils/implementTypes";
 
 const fileTypes = ["JPG", "PNG", "JPEG"];
 
@@ -65,6 +67,35 @@ const fileTypes = ["JPG", "PNG", "JPEG"];
 //     loading: () => <p>Loading...</p>,
 //   })
 const tractorTypes = ["small", "medium", "large", "specialized", "utility"];
+
+const tractorTypeOptions = [
+  { label: "Small", value: "small" },
+  { label: "Medium", value: "medium" },
+  { label: "Large", value: "large" },
+  { label: "Specialized", value: "specialized" },
+  { label: "Utility", value: "utility" }
+];
+
+const brandOptions = [
+  { label: "Case IH", value: "case_ih" },
+  { label: "Sonalika", value: "sonalika" },
+  { label: "John Deere", value: "john_deere" },
+  { label: "Mahindra", value: "mahindra" },
+  { label: "Others", value: "others" }
+];
+
+const statusOptions = [
+  { label: "Available now", value: "available" },
+  { label: "Book ahead", value: "book_ahead" }
+];
+
+const horsepowerOptions = [
+  { label: "30+ HP", value: 30 },
+  { label: "50+ HP", value: 50 },
+  { label: "75+ HP", value: 75 },
+  { label: "100+ HP", value: 100 },
+  { label: "135+ HP", value: 135 }
+];
 
 
 interface ICoordinates {
@@ -158,7 +189,13 @@ export default function HireTractor() {
   const [implement, setImplement] = useState<string | null>(null);
   const [tractorType, setTractorType] = useState<string | null>(null);
   const [tractorSearchTerm, setTractorSearchTerm] = useState<string | null>(null);
+  const [selectedHorsepower, setSelectedHorsepower] = useState<number | null>(null);
+  const [selectedImplementType, setSelectedImplementType] = useState<string | null>(null);
+  const [selectedTractorType, setSelectedTractorType] = useState<string | null>(null);
+  const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
+  const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
   const [userCoordinates, setUserCoordinates] = useState<ICoordinates | null>(null);
+  const [showFilters, setShowFilters] = useState(false);
   // const [getTractors, result] = useLazyGetTractorsQuery();
   const [result] = useLazyGetTractorsQuery();
   const [trigger, searchResult] = useLazyGetSearchTractorsQuery({});
@@ -191,7 +228,7 @@ export default function HireTractor() {
 
   useEffect(() => {
     handleGetTractors();
-    setLocationBasedState(); // Automatically set state and LGA based on user's location
+    // setLocationBasedState(); // Automatically set state and LGA based on user's location
   }, []);
 
   // useEffect(() => {
@@ -239,6 +276,21 @@ export default function HireTractor() {
       if (lga) queryParams.append("local_government_area", lga);
       if (tractorType) queryParams.append("tractor_type", tractorType);
       if (tractorSearchTerm) queryParams.append("search", tractorSearchTerm);
+      if (selectedHorsepower) {
+        queryParams.append("min_horsepower", selectedHorsepower.toString());
+      }
+      if (selectedImplementType) {
+        queryParams.append("implement_types", selectedImplementType);
+      }
+      if (selectedTractorType) {
+        queryParams.append("tractor_type", selectedTractorType);
+      }
+      if (selectedBrand) {
+        queryParams.append("brands", selectedBrand);
+      }
+      if (selectedStatus) {
+        queryParams.append("status", selectedStatus);
+      }
 
       // Convert URLSearchParams to string
       const queryString = queryParams.toString();
@@ -274,12 +326,17 @@ export default function HireTractor() {
 
     // Call the async function
     fetchFilteredTractors();
-  }, [state, lga, tractorType, tractorSearchTerm, userToken]);
+  }, [state, lga, tractorType, tractorSearchTerm, selectedHorsepower, selectedImplementType, selectedTractorType, selectedBrand, selectedStatus, userToken]);
 
   const clearFilters = async () => {
     setState(null);
     setLga(null);
     setTractorType(null);
+    setSelectedHorsepower(null);
+    setSelectedImplementType(null);
+    setSelectedTractorType(null);
+    setSelectedBrand(null);
+    setSelectedStatus(null);
     await handleGetTractors();
   }
   // Function to automatically set state and LGA based on user's location
@@ -485,12 +542,81 @@ export default function HireTractor() {
               // w="111px"
               />
             ) : (
-              <Map />
+              // <Map />
+              <></>
             )}
             {/* <Image src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446725/map_punpe8.svg" alt="map image" /> */}
           </Stack>
           <Box mt="40px">
-            <SimpleGrid columns={{ base: 2, lg: 4 }} spacing="20px" width={"fit-content"} mb={"20px"}>
+            {/* Filter Controls */}
+            <Flex alignItems="center" gap="10px" mb="20px">
+              <Button
+                size="sm"
+                variant="outline"
+                colorScheme="orange"
+                bgColor="transparent"
+                color="#FA9411"
+                borderColor="#FA9411"
+                borderRadius="20px"
+                fontSize="12px"
+                fontWeight="500"
+                px="16px"
+                py="8px"
+                height="32px"
+                _hover={{
+                  bgColor: "#FA941110",
+                }}
+                _active={{
+                  bgColor: "#FA941120",
+                }}
+                onClick={() => setShowFilters(!showFilters)}
+                leftIcon={<Filter size="16" />}
+              >
+                {showFilters ? "Hide Filters" : "Show Filters"}
+              </Button>
+              {showFilters && <Button
+                size="sm"
+                variant="outline"
+                colorScheme="orange"
+                bgColor="#FA9411"
+                color="#FFF"
+                borderRadius="20px"
+                fontSize="12px"
+                fontWeight="500"
+                px="16px"
+                py="8px"
+                height="32px"
+                onClick={clearFilters}
+                // leftIcon={<Filter size="16" />}
+              >
+               Clear filters
+              </Button>}
+              <Input
+                value={tractorSearchTerm}
+                borderColor="#FA9411"
+                _focus={{
+                  borderColor: "#FA9411",
+                }}
+                _focusVisible={{
+                  borderColor: "#FA9411",
+                }}
+                onChange={(e) =>
+                  setTractorSearchTerm(e.target.value)
+                }
+                placeholder="Search tractors..."
+                bgColor="#FFF"
+                fontSize="12px"
+                color="#323232"
+                flex="1"
+                maxWidth="400px"
+              />
+            </Flex>
+
+           
+            {/* Collapsible Filter Section */}
+            <Collapse in={showFilters} animateOpacity>
+              <Box>
+                <SimpleGrid display={"flex"} gap={"20px"} flexWrap={"wrap"} width={"fit-content"} mb={"20px"} alignItems={"center"}>
               {/* <InputGroup
                 width="140px"
                 border="1px"
@@ -517,7 +643,8 @@ export default function HireTractor() {
                   <option>All filters</option>
                 </Select>
               </InputGroup> */}
-
+<Box>
+<Text fontSize="12px" color="#323232" mb="6px" mt="10px" fontWeight={700}>State</Text>
               <Select
                 width="150px"
                 placeholder="State"
@@ -559,6 +686,9 @@ export default function HireTractor() {
                   </option>
                 ))}
               </Select>
+              </Box>
+              <Box>
+              <Text fontSize="12px" color="#323232" mb="6px" mt="10px" fontWeight={700}>Local Government Area</Text>
               <Select
                 width="150px"
                 placeholder="Lga"
@@ -589,6 +719,9 @@ export default function HireTractor() {
                   </option>
                 ))}
               </Select>
+              </Box>
+              {/* <Box>
+              <Text fontSize="12px" color="#323232" mb="6px" mt="10px" fontWeight={700}>Tractor Types</Text>
               <Select
                 width="150px"
                 placeholder="Tractor Type"
@@ -619,24 +752,191 @@ export default function HireTractor() {
                   </option>
                 ))}
               </Select>
+              </Box> */}
 
+                  {/* Horsepower Filter Pills */}
+              <Box>
+              <Text fontSize="12px" color="#323232" mb="6px" fontWeight={700}>Horsepower</Text>
+              <Flex gap="8px" wrap="wrap" align="center">
+                {horsepowerOptions.map((option) => (
+                  <Button
+                    key={option.value}
+                    size="sm"
+                    variant={selectedHorsepower === option.value ? "solid" : "outline"}
+                    colorScheme={selectedHorsepower === option.value ? "orange" : "gray"}
+                    bgColor={selectedHorsepower === option.value ? "#FA9411" : "transparent"}
+                    color={selectedHorsepower === option.value ? "white" : "#FA9411"}
+                    borderColor="#FA9411"
+                    borderRadius="20px"
+                    fontSize="12px"
+                    fontWeight="500"
+                    px="16px"
+                    py="8px"
+                    height="32px"
+                    _hover={{
+                      bgColor: selectedHorsepower === option.value ? "#e67e00" : "#FA941110",
+                    }}
+                    _active={{
+                      bgColor: selectedHorsepower === option.value ? "#e67e00" : "#FA941120",
+                    }}
+                    onClick={() => {
+                      setSelectedHorsepower(
+                        selectedHorsepower === option.value ? null : option.value
+                      );
+                    }}
+                  >
+                    {option.label}
+                  </Button>
+                ))}
+              </Flex>
+              </Box>
 
-              <Button
-                bgColor="#FA9411"
-                height="42px"
-                borderRadius="4px"
-                width="170px"
-                color="white"
-                as="a"
-                _hover={{
-                  opacity: 0.8,
-                }}
-                onClick={clearFilters}
-              >
-                <Flex justifyContent="center" alignContent="center">
-                  <Text fontSize="14px">Clear filters</Text>
-                </Flex>
-              </Button>
+              {/* Implement Type Filter Pills */}
+              <Box>
+              <Text fontSize="12px" color="#323232" mb="6px" mt="10px" fontWeight={700}>Implement Types</Text>
+              <Flex gap="8px" wrap="wrap" align="center">
+                {implementTypes.map((implement) => (
+                  <Button
+                    key={implement.value}
+                    size="sm"
+                    variant={selectedImplementType === implement.value ? "solid" : "outline"}
+                    colorScheme={selectedImplementType === implement.value ? "orange" : "gray"}
+                    bgColor={selectedImplementType === implement.value ? "#FA9411" : "transparent"}
+                    color={selectedImplementType === implement.value ? "white" : "#FA9411"}
+                    borderColor="#FA9411"
+                    borderRadius="20px"
+                    fontSize="12px"
+                    fontWeight="500"
+                    px="16px"
+                    py="8px"
+                    height="32px"
+                    _hover={{
+                      bgColor: selectedImplementType === implement.value ? "#e67e00" : "#FA941110",
+                    }}
+                    _active={{
+                      bgColor: selectedImplementType === implement.value ? "#e67e00" : "#FA941120",
+                    }}
+                    onClick={() => {
+                      setSelectedImplementType(
+                        selectedImplementType === implement.value ? null : implement.value
+                      );
+                    }}
+                  >
+                    {implement.label}
+                  </Button>
+                ))}
+              </Flex>
+              </Box>
+
+              {/* Tractor Type Filter Pills */}
+              <Box>
+              <Text fontSize="12px" color="#323232" mb="6px" mt="10px" fontWeight={700}>Tractor Types</Text>
+              <Flex gap="8px" wrap="wrap" align="center" height={"fit-content"}>
+                {tractorTypeOptions.map((type) => (
+                  <Button
+                    key={type.value}
+                    size="sm"
+                    variant={selectedTractorType === type.value ? "solid" : "outline"}
+                    colorScheme={selectedTractorType === type.value ? "orange" : "gray"}
+                    bgColor={selectedTractorType === type.value ? "#FA9411" : "transparent"}
+                    color={selectedTractorType === type.value ? "white" : "#FA9411"}
+                    borderColor="#FA9411"
+                    borderRadius="20px"
+                    fontSize="12px"
+                    fontWeight="500"
+                    px="16px"
+                    py="8px"
+                    height="32px"
+                    _hover={{
+                      bgColor: selectedTractorType === type.value ? "#e67e00" : "#FA941110",
+                    }}
+                    _active={{
+                      bgColor: selectedTractorType === type.value ? "#e67e00" : "#FA941120",
+                    }}
+                    onClick={() => {
+                      setSelectedTractorType(
+                        selectedTractorType === type.value ? null : type.value
+                      );
+                    }}
+                  >
+                    {type.label}
+                  </Button>
+                ))}
+              </Flex>
+              </Box>
+
+              {/* Brand Filter Pills */}
+              {/* <Box>
+              <Text fontSize="12px" color="#323232" mb="6px" mt="10px" fontWeight={700}>Brands</Text>
+              <Flex gap="8px" wrap="wrap" align="center" height={"fit-content"}>
+                {brandOptions.map((brand) => (
+                  <Button
+                    key={brand.value}
+                    size="sm"
+                    variant={selectedBrand === brand.value ? "solid" : "outline"}
+                    colorScheme={selectedBrand === brand.value ? "orange" : "gray"}
+                    bgColor={selectedBrand === brand.value ? "#FA9411" : "transparent"}
+                    color={selectedBrand === brand.value ? "white" : "#FA9411"}
+                    borderColor="#FA9411"
+                    borderRadius="20px"
+                    fontSize="12px"
+                    fontWeight="500"
+                    px="16px"
+                    py="8px"
+                    height="32px"
+                    _hover={{
+                      bgColor: selectedBrand === brand.value ? "#e67e00" : "#FA941110",
+                    }}
+                    _active={{
+                      bgColor: selectedBrand === brand.value ? "#e67e00" : "#FA941120",
+                    }}
+                    onClick={() => {
+                      setSelectedBrand(
+                        selectedBrand === brand.value ? null : brand.value
+                      );
+                    }}
+                  >
+                    {brand.label}
+                  </Button>
+                ))}
+              </Flex>
+              </Box> */}
+
+              {/* Status Filter Pills */}
+              {/* <Text fontSize="12px" color="#323232" mb="6px" mt="10px">Status</Text>
+              <Flex gap="8px" wrap="wrap" align="center">
+                {statusOptions.map((status) => (
+                  <Button
+                    key={status.value}
+                    size="sm"
+                    variant={selectedStatus === status.value ? "solid" : "outline"}
+                    colorScheme={selectedStatus === status.value ? "orange" : "gray"}
+                    bgColor={selectedStatus === status.value ? "#FA9411" : "transparent"}
+                    color={selectedStatus === status.value ? "white" : "#FA9411"}
+                    borderColor="#FA9411"
+                    borderRadius="20px"
+                    fontSize="12px"
+                    fontWeight="500"
+                    px="16px"
+                    py="8px"
+                    height="32px"
+                    _hover={{
+                      bgColor: selectedStatus === status.value ? "#e67e00" : "#FA941110",
+                    }}
+                    _active={{
+                      bgColor: selectedStatus === status.value ? "#e67e00" : "#FA941120",
+                    }}
+                    onClick={() => {
+                      setSelectedStatus(
+                        selectedStatus === status.value ? null : status.value
+                      );
+                    }}
+                  >
+                    {status.label}
+                  </Button>
+                ))}
+              </Flex> */}
+
 
 
 
@@ -669,26 +969,9 @@ export default function HireTractor() {
                   </option>
                 ))}
               </Select> */}
-            </SimpleGrid>
-
-            <Input
-              value={tractorSearchTerm}
-              borderColor="#FA9411"
-                _focus={{
-                  borderColor: "#FA9411",
-                }}
-                _focusVisible={{
-                  borderColor: "#FA9411",
-                }}
-              onChange={(e) =>
-                setTractorSearchTerm(e.target.value)
-              }
-              // onFocus={handleUserInputFocus}
-              placeholder="Type to search tractors by name, description, brand, model, location, etc."
-              bgColor="#FFF"
-              fontSize="12px"
-              color="#323232"
-            />
+                </SimpleGrid>
+              </Box>
+            </Collapse>
             {
               // searchResult?.isFetching ||
               loading ? (
@@ -887,6 +1170,36 @@ function TractorCard({
       setCurrentImageIndex((prev) => (prev - 1 + image.length) % image.length);
     }
   };
+
+  // Handle keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (!showImageGallery) return;
+      
+      switch (event.key) {
+        case 'ArrowLeft':
+          event.preventDefault();
+          prevImage();
+          break;
+        case 'ArrowRight':
+          event.preventDefault();
+          nextImage();
+          break;
+        case 'Escape':
+          event.preventDefault();
+          setShowImageGallery(false);
+          break;
+      }
+    };
+
+    if (showImageGallery) {
+      document.addEventListener('keydown', handleKeyDown);
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [showImageGallery, image]);
 
   return (
     <>

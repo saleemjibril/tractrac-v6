@@ -29,6 +29,7 @@ import { Formik, Form, Field } from "formik";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { toast } from "react-toastify";
+import { getErrorMessage } from "@/app/utils/errorUtils";
 import NoSsrWrapper from "./noSsrWrapper";
 import { ChakraWrapper } from "../chakraUIWrapper";
 import { loginUser } from "../apis/auth";
@@ -163,10 +164,8 @@ export default function LoginInner() {
                       if(error?.response?.data?.detail?.message === "Inactive user. Please verify your account") {
                         router.push(`/verification?phone=${values?.phone}`);
                       }else {
-                        setError(
-                          (error as any).response?.data?.detail ||
-                            "An unknown error occurred"
-                        );
+                        const errorMessage = getErrorMessage(error, "An unknown error occurred");
+                        setError(errorMessage);
                       }
                       
                     }

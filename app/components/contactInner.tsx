@@ -5,6 +5,7 @@ import {
   Stack,
   Flex,
   Text,
+  Heading,
   Button,
   Input,
   useDisclosure,
@@ -12,6 +13,9 @@ import {
   Alert,
   AlertIcon,
   AlertTitle,
+  Divider,
+  HStack,
+  Icon,
 } from "@chakra-ui/react";
 
 import { useAppDispatch } from "@/redux/hooks";
@@ -19,13 +23,15 @@ import { useCollaborateMutation } from "@/redux/services/userApi";
 import { toast } from "react-toastify";
 import FooterComponent from "./footer";
 import Header from "./header";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ChakraWrapper } from "../chakraUIWrapper";
+import loader from "../googleMapsLoader";
 
 
 export default function ContactUsInner() {
   const dispatch = useAppDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const mapContainerRef = useRef<HTMLDivElement | null>(null);
 
   const initialDataState = {
     name: "",
@@ -50,6 +56,77 @@ export default function ContactUsInner() {
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  const offices = [
+    {
+      name: "Abuja Office",
+      address:
+        "11 Vanern Crescent, Wuse, FCT 904101, Federal Capital Territory",
+      position: { lat: 9.081999, lng: 7.48 },
+    },
+    {
+      name: "Nasarawa Office",
+      address: "Coming soon",
+      position: { lat: 8.4926, lng: 8.515 }, // Placeholder coordinates (Lafia)
+      placeholder: true,
+    },
+  ];
+
+  useEffect(() => {
+    let mapInstance: google.maps.Map | null = null;
+    let infoWindows: google.maps.InfoWindow[] = [];
+
+    const initMap = async () => {
+      try {
+        await loader.importLibrary("maps");
+        const container = mapContainerRef.current;
+        if (!container) return;
+
+        mapInstance = new window.google.maps.Map(container, {
+          center: new window.google.maps.LatLng(9.082, 8.6753),
+          zoom: 6,
+        });
+
+        const bounds = new window.google.maps.LatLngBounds();
+        offices.forEach((office) => {
+          const marker = new window.google.maps.Marker({
+            position: office.position,
+            map: mapInstance!,
+            title: office.placeholder
+              ? `${office.name} (Placeholder)`
+              : office.name,
+          });
+
+          const infoWindow = new window.google.maps.InfoWindow({
+            content: `<div style="padding:8px; max-width:260px">
+              <div style="font-weight:600; margin-bottom:6px">${office.name}${office.placeholder ? " (Placeholder)" : ""}</div>
+              <div style="font-size:13px; line-height:1.4">${office.address}</div>
+            </div>`,
+          });
+          infoWindows.push(infoWindow);
+          marker.addListener("click", () => {
+            infoWindows.forEach((iw) => iw.close());
+            infoWindow.open({ map: mapInstance!, anchor: marker });
+          });
+
+          bounds.extend(office.position as google.maps.LatLngLiteral);
+        });
+
+        if (!bounds.isEmpty()) {
+          mapInstance.fitBounds(bounds);
+        }
+      } catch (e) {
+        // fail silently on map init issues
+      }
+    };
+
+    initMap();
+
+    return () => {
+      infoWindows.forEach((iw) => iw.close());
+      mapInstance = null;
+    };
+  }, []);
+
   return (
     <ChakraWrapper>
       <Box position={"relative"}>
@@ -61,45 +138,56 @@ export default function ContactUsInner() {
           width={"100%"}
           maxWidth={"1440px"}
           margin={"0 auto"}
-        //   mt="20px"
-        pt="20px"
+          pt="40px"
+          pb={"80px"}
         >
-          <Flex gap="70px" mt="20px" flexDir={{ base: "column", md: "row" }}>
-            <Stack>
-              <Text color="#000000" fontSize="32px" fontWeight={600}>
+          <Box width={"100%"} display={"grid"} gridTemplateColumns={{ base: "1fr", md: "1fr 1fr" }} gap="70px">
+            <Stack spacing={4}>
+              <Heading color="#111111" fontSize={{ base: "28px", md: "32px" }}>
                 Let&rsquo;s Talk
+              </Heading>
+              <Text color="#444444" fontSize="16px" lineHeight={1.6}>
+                Tractrac are open to partnerships with organizations that share our
+                vision of a more mechanized and sustainable Nigeria.
               </Text>
-              <Text color="#000000" fontSize="16px">
-                Tractrac are open to partnerships with organizations that share
-                our vision of a more mechanized and sustainable Nigeria.
-              </Text>
-
-              <Text color="#000000" fontSize="20px" fontWeight={600} mt="20px">
-                Email
-              </Text>
-              <Text color="#000000" fontSize="16px">
-                info@tractrac.co
-              </Text>
-
-              <Text color="#000000" fontSize="20px" fontWeight={600} mt="20px">
-                Phone Number
-              </Text>
-              <Text color="#000000" fontSize="16px">
-                08064648720
-              </Text>
+              <Divider />
+              <Stack spacing={3}>
+                <Box>
+                  <Text color="#111111" fontSize="14px" fontWeight={600} textTransform="uppercase" letterSpacing="0.6px">
+                    Email
+                  </Text>
+                  <HStack mt="6px" spacing={3}>
+                    <Icon viewBox="0 0 24 24" boxSize={5} color="#FA9411">
+                      <path fill="currentColor" d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2m0 4l-8 5L4 8V6l8 5l8-5z" />
+                    </Icon>
+                    <Text color="#333333" fontSize="16px">info@tractrac.co</Text>
+                  </HStack>
+                </Box>
+                <Box>
+                  <Text color="#111111" fontSize="14px" fontWeight={600} textTransform="uppercase" letterSpacing="0.6px">
+                    Phone Number
+                  </Text>
+                  <HStack mt="6px" spacing={3}>
+                    <Icon viewBox="0 0 24 24" boxSize={5} color="#FA9411">
+                      <path fill="currentColor" d="M6.62 10.79a15.91 15.91 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 0 1 1 1v3.5a1 1 0 0 1-1 1C10.29 22 2 13.71 2 3.5a1 1 0 0 1 1-1H6.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.58a1 1 0 0 1-.25 1.01z" />
+                    </Icon>
+                    <Text color="#333333" fontSize="16px">08064648720</Text>
+                  </HStack>
+                </Box>
+              </Stack>
             </Stack>
 
             <Box
-            //   mr={{ base: "0px", md: "8em" }}
-              bgColor="white"
-              pb="80px"
-            //   px={{ base: "12px", md: "50px" }}
-              borderRadius="6px"
+              bgColor="#ffffff"
+              borderRadius="10px"
               minW={{ base: "100%", md: "50%" }}
+              p={{ base: "16px", md: "24px" }}
+              boxShadow="0 8px 24px rgba(0,0,0,0.06)"
+              border="1px solid #EFEFEF"
             >
-              {/* <Text fontSize="24px" mt="4px" mb="36px">
+              <Heading as="h2" fontSize={{ base: "18px", md: "20px" }} mb="16px" color="#111111">
                 Contact Us
-              </Text> */}
+              </Heading>
 
               {error && (
                 <Alert status="error" mb="16px">
@@ -108,50 +196,54 @@ export default function ContactUsInner() {
                 </Alert>
               )}
 
-              <Box mb="28px">
-                <Text mb="8px" fontSize={"14px"}>
+              <Box mb="18px">
+                <Text mb="8px" fontSize={"14px"} color="#111111" fontWeight={500}>
                   Name
                 </Text>
                 <Input
                   name="name"
-                //   placeholder="Name"
-                border="0px"
-                bgColor="#F7F7F7"
+                  border="1px solid #E6E6E6"
+                  bgColor="#F9F9F9"
+                  _focus={{ bg: "white", borderColor: "#FA9411", boxShadow: "0 0 0 1px #FA9411" }}
                   value={data.name}
                   onChange={handleInputChange}
                 />
               </Box>
-              <Box mb="28px">
-                <Text mb="8px" fontSize={"14px"}>
+              <Box mb="18px">
+                <Text mb="8px" fontSize={"14px"} color="#111111" fontWeight={500}>
                   Email Address
                 </Text>
                 <Input
                   name="email"
-                  border="0px"
-                  bgColor="#F7F7F7"
-                //   placeholder="Enter your email address"
+                  type="email"
+                  border="1px solid #E6E6E6"
+                  bgColor="#F9F9F9"
+                  _focus={{ bg: "white", borderColor: "#FA9411", boxShadow: "0 0 0 1px #FA9411" }}
                   value={data.email}
                   onChange={handleInputChange}
                 />
               </Box>
-              <Box mb="28px">
-                <Text mb="8px" fontSize={"14px"}>
+              <Box mb="20px">
+                <Text mb="8px" fontSize={"14px"} color="#111111" fontWeight={500}>
                   Message
                 </Text>
                 <Textarea
-                minH="165px"
-                //   placeholder="Message"
+                  minH="165px"
                   name="message"
-                  border="0px"
-                  bgColor="#F7F7F7"
+                  border="1px solid #E6E6E6"
+                  bgColor="#F9F9F9"
+                  _focus={{ bg: "white", borderColor: "#FA9411", boxShadow: "0 0 0 1px #FA9411" }}
                   value={data.message}
                   onChange={handleInputChange}
                 />
               </Box>
               <Button
                 bgColor="#FA9411"
+                _hover={{ bg: "#e88305" }}
+                _active={{ bg: "#cf7604" }}
                 color="white"
-                borderRadius="4px"
+                borderRadius="6px"
+                height="44px"
                 width="100%"
                 onClick={async () => {
                   try {
@@ -200,9 +292,7 @@ export default function ContactUsInner() {
                     }
                   } catch (err) {
                     const error = err as any;
-                    // alert('error')
                     if (error?.data?.errors) {
-                      // setError(error?.data?.errors[0])
                     } else if (error?.data?.message) {
                       setError(error?.data?.message);
                     }
@@ -217,8 +307,46 @@ export default function ContactUsInner() {
                 Send
               </Button>
             </Box>
-          </Flex>
+
+            <Box minW={{ base: "100%", md: "45%" }}>
+            <Heading color="#111111" fontSize={{ base: "22px", md: "24px" }} mb="16px">
+            Our Offices
+          </Heading>
+              <Stack spacing={4}>
+                <Box p={{ base: "14px", md: "16px" }} borderRadius="10px" border="1px solid #EFEFEF" boxShadow="0 6px 16px rgba(0,0,0,0.04)">
+                  <HStack spacing={3} mb={2}>
+                    <Icon viewBox="0 0 24 24" boxSize={5} color="#FA9411">
+                      <path fill="currentColor" d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7m0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z" />
+                    </Icon>
+                    <Text color="#111111" fontSize="18px" fontWeight={600}>
+                      Abuja Office
+                    </Text>
+                  </HStack>
+                  <Text color="#444444" fontSize="14px" lineHeight={1.6}>
+                    11 Vanern Crescent, Wuse, FCT 904101, Federal Capital Territory
+                  </Text>
+                </Box>
+                <Box p={{ base: "14px", md: "16px" }} borderRadius="10px" border="1px solid #EFEFEF" boxShadow="0 6px 16px rgba(0,0,0,0.04)">
+                  <HStack spacing={3} mb={2}>
+                    <Icon viewBox="0 0 24 24" boxSize={5} color="#FA9411">
+                      <path fill="currentColor" d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7m0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z" />
+                    </Icon>
+                    <Text color="#111111" fontSize="18px" fontWeight={600}>
+                      Nasarawa Office
+                    </Text>
+                  </HStack>
+                  {/* <Text color="#999999" fontSize="14px">(Placeholder)</Text> */}
+                </Box>
+              </Stack>
+            </Box>
+
+            <Box flex={1} minH="420px" borderRadius="12px" overflow="hidden" border="1px solid #EFEFEF" boxShadow="0 8px 24px rgba(0,0,0,0.06)">
+              <div ref={mapContainerRef} style={{ width: "100%", height: "100%" }} />
+            </Box>
+          </Box>
         </Box>
+
+       
 
         <FooterComponent />
 

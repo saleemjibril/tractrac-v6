@@ -11,6 +11,7 @@ import {
 } from "../apis/support";
 import { useAppSelector } from "@/redux/hooks";
 import { toast } from "react-toastify";
+import { getErrorMessage } from "@/app/utils/errorUtils";
 import moment from "moment";
 import { useWebSocket } from "../hooks/useWebSocket";
 import { log } from "console";
@@ -69,9 +70,8 @@ export default function SupportWidget() {
       }
     } catch (err) {
       const error = err as any;
-      toast.error(
-        error?.response?.data?.detail || "An unexpected error occurred"
-      );
+      const errorMessage = getErrorMessage(error, "An unexpected error occurred");
+      toast.error(errorMessage);
       console.log("Error getting support tickets", error);
     }
     // finally {
@@ -103,9 +103,8 @@ export default function SupportWidget() {
       // }
     } catch (err) {
       const error = err as any;
-      toast.error(
-        error?.response?.data?.detail || "An unexpected error occurred"
-      );
+      const errorMessage = getErrorMessage(error, "An unexpected error occurred");
+      toast.error(errorMessage);
       console.log("Error getting support ticket details", error);
       setStage(2);
     }
@@ -140,9 +139,8 @@ export default function SupportWidget() {
       // handleGetTickets();
     } catch (err) {
       const error = err as any;
-      toast.error(
-        error?.response?.data?.detail || "An unexpected error occurred"
-      );
+      const errorMessage = getErrorMessage(error, "An unexpected error occurred");
+      toast.error(errorMessage);
       console.log("Error submitting form", error);
     } finally {
       setLoading(false);

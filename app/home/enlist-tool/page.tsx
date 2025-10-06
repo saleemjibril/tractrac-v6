@@ -42,6 +42,7 @@ import {
   useCollaborateMutation,
 } from "@/redux/services/userApi";
 import { toast } from "react-toastify";
+import { getErrorMessage } from "@/app/utils/errorUtils";
 
 import { FileUploader } from "react-drag-drop-files";
 import { FaFileUpload, FaUpload } from "react-icons/fa";
@@ -330,10 +331,8 @@ Enlist your agro tools using the form below, and our team will reach out to get 
                 // }
               } catch (err) {
                 const error = err as any;
-                toast.error(
-                  error?.response?.data?.detail ||
-                    "An unexpected error occurred"
-                );
+                const errorMessage = getErrorMessage(error, "An unexpected error occurred");
+                toast.error(errorMessage);
                 console.log("Error enlisting tractor", error);
               }
             }}

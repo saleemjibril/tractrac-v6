@@ -33,6 +33,7 @@ import Image from "@/app/components/Image";
 import { useEffect, useState } from "react";
 import { CloseIcon, SearchIcon } from "@chakra-ui/icons";
 import { useAppSelector } from "@/redux/hooks";
+import { getErrorMessage } from "@/app/utils/errorUtils";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "react-toastify";
 import { useGetTractorsQuery } from "@/redux/services/tractorApi";
@@ -100,7 +101,8 @@ export default function PaymentPage() {
     } catch (err) {
       const error = err as any;
       console.log("Error enlisting tractor", error);
-      setError(error?.response?.data?.detail || "An unexpected error occurred");
+      const errorMessage = getErrorMessage(error, "An unexpected error occurred");
+      setError(errorMessage);
       setLoading(false);
     }
   };

@@ -11,6 +11,7 @@ export default function FarmMeasurementPage() {
   const [measurementResult, setMeasurementResult] = useState<FarmPath | null>(null);
   const [serverId, setServerId] = useState<string | null>(null);
   const [showSummary, setShowSummary] = useState(false);
+  const [measurements, setMeasurements] = useState<FarmPath[]>([]);
   const { syncOfflineMeasurements } = useFarmMeasurement();
 
   const router = useRouter();
@@ -26,30 +27,60 @@ export default function FarmMeasurementPage() {
 
   const handleCloseSummary = () => {
     setShowSummary(false);
-    
-    // If we have a tractorId, redirect back to that specific tractor page with the measurement data
-    if (tractorId && measurementResult) {
-      const farmSize = measurementResult.areaSquareMeters;
-      const idParam = serverId ? `&measurement_id=${encodeURIComponent(serverId)}` : '';
-      console.log('handleCloseSummary', {farmSize, idParam});
-      
-      router.push(`/home/hire-tractor/${tractorId}?farm_size=${farmSize}${idParam}`);
-    } else {
-      // Fallback to the general hire-tractor page
-      router.push(`/home/hire-tractor`);
+    setMeasurementResult(null);
+    setServerId(null);
+  };
+
+  const handlePrimaryAction = () => {
+    // If we have collected fewer than 3 measurements, accept current and continue
+    if (measurementResult) {
+      const next = [...measurements, measurementResult];
+      setMeasurements(next);
+      setShowSummary(false);
+      setMeasurementResult(null);
+      setServerId(null);
+
+      if (next.length >= 3) {
+        // Compute average and redirect
+        const avgArea = Math.round(
+          next.reduce((sum, m) => sum + (m.areaSquareMeters || 0), 0) / next.length
+        );
+
+        if (tractorId) {
+          const idParam = '';
+          router.push(`/home/hire-tractor/${tractorId}?farm_size=${avgArea}${idParam}`);
+        } else {
+          router.push(`/home/hire-tractor?farm_size=${avgArea}`);
+        }
+
+        // Reset state after redirect attempt
+        setMeasurements([]);
+      }
     }
-    
+  };
+
+  const handleSecondaryAction = () => {
+    // Redo current measurement — just close summary and allow re-measure
+    setShowSummary(false);
     setMeasurementResult(null);
     setServerId(null);
   };
 
   if (showSummary && measurementResult) {
+    const currentIndex = measurements.length + 1;
+    const total = 3;
     return (
       <div className="min-h-screen bg-gray-100 py-8">
         <div className="container mx-auto px-4">
           <MeasurementSummary
             measurement={measurementResult}
             onClose={handleCloseSummary}
+            progressCurrent={currentIndex}
+            progressTotal={total}
+            primaryLabel={currentIndex < total ? 'Save & Measure Again' : 'Use Average & Continue'}
+            secondaryLabel={'Redo'}
+            onPrimary={handlePrimaryAction}
+            onSecondary={handleSecondaryAction}
             returnContext={tractorId ? 'tractor-booking' : 'home'}
           />
         </div>

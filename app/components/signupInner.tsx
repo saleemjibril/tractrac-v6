@@ -38,6 +38,7 @@ import {
 } from "@/redux/services/authApi";
 import { MultiValue, Select, useChakraSelectProps } from "chakra-react-select";
 import { toast } from "react-toastify";
+import { getErrorMessage } from "@/app/utils/errorUtils";
 import NoSsrWrapper from "../components/noSsrWrapper";
 import Link from "next/link";
 import { ChakraWrapper } from "../chakraUIWrapper";
@@ -260,7 +261,8 @@ export default function SignupInner() {
                       // console.log("fulfilled", response?.data[0], response.token);
                     } catch (error) {
                       console.log("rejected", error);
-                      setError((error as any).response?.data?.detail || "An unknown error occurred");
+                      const errorMessage = getErrorMessage(error, "An unknown error occurred");
+                      setError(errorMessage);
                     }
                   }}
                 >

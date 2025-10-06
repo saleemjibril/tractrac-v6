@@ -23,7 +23,7 @@ export const FarmMeasurementMap: React.FC<FarmMeasurementMapProps> = ({
   const [isMapLoaded, setIsMapLoaded] = useState(false);
   const [showGPSAlert, setShowGPSAlert] = useState(false);
 
-  const { position, error, isLoading } = useGeolocation({
+  const { position, error, isLoading, isAccuracyPoor, rawAccuracy, isRecoverableError, retryCount, restartWatching } = useGeolocation({
     enableHighAccuracy: true,
     distanceFilter: 1
   });
@@ -47,8 +47,7 @@ export const FarmMeasurementMap: React.FC<FarmMeasurementMapProps> = ({
 
     const initializeMap = async () => {
       try {
-        // Ensure Google Maps JS API is fully loaded before accessing window.google
-        await loader.load();
+        // Ensure Google Maps JS API is loaded via the shared loader
         await loader.importLibrary("maps");
         
         const initialMap = new google.maps.Map(mapRef.current!, {
@@ -72,6 +71,15 @@ export const FarmMeasurementMap: React.FC<FarmMeasurementMapProps> = ({
   // Update map center when position changes
   useEffect(() => {
     if (!map || !position) return;
+
+    // Debug: log current GPS accuracy on each update
+    try {
+      console.log('FarmMeasurementMap: position update', {
+        accuracy: position.accuracy,
+        latitude: position.latitude,
+        longitude: position.longitude
+      });
+    } catch {}
 
     const center = { lat: position.latitude, lng: position.longitude };
     
@@ -150,6 +158,16 @@ export const FarmMeasurementMap: React.FC<FarmMeasurementMapProps> = ({
   }, [map, trackPoints, path]);
 
   const handleStartMeasurement = () => {
+    // Debug: log current accuracy when attempting to start
+    if (position) {
+      try {
+        console.log('FarmMeasurementMap: start click accuracy check', {
+          accuracy: position.accuracy,
+          threshold: 20,
+        });
+      } catch {}
+    }
+
     if (!position) {
       alert('Waiting for GPS location. Please wait a moment and try again.');
       return;
@@ -229,7 +247,7 @@ export const FarmMeasurementMap: React.FC<FarmMeasurementMapProps> = ({
     );
   }
 
-  if (error) {
+  if (error && !isRecoverableError) {
     return (
       <div className="relative w-full h-96 bg-red-50 rounded-lg overflow-hidden flex items-center justify-center">
         <div className="text-center p-6">
@@ -263,6 +281,27 @@ export const FarmMeasurementMap: React.FC<FarmMeasurementMapProps> = ({
       {position && (
         <div className={`absolute bottom-4 left-4 text-white px-3 py-2 rounded-lg text-sm font-medium ${getAccuracyStyle(position.accuracy)}`}>
           {getAccuracyText(position.accuracy)}
+        </div>
+      )}
+
+      {/* Poor Accuracy Banner (shown even before position is accepted, based on raw accuracy) */}
+      {isAccuracyPoor && (
+        <div className="absolute top-4 right-4 bg-yellow-600 bg-opacity-95 text-white px-3 py-2 rounded-lg text-sm font-medium shadow">
+          GPS accuracy too low{typeof rawAccuracy === 'number' ? ` (${rawAccuracy.toFixed(1)}m)` : ''}. Move to open sky.
+        </div>
+      )}
+
+      {/* Transient Location Error Banner with retry */}
+      {isRecoverableError && (
+        <div className="absolute top-4 left-1/2 -translate-x-1/2 bg-gray-800 bg-opacity-95 text-white px-4 py-2 rounded-lg text-sm font-medium shadow flex items-center space-x-3">
+          <span>Position update is unavailable. Retrying{retryCount > 0 ? ` (#${retryCount})` : ''}...</span>
+          <button
+            onClick={restartWatching}
+            className="bg-white text-gray-900 px-2 py-1 rounded text-xs font-semibold"
+            title="Retry now"
+          >
+            Try again
+          </button>
         </div>
       )}
 

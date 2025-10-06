@@ -7,6 +7,13 @@ interface MeasurementSummaryProps {
   measurement: FarmPath;
   onClose: () => void;
   returnContext?: 'home' | 'tractor-booking';
+  // Optional multi-measurement support
+  progressCurrent?: number;
+  progressTotal?: number;
+  primaryLabel?: string;
+  secondaryLabel?: string;
+  onPrimary?: () => void;
+  onSecondary?: () => void;
 }
 
 const measurementUnits: MeasurementUnit[] = [
@@ -21,7 +28,13 @@ const measurementUnits: MeasurementUnit[] = [
 export const MeasurementSummary: React.FC<MeasurementSummaryProps> = ({
   measurement,
   onClose,
-  returnContext = 'home'
+  returnContext = 'home',
+  progressCurrent,
+  progressTotal,
+  primaryLabel,
+  secondaryLabel,
+  onPrimary,
+  onSecondary,
 }) => {
   const [selectedUnit, setSelectedUnit] = useState<MeasurementUnit>(measurementUnits[0]);
   const [showUnitSelector, setShowUnitSelector] = useState(false);
@@ -58,6 +71,9 @@ export const MeasurementSummary: React.FC<MeasurementSummaryProps> = ({
             <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
           </svg>
           <h2 className="text-xl font-bold">Measurement Complete</h2>
+          {progressCurrent && progressTotal && (
+            <p className="mt-1 text-sm opacity-90">Measurement {progressCurrent}/{progressTotal}</p>
+          )}
         </div>
       </div>
 
@@ -105,22 +121,22 @@ export const MeasurementSummary: React.FC<MeasurementSummaryProps> = ({
 
         <div className="flex space-x-3">
           <button
-            onClick={onClose}
+            onClick={onSecondary || onClose}
             className="flex-1 border py-2 px-4 rounded-lg font-semibold"
             style={{borderColor: '#FA9411', color: '#FA9411'}}
             onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#FA941110'}
             onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
           >
-            Redo
+            {secondaryLabel || 'Redo'}
           </button>
           <button
-            onClick={onClose}
+            onClick={onPrimary || onClose}
             className="flex-1 text-white py-2 px-4 rounded-lg font-semibold"
             style={{backgroundColor: '#FA9411'}}
             onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#e67e00'}
             onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#FA9411'}
           >
-            {returnContext === 'tractor-booking' ? 'Continue Booking' : 'Back to Home'}
+            {primaryLabel || (returnContext === 'tractor-booking' ? 'Continue Booking' : 'Back to Home')}
           </button>
         </div>
       </div>

@@ -26,6 +26,7 @@ import { createElement, useEffect, useState } from "react";
 import PersonalOverview from "@/app/components/PersonalOverview";
 import { useGetEnlistedTractorsQuery } from "@/redux/services/tractorApi";
 import { useAppSelector } from "@/redux/hooks";
+import { getErrorMessage } from "@/app/utils/errorUtils";
 import { getMyTractors, getTractors } from "@/app/apis/tractor";
 import TractorCard from "@/app/components/TractorCard";
 
@@ -70,7 +71,8 @@ export default function EnlistedTractors() {
         
       } catch (err) {
             const error = err as any;
-            setError(error?.response?.data?.detail || "An unexpected error occurred")
+            const errorMessage = getErrorMessage(error, "An unexpected error occurred");
+            setError(errorMessage);
             console.log("Error fetching tractor", error);
             setLoading(false)
       }

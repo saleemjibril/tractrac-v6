@@ -35,6 +35,7 @@ import {
   useResetPasswordMutation,
 } from "@/redux/services/authApi";
 import { toast } from "react-toastify";
+import { getErrorMessage } from "@/app/utils/errorUtils";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { ChakraWrapper } from "../chakraUIWrapper";
 import { forgotPassword, resetUserPassword } from "../apis/auth";
@@ -158,10 +159,8 @@ function SendOtpComponent({
           console.log("forgotPassword", response?.data?.user_id, response);
         } catch (error) {
           console.log("error resetting password", error);
-          setError(
-            (error as any).response?.data?.detail ||
-              "An unknown error occurred"
-          );
+          const errorMessage = getErrorMessage(error, "An unknown error occurred");
+          setError(errorMessage);
         }
       }}
     >
@@ -322,10 +321,8 @@ function ResetPasswordComponent({ phoneNumber, userId }: { phoneNumber: string, 
             console.log("resetUserPassword", response);
           } catch (err) {
             console.log("rejected", error);
-            setError(
-              (error as any).response?.data?.detail ||
-                "An unknown error occurred"
-            );
+            const errorMessage = getErrorMessage(error, "An unknown error occurred");
+            setError(errorMessage);
           }
         }}
       >

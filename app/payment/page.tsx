@@ -28,6 +28,7 @@ import { getUserPayments, getUserAgroToolPayments } from "../apis/payment";
 import { AddIcon } from "@chakra-ui/icons";
 import { useAppSelector } from "@/redux/hooks";
 import { toast } from "react-toastify";
+import { getErrorMessage } from "@/app/utils/errorUtils";
 import moment from "moment";
 
 const statusTypes: Record<string, { title: string; color: string }> = {
@@ -54,10 +55,9 @@ export default function Payments() {
       setTractorPayments(response.data);
     } catch (err) {
       const error = err as any;
-      toast.error(
-        error?.response?.data?.detail || "An unexpected error occurred"
-      );
-      setError(error?.response?.data?.detail || "An unexpected error occurred");
+      const errorMessage = getErrorMessage(error, "An unexpected error occurred");
+      toast.error(errorMessage);
+      setError(errorMessage);
       console.log("ERROR GETTING TRACTOR PAYMENTS", error);
     } finally {
       setLoading(false);
@@ -72,10 +72,9 @@ export default function Payments() {
       setAgroToolPayments(response.data);
     } catch (err) {
       const error = err as any;
-      toast.error(
-        error?.response?.data?.detail || "An unexpected error occurred"
-      );
-      setError(error?.response?.data?.detail || "An unexpected error occurred");
+      const errorMessage = getErrorMessage(error, "An unexpected error occurred");
+      toast.error(errorMessage);
+      setError(errorMessage);
       console.log("ERROR GETTING AGRO TOOL PAYMENTS", error);
     } finally {
       setLoading(false);
@@ -94,10 +93,9 @@ export default function Payments() {
       setTrackerPayments(trackerPayments);
     } catch (err) {
       const error = err as any;
-      toast.error(
-        error?.response?.data?.detail || "An unexpected error occurred"
-      );
-      setError(error?.response?.data?.detail || "An unexpected error occurred");
+      const errorMessage = getErrorMessage(error, "An unexpected error occurred");
+      toast.error(errorMessage);
+      setError(errorMessage);
       console.log("ERROR GETTING TRACKER PAYMENTS", error);
     } finally {
       setLoading(false);

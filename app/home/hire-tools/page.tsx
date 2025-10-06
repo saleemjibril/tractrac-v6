@@ -46,6 +46,7 @@ import { Dispatch, SetStateAction, useEffect, useMemo, useRef, useState } from "
 import { AddIcon, ArrowForwardIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, ChevronUpIcon } from "@chakra-ui/icons";
 import { useAppSelector } from "@/redux/hooks";
 import { toast } from "react-toastify";
+import { getErrorMessage } from "@/app/utils/errorUtils";
 import { Select as MultiSelect } from "chakra-react-select";
 import * as nigerianStates from "nigerian-states-and-lgas";
 import { ArrowDown2, Filter } from "iconsax-react";
@@ -59,6 +60,7 @@ import Autocomplete from "react-google-autocomplete";
 import Map from "../../components/Map";
 import moment from "moment";
 import Link from "next/link";
+import { states } from "@/app/utils/states";
 import { filterTools, getToolBookedDates, getApprovedTools, hireTool } from "@/app/apis/tools";
 import { getgroups } from "process";
 import { getGroups, getGroupsMembers } from "@/app/apis/user";
@@ -79,6 +81,24 @@ const tractorTypes = [
   { value: "crop_dryer", label: "Crop Dryer" },
   { value: "harvesting_tools", label: "Harvesting Tools" },
   { value: "other", label: "Other" }
+];
+
+const conditionOptions = [
+  { value: "new", label: "New" },
+  { value: "excellent", label: "Excellent" },
+  { value: "good", label: "Good" },
+  { value: "fair", label: "Fair" },
+  { value: "needs_repair", label: "Needs Repair" }
+];
+
+const powerSourceOptions = [
+  { value: "diesel", label: "Diesel" },
+  { value: "electric", label: "Electric" },
+  { value: "petrol", label: "Petrol" },
+  { value: "solar_energy", label: "Solar Energy" },
+  { value: "manual", label: "Manual" },
+  { value: "battery", label: "Battery" },
+  { value: "animal_power", label: "Animal Power" }
 ];
 
 interface ICoordinates {
@@ -124,7 +144,7 @@ export default function HireTractor() {
   const [tractorId, setTractorId] = useState<string | null>(null);
   const [state, setState] = useState<string | null>(null);
   const [lgas, setLgas] = useState<string[]>([]);
-  const [lga, setLga] = useState<string[]>(null);
+  const [lga, setLga] = useState<string | null>(null);
   const [brand, setBrand] = useState<string | null>(null);
   const [implement, setImplement] = useState<string | null>(null);
   const [tractorType, setTractorType] = useState<string | null>(null);
@@ -134,6 +154,10 @@ export default function HireTractor() {
   const [groupSearchTerm, setGroupSearchTerm] = useState<string>("");
   const [groups, setGroups] = useState<Group[]>([]);
   const [selectedGroup, setSelectedGroup] = useState<string>("");
+  const [showFilters, setShowFilters] = useState(false);
+  const [selectedToolType, setSelectedToolType] = useState<string | null>(null);
+  const [selectedCondition, setSelectedCondition] = useState<string | null>(null);
+  const [selectedPowerSource, setSelectedPowerSource] = useState<string | null>(null);
 
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
@@ -197,7 +221,7 @@ export default function HireTractor() {
     // Define an async function inside useEffect
     const fetchFilteredTractors = async () => {
       setLoading(true);
-      console.log("change", state, tractorType, lga, selectedGroup);
+      console.log("change", state, selectedToolType, lga, selectedGroup, selectedCondition, selectedPowerSource);
 
       // Build query parameters
       const queryParams = new URLSearchParams();
@@ -205,7 +229,9 @@ export default function HireTractor() {
       // Only add parameters that have values
       if (state) queryParams.append("state", state);
       if (lga) queryParams.append("local_government_area", lga);
-      if (tractorType) queryParams.append("addon_type", tractorType);
+      if (selectedToolType) queryParams.append("addon_type", selectedToolType);
+      if (selectedCondition) queryParams.append("condition", selectedCondition);
+      if (selectedPowerSource) queryParams.append("power_source", selectedPowerSource);
       if (selectedGroup) queryParams.append("group_id", selectedGroup);
       
       // Add pagination parameters
@@ -216,7 +242,7 @@ export default function HireTractor() {
       // Convert URLSearchParams to string
       const queryString = queryParams.toString();
 
-      if (queryString && (state || lga || tractorType || selectedGroup)) {
+      if (queryString && (state || lga || selectedToolType || selectedCondition || selectedPowerSource || selectedGroup)) {
         console.log("query parameters:", queryString);
 
         try {
@@ -256,7 +282,7 @@ export default function HireTractor() {
 
     // Call the async function
     fetchFilteredTractors();
-  }, [state, lga, tractorType, selectedGroup, userToken, currentPage, itemsPerPage]);
+  }, [state, lga, selectedToolType, selectedCondition, selectedPowerSource, selectedGroup, userToken, currentPage, itemsPerPage]);
 
   const handlePageChange = (newPage: number) => {
     if (newPage >= 1 && newPage <= totalPages) {
@@ -293,6 +319,9 @@ export default function HireTractor() {
     setState(null);
     setLga(null);
     setTractorType(null);
+    setSelectedToolType(null);
+    setSelectedCondition(null);
+    setSelectedPowerSource(null);
     setGroup("");
     setCurrentPage(1); // Reset to first page when clearing filters
     handleGetTractors(1, itemsPerPage);
@@ -489,7 +518,56 @@ const handleGroupSelect = (groupId: string): void => {
           </Flex>
 
           <Box mt="40px">
-            <SimpleGrid columns={{ base: 2, lg: 4 }} spacing="20px" width={"fit-content"}>
+            {/* Filter Controls */}
+            <Flex alignItems="center" gap="10px" mb="20px">
+              <Button
+                size="sm"
+                variant="outline"
+                colorScheme="orange"
+                bgColor="transparent"
+                color="#FA9411"
+                borderColor="#FA9411"
+                borderRadius="20px"
+                fontSize="12px"
+                fontWeight="500"
+                px="16px"
+                py="8px"
+                height="32px"
+                _hover={{
+                  bgColor: "#FA941110",
+                }}
+                _active={{
+                  bgColor: "#FA941120",
+                }}
+                onClick={() => setShowFilters(!showFilters)}
+                leftIcon={<Filter size="16" />}
+              >
+                {showFilters ? "Hide Filters" : "Show Filters"}
+              </Button>
+              {showFilters && <Button
+                size="sm"
+                variant="outline"
+                colorScheme="orange"
+                bgColor="#FA9411"
+                color="#FFF"
+                borderRadius="20px"
+                fontSize="12px"
+                fontWeight="500"
+                px="16px"
+                py="8px"
+                height="32px"
+                onClick={clearFilters}
+              >
+               Clear filters
+              </Button>}
+            </Flex>
+
+            {/* Collapsible Filter Section */}
+            <Collapse in={showFilters} animateOpacity>
+              <Box>
+              <SimpleGrid display={"flex"} gap={"20px"} flexWrap={"wrap"} width={"fit-content"} mb={"20px"} alignItems={"start"}>
+              <Box>
+                    <Text fontSize="12px" color="#323232" mb="6px" fontWeight={700}>State</Text>
               <Select
                 width="150px"
                 placeholder="State"
@@ -532,6 +610,9 @@ const handleGroupSelect = (groupId: string): void => {
                   </option>
                 ))}
               </Select>
+                  </Box>
+                  <Box>
+                    <Text fontSize="12px" color="#323232" mb="6px" fontWeight={700}>Local Government Area</Text>
               <Select
                 width="150px"
                 placeholder="Lga"
@@ -564,77 +645,125 @@ const handleGroupSelect = (groupId: string): void => {
                   </option>
                 ))}
               </Select>
-              <Select
-                width="150px"
-                placeholder="Tool Type"
-                value={(tractorType || "").toLowerCase()}
-                icon={<ArrowDown2 />}
-                color="#FA9411"
-                border="1px"
+                  </Box>
+                  <Box maxWidth={"700px"}>
+                    <Text fontSize="12px" color="#323232" mb="6px" fontWeight={700}>Tool Type</Text>
+                    <Flex gap="8px" wrap="wrap" align="center">
+                      {tractorTypes.map((toolType) => (
+                        <Button
+                          key={toolType.value}
+                          size="sm"
+                          variant={selectedToolType === toolType.value ? "solid" : "outline"}
+                          colorScheme={selectedToolType === toolType.value ? "orange" : "gray"}
+                          bgColor={selectedToolType === toolType.value ? "#FA9411" : "transparent"}
+                          color={selectedToolType === toolType.value ? "white" : "#FA9411"}
                 borderColor="#FA9411"
-                _focus={{
-                  borderColor: "#FA9411",
-                }}
-                _focusVisible={{
-                  borderColor: "#FA9411",
-                }}
-                onChange={(e) => {
-                  if (e?.target?.value) {
-                    setTractorType(e?.target?.value);
+                          borderRadius="20px"
+                          fontSize="12px"
+                          fontWeight="500"
+                          px="16px"
+                          py="8px"
+                          height="32px"
+                          _hover={{
+                            bgColor: selectedToolType === toolType.value ? "#e67e00" : "#FA941110",
+                          }}
+                          _active={{
+                            bgColor: selectedToolType === toolType.value ? "#e67e00" : "#FA941120",
+                          }}
+                          onClick={() => {
+                            setSelectedToolType(
+                              selectedToolType === toolType.value ? null : toolType.value
+                            );
                     setCurrentPage(1); // Reset to first page when filter changes
-                    // search();
-                  } else {
-                    setTractorType(null);
-                    setCurrentPage(1);
-                    // search();
-                  }
-                }}
-              >
-                {tractorTypes.map((tractorType) => (
-                  <option key={tractorType?.value} value={tractorType?.value?.toLowerCase()}>
-                    {tractorType?.label}
-                  </option>
-                ))}
-              </Select>
-              <Select
-                width="150px"
-                placeholder="Cooprative"
-                value={(group || "").toLowerCase()}
-                icon={<ArrowDown2 />}
-                color="#FA9411"
-                border="1px"
-                borderColor="#FA9411"
-                _focus={{
-                  borderColor: "#FA9411",
-                }}
-                _focusVisible={{
-                  borderColor: "#FA9411",
-                }}
-                onChange={(e) => {
-                  if (e?.target?.value) {
-                    setGroup(e?.target?.value);
-                    setCurrentPage(1); // Reset to first page when filter changes
-                    // search();
-                  } else {
-                    setGroup(null);
-                    setCurrentPage(1);
-                    // search();
-                  }
-                }}
-              >
-                {groups?.map((group) => (
-                  <option key={group?.id} value={group?.id}>
-                    {group?.name}
-                  </option>
-                ))}
-              </Select>
+                          }}
+                        >
+                          {toolType.label}
+                        </Button>
+                      ))}
+                    </Flex>
+                  </Box>
 
+                {/* Condition Filter Pills */}
+                <Box>
+                  <Text fontSize="12px" color="#323232" mb="6px" fontWeight={700}>Condition</Text>
+                  <Flex gap="8px" wrap="wrap" align="center">
+                    {conditionOptions.map((condition) => (
+                      <Button
+                        key={condition.value}
+                        size="sm"
+                        variant={selectedCondition === condition.value ? "solid" : "outline"}
+                        colorScheme={selectedCondition === condition.value ? "orange" : "gray"}
+                        bgColor={selectedCondition === condition.value ? "#FA9411" : "transparent"}
+                        color={selectedCondition === condition.value ? "white" : "#FA9411"}
+                        borderColor="#FA9411"
+                        borderRadius="20px"
+                        fontSize="12px"
+                        fontWeight="500"
+                        px="16px"
+                        py="8px"
+                        height="32px"
+                        _hover={{
+                          bgColor: selectedCondition === condition.value ? "#e67e00" : "#FA941110",
+                        }}
+                        _active={{
+                          bgColor: selectedCondition === condition.value ? "#e67e00" : "#FA941120",
+                        }}
+                        onClick={() => {
+                          setSelectedCondition(
+                            selectedCondition === condition.value ? null : condition.value
+                          );
+                          setCurrentPage(1); // Reset to first page when filter changes
+                        }}
+                      >
+                        {condition.label}
+                      </Button>
+                    ))}
+                  </Flex>
+                </Box>
+
+                {/* Power Source Filter Pills */}
+                {/* <Box>
+                  <Text fontSize="12px" color="#323232" mb="6px" fontWeight={700}>Power Source</Text>
+                  <Flex gap="8px" wrap="wrap" align="center">
+                    {powerSourceOptions.map((powerSource) => (
+                      <Button
+                        key={powerSource.value}
+                        size="sm"
+                        variant={selectedPowerSource === powerSource.value ? "solid" : "outline"}
+                        colorScheme={selectedPowerSource === powerSource.value ? "orange" : "gray"}
+                        bgColor={selectedPowerSource === powerSource.value ? "#FA9411" : "transparent"}
+                        color={selectedPowerSource === powerSource.value ? "white" : "#FA9411"}
+                        borderColor="#FA9411"
+                        borderRadius="20px"
+                        fontSize="12px"
+                        fontWeight="500"
+                        px="16px"
+                        py="8px"
+                        height="32px"
+                        _hover={{
+                          bgColor: selectedPowerSource === powerSource.value ? "#e67e00" : "#FA941110",
+                        }}
+                        _active={{
+                          bgColor: selectedPowerSource === powerSource.value ? "#e67e00" : "#FA941120",
+                        }}
+                        onClick={() => {
+                          setSelectedPowerSource(
+                            selectedPowerSource === powerSource.value ? null : powerSource.value
+                          );
+                          setCurrentPage(1); // Reset to first page when filter changes
+                        }}
+                      >
+                        {powerSource.label}
+                      </Button>
+                    ))}
+                  </Flex>
+                </Box> */}
             </SimpleGrid>
-            {/* Group Selection */}
 
-<FormControl 
-padding={"24px 0"}
->
+                {/* Group Selection */}
+                <FormControl 
+                  padding={"24px 0"}
+                >
               <Flex justify="space-between" align="center" mb={3}>
                 <FormLabel fontSize="12px" color="#323232" mb={0}>
                   Select Group
@@ -756,22 +885,8 @@ padding={"24px 0"}
                 </Collapse>
               </Box>
             </FormControl>
-              <Button
-                bgColor="#FA9411"
-                height="42px"
-                borderRadius="4px"
-                width="170px"
-                color="white"
-                as="a"
-                _hover={{
-                  opacity: 0.8,
-                }}
-                onClick={clearFilters}
-              >
-                <Flex justifyContent="center" alignContent="center">
-                  <Text fontSize="14px">Clear filters</Text>
-                </Flex>
-              </Button>
+              </Box>
+            </Collapse>
 
             {
               // searchResult?.isFetching ||
@@ -1372,6 +1487,25 @@ function TractorCard({
                   onClick={() => handleDateRangeClick(dateString)}
                 >
                   {calendarDay}
+                  {isBooked && (
+                    <div className="booked-icon">
+                      <svg
+                        width="12"
+                        height="12"
+                        viewBox="0 0 12 12"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M9 3L3 9M3 3L9 9"
+                          stroke="#DC2626"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </div>
+                  )}
                 </div>
               </Tooltip>
             );
@@ -1387,15 +1521,56 @@ function TractorCard({
       }
   
       return (
-        <div className="calendar-grid">
-          <div className="ndc-calendar-row calendar-header">
-            {daysOfWeek.map((day, index) => (
-              <div key={`header-${index}`} className="calendar-cell">
-                {day}
-              </div>
-            ))}
+        <div>
+          <div className="calendar-grid">
+            <div className="ndc-calendar-row calendar-header">
+              {daysOfWeek.map((day, index) => (
+                <div key={`header-${index}`} className="calendar-cell">
+                  {day}
+                </div>
+              ))}
+            </div>
+            {rows}
           </div>
-          {rows}
+          
+          {/* Calendar Indicators */}
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'center', 
+            gap: '20px', 
+            marginTop: '15px',
+            flexWrap: 'wrap'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <div style={{
+                width: '12px',
+                height: '12px',
+                backgroundColor: '#999',
+                borderRadius: '50%'
+              }}></div>
+              <span style={{ fontSize: '12px', color: '#666' }}>Past Date</span>
+            </div>
+            
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <div style={{
+                width: '12px',
+                height: '12px',
+                backgroundColor: '#DC2626',
+                borderRadius: '50%'
+              }}></div>
+              <span style={{ fontSize: '12px', color: '#666' }}>Booked Date</span>
+            </div>
+            
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <div style={{
+                width: '12px',
+                height: '12px',
+                backgroundColor: '#FA9411',
+                borderRadius: '50%'
+              }}></div>
+              <span style={{ fontSize: '12px', color: '#666' }}>Selected Date</span>
+            </div>
+          </div>
         </div>
       );
     };
@@ -1535,9 +1710,8 @@ function TractorCard({
               // }
             } catch (err) {
               const error = err as any;
-              toast.error(
-                error?.response?.data?.detail || "An unexpected error occurred"
-              );
+              const errorMessage = getErrorMessage(error, "An unexpected error occurred");
+              toast.error(errorMessage);
               console.log("Error hiring tractor", error);
             }
           }}
@@ -2562,46 +2736,6 @@ function TractorCard({
       </>
     );
   }
-  
-  const states = [
-    "Abia",
-    "Adamawa",
-    "Akwa Ibom",
-    "Anambra",
-    "Bauchi",
-    "Bayelsa",
-    "Benue",
-    "Borno",
-    "Cross River",
-    "Delta",
-    "Ebonyi",
-    "Edo",
-    "Ekiti",
-    "Enugu",
-    "FCT - Abuja",
-    "Gombe",
-    "Imo",
-    "Jigawa",
-    "Kaduna",
-    "Kano",
-    "Katsina",
-    "Kebbi",
-    "Kogi",
-    "Kwara",
-    "Lagos",
-    "Nasarawa",
-    "Niger",
-    "Ogun",
-    "Ondo",
-    "Osun",
-    "Oyo",
-    "Plateau",
-    "Rivers",
-    "Sokoto",
-    "Taraba",
-    "Yobe",
-    "Zamfara",
-  ];
   
   const brands = ["case_ih", "sonalika", "john_deere", "mahindra", "others"];
   

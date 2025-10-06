@@ -28,6 +28,7 @@ import { ArrowRight } from "iconsax-react";
 import { AddIcon, PlusSquareIcon } from "@chakra-ui/icons";
 import { useGetHiredTractorsQuery } from "@/redux/services/tractorApi";
 import { useAppSelector } from "@/redux/hooks";
+import { getErrorMessage } from "@/app/utils/errorUtils";
 import { getMyHiredTractors } from "@/app/apis/tractor";
 import formatNumber from "@/app/utils/formatNumber";
 import moment from "moment";
@@ -76,7 +77,8 @@ export default function HiredTractors() {
          
         } catch (err) {
               const error = err as any;
-              setError(error?.response?.data?.detail || "An unexpected error occurred")
+              const errorMessage = getErrorMessage(error, "An unexpected error occurred");
+              setError(errorMessage);
               console.log("Error fetching tractor", error);
               setLoading(false)
         }

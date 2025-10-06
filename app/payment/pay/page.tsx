@@ -21,6 +21,7 @@ import { useMakePaymentMutation } from "@/redux/services/userApi";
 import { useAppSelector } from "@/redux/hooks";
 import { getInvoiceDetails, initialisePayment, verifyPayment } from "@/app/apis/payment";
 import { toast } from "react-toastify";
+import { getErrorMessage } from "@/app/utils/errorUtils";
 import { usePaystackPayment } from "react-paystack";
 import dynamic from 'next/dynamic';
 
@@ -58,9 +59,8 @@ export default function Pay() {
       // }
     } catch (err) {
       const error = err as any;
-      toast.error(
-        error?.response?.data?.detail || "An unexpected error occurred"
-      );
+      const errorMessage = getErrorMessage(error, "An unexpected error occurred");
+      toast.error(errorMessage);
       console.log("Error getting payment details", error);
     } finally {
       setIsLoading(false);

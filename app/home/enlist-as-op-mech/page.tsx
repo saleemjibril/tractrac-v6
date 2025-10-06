@@ -40,6 +40,7 @@ import dynamic from "next/dynamic";
 import { useAppSelector } from "@/redux/hooks";
 import { useBecomeAnOpOrMechMutation } from "@/redux/services/userApi";
 import { toast } from "react-toastify";
+import { getErrorMessage } from "@/app/utils/errorUtils";
 import * as nigerianStates from "nigerian-states-and-lgas";
 import { FaPlus } from "react-icons/fa";
 import { enlistOperator } from "@/app/apis/general";
@@ -146,10 +147,8 @@ export default function BecomeAnAgent() {
                 // console.log("fulfilled", response?.data[0]);
               } catch (err) {
                 const error = err as any;
-                toast.error(
-                  error?.response?.data?.detail ||
-                    "An unexpected error occurred"
-                );
+                const errorMessage = getErrorMessage(error, "An unexpected error occurred");
+                toast.error(errorMessage);
                 console.log("Error submitting form", error);
               }
             }}
