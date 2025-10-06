@@ -165,13 +165,6 @@ export default function HireTractorForm() {
     const farmSizeFromMeasurement = searchParams.get('farm_size');
     const measurementIdFromUrl = searchParams.get('measurement_id');
     const prefilledAddress = searchParams.get('address');
-    if (prefilledAddress) {
-      // Pre-fill address field in Formik after mount
-      try {
-        const url = new URL(window.location.href);
-        // don't remove here; removal handled below to avoid flicker before Formik init
-      } catch {}
-    }
     if (measurementIdFromUrl) {
       setFarmId(measurementIdFromUrl);
     }
@@ -182,7 +175,7 @@ export default function HireTractorForm() {
       const newUrl = new URL(window.location.href);
       newUrl.searchParams.delete('farm_size');
       if (measurementIdFromUrl) newUrl.searchParams.delete('measurement_id');
-      if (prefilledAddress) newUrl.searchParams.delete('address');
+      // if (prefilledAddress) newUrl.searchParams.delete('address');
       window.history.replaceState({}, '', newUrl.toString());
     }
   }, [searchParams]);
@@ -1061,56 +1054,12 @@ export default function HireTractorForm() {
                       <FormLabel fontSize="12px" color="#323232">
                         Address
                       </FormLabel>
-                      <Autocomplete
-                        key={`address-${(props.values.address || '')}`}
-                        style={{
-                          padding: "0px 10px 0px 10px",
-                          borderRadius: "6px",
-                          width: "100%",
-                          fontSize: "12px",
-                          color: "#929292",
-                          height: "39px",
-                          backgroundColor: "#3232320D",
-                        }}
-                        placeholder=""
-                        defaultValue={props.values.address || ""}
-                        apiKey={"AIzaSyBWo_tQ4rjQkZz1kN5WXfnemHCaF0gQ8BU"}
-                        onChange={(e) => {
-                          // alert(`Address: ${e.currentTarget?.value}`)
-                          form.setFieldValue(field.name, e.currentTarget?.value);
-                        }}
-                        onPlaceSelected={(place) => {
-                          console.log("Address:", place.formatted_address);
-  
-                          // Extract latitude and longitude
-                          if (place.geometry && place.geometry.location) {
-                            const current_location_lat =
-                              place.geometry.location.lat();
-                            const current_location_lng =
-                              place.geometry.location.lng();
-                            console.log("Latitude:", current_location_lat);
-                            console.log("Longitude:", current_location_lng);
-  
-                            // Update form with address and coordinates
-                            form.setFieldValue(
-                              field.name,
-                              place.formatted_address
-                            );
-                            form.setFieldValue(
-                              "current_location_lat",
-                              current_location_lat
-                            );
-                            form.setFieldValue(
-                              "current_location_lng",
-                              current_location_lng
-                            );
-                          }
-                        }}
-                        options={{
-                          types: ["address"],
-                          // types: ["(regions)"],
-                          componentRestrictions: { country: "ng" },
-                        }}
+                      <Input
+                        {...field}
+                        bgColor="#3232320D"
+                        fontSize="12px"
+                        color="#323232"
+                        disabled
                       />
                       <FormErrorMessage>{form.errors.address}</FormErrorMessage>
                     </FormControl>
@@ -1157,7 +1106,7 @@ export default function HireTractorForm() {
                props.values.community && 
                props.values.implement_types && 
                props.values.implement_types.length > 0 && 
-               props.values.address && 
+              //  props.values.address && 
                firstDate && 
                lastDate && (
                 <Flex
