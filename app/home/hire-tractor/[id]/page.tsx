@@ -165,6 +165,13 @@ export default function HireTractorForm() {
     const farmSizeFromMeasurement = searchParams.get('farm_size');
     const measurementIdFromUrl = searchParams.get('measurement_id');
     const prefilledAddress = searchParams.get('address');
+    if (prefilledAddress) {
+      // Pre-fill address field in Formik after mount
+      try {
+        const url = new URL(window.location.href);
+        // don't remove here; removal handled below to avoid flicker before Formik init
+      } catch {}
+    }
     if (measurementIdFromUrl) {
       setFarmId(measurementIdFromUrl);
     }
@@ -175,7 +182,7 @@ export default function HireTractorForm() {
       const newUrl = new URL(window.location.href);
       newUrl.searchParams.delete('farm_size');
       if (measurementIdFromUrl) newUrl.searchParams.delete('measurement_id');
-      // if (prefilledAddress) newUrl.searchParams.delete('address');
+      if (prefilledAddress) newUrl.searchParams.delete('address');
       window.history.replaceState({}, '', newUrl.toString());
     }
   }, [searchParams]);
@@ -1055,6 +1062,7 @@ export default function HireTractorForm() {
                         Address
                       </FormLabel>
                       <Autocomplete
+                        key={`address-${(props.values.address || '')}`}
                         style={{
                           padding: "0px 10px 0px 10px",
                           borderRadius: "6px",
@@ -1065,6 +1073,7 @@ export default function HireTractorForm() {
                           backgroundColor: "#3232320D",
                         }}
                         placeholder=""
+                        defaultValue={props.values.address || ""}
                         apiKey={"AIzaSyBWo_tQ4rjQkZz1kN5WXfnemHCaF0gQ8BU"}
                         onChange={(e) => {
                           // alert(`Address: ${e.currentTarget?.value}`)
