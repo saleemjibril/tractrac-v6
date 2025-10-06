@@ -6,6 +6,7 @@ import { OfflineIndicator } from '../components/OfflineIndicator';
 import { useFarmMeasurement } from '../hooks/useFarmMeasurement';
 import { FarmPath } from '../types/farm-measurement';
 import { useRouter, useSearchParams } from 'next/navigation';
+import loader from '../googleMapsLoader';
 
 export default function FarmMeasurementPage() {
   const [measurementResult, setMeasurementResult] = useState<FarmPath | null>(null);
@@ -41,20 +42,44 @@ export default function FarmMeasurementPage() {
       setServerId(null);
 
       if (next.length >= 3) {
-        // Compute average and redirect
+        // Compute average area
         const avgArea = Math.round(
           next.reduce((sum, m) => sum + (m.areaSquareMeters || 0), 0) / next.length
         );
 
-        if (tractorId) {
-          const idParam = '';
-          router.push(`/home/hire-tractor/${tractorId}?farm_size=${avgArea}${idParam}`);
-        } else {
-          router.push(`/home/hire-tractor?farm_size=${avgArea}`);
-        }
+        // Compute a representative center from all measurements (simple average of all points)
+        const allPoints = next.flatMap((m) => m.coordinates.slice(0, -1));
+        let addressParam = '';
+        const computeAndRedirect = async () => {
+          try {
+            if (allPoints.length > 0) {
+              const avgLng = allPoints.reduce((s, c) => s + (c?.[0] || 0), 0) / allPoints.length;
+              const avgLat = allPoints.reduce((s, c) => s + (c?.[1] || 0), 0) / allPoints.length;
 
-        // Reset state after redirect attempt
-        setMeasurements([]);
+              // Reverse geocode using Google Maps JS API
+              await loader.importLibrary('maps');
+              const geocoder = new google.maps.Geocoder();
+              const res = await geocoder.geocode({ location: { lat: avgLat, lng: avgLng } });
+              const formatted = res.results?.[0]?.formatted_address || '';
+              if (formatted) {
+                addressParam = `&address=${encodeURIComponent(formatted)}`;
+              }
+            }
+          } catch (e) {
+            // Swallow geocoding errors; continue without address
+            addressParam = '';
+          } finally {
+            if (tractorId) {
+              router.push(`/home/hire-tractor/${tractorId}?farm_size=${avgArea}${addressParam}`);
+            } else {
+              router.push(`/home/hire-tractor?farm_size=${avgArea}${addressParam}`);
+            }
+            // Reset state after redirect attempt
+            setMeasurements([]);
+          }
+        };
+
+        computeAndRedirect();
       }
     }
   };

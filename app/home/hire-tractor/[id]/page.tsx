@@ -164,6 +164,7 @@ export default function HireTractorForm() {
   useEffect(() => {
     const farmSizeFromMeasurement = searchParams.get('farm_size');
     const measurementIdFromUrl = searchParams.get('measurement_id');
+    const prefilledAddress = searchParams.get('address');
     if (measurementIdFromUrl) {
       setFarmId(measurementIdFromUrl);
     }
@@ -174,6 +175,7 @@ export default function HireTractorForm() {
       const newUrl = new URL(window.location.href);
       newUrl.searchParams.delete('farm_size');
       if (measurementIdFromUrl) newUrl.searchParams.delete('measurement_id');
+      if (prefilledAddress) newUrl.searchParams.delete('address');
       window.history.replaceState({}, '', newUrl.toString());
     }
   }, [searchParams]);
@@ -552,7 +554,7 @@ export default function HireTractorForm() {
             local_government_area: "",
             community: "",
             implement_types: [],
-            address: "",
+            address: (typeof window !== 'undefined' ? (new URL(window.location.href).searchParams.get('address') || "") : ""),
             start_date: "",
             end_date: "",
             additional_info: "",
