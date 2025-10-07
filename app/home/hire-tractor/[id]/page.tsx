@@ -218,6 +218,15 @@ export default function HireTractorForm() {
       }
       return error;
     }
+
+    function validateAddress(value: any) {
+      let error;
+      // Check both the field value and formData.address (for prefilled addresses from farm measurement)
+      if (!value && !formData.address) {
+        error = "This field is required";
+      }
+      return error;
+    }
   
     const handleNdcCalendarClick = () => {
       setNdcCalendar(!ndcCalendar);
@@ -1143,7 +1152,7 @@ export default function HireTractorForm() {
                 my="40px"
                 width="100%"
               >
-                <Field name="address" validate={validateEmpty}>
+                <Field name="address" validate={validateAddress}>
                   {({ field, form }: { [x: string]: any }) => (
                     <FormControl
                       isInvalid={form.errors.address && form.touched.address}
