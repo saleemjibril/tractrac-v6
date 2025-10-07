@@ -51,16 +51,17 @@ export const OfflineIndicator: React.FC<OfflineIndicatorProps> = ({ onSync }) =>
         </div>
         <div className="flex-1">
           <p className="font-semibold" style={{color: '#d97706'}}>
-            {!isOnline ? 'You are offline' : 'You have unsynced farm measurements'}
+            {/* {!isOnline ? 'You are offline' : 'You have unsynced farm measurements'} */}
+            {!isOnline && 'You are offline'}
           </p>
-          <p className="text-sm" style={{color: '#FA9411'}}>
+          {/* <p className="text-sm" style={{color: '#FA9411'}}>
             {!isOnline 
               ? 'Measurements will be saved locally and synced when connection is restored'
               : 'Your recent measurements need to be synced to the server'
             }
-          </p>
+          </p> */}
         </div>
-        {isOnline && hasUnsyncedData && onSync && (
+        {/* {isOnline && hasUnsyncedData && onSync && (
           <button
             onClick={onSync}
             className="text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors"
@@ -70,7 +71,7 @@ export const OfflineIndicator: React.FC<OfflineIndicatorProps> = ({ onSync }) =>
           >
             Sync Now
           </button>
-        )}
+        )} */}
       </div>
     </div>
   );
