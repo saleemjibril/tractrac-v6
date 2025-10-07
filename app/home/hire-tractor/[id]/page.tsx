@@ -706,6 +706,8 @@ export default function HireTractorForm() {
               // Prepare data object based on function type
               let requestData = {
                 ...values,
+                // Use formData.address if values.address is empty (for prefilled addresses)
+                address: values.address || formData.address,
                 farm_size: farmSize ? farmSize : 1,
                 start_date: firstDate,
                 end_date: lastDate,
