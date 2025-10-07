@@ -91,7 +91,6 @@ export default function HireTractorForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [farmId, setFarmId] = useState<string | null>(null);
-  const [prefilledAddress, setPrefilledAddress] = useState<string | null>(null);
 
   const { id } = useParams();
   
@@ -198,7 +197,6 @@ export default function HireTractorForm() {
       // Save the prefilled address to formData if it exists
       if (prefilledAddress) {
         saveFormData({ address: prefilledAddress });
-        setPrefilledAddress(prefilledAddress);
       }
       
       // Move to step 4 after farm measurement
@@ -212,22 +210,6 @@ export default function HireTractorForm() {
       window.history.replaceState({}, '', newUrl.toString());
     }
   }, [searchParams]);
-
-  // Update form field when prefilled address is available
-  useEffect(() => {
-    if (prefilledAddress && currentStep === 4) {
-      // Use a small delay to ensure the form is rendered
-      setTimeout(() => {
-        const addressInput = document.querySelector('input[name="address"]') as HTMLInputElement;
-        if (addressInput) {
-          addressInput.value = prefilledAddress;
-          // Trigger Formik's onChange
-          const event = new Event('input', { bubbles: true });
-          addressInput.dispatchEvent(event);
-        }
-      }, 100);
-    }
-  }, [prefilledAddress, currentStep]);
   
     function validateEmpty(value: any) {
       let error;
@@ -1229,6 +1211,7 @@ export default function HireTractorForm() {
                       bgColor="#3232320D"
                       fontSize="12px"
                       color="#323232"
+                      value={field.value || formData.address}
                       disabled
                     />
                       }
