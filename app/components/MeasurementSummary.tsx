@@ -6,7 +6,7 @@ import { FarmPath, MeasurementUnit } from '../types/farm-measurement';
 interface MeasurementSummaryProps {
   measurement: FarmPath;
   onClose: () => void;
-  returnContext?: 'home' | 'tractor-booking';
+  returnContext?: 'home' | 'tractor-booking' | 'tool-hiring';
   // Optional multi-measurement support
   progressCurrent?: number;
   progressTotal?: number;

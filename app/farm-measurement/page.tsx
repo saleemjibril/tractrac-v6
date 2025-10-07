@@ -18,6 +18,8 @@ export default function FarmMeasurementPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const tractorId = searchParams.get('tractorId');
+  const context = searchParams.get('context');
+  const toolId = searchParams.get('toolId');
 
   const handleMeasurementComplete = (result: { path: FarmPath; serverId: string }) => {
     console.log('handleMeasurementComplete', result);
@@ -69,7 +71,13 @@ export default function FarmMeasurementPage() {
             // Swallow geocoding errors; continue without address
             addressParam = '';
           } finally {
-            if (tractorId) {
+            if (context === 'tool-hiring') {
+              if (toolId) {
+                router.push(`/home/hire-tools/${toolId}?farm_size=${avgArea}${addressParam}`);
+              } else {
+                router.push(`/home/hire-tools?farm_size=${avgArea}${addressParam}`);
+              }
+            } else if (tractorId) {
               router.push(`/home/hire-tractor/${tractorId}?farm_size=${avgArea}${addressParam}`);
             } else {
               router.push(`/home/hire-tractor?farm_size=${avgArea}${addressParam}`);
@@ -106,7 +114,7 @@ export default function FarmMeasurementPage() {
             secondaryLabel={'Redo'}
             onPrimary={handlePrimaryAction}
             onSecondary={handleSecondaryAction}
-            returnContext={tractorId ? 'tractor-booking' : 'home'}
+            returnContext={context === 'tool-hiring' ? 'tool-hiring' : (tractorId ? 'tractor-booking' : 'home')}
           />
         </div>
       </div>
