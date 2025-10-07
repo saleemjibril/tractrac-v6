@@ -1116,7 +1116,7 @@ function TractorCard({
       <Box
         boxShadow="md"
         borderRadius="4px"
-        onClick={() => router.push(`/home/hire-tools/${id}`)}
+        onClick={() => router.push(`/home/hire-tools/${id}?group_id=${groupId}`)}
         cursor="pointer"
       >
         <Box h="200px" position="relative">

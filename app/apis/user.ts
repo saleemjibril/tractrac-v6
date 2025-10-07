@@ -66,6 +66,8 @@ export const updateUserInfo = async (id: string, data: object, token: string) =>
 
 
 export const getGroupsMembers = async (group_id: string, token: string) => {
+  console.log("requuest id", group_id);
+
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,

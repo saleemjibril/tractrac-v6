@@ -507,8 +507,10 @@ export default function HireTractorForm() {
           end_date: lastDate,
         };
         setFormData(updatedFormData);
-        localStorage.setItem(`tractor-hire-${id}`, JSON.stringify(updatedFormData));
-      }
+        const hasFarmCarrier = updatedFormData.implement_types?.includes('farm_carrier');
+        if (!hasFarmCarrier) {
+          localStorage.setItem(`tractor-hire-${id}`, JSON.stringify(updatedFormData));
+        }      }
   
       console.log({
         firstDate,
@@ -548,11 +550,16 @@ export default function HireTractorForm() {
       }
     };
 
-    // Save form data to localStorage
+    // Save form data to localStorage (only if farm_carrier is not selected)
     const saveFormData = (data: any) => {
       const updatedData = { ...formData, ...data };
       setFormData(updatedData);
-      localStorage.setItem(`tractor-hire-${id}`, JSON.stringify(updatedData));
+      
+      // Only save to localStorage if farm_carrier is not selected as an implement
+      const hasFarmCarrier = updatedData.implement_types?.includes('farm_carrier');
+      if (!hasFarmCarrier) {
+        localStorage.setItem(`tractor-hire-${id}`, JSON.stringify(updatedData));
+      }
     };
 
     // Clear localStorage after successful submission
@@ -561,7 +568,7 @@ export default function HireTractorForm() {
     };
 
     // Check if current step is valid
-    const isStepValid = (step: number) => {
+    const isStepValid = (step: number, currentFormValues?: any) => {
       switch (step) {
         case 1:
           return formData.implement_types && formData.implement_types.length > 0;
@@ -570,7 +577,12 @@ export default function HireTractorForm() {
         case 3:
           return formData.implement_types?.includes('farm_carrier') || searchParams.get('farm_size');
         case 4:
-          return formData.state && formData.local_government_area && formData.community;
+          // Use currentFormValues if available (from form state), otherwise fallback to formData
+          const state = currentFormValues?.state || formData.state;
+          const lga = currentFormValues?.local_government_area || formData.local_government_area;
+          const community = currentFormValues?.community || formData.community;
+          const address = currentFormValues?.address || formData.address;
+          return state && lga && community && address;
         default:
           return false;
       }
@@ -649,8 +661,10 @@ export default function HireTractorForm() {
             start_date: formData.start_date,
             end_date: formData.end_date,
             additional_info: formData.additional_info,
+            current_location_lat: "",
+            current_location_lng: "",
           }}
-          enableReinitialize={true}
+          enableReinitialize={false}
           onSubmit={async (values: any, { resetForm }) => {
             setError(null);
 
@@ -675,15 +689,24 @@ export default function HireTractorForm() {
               const hasFarmCarrier = values.implement_types?.includes('farm_carrier');
               const hireFunction = hasFarmCarrier ? hireTractorWithoutFarmSize : hireTractor;
               
+              // Prepare data object based on function type
+              let requestData = {
+                ...values,
+                farm_size: farmSize ? farmSize : 1,
+                start_date: firstDate,
+                end_date: lastDate,
+                tractor_id: id,
+                farm_id: farmId ? farmId : "1"
+              };
+              
+              // Remove location coordinates when using hireTractorWithoutFarmSize
+              if (hasFarmCarrier) {
+                const { current_location_lng, current_location_lat, ...dataWithoutCoords } = requestData;
+                requestData = dataWithoutCoords;
+              }
+              
               const response = await hireFunction(
-                {
-                  ...values,
-                  farm_size: farmSize ? farmSize : 1,
-                  start_date: firstDate,
-                  end_date: lastDate,
-                  tractor_id: id,
-                  farm_id: farmId ? farmId : "1"
-                },
+                requestData,
                 userToken as string
               );
   
@@ -1143,7 +1166,16 @@ export default function HireTractorForm() {
                       onPlaceSelected={(place) => {
                         console.log("Address:", place.formatted_address);
 
-                        // Extract latitude and longitude
+                        // Update form with address
+                        form.setFieldValue(
+                          field.name,
+                          place.formatted_address
+                        );
+                        
+                        // Always save address to formData
+                        saveFormData({ address: place.formatted_address });
+
+                        // Extract latitude and longitude if available
                         if (place.geometry && place.geometry.location) {
                           const current_location_lat =
                             place.geometry.location.lat();
@@ -1152,11 +1184,7 @@ export default function HireTractorForm() {
                           console.log("Latitude:", current_location_lat);
                           console.log("Longitude:", current_location_lng);
 
-                          // Update form with address and coordinates
-                          form.setFieldValue(
-                            field.name,
-                            place.formatted_address
-                          );
+                          // Update form with coordinates
                           form.setFieldValue(
                             "current_location_lat",
                             current_location_lat
@@ -1165,7 +1193,6 @@ export default function HireTractorForm() {
                             "current_location_lng",
                             current_location_lng
                           );
-                              saveFormData({ address: place.formatted_address });
                         }
                       }}
                       options={{
@@ -1254,7 +1281,7 @@ export default function HireTractorForm() {
                   fontWeight={600}
                   minH="40px"
                   isLoading={props.isSubmitting}
-                    isDisabled={props.isSubmitting || !isStepValid(4)}
+                    isDisabled={props.isSubmitting || !isStepValid(4, props.values)}
                   type="submit"
                   _disabled={{
                     bgColor: "#F8A73088",

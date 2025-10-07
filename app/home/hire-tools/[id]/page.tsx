@@ -164,26 +164,17 @@ export function calculateDistance(
 export default function HireToolPage({ params }: { params: { id: string } }) {
   const { id } = params;
   const { userToken } = useAppSelector((state) => state.auth);
+  const searchParams = useSearchParams();
   
-  // Get groupId from the tool data or use a default
-  const [groupId, setGroupId] = useState<string>("");
+  // Get groupId from URL search params
+  const groupIdFromUrl = searchParams.get('group_id') || "";
+  const [groupId, setGroupId] = useState<string>(groupIdFromUrl);
   
-  // Fetch tool data to get groupId
+  // Update groupId when URL search params change
   useEffect(() => {
-    const fetchToolData = async () => {
-      try {
-        // You might need to implement this API call to get tool details
-        // const toolData = await getToolById(id, userToken);
-        // setGroupId(toolData.groupId);
-      } catch (error) {
-        console.error("Error fetching tool data:", error);
-      }
-    };
-    
-    if (id && userToken) {
-      fetchToolData();
-    }
-  }, [id, userToken]);
+    const groupIdFromUrl = searchParams.get('group_id') || "";
+    setGroupId(groupIdFromUrl);
+  }, [searchParams]);
 
   return (
     <SidebarWithHeader isAuth={true}>
