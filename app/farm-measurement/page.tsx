@@ -20,6 +20,7 @@ export default function FarmMeasurementPage() {
   const tractorId = searchParams.get('tractorId');
   const context = searchParams.get('context');
   const toolId = searchParams.get('toolId');
+  const groupId = searchParams.get('group_id');
 
   const handleMeasurementComplete = (result: { path: FarmPath; serverId: string }) => {
     console.log('handleMeasurementComplete', result);
@@ -72,10 +73,11 @@ export default function FarmMeasurementPage() {
             addressParam = '';
           } finally {
             if (context === 'tool-hiring') {
+              const groupIdParam = groupId ? `&group_id=${groupId}` : '';
               if (toolId) {
-                router.push(`/home/hire-tools/${toolId}?farm_size=${avgArea}${addressParam}`);
+                router.push(`/home/hire-tools/${toolId}?farm_size=${avgArea}${addressParam}${groupIdParam}`);
               } else {
-                router.push(`/home/hire-tools?farm_size=${avgArea}${addressParam}`);
+                router.push(`/home/hire-tools?farm_size=${avgArea}${addressParam}${groupIdParam}`);
               }
             } else if (tractorId) {
               router.push(`/home/hire-tractor/${tractorId}?farm_size=${avgArea}${addressParam}`);

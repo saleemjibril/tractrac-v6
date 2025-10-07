@@ -705,7 +705,7 @@ function HireTractorForm({ id, groupId }: { id: string, groupId: string }) {
                       <FormLabel fontSize="12px" color="#323232">
                         Farm Size (Don't know your farm size?{" "}
                         <Link
-                           href={`/farm-measurement?context=tool-hiring&toolId=${id}`}
+                           href={`/farm-measurement?context=tool-hiring&toolId=${id}&group_id=${groupId}`}
                           style={{
                             color: "#f8a730",
                             textDecoration: "underline",
