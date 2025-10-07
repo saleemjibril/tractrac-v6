@@ -766,6 +766,8 @@ const handleGroupSelect = (groupId: string): void => {
             </SimpleGrid>
 
                 {/* Group Selection */}
+              </Box>
+            </Collapse>
                 <FormControl 
                   padding={"24px 0"}
                 >
@@ -890,8 +892,6 @@ const handleGroupSelect = (groupId: string): void => {
                 </Collapse>
               </Box>
             </FormControl>
-              </Box>
-            </Collapse>
 
             {
               // searchResult?.isFetching ||

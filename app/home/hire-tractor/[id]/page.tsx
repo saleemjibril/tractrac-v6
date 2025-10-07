@@ -437,41 +437,20 @@ export default function HireTractorForm() {
           </div>
           
           {/* Calendar Indicators */}
-          <div style={{ 
-            display: 'flex', 
-            justifyContent: 'center', 
-            gap: '20px', 
-            marginTop: '15px',
-            flexWrap: 'wrap'
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <div style={{
-                width: '12px',
-                height: '12px',
-                backgroundColor: '#999',
-                borderRadius: '50%'
-              }}></div>
-              <span style={{ fontSize: '12px', color: '#666' }}>Past Date</span>
+          <div className="calendar-indicators">
+            <div className="indicator-item">
+              <div className="indicator-dot" style={{ backgroundColor: '#999' }}></div>
+              <span className="indicator-text">Past Date</span>
             </div>
             
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <div style={{
-                width: '12px',
-                height: '12px',
-                backgroundColor: '#DC2626',
-                borderRadius: '50%'
-              }}></div>
-              <span style={{ fontSize: '12px', color: '#666' }}>Booked Date</span>
+            <div className="indicator-item">
+              <div className="indicator-dot" style={{ backgroundColor: '#DC2626' }}></div>
+              <span className="indicator-text">Booked Date</span>
             </div>
             
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <div style={{
-                width: '12px',
-                height: '12px',
-                backgroundColor: '#FA9411',
-                borderRadius: '50%'
-              }}></div>
-              <span style={{ fontSize: '12px', color: '#666' }}>Selected Date</span>
+            <div className="indicator-item">
+              <div className="indicator-dot" style={{ backgroundColor: '#FA9411' }}></div>
+              <span className="indicator-text">Selected Date</span>
             </div>
           </div>
         </div>

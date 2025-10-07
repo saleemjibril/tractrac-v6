@@ -79,6 +79,19 @@
     background: #fff;
     padding: 24px 12px;
     z-index: 10;
+
+    // Mobile responsive styles
+    @media (max-width: 768px) {
+      min-width: unset;
+      width: 100vw;
+      max-width: 350px;
+      right: -20px;
+      left: -20px;
+      margin: 0 auto;
+      border-radius: 8px;
+      padding: 16px 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
   
     .ndc-calendar-row {
       display: grid;
@@ -86,6 +99,7 @@
       // gap: 24px;
       align-items: center;
       justify-content: center;
+      gap: 4px;
   
       & > div {
         // background: green;
@@ -101,6 +115,15 @@
         width: 100%;
         height: 20px;
         color: #aaa;
+
+        // Mobile responsive styles for calendar cells
+        @media (max-width: 768px) {
+          height: 32px;
+          font-size: 14px;
+          margin-bottom: 8px;
+          min-height: 32px;
+          border-radius: 6px;
+        }
       }
       .ndc-calendar-date {
         // cursor: pointer;
@@ -117,15 +140,30 @@
         color: #fff;
         border-radius: 50%;
         width: 20px;
+
+        @media (max-width: 768px) {
+          width: 28px;
+          height: 28px;
+          border-radius: 50%;
+        }
       }
   
       .subsidiary-date {
         background: #f8a8303f;
+
+        @media (max-width: 768px) {
+          border-radius: 6px;
+        }
       }
 
       .available {
         color: #1a1a1a;
         cursor: pointer;
+
+        @media (max-width: 768px) {
+          border-radius: 6px;
+          transition: all 0.2s ease;
+        }
       }
 
       .available:hover {
@@ -133,6 +171,12 @@
         color: #fff;
         border-radius: 50%;
         width: 20px;
+
+        @media (max-width: 768px) {
+          width: 28px;
+          height: 28px;
+          border-radius: 50%;
+        }
       }
 
       .booked {
@@ -145,6 +189,12 @@
         display: flex;
         align-items: center;
         justify-content: center;
+
+        @media (max-width: 768px) {
+          width: 28px;
+          height: 28px;
+          border-radius: 6px;
+        }
       }
 
       .booked-icon {
@@ -178,6 +228,15 @@
         align-items: center;
         gap: 16px;
       }
+
+      @media (max-width: 768px) {
+        font-size: 14px;
+        margin-bottom: 1rem;
+        
+        & > div {
+          gap: 8px;
+        }
+      }
     }
   
     &__button-group {
@@ -198,6 +257,13 @@
         display: flex;
         align-items: center;
         justify-content: center;
+
+        @media (max-width: 768px) {
+          width: 6rem;
+          height: 2.8rem;
+          font-size: 12px;
+          border-radius: 8px;
+        }
       }
   
       & > :first-child {
@@ -205,8 +271,60 @@
         color: #1a1a1a;
         background: transparent;
       }
+
+      @media (max-width: 768px) {
+        justify-content: center;
+        gap: 12px;
+        margin-top: 1rem;
+      }
     }
   }
+
+// Calendar indicators responsive styles
+.calendar-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 15px;
+  flex-wrap: wrap;
+
+  @media (max-width: 768px) {
+    gap: 12px;
+    margin-top: 12px;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .indicator-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    @media (max-width: 768px) {
+      gap: 4px;
+    }
+
+    .indicator-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+
+      @media (max-width: 768px) {
+        width: 10px;
+        height: 10px;
+      }
+    }
+
+    .indicator-text {
+      font-size: 12px;
+      color: #666;
+
+      @media (max-width: 768px) {
+        font-size: 11px;
+      }
+    }
+  }
+}
   
 .ndclist-table__header__select-container {
   position: relative;
