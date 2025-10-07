@@ -91,6 +91,7 @@ export default function HireTractorForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [farmId, setFarmId] = useState<string | null>(null);
+  const [prefilledAddress, setPrefilledAddress] = useState<string | null>(null);
 
   const { id } = useParams();
   
@@ -194,6 +195,12 @@ export default function HireTractorForm() {
     if (farmSizeFromMeasurement) {
       toast.success(`Farm measurement completed! Area: ${farmSizeFromMeasurement} square meters`);
       
+      // Save the prefilled address to formData if it exists
+      if (prefilledAddress) {
+        saveFormData({ address: prefilledAddress });
+        setPrefilledAddress(prefilledAddress);
+      }
+      
       // Move to step 4 after farm measurement
       setCurrentStep(4);
       
@@ -201,10 +208,26 @@ export default function HireTractorForm() {
       const newUrl = new URL(window.location.href);
       newUrl.searchParams.delete('farm_size');
       if (measurementIdFromUrl) newUrl.searchParams.delete('measurement_id');
-      // if (prefilledAddress) newUrl.searchParams.delete('address');
+      if (prefilledAddress) newUrl.searchParams.delete('address');
       window.history.replaceState({}, '', newUrl.toString());
     }
   }, [searchParams]);
+
+  // Update form field when prefilled address is available
+  useEffect(() => {
+    if (prefilledAddress && currentStep === 4) {
+      // Use a small delay to ensure the form is rendered
+      setTimeout(() => {
+        const addressInput = document.querySelector('input[name="address"]') as HTMLInputElement;
+        if (addressInput) {
+          addressInput.value = prefilledAddress;
+          // Trigger Formik's onChange
+          const event = new Event('input', { bubbles: true });
+          addressInput.dispatchEvent(event);
+        }
+      }, 100);
+    }
+  }, [prefilledAddress, currentStep]);
   
     function validateEmpty(value: any) {
       let error;
