@@ -22,7 +22,7 @@ import {
 } from "../components/Icons";
 import { createElement, useEffect, useState } from "react";
 import { useAppSelector } from "@/redux/hooks";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useGetDashboardStatsQuery } from "@/redux/services/userApi";
 import LoginRequiredModal from "../components/LoginRequiredModal";
 import { toast } from "react-toastify";
@@ -44,6 +44,7 @@ interface ItemProps {
 
 export default function Dashboard() {
   const path = usePathname();
+  const router = useRouter();
 
   const PageItems: Array<ItemProps> = [
     {
@@ -147,7 +148,7 @@ export default function Dashboard() {
     } catch (err) {
       const error = err as any;
       const errorMessage = getErrorMessage(error, "An unexpected error occurred");
-      setError(errorMessage);
+      setError(true);
       console.log("Error fetching tractor", error);
       setLoading(false);
     } finally {
@@ -217,16 +218,9 @@ export default function Dashboard() {
     <SidebarWithHeader>
       {mounted && (
         <Flex alignItems="center" columnGap="4px" mb="6px">
-          <Image
-            src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446665/sun_rahz5w.svg"
-            width="20px"
-            alt="Sun image icon"
-          />
-          <Text fontSize="18px" color="#FA9411" fontWeight={400}>
-            Good day,{" "}
-            <Box as="span" fontWeight={600} color="#FA9411">
-              {profileInfo?.name?.split(" ")[0] || "Guest"}
-            </Box>
+          <Text fontSize="18px" color="#FA9411" fontWeight={600}>
+            Hello {profileInfo?.name || "Guest"}
+            
           </Text>
         </Flex>
       )}
@@ -321,9 +315,7 @@ export default function Dashboard() {
         pt={0}
         //  mb={"100px"}
          >
-          <Text fontSize="24px" fontWeight={600} color="#929292" mb="20px" lineHeight={1}>
-            Enlistments in Review
-          </Text>
+
           {loadingTractors ? (
             <Text>Loading tractors...</Text>
           ) : tractorError ? (
@@ -331,8 +323,48 @@ export default function Dashboard() {
               Error loading tractors: {tractorError}
             </Text>
           ) : tractors?.length > 0 ? (
-            <Box>
-              {tractors.map((tractor: any, index: number) => (
+            <Box bg={"white"} padding={"20px"}
+            borderRadius={"4px"}
+            border={"1px solid #FF8E291A"}
+            boxShadow={"0px 0px 4px 0px #FF8E291A"}
+>
+                <Flex alignItems={"center"} justifyContent={"space-between"}>
+                <Flex
+              gap={"12px"}
+              alignItems={"center"}
+              mb={"12px"}
+            >
+              <Text fontSize={"14px"} color={"#050F24"} fontWeight={{base: 600, lg: 500}}>
+              Enlistments in Review
+              </Text>
+              <svg
+                width="26"
+                height="25"
+                viewBox="0 0 26 25"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect
+                  x="0.5"
+                  width="25"
+                  height="25"
+                  rx="3.125"
+                  fill="#27AE60"
+                />
+                <path
+                  d="M8.25 15C7.13182 15 6 15.3435 6 16V19C6 19.6565 7.13182 20 8.25 20C9.36818 20 10.5 19.6565 10.5 19V16C10.5 15.3435 9.36818 15 8.25 15ZM8.25 19.5C7.11328 19.5 6.5 19.1452 6.5 19V18.15C7.04916 18.3981 7.64765 18.5178 8.25 18.5C8.85235 18.5178 9.45084 18.3981 10 18.15V19C10 19.1452 9.38672 19.5 8.25 19.5ZM8.25 18C7.11328 18 6.5 17.6452 6.5 17.5V16.65C7.04916 16.8981 7.64765 17.0178 8.25 17C8.85235 17.0178 9.45084 16.8981 10 16.65V17.5C10 17.6452 9.38672 18 8.25 18ZM8.25 16.5C7.11328 16.5 6.5 16.1452 6.5 16C6.5 15.8548 7.11328 15.5 8.25 15.5C9.38672 15.5 10 15.8548 10 16C10 16.1452 9.38672 16.5 8.25 16.5ZM13.5 13.5C12.3818 13.5 11.25 13.8435 11.25 14.5V19C11.25 19.6565 12.3818 20 13.5 20C14.6182 20 15.75 19.6565 15.75 19V14.5C15.75 13.8435 14.6182 13.5 13.5 13.5ZM13.5 19.5C12.3633 19.5 11.75 19.1452 11.75 19V18.15C12.2992 18.3981 12.8977 18.5178 13.5 18.5C14.1023 18.5178 14.7008 18.3981 15.25 18.15V19C15.25 19.1452 14.6367 19.5 13.5 19.5ZM13.5 18C12.3633 18 11.75 17.6452 11.75 17.5V16.65C12.2992 16.8981 12.8977 17.0178 13.5 17C14.1023 17.0178 14.7008 16.8981 15.25 16.65V17.5C15.25 17.6452 14.6367 18 13.5 18ZM13.5 16.5C12.3633 16.5 11.75 16.1452 11.75 16V15.15C12.2992 15.3981 12.8977 15.5178 13.5 15.5C14.1023 15.5178 14.7008 15.3981 15.25 15.15V16C15.25 16.1452 14.6367 16.5 13.5 16.5ZM13.5 15C12.3633 15 11.75 14.6452 11.75 14.5C11.75 14.3548 12.3633 14 13.5 14C14.6367 14 15.25 14.3548 15.25 14.5C15.25 14.6452 14.6367 15 13.5 15ZM18.75 12C17.6318 12 16.5 12.3435 16.5 13V19C16.5 19.6565 17.6318 20 18.75 20C19.8682 20 21 19.6565 21 19V13C21 12.3435 19.8682 12 18.75 12ZM18.75 12.5C19.8867 12.5 20.5 12.8548 20.5 13C20.5 13.1452 19.8867 13.5 18.75 13.5C17.6133 13.5 17 13.1452 17 13C17 12.8548 17.6133 12.5 18.75 12.5ZM18.75 19.5C17.6133 19.5 17 19.1452 17 19V18.15C17.5492 18.3981 18.1477 18.5178 18.75 18.5C19.3523 18.5178 19.9508 18.3981 20.5 18.15V19C20.5 19.1452 19.8867 19.5 18.75 19.5ZM18.75 18C17.6133 18 17 17.6452 17 17.5V16.65C17.5492 16.8981 18.1477 17.0178 18.75 17C19.3523 17.0178 19.9508 16.8981 20.5 16.65V17.5C20.5 17.6452 19.8867 18 18.75 18ZM18.75 16.5C17.6133 16.5 17 16.1452 17 16V15.15C17.5492 15.3981 18.1477 15.5178 18.75 15.5C19.3523 15.5178 19.9508 15.3981 20.5 15.15V16C20.5 16.1452 19.8867 16.5 18.75 16.5ZM18.75 15C17.6133 15 17 14.6452 17 14.5V13.65C17.5492 13.8981 18.1477 14.0178 18.75 14C19.3523 14.0178 19.9508 13.8981 20.5 13.65V14.5C20.5 14.6452 19.8867 15 18.75 15ZM6.82325 12.6768C6.80003 12.6535 6.7816 12.626 6.76903 12.5957C6.75646 12.5653 6.74999 12.5328 6.74999 12.5C6.74999 12.4672 6.75646 12.4347 6.76903 12.4043C6.7816 12.374 6.80003 12.3465 6.82325 12.3232L11.1162 8.0304C11.3506 7.79602 11.6685 7.66435 11.9999 7.66435C12.3314 7.66435 12.6493 7.79602 12.8837 8.0304L14.5 9.64647L17.6465 6.5H16.75C16.6174 6.49985 16.4904 6.44712 16.3966 6.35339C16.3029 6.25965 16.2502 6.13256 16.25 6V5.5C16.2502 5.36744 16.3029 5.24035 16.3966 5.14661C16.4904 5.05288 16.6174 5.00015 16.75 5H19.5C19.6988 5.00022 19.8895 5.07931 20.0301 5.21991C20.1707 5.36052 20.2498 5.55115 20.25 5.75V8.5C20.2498 8.63256 20.1971 8.75965 20.1034 8.85339C20.0096 8.94712 19.8826 8.99985 19.75 9H19.25C19.1174 8.99985 18.9904 8.94712 18.8966 8.85339C18.8029 8.75965 18.7502 8.63256 18.75 8.5V7.60352L15.3838 10.9696C15.1494 11.204 14.8315 11.3356 14.5 11.3356C14.1686 11.3356 13.8507 11.204 13.6163 10.9696L12 9.35353L7.92675 13.4268C7.8796 13.4723 7.81645 13.4975 7.7509 13.4969C7.68535 13.4963 7.62265 13.4701 7.5763 13.4237C7.52994 13.3774 7.50365 13.3146 7.50308 13.2491C7.50251 13.1836 7.52771 13.1204 7.57325 13.0732L11.8232 8.82325C11.8465 8.80003 11.874 8.7816 11.9043 8.76903C11.9347 8.75646 11.9672 8.74999 12 8.74999C12.0328 8.74999 12.0653 8.75646 12.0957 8.76903C12.126 8.7816 12.1535 8.80003 12.1768 8.82325L13.9697 10.6161C14.1126 10.7524 14.3025 10.8285 14.5 10.8285C14.6975 10.8285 14.8874 10.7524 15.0303 10.6161L18.8232 6.82325C18.8582 6.7883 18.9028 6.7645 18.9512 6.75485C18.9997 6.74521 19.05 6.75016 19.0957 6.76908C19.1413 6.788 19.1804 6.82003 19.2079 6.86114C19.2353 6.90224 19.25 6.95056 19.25 7V8.5H19.75V5.75C19.7499 5.68371 19.7236 5.62016 19.6767 5.57329C19.6298 5.52642 19.5663 5.50006 19.5 5.5H16.75V6H18.25C18.2994 6.00001 18.3478 6.01468 18.3889 6.04215C18.43 6.06962 18.462 6.10866 18.4809 6.15434C18.4998 6.20001 18.5048 6.25027 18.4951 6.29876C18.4855 6.34725 18.4617 6.39179 18.4268 6.42675L14.6768 10.1768C14.6535 10.2 14.626 10.2184 14.5957 10.231C14.5653 10.2435 14.5328 10.25 14.5 10.25C14.4672 10.25 14.4347 10.2435 14.4043 10.231C14.374 10.2184 14.3465 10.2 14.3232 10.1768L12.5303 8.3839C12.3874 8.24757 12.1975 8.1715 12 8.1715C11.8025 8.1715 11.6126 8.24757 11.4697 8.3839L7.17675 12.6768C7.15355 12.7 7.12599 12.7184 7.09567 12.731C7.06534 12.7435 7.03283 12.75 7 12.75C6.96717 12.75 6.93466 12.7435 6.90433 12.731C6.87401 12.7184 6.84645 12.7 6.82325 12.6768Z"
+                  fill="white"
+                />
+              </svg>
+            </Flex>
+
+            <Link href="/dashboard/enlistments-in-review">
+              <Text fontSize={"12px"} color={"#050F24"} fontWeight={500}>
+                View all
+              </Text>
+            </Link>
+                </Flex>
+              {tractors?.slice(0, 4)?.map((tractor: any, index: number) => (
                 <Link
                   key={tractor.id || index}
                   href={`/dashboard/track-tractor-progress?id=${tractor.id}`}
@@ -344,7 +376,6 @@ export default function Dashboard() {
                     mb="12px"
                     alignItems="center"
                     justifyContent="space-between"
-                    bg="white"
                     _hover={{
                       bg: "#F7FAFC",
                       borderColor: "#FA9411",
@@ -428,9 +459,9 @@ export default function Dashboard() {
         </Box>
 
           <Box
-            border={"1px solid #FF8E291A"}
-            borderRadius={"4px"}
             padding={"20px"}
+            borderRadius={"4px"}
+            border={"1px solid #FF8E291A"}
             boxShadow={"0px 0px 4px 0px #FF8E291A"}
             mb="20px"
             minHeight={"200px"}
@@ -484,6 +515,8 @@ export default function Dashboard() {
                 pb={"8px"}
                 mb={"8px"}
                 borderBottom={"1px solid #ECECEC"}
+                onClick={() => router.push(`/dashboard/booking-details/${payment?.id}`)}
+                cursor={"pointer"}
               >
                 <Flex gap={"8px"} alignItems={"center"}>
                   <Box>
@@ -574,6 +607,8 @@ export default function Dashboard() {
                 pb={"8px"}
                 mb={"8px"}
                 borderBottom={"1px solid #ECECEC"}
+                onClick={() => router.push(`/dashboard/booking-details/${payment?.id}`)}
+                cursor={"pointer"}
               >
                 <Flex gap={"8px"} alignItems={"center"}>
                   <Box>

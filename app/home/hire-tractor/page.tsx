@@ -28,7 +28,11 @@ import {
   Skeleton,
   SkeletonText,
   Tooltip,
-  Collapse
+  Collapse,
+  Checkbox,
+  VStack,
+  Divider,
+  ModalCloseButton
 } from "@chakra-ui/react";;
 import Image from "@/app/components/Image";
 import { SidebarWithHeader } from "../../components/Sidenav";
@@ -115,6 +119,8 @@ interface ITractorCard {
   setTractorId: Dispatch<SetStateAction<string | null>>;
   coordinates: ICoordinates;
   userCoordinates?: ICoordinates | null;
+  onCardClick?: (tractor: any) => void;
+  tractorData?: any;
 }
 
 const statusTypes: Record<string, { title: string; color: string }> = {
@@ -177,6 +183,7 @@ async function getCurrentLocationState(): Promise<string | null> {
 }
 export default function HireTractor() {
   const { userToken } = useAppSelector((state) => state.auth);
+  const router = useRouter();
   const [location, setLocation] = useState<any>(null);
   const [searchData, setSearchData] = useState<any>(null);
   const [tractors, setTractors] = useState([]);
@@ -196,6 +203,10 @@ export default function HireTractor() {
   const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
   const [userCoordinates, setUserCoordinates] = useState<ICoordinates | null>(null);
   const [showFilters, setShowFilters] = useState(false);
+  const [showTractorDetailModal, setShowTractorDetailModal] = useState(false);
+  const [showImplementModal, setShowImplementModal] = useState(false);
+  const [selectedTractorForBooking, setSelectedTractorForBooking] = useState<any>(null);
+  const [selectedImplements, setSelectedImplements] = useState<string[]>([]);
   // const [getTractors, result] = useLazyGetTractorsQuery();
   const [result] = useLazyGetTractorsQuery();
   const [trigger, searchResult] = useLazyGetSearchTractorsQuery({});
@@ -339,6 +350,26 @@ export default function HireTractor() {
     setSelectedStatus(null);
     await handleGetTractors();
   }
+
+  const handleTractorCardClick = (tractor: any) => {
+    setSelectedTractorForBooking(tractor);
+    setShowTractorDetailModal(true);
+  };
+
+  const handleBookNowClick = () => {
+    // setShowTractorDetailModal(false);
+    // setShowImplementModal(true);
+    router.push(`/home/hire-tractor/${selectedTractorForBooking.id}`);
+  };
+
+  const handleProceedWithImplements = (implementsList: string[]) => {
+    setSelectedImplements(implementsList);
+    if (selectedTractorForBooking) {
+      // Navigate to the tractor detail page
+      router.push(`/home/hire-tractor/${selectedTractorForBooking.id}`);
+    }
+  };
+
   // Function to automatically set state and LGA based on user's location
   const setLocationBasedState = async () => {
     try {
@@ -521,6 +552,25 @@ export default function HireTractor() {
 
   return (
     <SidebarWithHeader isAuth={true}>
+      {/* Tractor Detail Modal */}
+      <TractorDetailModal
+        isOpen={showTractorDetailModal}
+        onClose={() => {
+          setShowTractorDetailModal(false);
+          setSelectedTractorForBooking(null);
+        }}
+        tractor={selectedTractorForBooking}
+        onBookNow={handleBookNowClick}
+      />
+      
+      {/* Implement Selection Modal */}
+      <ImplementSelectionModal
+        isOpen={showImplementModal}
+        onClose={() => setShowImplementModal(false)}
+        tractor={selectedTractorForBooking}
+        onProceed={handleProceedWithImplements}
+      />
+      
         <Box
           bgColor="white"
           mx={{ base: "0px", md: "20px" }}
@@ -1067,6 +1117,8 @@ export default function HireTractor() {
                           longitude: tractor?.current_location_lng
                         }}
                         userCoordinates={userCoordinates}
+                        onCardClick={handleTractorCardClick}
+                        tractorData={tractor}
                       />
                     ))}
                   </SimpleGrid>
@@ -1105,6 +1157,445 @@ export function calculateDistance(
   return Math.round(distance * 10) / 10; // Round to 1 decimal place
 }
 
+// Tractor Detail Modal Component
+function TractorDetailModal({
+  isOpen,
+  onClose,
+  tractor,
+  onBookNow,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  tractor: any;
+  onBookNow: () => void;
+}) {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const images = tractor?.tractor_image_files || tractor?.tractor_image || [];
+  const imageArray = Array.isArray(images) ? images : [images];
+  const hasVideo = tractor?.tractor_video && tractor.tractor_video.length > 0;
+
+  const nextImage = () => {
+    if (imageArray.length > 1) {
+      setCurrentImageIndex((prev) => (prev + 1) % imageArray.length);
+    }
+  };
+
+  const prevImage = () => {
+    if (imageArray.length > 1) {
+      setCurrentImageIndex((prev) => (prev - 1 + imageArray.length) % imageArray.length);
+    }
+  };
+
+  const isAvailable = tractor?.status === "available";
+
+  return (
+    <ChakraModal 
+      isOpen={isOpen} 
+      onClose={onClose} 
+      size={{ base: "2xl", md: "2xl" }}
+      motionPreset="slideInBottom"
+    >
+      <ModalOverlay />
+      <ModalContent 
+        maxH={{ base: "95vh", md: "90vh" }}
+        display="flex" 
+        flexDirection="column"
+        position={{ base: "fixed", md: "relative" }}
+        bottom={{ base: 0, md: "auto" }}
+        mb={{ base: 0, md: "auto" }}
+        borderRadius={{ base: "20px 20px 0 0", md: "8px" }}
+        margin={{ base: 0, md: "auto" }}
+        maxW={{ base: "100%", md: "672px" }}
+      >
+        <ModalHeader borderBottom="1px solid #ECECEC" pt={{ base: 4, md: 4 }}>
+          <Flex justifyContent="space-between" alignItems="center">
+            <Text fontSize={{ base: "16px", md: "18px" }} fontWeight={600} color="#929292">
+              Tractor Details
+            </Text>
+          </Flex>
+        </ModalHeader>
+        <ModalCloseButton />
+        
+        <ModalBody overflowY="auto" p={{ base: 4, md: 6 }}>
+          <VStack align="stretch" spacing={4}>
+            {/* Image Carousel */}
+            {imageArray.length > 0 && (
+              <Box position="relative" width="100%" height={{ base: "220px", md: "280px" }} borderRadius="8px" overflow="hidden">
+                <Image
+                  src={
+                    imageArray[currentImageIndex]?.startsWith("https")
+                      ? imageArray[currentImageIndex]
+                      : "https://res.cloudinary.com/tractrac-global/image/upload/v1746446723/man-with-tractor_dxf5ly.svg"
+                  }
+                  alt={`Tractor image ${currentImageIndex + 1}`}
+                  width="100%"
+                  height="100%"
+                  objectFit="cover"
+                />
+
+                {/* Image Counter */}
+                {imageArray.length > 1 && (
+                  <Box
+                    position="absolute"
+                    bottom="12px"
+                    right="12px"
+                    bgColor="rgba(0, 0, 0, 0.7)"
+                    color="white"
+                    px="12px"
+                    py="4px"
+                    borderRadius="7px"
+                    fontSize="12px"
+                    fontWeight={700}
+                  >
+                    {currentImageIndex + 1}/{imageArray.length}
+                  </Box>
+                )}
+
+                {/* Available/Booked Badge */}
+                <Box
+                  position="absolute"
+                  top="12px"
+                  right="12px"
+                  bgColor={isAvailable ? "#27AE60" : "#FF0000"}
+                  color="white"
+                  px="17px"
+                  py="4px"
+                  borderRadius="10px"
+                  fontSize="14px"
+                  fontWeight={700}
+                >
+                  {isAvailable ? "Available" : "Booked"}
+                </Box>
+
+                {/* Video Button */}
+                {hasVideo && (
+                  <Box
+                    position="absolute"
+                    bottom="12px"
+                    left="12px"
+                    bgColor="rgba(0, 0, 0, 0.7)"
+                    color="white"
+                    px="12px"
+                    py="4px"
+                    borderRadius="7px"
+                    cursor="pointer"
+                    _hover={{ bgColor: "rgba(0, 0, 0, 0.85)" }}
+                  >
+                    <Flex align="center" gap="6px">
+                      <Icon viewBox="0 0 24 24" boxSize="16px">
+                        <path
+                          fill="currentColor"
+                          d="M8 5v14l11-7z"
+                        />
+                      </Icon>
+                      <Text fontSize="12px" fontWeight={600}>
+                        View Video
+                      </Text>
+                    </Flex>
+                  </Box>
+                )}
+
+                {/* Navigation Arrows */}
+                {imageArray.length > 1 && (
+                  <>
+                    <Button
+                      position="absolute"
+                      left="12px"
+                      top="50%"
+                      transform="translateY(-50%)"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        prevImage();
+                      }}
+                      size="sm"
+                      colorScheme="whiteAlpha"
+                      bgColor="rgba(255, 255, 255, 0.9)"
+                      color="#323232"
+                      _hover={{ bgColor: "white" }}
+                    >
+                      ‹
+                    </Button>
+                    <Button
+                      position="absolute"
+                      right="12px"
+                      top="50%"
+                      transform="translateY(-50%)"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        nextImage();
+                      }}
+                      size="sm"
+                      colorScheme="whiteAlpha"
+                      bgColor="rgba(255, 255, 255, 0.9)"
+                      color="#323232"
+                      _hover={{ bgColor: "white" }}
+                    >
+                      ›
+                    </Button>
+                  </>
+                )}
+
+                {/* Dot Indicators */}
+                {imageArray.length > 1 && (
+                  <Flex
+                    position="absolute"
+                    bottom="12px"
+                    left="0"
+                    right="0"
+                    justifyContent="center"
+                    gap="4px"
+                  >
+                    {imageArray.map((_, index) => (
+                      <Box
+                        key={index}
+                        w="6px"
+                        h="6px"
+                        borderRadius="full"
+                        bg={currentImageIndex === index ? "white" : "rgba(255, 255, 255, 0.4)"}
+                        cursor="pointer"
+                        onClick={() => setCurrentImageIndex(index)}
+                      />
+                    ))}
+                  </Flex>
+                )}
+              </Box>
+            )}
+
+            {/* Tractor Details Section */}
+            <Box>
+              <Text fontSize={{ base: "16px", md: "18px" }} fontWeight={600} mb={3} color="#323232">
+                Tractor Details
+              </Text>
+              <Box
+                p={{ base: "16px", md: "20px" }}
+                bgColor="rgba(250, 148, 17, 0.05)"
+                borderRadius="10px"
+                border="1px solid rgba(250, 148, 17, 0.2)"
+              >
+                <VStack spacing={4} align="stretch">
+                  <TractorDetailRow
+                    label="Tractor Name"
+                    value={tractor?.name || "N/A"}
+                  />
+                  <TractorDetailRow
+                    label="Tractor Capacity"
+                    value={tractor?.horsepower ? `${tractor.horsepower} HP` : "N/A"}
+                  />
+                  <TractorDetailRow
+                    label="Tractor Brand"
+                    value={tractor?.brand || "N/A"}
+                  />
+                  <TractorDetailRow
+                    label="Tractor Type"
+                    value={tractor?.tractor_type || "N/A"}
+                  />
+                  <TractorDetailRow
+                    label="Tractor Location"
+                    value={tractor?.current_address || `${tractor?.lga}, ${tractor?.state}` || "N/A"}
+                  />
+                </VStack>
+              </Box>
+            </Box>
+          </VStack>
+        </ModalBody>
+
+        {/* Book Now Button */}
+        <Box
+          borderTop="1px solid #ECECEC"
+          p={{ base: 4, md: 6 }}
+          bgColor="white"
+          pb={{ base: 6, md: 6 }}
+        >
+          <Button
+            colorScheme="orange"
+            bgColor="#FA9411"
+            color="white"
+            w="100%"
+            py={{ base: 5, md: 6 }}
+            fontSize={{ base: "16px", md: "18px" }}
+            fontWeight={600}
+            onClick={onBookNow}
+            _hover={{
+              bgColor: "#e67e00",
+            }}
+          >
+            {isAvailable ? "Book Now" : "Book Ahead"}
+          </Button>
+        </Box>
+      </ModalContent>
+    </ChakraModal>
+  );
+}
+
+// Helper component for detail rows
+function TractorDetailRow({ label, value }: { label: string; value: string }) {
+  return (
+    <Flex justifyContent="space-between" alignItems="flex-start" gap={2}>
+      <Text fontSize={{ base: "13px", md: "14px" }} fontWeight={400} color="#323232" width={{ base: "110px", md: "140px" }} flexShrink={0}>
+        {label}
+      </Text>
+      <Text fontSize={{ base: "13px", md: "14px" }} fontWeight={600} color="#323232" textAlign="right" flex="1">
+        {value}
+      </Text>
+    </Flex>
+  );
+}
+
+// Implement Selection Modal Component
+function ImplementSelectionModal({
+  isOpen,
+  onClose,
+  tractor,
+  onProceed,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  tractor: any;
+  onProceed: (implementsList: string[]) => void;
+}) {
+  const [localSelectedImplements, setLocalSelectedImplements] = useState<string[]>([]);
+
+  // Separate farm implements from farm_carrier
+  const farmImplements = implementTypes.filter((impl) => impl.value !== "farm_carrier");
+  const farmCarrier = implementTypes.filter((impl) => impl.value === "farm_carrier");
+
+  const handleImplementToggle = (implementValue: string) => {
+    if (implementValue === "farm_carrier") {
+      // If farm_carrier is selected, clear all other implements
+      if (localSelectedImplements.includes("farm_carrier")) {
+        setLocalSelectedImplements([]);
+      } else {
+        setLocalSelectedImplements(["farm_carrier"]);
+      }
+    } else {
+      // If a farm implement is selected, remove farm_carrier and toggle the implement
+      setLocalSelectedImplements((prev) => {
+        const withoutCarrier = prev.filter((impl) => impl !== "farm_carrier");
+        if (withoutCarrier.includes(implementValue)) {
+          return withoutCarrier.filter((impl) => impl !== implementValue);
+        } else {
+          return [...withoutCarrier, implementValue];
+        }
+      });
+    }
+  };
+
+  const handleProceed = () => {
+    if (localSelectedImplements.length > 0) {
+      onProceed(localSelectedImplements);
+      onClose();
+      setLocalSelectedImplements([]);
+    }
+  };
+
+  const handleClose = () => {
+    setLocalSelectedImplements([]);
+    onClose();
+  };
+
+  return (
+    <ChakraModal 
+      isOpen={isOpen} 
+      onClose={handleClose} 
+      size={{ base: "full", md: "md" }}
+      motionPreset="slideInBottom"
+    >
+      <ModalOverlay />
+      <ModalContent
+        position={{ base: "fixed", md: "relative" }}
+        bottom={{ base: 0, md: "auto" }}
+        mb={{ base: 0, md: "auto" }}
+        borderRadius={{ base: "20px 20px 0 0", md: "8px" }}
+        margin={{ base: 0, md: "auto" }}
+        maxH={{ base: "90vh", md: "auto" }}
+      >
+        <ModalHeader pt={{ base: 4, md: 4 }}>
+          <Flex justifyContent="space-between" alignItems="center">
+            <Text fontSize={{ base: "16px", md: "18px" }} fontWeight={600}>
+              Select Implements
+            </Text>
+          </Flex>
+        </ModalHeader>
+        <ModalCloseButton />
+        <ModalBody pb={{ base: 4, md: 6 }} overflowY="auto">
+          <VStack align="stretch" spacing={4}>
+            {/* Farm Implements Section */}
+            {farmImplements.length > 0 && (
+              <Box>
+                <Text fontSize={{ base: "13px", md: "14px" }} fontWeight={600} color="#929292" mb={3}>
+                  Farm Implements
+                </Text>
+                <VStack align="stretch" spacing={2}>
+                  {farmImplements.map((implement) => (
+                    <Checkbox
+                      key={implement.value}
+                      isChecked={localSelectedImplements.includes(implement.value)}
+                      onChange={() => handleImplementToggle(implement.value)}
+                      colorScheme="orange"
+                    >
+                      <Text fontSize={{ base: "13px", md: "14px" }} color="#929292">
+                        {implement.label}
+                      </Text>
+                    </Checkbox>
+                  ))}
+                </VStack>
+              </Box>
+            )}
+
+            {/* Divider between sections */}
+            {farmImplements.length > 0 && farmCarrier.length > 0 && (
+              <Divider borderColor="#ECECEC" />
+            )}
+
+            {/* Transport Service Section */}
+            {farmCarrier.length > 0 && (
+              <Box>
+                <Text fontSize={{ base: "13px", md: "14px" }} fontWeight={600} color="#929292" mb={1}>
+                  Transport Service
+                </Text>
+                <Text fontSize={{ base: "11px", md: "12px" }} color="#92929299" mb={3}>
+                  Cannot be combined with farm implements
+                </Text>
+                <VStack align="stretch" spacing={2}>
+                  {farmCarrier.map((implement) => (
+                    <Checkbox
+                      key={implement.value}
+                      isChecked={localSelectedImplements.includes(implement.value)}
+                      onChange={() => handleImplementToggle(implement.value)}
+                      colorScheme="orange"
+                    >
+                      <Text fontSize={{ base: "13px", md: "14px" }} color="#929292">
+                        {implement.label}
+                      </Text>
+                    </Checkbox>
+                  ))}
+                </VStack>
+              </Box>
+            )}
+
+            {/* Proceed Button */}
+            <Button
+              colorScheme="orange"
+              bgColor="#FA9411"
+              color="white"
+              w="100%"
+              mt={4}
+              py={{ base: 5, md: 6 }}
+              fontSize={{ base: "16px", md: "16px" }}
+              isDisabled={localSelectedImplements.length === 0}
+              onClick={handleProceed}
+              _hover={{
+                bgColor: "#e67e00",
+              }}
+            >
+              Proceed
+            </Button>
+          </VStack>
+        </ModalBody>
+      </ModalContent>
+    </ChakraModal>
+  );
+}
 
 function TractorCard({
   name,
@@ -1115,7 +1606,9 @@ function TractorCard({
   id,
   status,
   coordinates,
-  userCoordinates
+  userCoordinates,
+  onCardClick,
+  tractorData
 }: ITractorCard) {
 
   const [distance, setDistance] = useState<number | null>(null);
@@ -1147,7 +1640,11 @@ function TractorCard({
   }, [coordinates, userCoordinates]);
 
   const handleCardClick = () => {
-    router.push(`/home/hire-tractor/${id}`);
+    if (onCardClick && tractorData) {
+      onCardClick(tractorData);
+    } else {
+      router.push(`/home/hire-tractor/${id}`);
+    }
   };
 
   const handleImageClick = (e: React.MouseEvent) => {

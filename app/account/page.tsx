@@ -29,6 +29,9 @@ import {
   Avatar,
   AvatarBadge,
   Select,
+  PinInput,
+  PinInputField,
+  HStack,
 } from "@chakra-ui/react";
 import { SidebarWithHeader } from "../components/Sidenav";
 import { createElement, useEffect, useState } from "react";
@@ -57,6 +60,8 @@ import { getUserInfo, updateUserInfo } from "../apis/user";
 import { useRouter } from "next/navigation";
 import { userLogout } from "@/redux/features/auth/authActions";
 import { tractorMediaUploadService } from "../services/mediaUploadService";
+import { sendPasswordChangeOtp, changePasswordWithOtp, resendUserOtp } from "../apis/auth";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 const statusTypes: Record<string, { title: string; color: string }> = {
   pending: { title: "Pending", color: "#FA9411" },
@@ -82,6 +87,12 @@ export default function AccountPage() {
   const [error, setError] = useState<string | null>(null);
   const [deleteError, setDeleteError] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
+
+  // Password change flow states
+  const [passwordChangeStep, setPasswordChangeStep] = useState<"send_otp" | "verify_otp" | "change_password">("send_otp");
+  const [passwordOtp, setPasswordOtp] = useState("");
+  const [otpCountdown, setOtpCountdown] = useState(0);
+  const [isOtpDisabled, setIsOtpDisabled] = useState(false);
 
   const [updateBioData] = useUpdateBioDataMutation();
   const [updatePassword] = useUpdatePasswordMutation();
@@ -159,9 +170,61 @@ const dispatch = useAppDispatch();
     handleGetUserInfo();
   }, [profileInfo]);
 
+  // Countdown timer for OTP resend
+  useEffect(() => {
+    if (otpCountdown > 0) {
+      const timer = setTimeout(() => {
+        setOtpCountdown(otpCountdown - 1);
+      }, 1000);
+      return () => clearTimeout(timer);
+    } else {
+      setIsOtpDisabled(false);
+    }
+  }, [otpCountdown]);
+
+  const startOtpCountdown = () => {
+    setOtpCountdown(60);
+    setIsOtpDisabled(true);
+  };
+
+  const handleSendPasswordOtp = async () => {
+    if (!profileInfo?.id || !userToken) return;
+    
+    try {
+      await sendPasswordChangeOtp(profileInfo.id, userToken as string);
+      toast.success("OTP sent to your phone successfully");
+      setPasswordChangeStep("verify_otp");
+      startOtpCountdown();
+    } catch (error: any) {
+      console.error("Error sending OTP:", error);
+      toast.error(error?.response?.data?.detail || "Failed to send OTP. Please try again.");
+    }
+  };
+
+  const handleResendPasswordOtp = async () => {
+    if (!profileInfo?.id) return;
+    
+    try {
+      await resendUserOtp(profileInfo.id);
+      toast.success("OTP resent successfully");
+      startOtpCountdown();
+    } catch (error: any) {
+      console.error("Error resending OTP:", error);
+      toast.error(error?.response?.data?.detail || "Failed to resend OTP. Please try again.");
+    }
+  };
+
+  const handleVerifyOtp = () => {
+    if (passwordOtp.length === 4) {
+      setPasswordChangeStep("change_password");
+    } else {
+      toast.error("Please enter a valid 4-digit OTP");
+    }
+  };
+
   return (
     <SidebarWithHeader>
-      <Box mx="20px" my="12px" py="12px">
+      <Box>
         <Box bg="white" boxShadow="lg" borderRadius="4px">
           <Tabs>
             <TabList pt="12px" px="36px" color="#323232">
@@ -193,7 +256,7 @@ const dispatch = useAppDispatch();
 
             <TabPanels>
               <TabPanel>
-                <Box pl="24px" mr={{ base: "0px", md: "20em", lg: "30em" }}>
+                <Box pl={{base: "0px", md: "24px"}} mr={{ base: "0px", md: "20em", lg: "30em" }}>
                   <Text fontWeight={700} fontSize="28px" mt="12px">
                     Edit Profile
                   </Text>
@@ -321,6 +384,7 @@ const dispatch = useAppDispatch();
                                   bgColor="#3232320D"
                                   fontSize="12px"
                                   color="#323232"
+                                  disabled
                                 />
                                 <FormErrorMessage>
                                   {form.errors.phone}
@@ -476,9 +540,9 @@ const dispatch = useAppDispatch();
                   UPDATE PASSWORD TAB
               */}
               <TabPanel>
-                <Box pl="24px" mr={{ base: "0px", md: "20em", lg: "30em" }}>
-                  <Text fontWeight={700} fontSize="28px" mt="12px">
-                    Change Password
+                <Box pl={{base: "0px", md: "24px"}} mr={{ base: "0px", md: "20em", lg: "30em" }}>
+                  <Text fontWeight={700} fontSize="28px" mt="12px" color="#F8A730">
+                    {passwordChangeStep === "verify_otp" ? "Let's Verify your Number" : "Change Password"}
                   </Text>
 
                   <Text
@@ -486,162 +550,357 @@ const dispatch = useAppDispatch();
                     fontSize="16px"
                     color="#929292"
                     mt="4px"
+                    mb="30px"
                   >
-                    Please fill the form below to change Your Password
+                    {passwordChangeStep === "send_otp" && "We'll send an OTP to your registered phone number to verify your identity"}
+                    {passwordChangeStep === "verify_otp" && `Please enter the 4-digit code sent to your phone through SMS`}
+                    {passwordChangeStep === "change_password" && "Enter your new password below"}
                   </Text>
 
-                  <Formik
-                    initialValues={{
-                      old_password: "",
-                      password: "",
-                      confirm_password: "",
-                    }}
-                    onSubmit={async (values: any, { resetForm }) => {
-                      setPasswordError(null);
+                  {passwordError && (
+                    <Alert status="error" mb="20px">
+                      <AlertIcon />
+                      <AlertTitle>{passwordError}</AlertTitle>
+                    </Alert>
+                  )}
 
-                      try {
-                        // alert('ss')
-                        console.log(values);
+                  {/* Step 1: Send OTP */}
+                  {passwordChangeStep === "send_otp" && (
+                    <Box>
+                      <Alert status="info" mb="20px">
+                        <AlertIcon />
+                        <Box>
+                          <AlertTitle>Security Verification Required</AlertTitle>
+                          <Text fontSize="14px" mt="4px">
+                            For your security, we need to verify your identity before allowing password changes.
+                          </Text>
+                        </Box>
+                      </Alert>
+                      
+                      <Button
+                        bgColor="#F8A730"
+                        color="white"
+                        width="100%"
+                        fontSize="16px"
+                        fontWeight={600}
+                        minH="50px"
+                        onClick={handleSendPasswordOtp}
+                        _hover={{
+                          bgColor: "#F8A73088",
+                        }}
+                        _focus={{
+                          bgColor: "#F8A73088",
+                        }}
+                      >
+                        Send OTP to My Phone
+                      </Button>
+                    </Box>
+                  )}
 
-                        const response = await updatePassword({
-                          ...values,
-                          user_id: profileInfo?.id,
-                          //   tractor_id: id,
-                        }).unwrap();
-                        if (response.status == "success") {
+                  {/* Step 2: Verify OTP */}
+                  {passwordChangeStep === "verify_otp" && (
+                    <Box>
+                      <FormControl mb="20px">
+                        <FormLabel fontSize="12px" color="#323232" mb="15px">
+                          Enter 4-digit OTP
+                        </FormLabel>
+                        <Center>
+                          <HStack spacing="15px">
+                            <PinInput
+                              size="lg"
+                              value={passwordOtp}
+                              onChange={(value) => setPasswordOtp(value)}
+                              otp
+                              autoFocus
+                            >
+                              <PinInputField
+                                bgColor="#3232320D"
+                                borderColor="#ECECEC"
+                                _focus={{
+                                  borderColor: "#F8A730",
+                                  boxShadow: "0 0 0 1px #F8A730",
+                                }}
+                                fontSize="20px"
+                                fontWeight={600}
+                              />
+                              <PinInputField
+                                bgColor="#3232320D"
+                                borderColor="#ECECEC"
+                                _focus={{
+                                  borderColor: "#F8A730",
+                                  boxShadow: "0 0 0 1px #F8A730",
+                                }}
+                                fontSize="20px"
+                                fontWeight={600}
+                              />
+                              <PinInputField
+                                bgColor="#3232320D"
+                                borderColor="#ECECEC"
+                                _focus={{
+                                  borderColor: "#F8A730",
+                                  boxShadow: "0 0 0 1px #F8A730",
+                                }}
+                                fontSize="20px"
+                                fontWeight={600}
+                              />
+                              <PinInputField
+                                bgColor="#3232320D"
+                                borderColor="#ECECEC"
+                                _focus={{
+                                  borderColor: "#F8A730",
+                                  boxShadow: "0 0 0 1px #F8A730",
+                                }}
+                                fontSize="20px"
+                                fontWeight={600}
+                              />
+                            </PinInput>
+                          </HStack>
+                        </Center>
+                      </FormControl>
+
+                      <Flex justifyContent="space-between" alignItems="center" mb="20px">
+                        <Text fontSize="14px" color="#929292">
+                          Didn't receive code?
+                        </Text>
+                        <Button
+                          variant="link"
+                          color={isOtpDisabled ? "#929292" : "#F8A730"}
+                          fontSize="14px"
+                          isDisabled={isOtpDisabled}
+                          onClick={handleResendPasswordOtp}
+                        >
+                          Resend SMS {otpCountdown > 0 && `(${otpCountdown}s)`}
+                        </Button>
+                      </Flex>
+
+                      <Flex gap="10px">
+                        <Button
+                          variant="outline"
+                          borderColor="#929292"
+                          color="#929292"
+                          width="50%"
+                          fontSize="16px"
+                          fontWeight={600}
+                          minH="50px"
+                          onClick={() => {
+                            setPasswordChangeStep("send_otp");
+                            setPasswordOtp("");
+                            setOtpCountdown(0);
+                          }}
+                        >
+                          Back
+                        </Button>
+                        <Button
+                          bgColor="#F8A730"
+                          color="white"
+                          width="50%"
+                          fontSize="16px"
+                          fontWeight={600}
+                          minH="50px"
+                          isDisabled={passwordOtp.length !== 4}
+                          onClick={handleVerifyOtp}
+                          _disabled={{
+                            bgColor: "#F8A73088",
+                          }}
+                          _hover={{
+                            bgColor: "#F8A73088",
+                          }}
+                          _focus={{
+                            bgColor: "#F8A73088",
+                          }}
+                        >
+                          Verify OTP
+                        </Button>
+                      </Flex>
+                    </Box>
+                  )}
+
+                  {/* Step 3: Change Password */}
+                  {passwordChangeStep === "change_password" && (
+                    <Formik
+                      initialValues={{
+                        password: "",
+                        confirm_password: "",
+                      }}
+                      onSubmit={async (values: any, { resetForm, setSubmitting }) => {
+                        setPasswordError(null);
+
+                        // Validation
+                        if (values.password.length < 8) {
+                          setPasswordError("Password must be at least 8 characters");
+                          setSubmitting(false);
+                          return;
+                        }
+
+                        if (!/[A-Z]/.test(values.password)) {
+                          setPasswordError("Password must contain at least one uppercase letter");
+                          setSubmitting(false);
+                          return;
+                        }
+
+                        if (values.password !== values.confirm_password) {
+                          setPasswordError("Passwords do not match");
+                          setSubmitting(false);
+                          return;
+                        }
+
+                        try {
+                          console.log("Changing password with OTP");
+
+                          const response = await changePasswordWithOtp(
+                            profileInfo?.id,
+                            passwordOtp,
+                            values.password,
+                            values.confirm_password,
+                            userToken as string
+                          );
+
+                          toast.success("Password changed successfully. Please login with your new password.");
+                          
+                          // Reset form and state
                           resetForm();
-                          toast.success(response.message);
-                        } else {
-                          setPasswordError("An unknown error occured");
+                          setPasswordOtp("");
+                          setPasswordChangeStep("send_otp");
+                          
+                          // Log out user after successful password change
+                          setTimeout(() => {
+                            dispatch(userLogout());
+                            router.replace("/login");
+                          }, 2000);
+                        } catch (err) {
+                          const error = err as any;
+                          console.error("Error changing password:", error);
+                          setPasswordError(
+                            error?.response?.data?.detail || 
+                            error?.data?.message || 
+                            "Failed to change password. Please try again."
+                          );
+                          setSubmitting(false);
                         }
-                      } catch (err) {
-                        const error = err as any;
-                        // alert('error')
-                        if (error?.data?.errors) {
-                          // setError(error?.data?.errors[0])
-                        } else if (error?.data?.message) {
-                          setPasswordError(error?.data?.message);
-                        }
-                        console.log("rejected", error);
-                      }
-                    }}
-                  >
-                    {(props) => (
-                      <Form>
-                        {passwordError && (
-                          <Alert status="error" mt="30px">
+                      }}
+                    >
+                      {(props) => (
+                        <Form>
+                          <Alert status="info" mb="20px">
                             <AlertIcon />
-                            <AlertTitle>{passwordError}</AlertTitle>
+                            <Box>
+                              <Text fontSize="14px">
+                                After changing your password, you will be{" "}
+                                <Text as="span" fontWeight={700} color="#F8A730">
+                                  logged out
+                                </Text>
+                                {" "}and required to login with your{" "}
+                                <Text as="span" fontWeight={700} color="#F8A730">
+                                  new password
+                                </Text>
+                                .
+                              </Text>
+                            </Box>
                           </Alert>
-                        )}
 
-                        <Flex mt="30px" columnGap="30px">
-                          <Field name="old_password" validate={validateEmpty}>
+                          <Field name="password" validate={validateEmpty}>
                             {({ field, form }: { [x: string]: any }) => (
                               <FormControl
                                 isInvalid={
-                                  form.errors.old_password &&
-                                  form.touched.old_password
+                                  form.errors.password && form.touched.password
                                 }
+                                mb="20px"
                               >
                                 <FormLabel fontSize="12px" color="#323232">
-                                  Old Password
+                                  New Password
                                 </FormLabel>
-                                <Input
-                                  {...field}
-                                  bgColor="#3232320D"
-                                  placeholder="1234"
-                                  fontSize="12px"
-                                  color="#323232"
-                                />
+                                <InputGroup>
+                                  <Input
+                                    {...field}
+                                    type="text"
+                                    bgColor="#3232320D"
+                                    placeholder="Minimum of 8 characters"
+                                    fontSize="12px"
+                                    color="#323232"
+                                  />
+                                </InputGroup>
+                                <Text fontSize="10px" color="#929292" mt="4px">
+                                  Must be at least 8 characters with one uppercase letter
+                                </Text>
                                 <FormErrorMessage>
-                                  {form.errors.old_password}
+                                  {form.errors.password}
                                 </FormErrorMessage>
                               </FormControl>
                             )}
                           </Field>
-                        </Flex>
 
-                        <Field name="password" validate={validateEmpty}>
-                          {({ field, form }: { [x: string]: any }) => (
-                            <FormControl
-                              mt="30px"
-                              isInvalid={
-                                form.errors.password && form.touched.password
-                              }
+                          <Field name="confirm_password" validate={validateEmpty}>
+                            {({ field, form }: { [x: string]: any }) => (
+                              <FormControl
+                                isInvalid={
+                                  form.errors.confirm_password &&
+                                  form.touched.confirm_password
+                                }
+                                mb="20px"
+                              >
+                                <FormLabel fontSize="12px" color="#323232">
+                                  Confirm New Password
+                                </FormLabel>
+                                <InputGroup>
+                                  <Input
+                                    {...field}
+                                    type="text"
+                                    bgColor="#3232320D"
+                                    placeholder="Re-enter your password"
+                                    fontSize="12px"
+                                    color="#323232"
+                                  />
+                                </InputGroup>
+                                <FormErrorMessage>
+                                  {form.errors.confirm_password}
+                                </FormErrorMessage>
+                              </FormControl>
+                            )}
+                          </Field>
+
+                          <Flex gap="10px">
+                            <Button
+                              variant="outline"
+                              borderColor="#929292"
+                              color="#929292"
+                              width="50%"
+                              fontSize="16px"
+                              fontWeight={600}
+                              minH="50px"
+                              onClick={() => {
+                                setPasswordChangeStep("verify_otp");
+                                props.resetForm();
+                              }}
                             >
-                              <FormLabel fontSize="12px" color="#323232">
-                                New Password
-                              </FormLabel>
-                              <Input
-                                {...field}
-                                bgColor="#3232320D"
-                                placeholder="Minimum of 8 characters"
-                                fontSize="12px"
-                                color="#323232"
-                              />
-                              <FormErrorMessage>
-                                {form.errors.password}
-                              </FormErrorMessage>
-                            </FormControl>
-                          )}
-                        </Field>
-
-                        <Field name="confirm_password" validate={validateEmpty}>
-                          {({ field, form }: { [x: string]: any }) => (
-                            <FormControl
-                              mt="30px"
-                              isInvalid={
-                                form.errors.confirm_password &&
-                                form.touched.confirm_password
-                              }
+                              Back
+                            </Button>
+                            <Button
+                              bgColor="#F8A730"
+                              color="white"
+                              width="50%"
+                              fontSize="16px"
+                              fontWeight={600}
+                              minH="50px"
+                              isLoading={props.isSubmitting}
+                              isDisabled={props.isSubmitting}
+                              type="submit"
+                              _disabled={{
+                                bgColor: "#F8A73088",
+                              }}
+                              _hover={{
+                                bgColor: "#F8A73088",
+                              }}
+                              _focus={{
+                                bgColor: "#F8A73088",
+                              }}
                             >
-                              <FormLabel fontSize="12px" color="#323232">
-                                Confirm Password
-                              </FormLabel>
-                              <Input
-                                {...field}
-                                bgColor="#3232320D"
-                                placeholder="Minimum of 8 characters"
-                                fontSize="12px"
-                                color="#323232"
-                              />
-                              <FormErrorMessage>
-                                {form.errors.confirm_password}
-                              </FormErrorMessage>
-                            </FormControl>
-                          )}
-                        </Field>
-
-                        <Flex>
-                          <Button
-                            my="40px"
-                            bgColor="#F8A730"
-                            color="white"
-                            ml="auto"
-                            width={{ base: "100%", md: "100%" }}
-                            fontSize="16px"
-                            fontWeight={600}
-                            minH="50px"
-                            isLoading={props.isSubmitting}
-                            isDisabled={props.isSubmitting}
-                            type="submit"
-                            _disabled={{
-                              bgColor: "#F8A73088",
-                            }}
-                            _hover={{
-                              bgColor: "#F8A73088",
-                            }}
-                            _focus={{
-                              bgColor: "#F8A73088",
-                            }}
-                          >
-                            Submit
-                          </Button>
-                        </Flex>
-                      </Form>
-                    )}
-                  </Formik>
+                              Update Password & Logout
+                            </Button>
+                          </Flex>
+                        </Form>
+                      )}
+                    </Formik>
+                  )}
                 </Box>
               </TabPanel>
               {/* Add this to your TabList */}

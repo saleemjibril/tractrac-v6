@@ -182,23 +182,23 @@ export default function Dashboard() {
               px="15px"
               alignItems="center"
               bgColor="white"
-              onMouseEnter={() => setHoveredIndex(index)} // Set hoveredIndex on mouse enter
-              onMouseLeave={() => setHoveredIndex(null)} // Clear hoveredIndex on mouse leave
-              onTouchStart={() => setHoveredIndex(index)}
-              onTouchEnd={() => setHoveredIndex(null)}
+              // onMouseEnter={() => setHoveredIndex(index)} // Set hoveredIndex on mouse enter
+              // onMouseLeave={() => setHoveredIndex(null)} // Clear hoveredIndex on mouse leave
+              // onTouchStart={() => setHoveredIndex(index)}
+              // onTouchEnd={() => setHoveredIndex(null)}
               // onMouseOver={() => setHoveredIndex(index)}
               // on={() => setHoveredIndex(null)}
-              onPointerEnter={() => setHoveredIndex(index)}
-              onPointerLeave={() => setHoveredIndex(null)}
-              onTouchEndCapture={() => setHoveredIndex(index)}
-              _hover={{
-                bgColor: "#FA9411",
-                color: "white",
-                "& > .item-icon": {
-                  // Use "& > .child-element" to select the child element
-                  color: "white", // Change the color of the child element on hover
-                },
-              }}
+              // onPointerEnter={() => setHoveredIndex(index)}
+              // onPointerLeave={() => setHoveredIndex(null)}
+              // onTouchEndCapture={() => setHoveredIndex(index)}
+              // _hover={{
+              //   bgColor: "#FA9411",
+              //   color: "white",
+              //   "& > .item-icon": {
+              //     // Use "& > .child-element" to select the child element
+              //     color: "white", // Change the color of the child element on hover
+              //   },
+              // }}
               borderRadius="15px"
             >
               {createElement(

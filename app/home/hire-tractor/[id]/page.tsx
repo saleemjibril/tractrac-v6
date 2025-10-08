@@ -741,65 +741,174 @@ export default function HireTractorForm() {
                     Step 1: Choose Implement Types
                   </Text>
                 <Field name="implement_types" validate={validateEmpty}>
-                  {({ field, form }: { [x: string]: any }) => (
+                  {({ field, form }: { [x: string]: any }) => {
+                          const currentValues = form.values.implement_types || [];
+                    const farmCarrier = tractorImplements?.filter((e: string) => e === 'farm_carrier') || [];
+                    const otherImplements = tractorImplements?.filter((e: string) => e !== 'farm_carrier') || [];
+                    
+                          const hasFarmCarrier = currentValues.includes('farm_carrier');
+                          const hasOtherImplements = currentValues.some((value: string) => value !== 'farm_carrier');
+                          
+                    const toggleImplement = (implement: string) => {
+                      let newValues = [...currentValues];
+                      
+                      if (implement === 'farm_carrier') {
+                        // If farm_carrier is being selected, clear all others
+                        if (newValues.includes('farm_carrier')) {
+                          newValues = newValues.filter((v: string) => v !== 'farm_carrier');
+                        } else {
+                          newValues = ['farm_carrier'];
+                        }
+                      } else {
+                        // If other implement is being selected, remove farm_carrier first
+                        if (newValues.includes(implement)) {
+                          newValues = newValues.filter((v: string) => v !== implement);
+                        } else {
+                          newValues = newValues.filter((v: string) => v !== 'farm_carrier');
+                          newValues.push(implement);
+                        }
+                      }
+                      
+                      form.setFieldValue(field.name, newValues);
+                      saveFormData({ implement_types: newValues });
+                    };
+
+                    return (
                     <FormControl
                       isInvalid={
                         form.errors.implement_types &&
                         form.touched.implement_types
                       }
                     >
-                      <FormLabel fontSize="12px" color="#323232">
-                        Implement Type
-                      </FormLabel>
-                      <MultiSelect
-                        name="Roles"
-                        isMulti
-                        options={(() => {
-                          const currentValues = form.values.implement_types || [];
-                          const hasFarmCarrier = currentValues.includes('farm_carrier');
-                          const hasOtherImplements = currentValues.some((value: string) => value !== 'farm_carrier');
-                          
-                          // Filter options based on current selection
-                          let filteredImplements = tractorImplements || [];
-                          
-                          if (hasFarmCarrier) {
-                            // If farm_carrier is selected, only show farm_carrier
-                            filteredImplements = filteredImplements.filter((implement: any) => implement === 'farm_carrier');
-                          } else if (hasOtherImplements) {
-                            // If other implements are selected, hide farm_carrier
-                            filteredImplements = filteredImplements.filter((implement: any) => implement !== 'farm_carrier');
-                          }
-                          
-                          return filteredImplements.map((implement: any) => ({
-                            value: implement,
-                            label: implement.replace(/_/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase())
-                          }));
-                        })()}
-                        placeholder="Select implements"
-                        onChange={(option) => {
-                          console.log(option.at(0));
-                          const selectedValues = option.map((e: any) => e.value);
-                          
-                          // Check if farm_carrier is being added
-                          const isAddingFarmCarrier = selectedValues.includes('farm_carrier');
-                          
-                          if (isAddingFarmCarrier) {
-                            // If farm_carrier is being added, clear all other selections
-                            form.setFieldValue(field.name, ['farm_carrier']);
-                          } else {
-                            // Normal selection
-                            form.setFieldValue(field.name, selectedValues);
-                          }
-                            
-                            // Save to form data
-                            saveFormData({ implement_types: selectedValues });
-                        }}
-                      />
+                      <Stack spacing="16px">
+                        {/* Farm Implements Section */}
+                        {otherImplements.length > 0 && (
+                          <Box>
+                            <Text fontSize="14px" fontWeight="600" color="#929292" mb="12px">
+                              Farm Implements
+                            </Text>
+                            <Stack spacing="8px">
+                              {otherImplements.map((implement: string) => {
+                                const isSelected = currentValues.includes(implement);
+                                const isDisabled = hasFarmCarrier;
+                                
+                                return (
+                                  <Box
+                                    key={implement}
+                                    p="12px"
+                                    border="1px solid"
+                                    borderColor={isSelected ? "#FA9411" : "#E2E8F0"}
+                                    borderRadius="6px"
+                                    bg={isSelected ? "#FA94110D" : "white"}
+                                    cursor={isDisabled ? "not-allowed" : "pointer"}
+                                    opacity={isDisabled ? 0.5 : 1}
+                                    onClick={() => !isDisabled && toggleImplement(implement)}
+                                    _hover={{
+                                      borderColor: isDisabled ? "#E2E8F0" : "#FA9411",
+                                      bg: isDisabled ? "white" : "#FA94110D"
+                                    }}
+                                    transition="all 0.2s"
+                                  >
+                                    <Flex alignItems="center" gap="12px">
+                                      <Box
+                                        w="18px"
+                                        h="18px"
+                                        border="2px solid"
+                                        borderColor={isSelected ? "#FA9411" : "#D1D5DB"}
+                                        borderRadius="4px"
+                                        bg={isSelected ? "#FA9411" : "white"}
+                                        display="flex"
+                                        alignItems="center"
+                                        justifyContent="center"
+                                      >
+                                        {isSelected && (
+                                          <Box as="span" color="white" fontSize="12px" fontWeight="bold">
+                                            ✓
+                                          </Box>
+                                        )}
+                                      </Box>
+                                      <Text fontSize="14px" color="#929292">
+                                        {implement.replace(/_/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase())}
+                                      </Text>
+                                    </Flex>
+                                  </Box>
+                                );
+                              })}
+                            </Stack>
+                          </Box>
+                        )}
+
+                        {/* Divider */}
+                        {otherImplements.length > 0 && farmCarrier.length > 0 && (
+                          <Box borderTop="1px solid" borderColor="#E2E8F0" my="8px" />
+                        )}
+
+                        {/* Transport Service Section */}
+                        {farmCarrier.length > 0 && (
+                          <Box>
+                            <Text fontSize="14px" fontWeight="600" color="#929292" mb="4px">
+                              Transport Service
+                            </Text>
+                            <Text fontSize="12px" color="#929292" opacity="0.6" mb="12px">
+                              Cannot be combined with farm implements
+                            </Text>
+                            <Stack spacing="8px">
+                              {farmCarrier.map((implement: string) => {
+                                const isSelected = currentValues.includes(implement);
+                                const isDisabled = hasOtherImplements;
+                                
+                                return (
+                                  <Box
+                                    key={implement}
+                                    p="12px"
+                                    border="1px solid"
+                                    borderColor={isSelected ? "#FA9411" : "#E2E8F0"}
+                                    borderRadius="6px"
+                                    bg={isSelected ? "#FA94110D" : "white"}
+                                    cursor={isDisabled ? "not-allowed" : "pointer"}
+                                    opacity={isDisabled ? 0.5 : 1}
+                                    onClick={() => !isDisabled && toggleImplement(implement)}
+                                    _hover={{
+                                      borderColor: isDisabled ? "#E2E8F0" : "#FA9411",
+                                      bg: isDisabled ? "white" : "#FA94110D"
+                                    }}
+                                    transition="all 0.2s"
+                                  >
+                                    <Flex alignItems="center" gap="12px">
+                                      <Box
+                                        w="18px"
+                                        h="18px"
+                                        border="2px solid"
+                                        borderColor={isSelected ? "#FA9411" : "#D1D5DB"}
+                                        borderRadius="4px"
+                                        bg={isSelected ? "#FA9411" : "white"}
+                                        display="flex"
+                                        alignItems="center"
+                                        justifyContent="center"
+                                      >
+                                        {isSelected && (
+                                          <Box as="span" color="white" fontSize="12px" fontWeight="bold">
+                                            ✓
+                                          </Box>
+                                        )}
+                                      </Box>
+                                      <Text fontSize="14px" color="#929292">
+                                        {implement.replace(/_/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase())}
+                                      </Text>
+                                    </Flex>
+                                  </Box>
+                                );
+                              })}
+                            </Stack>
+                          </Box>
+                        )}
+                      </Stack>
                       <FormErrorMessage>
                         {form.errors.implement_types}
                       </FormErrorMessage>
                     </FormControl>
-                  )}
+                    );
+                  }}
                 </Field>
                 </Box>
               )}

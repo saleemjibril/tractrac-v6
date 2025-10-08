@@ -99,8 +99,8 @@ export default function Dashboard() {
             <Flex
               key={pageItem.path}
               cursor="pointer"
-              onMouseEnter={() => setHoveredIndex(index)} // Set hoveredIndex on mouse enter
-              onMouseLeave={() => setHoveredIndex(null)}
+              // onMouseEnter={() => setHoveredIndex(index)} // Set hoveredIndex on mouse enter
+              // onMouseLeave={() => setHoveredIndex(null)}
               flexDir="column"
               // as="a"
               onClick={() => {
@@ -115,14 +115,14 @@ export default function Dashboard() {
               py="35px"
               alignItems="center"
               bgColor="white"
-              _hover={{
-                bgColor: "#FA9411",
-                color: "white",
-                "& > .item-icon": {
-                  // Use "& > .child-element" to select the child element
-                  color: "white", // Change the color of the child element on hover
-                },
-              }}
+              // _hover={{
+              //   bgColor: "#FA9411",
+              //   color: "white",
+              //   "& > .item-icon": {
+              //     // Use "& > .child-element" to select the child element
+              //     color: "white", // Change the color of the child element on hover
+              //   },
+              // }}
               borderRadius="15px"
             >
               {pageItem.imageLight ? (

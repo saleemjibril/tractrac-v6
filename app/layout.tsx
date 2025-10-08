@@ -32,7 +32,7 @@ export default function RootLayout({
         <AuthProvider>
         <PageTracker />
           {children}
-           <SupportWidget />
+           {/* <SupportWidget /> */}
            </AuthProvider>
         </Providers>
       </body>

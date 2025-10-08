@@ -88,3 +88,40 @@ export const resetUserPassword = async (user_id: string, reset_token: string, ne
 
   return res;
 };
+
+export const sendPasswordChangeOtp = async (user_id: string, token: string) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const res = await axios.post(
+    `${process.env.NEXT_PUBLIC_URL}/otp/resend?user_id=${user_id}&purpose=activation`,
+    { data: "data" },
+    config
+  );
+
+  return res;
+};
+
+export const changePasswordWithOtp = async (user_id: string, otp: string, new_password: string, confirm_password: string, token: string) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const res = await axios.post(
+    `${process.env.NEXT_PUBLIC_URL}/auth/reset-password-with-otp`,
+    {
+      user_id,
+      reset_token: otp,
+      new_password,
+      confirm_password
+    },
+    config
+  );
+
+  return res;
+};

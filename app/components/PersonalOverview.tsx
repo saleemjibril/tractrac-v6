@@ -3,6 +3,7 @@ import { useGetPersonalStatsQuery } from "@/redux/services/userApi";
 import { SimpleGrid, Box, Text, GridItem, Grid, Flex, IconButton, HStack } from "@chakra-ui/react";
 import { getUserStats } from "../apis/user";
 import { useEffect, useState } from "react";
+import React from "react";
 import formatNumber, { formatAmount } from "../utils/formatNumber";
 import {
   AvailableMini,
@@ -16,6 +17,7 @@ import {
 } from "./Icons";
 import { useRouter } from "next/navigation";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
+import Image from "next/image";
 export default function PersonalOverview() {
     const router = useRouter();
   const { userToken, profileInfo } = useAppSelector((state) => state.auth);
@@ -34,48 +36,38 @@ export default function PersonalOverview() {
 
   const stats = [
     {
-      icon: <TractorsMini width="26" height="26" />,
+      icon: <Image src="/icons/2.svg" alt="Tractors" width={60} height={60} />,
       title: "Total Number of Tractors Enlisted",
       value: 0,
-      borderColor: "#BBD9FF",
-      backgroundColor: "#EFF6FF80",
-      color: "#898989",
+      backgroundColor: "#00A2E3",
       link: "/dashboard/enlisted-tractors",
     },
     {
-      icon: <TractorsMini width="26" height="26" />,
+      icon: <Image src="/icons/2.svg" alt="Tractors" width={60} height={60} />,
       title: "Total Number of Tractors Hired",
       value: userStats?.tractors_hired_count || 0,
-      borderColor: "#BBD9FF",
-      backgroundColor: "#EFF6FF80",
-      color: "#898989",
+      backgroundColor: "#0E3850",
       link: "/dashboard/hired-tractors",
     },
     {
-      icon: <InUseMini width="26" height="26" />,
+      icon: <Image src="/icons/1.svg" alt="Agro Tools" width={60} height={60} />,
       title: "Total Number of Agro Tools Hired",
       value: userStats?.addons_hired_count || 0,
-      borderColor: "#BBD9FF",
-      backgroundColor: "#EFF6FF80",
-      color: "#898989",
+      backgroundColor: "#1C5597",
       link: "/dashboard/hired-tools",
     },
     {
-      icon: <VerifiedMini width="26" height="26" />,
+      icon: <Image src="/icons/3.svg" alt="Approved" width={60} height={60} />,
       title: "Approved Leasing Requests",
       value: userStats?.tractor_hire_status_counts?.approved || 0,
-      borderColor: "#BBD9FF",
-      backgroundColor: "#EFF6FF80",
-      color: "#898989",
+      backgroundColor: "#256A6E",
       link: "/dashboard/hired-tractors",
     },
     {
-      icon: <CancelledMini width="26" height="26" />,
+      icon: <Image src="/icons/4.svg" alt="Cancelled" width={60} height={60} />,
       title: "Total cancelled Request",
       value: userStats?.tractor_hire_status_counts?.cancelled || 0,
-      borderColor: "#BBD9FF",
-      backgroundColor: "#EFF6FF80",
-      color: "#898989",
+      backgroundColor: "#01A9A2",
       // link: "/verification?type=tractor&status=cancelled",
     },
           // {
@@ -328,18 +320,14 @@ export default function PersonalOverview() {
    
   // ] 
 
-  // Carousel logic - responsive items per slide
-  const [itemsPerSlide, setItemsPerSlide] = useState(8);
+  // Carousel logic - mobile shows 1 card per slide, desktop shows all cards
+  const [isMobile, setIsMobile] = useState(false);
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
   
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth < 768) {
-        setItemsPerSlide(1); // Mobile: 1 item per slide (1 row of 1)
-      } else if (window.innerWidth < 1024) {
-        setItemsPerSlide(4); // Tablet: 4 items per slide (1 row of 4)
-      } else {
-        setItemsPerSlide(8); // Desktop: 8 items per slide (2 rows of 4)
-      }
+      setIsMobile(window.innerWidth < 768);
     };
 
     handleResize();
@@ -347,53 +335,152 @@ export default function PersonalOverview() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const totalSlides = Math.ceil(stats.length / itemsPerSlide);
+  const totalSlides = isMobile ? stats.length : 1;
 
   function nextSlide() {
-    setCurrentSlide((prev) => (prev + 1) % totalSlides);
+    if (isMobile) {
+      setCurrentSlide((prev) => (prev + 1) % totalSlides);
+    }
   }
 
   function prevSlide() {
-    setCurrentSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
+    if (isMobile) {
+      setCurrentSlide((prev) => (prev - 1 + totalSlides) % totalSlides);
+    }
   }
 
-  function getCurrentSlideItems() {
-    const startIndex = currentSlide * itemsPerSlide;
-    const endIndex = startIndex + itemsPerSlide;
-    return stats.slice(startIndex, endIndex);
-  }
+  // Touch handlers for swipe functionality
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(0);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+
+    if (isLeftSwipe) {
+      nextSlide();
+    } else if (isRightSwipe) {
+      prevSlide();
+    }
+  };
 
   return (
    <>
     <Box width={"100%"} mb={"23px"} position="relative">
-      {/* Navigation Controls */}
-    
-
-      {/* Stats Grid */}
-      <Box
-        width={"100%"}
-        className="stats_grid"
-        transition="all 0.3s ease-in-out"
-      >
-        {/* First Row */}
+      {/* Mobile Carousel */}
+      {isMobile ? (
+        <>
+          <Box
+            width={"100%"}
+            overflow="hidden"
+            position="relative"
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+            px="24px"
+          >
+            <Box
+              display="flex"
+              transform={`translateX(-${currentSlide * 100}%)`}
+              transition="transform 0.3s ease-in-out"
+            >
+              {stats.map((item, index) => (
+                <Box
+                  key={index}
+                  width="100%"
+                  pr="10px"
+                  flexShrink={0}
+                >
+                  <Box
+                    borderRadius={"9px"}
+                    bg={item?.backgroundColor}
+                    padding="20px 13px"
+                    cursor={item?.link ? "pointer" : "default"}
+                    onClick={() => {
+                      if (item?.link) {
+                        router.push(item?.link);
+                      }
+                    }}
+                    transition="all 0.2s ease-in-out"
+                    boxShadow="0 6.24px 24.94px rgba(0, 0, 0, 0.1)"
+                    position="relative"
+                    minH="105px"
+                    overflow="hidden"
+                  >
+                    <Box
+                      position="absolute"
+                      bottom="0"
+                      right="28px"
+                      opacity={0.6}
+                    >
+                      {item?.icon && React.cloneElement(item.icon, { 
+                        width: "60", 
+                        height: "60" 
+                      })}
+                    </Box>
+                    <Box position="relative" zIndex={1}>
+                      <Text 
+                        fontSize={"14px"} 
+                        mb={"13px"} 
+                        lineHeight={"1"}
+                        color="white"
+                        fontWeight="400"
+                      >
+                        {item?.title}
+                      </Text>
+                      <Text
+                        fontSize="30px"
+                        color="white"
+                        fontWeight={"700"}
+                        lineHeight={"1"}
+                      >
+                        {item?.value}
+                      </Text>
+                    </Box>
+                  </Box>
+                </Box>
+              ))}
+            </Box>
+          </Box>
+          
+          {/* Carousel Indicators */}
+          <HStack justifyContent="center" mt="20px" spacing="4px">
+            {stats.map((_, index) => (
+              <Box
+                key={index}
+                width={currentSlide === index ? "22px" : "7px"}
+                height="5px"
+                bg={currentSlide === index ? "#00A2E3" : "rgba(0, 162, 227, 0.2)"}
+                borderRadius="10px"
+                transition="all 0.3s ease-in-out"
+                cursor="pointer"
+                onClick={() => setCurrentSlide(index)}
+              />
+            ))}
+          </HStack>
+        </>
+      ) : (
+        /* Desktop Grid Layout */
         <Grid
           width={"100%"}
-          templateColumns={{
-            base: "1fr", // Mobile: 1 column
-            md: "1fr 1fr 1fr 1fr", // Tablet: 4 columns
-            lg: "1fr 1fr 1fr 1fr", // Desktop: 4 columns
-          }}
+          templateColumns="1fr 1fr 1fr 1fr"
           gap={"10px"}
-          mb={{ base: "0", md: "10px" }}
         >
-          {getCurrentSlideItems()?.slice(0, 4).map((item, index) => (
+          {stats.map((item, index) => (
             <GridItem
-              key={`${currentSlide}-${index}`}
-              border={`1px solid ${item?.borderColor}`}
-              borderRadius={"10px"}
-              // bg={item?.backgroundColor}
-              bg="#FFF"
-              padding={{base: "24px 26px", md: "17px 26px"}}
+              key={index}
+              borderRadius={"9px"}
+              bg={item?.backgroundColor}
+              padding="20px 13px"
               cursor={item?.link ? "pointer" : "default"}
               onClick={() => {
                 if (item?.link) {
@@ -402,111 +489,48 @@ export default function PersonalOverview() {
               }}
               _hover={{
                 transform: "translateY(-2px)",
-                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                boxShadow: "0 6px 25px rgba(0, 0, 0, 0.15)",
               }}
               transition="all 0.2s ease-in-out"
-              display={{ base: index === 0 ? "block" : "none", md: "block" }}
+              boxShadow="0 6.24px 24.94px rgba(0, 0, 0, 0.1)"
+              position="relative"
+              minH="105px"
+              overflow="hidden"
             >
-              <Flex
-                gap={"10px"}
-                alignItems={"start"}
-                justifyContent={"space-between"}
+              <Box
+                position="absolute"
+                bottom="0"
+                right="28px"
+                opacity={0.6}
               >
-                <Box>
-                  <Text fontSize={"12px"} mb={"5px"} lineHeight={"1"}>
-                    {item?.title}
-                  </Text>
-                  <Text
-                    fontSize={"36px"}
-                    color={item?.color}
-                    fontWeight={"600"}
-                    lineHeight={"1"}
-                  >
-                    {item?.value}
-                  </Text>
-                </Box>
-                {item?.icon}
-              </Flex>
+                {item?.icon && React.cloneElement(item.icon, { 
+                  width: "60", 
+                  height: "60" 
+                })}
+              </Box>
+              <Box position="relative" zIndex={1}>
+                <Text 
+                  fontSize={"14px"} 
+                  mb={"13px"} 
+                  lineHeight={"1"}
+                  color="white"
+                  fontWeight="400"
+                >
+                  {item?.title}
+                </Text>
+                <Text
+                  fontSize="30px"
+                  color="white"
+                  fontWeight={"700"}
+                  lineHeight={"1"}
+                >
+                  {item?.value}
+                </Text>
+              </Box>
             </GridItem>
           ))}
         </Grid>
-
-        {/* Second Row - Hidden on mobile */}
-        <Grid
-          width={"100%"}
-          templateColumns={{
-            base: "1fr", // Mobile: 1 column
-            md: "1fr 1fr 1fr 1fr", // Tablet: 4 columns
-            lg: "1fr 1fr 1fr 1fr", // Desktop: 4 columns
-          }}
-          gap={"10px"}
-          display={{ base: "none", md: "grid" }}
-        >
-          {getCurrentSlideItems()?.slice(4, 8).map((item, index) => (
-            <GridItem
-              key={`${currentSlide}-${index + 4}`}
-              border={`1px solid ${item?.borderColor}`}
-              borderRadius={"10px"}
-              // bg={item?.backgroundColor}
-              bg="#FFF"
-              padding={"17px 26px"}
-              cursor={item?.link ? "pointer" : "default"}
-              onClick={() => {
-                if (item?.link) {
-                  router.push(item?.link);
-                }
-              }}
-              _hover={{
-                transform: "translateY(-2px)",
-                boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-              }}
-              transition="all 0.2s ease-in-out"
-            >
-              <Flex
-                gap={"10px"}
-                alignItems={"start"}
-                justifyContent={"space-between"}
-              >
-                <Box>
-                  <Text fontSize={"12px"} mb={"5px"} lineHeight={"1"}>
-                    {item?.title}
-                  </Text>
-                  <Text
-                    fontSize={"36px"}
-                    color={item?.color}
-                    fontWeight={"600"}
-                    lineHeight={"1"}
-                  >
-                    {item?.value}
-                  </Text>
-                </Box>
-                {item?.icon}
-              </Flex>
-            </GridItem>
-          ))}
-        </Grid>
-      </Box>
-      <HStack justifyContent="space-between" mt="10px">
-        <IconButton
-          aria-label="Previous slide"
-          icon={<ChevronLeftIcon />}
-          size="sm"
-          variant="outline"
-          onClick={prevSlide}
-          isDisabled={totalSlides <= 1}
-        />
-        {/* <Text fontSize="sm" color="gray.600">
-          {currentSlide + 1} of {totalSlides}
-        </Text> */}
-        <IconButton
-          aria-label="Next slide"
-          icon={<ChevronRightIcon />}
-          size="sm"
-          variant="outline"
-          onClick={nextSlide}
-          isDisabled={totalSlides <= 1}
-        />
-      </HStack>
+      )}
     </Box>
    </>
   );
