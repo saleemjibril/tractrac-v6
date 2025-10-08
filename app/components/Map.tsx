@@ -41,6 +41,9 @@ const Map = () => {
   const markerClustererRef = useRef<any>(null);
   const devicesDataRef = useRef<TrackedDevice[]>([]);
   const userLocationRef = useRef<google.maps.LatLng | null>(null);
+  const pollingIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const openInfoWindowDeviceIdRef = useRef<number | null>(null);
+  const POLLING_INTERVAL = 10000; // 10 seconds
 
   // Function to calculate distance between two coordinates (Haversine formula)
   const calculateDistance = useCallback((lat1: number, lng1: number, lat2: number, lng2: number): number => {
@@ -107,8 +110,94 @@ const Map = () => {
       
       infoWindowRef.current.setContent(generateInfoContent(device));
       infoWindowRef.current.open(mapInstance, marker);
+      openInfoWindowDeviceIdRef.current = deviceId;
     };
   }, [generateInfoContent]);
+
+  // Function to update tractor positions
+  const updateTractorPositions = useCallback(async (mapInstance: google.maps.Map) => {
+    try {
+      console.log('Polling for tractor updates...');
+      const tractorsResponse = await getTrackedTractors();
+
+      if (!isMountedRef.current) return;
+
+      const fetchedDevices: TrackedDevice[] = [];
+
+      if (tractorsResponse?.data && Array.isArray(tractorsResponse.data)) {
+        tractorsResponse.data.forEach((group: TrackedGroup) => {
+          if (group.items && Array.isArray(group.items)) {
+            fetchedDevices.push(...group.items);
+          }
+        });
+      }
+
+      // Update devices data
+      devicesDataRef.current = fetchedDevices;
+      console.log('Updated tractors:', fetchedDevices.length);
+
+      const validDevices = fetchedDevices.filter(device => device.lat && device.lng);
+      const existingMarkerIds = new Set<string>();
+      const newMarkers: google.maps.Marker[] = [];
+
+      // Update existing markers and add new ones
+      validDevices.forEach((device) => {
+        const markerId = `marker-${device.id}`;
+        existingMarkerIds.add(markerId);
+        const existingMarker = markersMapRef.current.get(markerId);
+        const position = new window.google.maps.LatLng(device.lat, device.lng);
+
+        if (existingMarker) {
+          // Update existing marker position
+          existingMarker.setPosition(position);
+          existingMarker.setTitle(device.name);
+        } else {
+          // Create new marker for new tractors
+          const newMarker = new window.google.maps.Marker({
+            position: position,
+            map: null, // Clusterer will handle it
+            title: device.name,
+            icon: cachedIconRef.current!,
+            optimized: true,
+            clickable: true,
+          });
+
+          newMarker.addListener("click", createMarkerClickHandler(device.id, newMarker, mapInstance));
+          markersMapRef.current.set(markerId, newMarker);
+          newMarkers.push(newMarker);
+        }
+      });
+
+      // Remove markers for tractors that are no longer tracked
+      const markersToRemove: string[] = [];
+      markersMapRef.current.forEach((marker, markerId) => {
+        if (!existingMarkerIds.has(markerId)) {
+          marker.setMap(null);
+          markersToRemove.push(markerId);
+        }
+      });
+      markersToRemove.forEach(markerId => markersMapRef.current.delete(markerId));
+
+      // Update clusterer with new markers if any
+      if (newMarkers.length > 0 && markerClustererRef.current) {
+        const allMarkers = Array.from(markersMapRef.current.values());
+        markerClustererRef.current.clearMarkers();
+        markerClustererRef.current.addMarkers(allMarkers);
+      }
+
+      // If info window is open, update its content
+      if (infoWindowRef.current && openInfoWindowDeviceIdRef.current !== null) {
+        const deviceId = openInfoWindowDeviceIdRef.current;
+        const device = devicesDataRef.current.find(d => d.id === deviceId);
+        if (device) {
+          infoWindowRef.current.setContent(generateInfoContent(device));
+        }
+      }
+
+    } catch (err) {
+      console.error('Error updating tractor positions:', err);
+    }
+  }, [createMarkerClickHandler, generateInfoContent]);
 
   useEffect(() => {
     isMountedRef.current = true;
@@ -152,6 +241,11 @@ const Map = () => {
 
         // Create reusable InfoWindow
         infoWindowRef.current = new window.google.maps.InfoWindow();
+        
+        // Add listener to clear the device ID when info window is closed
+        infoWindowRef.current.addListener('closeclick', () => {
+          openInfoWindowDeviceIdRef.current = null;
+        });
 
         // Create optimized marker icon with smaller size
         if (!cachedIconRef.current) {
@@ -228,6 +322,7 @@ const Map = () => {
         // Initialize MarkerClusterer for better performance with many markers
         // Load clustering library dynamically
         try {
+          // @ts-expect-error - markerClusterer is a valid library but not in the TypeScript definitions
           const { MarkerClusterer } = await loader.importLibrary("markerClusterer") as any;
           
           markerClustererRef.current = new MarkerClusterer({
@@ -312,6 +407,7 @@ const Map = () => {
                   if (!isMountedRef.current || !infoWindowRef.current) return;
                   infoWindowRef.current.setContent(generateInfoContent(closestDevice!));
                   infoWindowRef.current.open(newMap, closestMarker);
+                  openInfoWindowDeviceIdRef.current = closestDevice!.id;
                 }, 500); // Small delay to ensure map is ready
               }
 
@@ -351,6 +447,10 @@ const Map = () => {
     // Cleanup function
     return () => {
       isMountedRef.current = false;
+      if (pollingIntervalRef.current) {
+        clearInterval(pollingIntervalRef.current);
+        pollingIntervalRef.current = null;
+      }
       if (markerClustererRef.current) {
         markerClustererRef.current.clearMarkers();
         markerClustererRef.current = null;
@@ -362,6 +462,27 @@ const Map = () => {
       }
     };
   }, [createMarkerClickHandler, generateInfoContent, getUserLocation, calculateDistance]);
+
+  // Polling effect - starts after map is initialized
+  useEffect(() => {
+    if (!map) return;
+
+    console.log(`Starting tractor position polling (every ${POLLING_INTERVAL / 1000}s)`);
+
+    // Set up polling interval
+    pollingIntervalRef.current = setInterval(() => {
+      updateTractorPositions(map);
+    }, POLLING_INTERVAL);
+
+    // Cleanup function
+    return () => {
+      if (pollingIntervalRef.current) {
+        console.log('Stopping tractor position polling');
+        clearInterval(pollingIntervalRef.current);
+        pollingIntervalRef.current = null;
+      }
+    };
+  }, [map, updateTractorPositions, POLLING_INTERVAL]);
 
   return (
     <div style={{ position: 'relative', height: '360px' }}>
