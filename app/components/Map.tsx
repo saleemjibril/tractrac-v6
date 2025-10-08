@@ -20,6 +20,8 @@ interface TrackedDevice {
   driver: string;
   total_distance: number;
   unit_of_distance: string;
+  state?: string;
+  lga?: string;
 }
 
 interface TrackedGroup {
@@ -43,6 +45,7 @@ const Map = () => {
   const userLocationRef = useRef<google.maps.LatLng | null>(null);
   const pollingIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const openInfoWindowDeviceIdRef = useRef<number | null>(null);
+  const geocodingCacheRef = useRef<Map<string, { state: string; lga: string }>>(new (globalThis.Map)());
   const POLLING_INTERVAL = 10000; // 10 seconds
 
   // Function to calculate distance between two coordinates (Haversine formula)
@@ -56,6 +59,59 @@ const Map = () => {
       Math.sin(dLng / 2) * Math.sin(dLng / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     return R * c;
+  }, []);
+
+  // Function to reverse geocode and get state and LGA
+  const reverseGeocode = useCallback(async (lat: number, lng: number): Promise<{ state: string; lga: string }> => {
+    const cacheKey = `${lat.toFixed(4)},${lng.toFixed(4)}`; // Round to 4 decimals for caching (~11m precision)
+    
+    // Check cache first
+    const cached = geocodingCacheRef.current.get(cacheKey);
+    if (cached) {
+      return cached;
+    }
+
+    try {
+      const geocoder = new window.google.maps.Geocoder();
+      const latlng = new window.google.maps.LatLng(lat, lng);
+      
+      const response = await geocoder.geocode({ location: latlng });
+      
+      if (response.results && response.results.length > 0) {
+        let state = '';
+        let lga = '';
+        
+        // Search through all results to find state and LGA
+        for (const result of response.results) {
+          for (const component of result.address_components) {
+            // State is usually marked as "administrative_area_level_1"
+            if (component.types.includes('administrative_area_level_1') && !state) {
+              state = component.long_name;
+            }
+            // LGA is usually marked as "administrative_area_level_2" or "locality"
+            if ((component.types.includes('administrative_area_level_2') || 
+                 component.types.includes('locality')) && !lga) {
+              lga = component.long_name;
+            }
+          }
+          
+          if (state && lga) break;
+        }
+        
+        const result = {
+          state: state || 'Unknown',
+          lga: lga || 'Unknown'
+        };
+        
+        // Cache the result
+        geocodingCacheRef.current.set(cacheKey, result);
+        return result;
+      }
+    } catch (error) {
+      console.warn('Reverse geocoding error:', error);
+    }
+    
+    return { state: 'Unknown', lga: 'Unknown' };
   }, []);
 
   // Function to get user's location
@@ -88,14 +144,43 @@ const Map = () => {
     });
   }, []);
 
+  // Function to geocode devices and add state/LGA information
+  const geocodeDevices = useCallback(async (devices: TrackedDevice[]): Promise<TrackedDevice[]> => {
+    const geocodedDevices = await Promise.all(
+      devices.map(async (device) => {
+        // Skip if already has state and LGA
+        if (device.state && device.lga) {
+          return device;
+        }
+
+        // Skip if invalid coordinates
+        if (!device.lat || !device.lng) {
+          return device;
+        }
+
+        try {
+          const location = await reverseGeocode(device.lat, device.lng);
+          return {
+            ...device,
+            state: location.state,
+            lga: location.lga
+          };
+        } catch (error) {
+          console.warn(`Failed to geocode device ${device.id}:`, error);
+          return device;
+        }
+      })
+    );
+    return geocodedDevices;
+  }, [reverseGeocode]);
+
   // Memoized info window content generator
   const generateInfoContent = useCallback((device: TrackedDevice) => {
     return `
       <div style="padding: 8px; min-width: 200px;">
         <h3 style="margin: 0 0 8px 0; font-size: 14px; font-weight: bold;">${device.name}</h3>
-        <p style="margin: 4px 0; font-size: 12px;"><strong>Speed:</strong> ${device.speed} ${device.unit_of_distance}/h</p>
-        ${device.address ? `<p style="margin: 4px 0; font-size: 12px;"><strong>Address:</strong> ${device.address}</p>` : ''}
-        <p style="margin: 4px 0; font-size: 12px;"><strong>Last Update:</strong> ${device.time}</p>
+        ${device.state ? `<p style="margin: 4px 0; font-size: 12px;"><strong>State:</strong> ${device.state}</p>` : ''}
+        ${device.lga ? `<p style="margin: 4px 0; font-size: 12px;"><strong>Local Government:</strong> ${device.lga}</p>` : ''}
       </div>
     `;
   }, []);
@@ -132,11 +217,14 @@ const Map = () => {
         });
       }
 
-      // Update devices data
-      devicesDataRef.current = fetchedDevices;
-      console.log('Updated tractors:', fetchedDevices.length);
+      // Geocode devices to get state and LGA
+      const geocodedDevices = await geocodeDevices(fetchedDevices);
 
-      const validDevices = fetchedDevices.filter(device => device.lat && device.lng);
+      // Update devices data
+      devicesDataRef.current = geocodedDevices;
+      console.log('Updated tractors:', geocodedDevices.length);
+
+      const validDevices = geocodedDevices.filter(device => device.lat && device.lng);
       const existingMarkerIds = new Set<string>();
       const newMarkers: google.maps.Marker[] = [];
 
@@ -197,7 +285,7 @@ const Map = () => {
     } catch (err) {
       console.error('Error updating tractor positions:', err);
     }
-  }, [createMarkerClickHandler, generateInfoContent]);
+  }, [createMarkerClickHandler, generateInfoContent, geocodeDevices]);
 
   useEffect(() => {
     isMountedRef.current = true;
@@ -271,9 +359,12 @@ const Map = () => {
           });
         }
 
+        // Geocode devices to get state and LGA
+        const geocodedDevices = await geocodeDevices(fetchedDevices);
+
         // Store devices data for later reference
-        devicesDataRef.current = fetchedDevices;
-        console.log('Loaded tractors:', fetchedDevices.length);
+        devicesDataRef.current = geocodedDevices;
+        console.log('Loaded tractors:', geocodedDevices.length);
 
         // Clear existing markers
         if (markerClustererRef.current) {
@@ -283,7 +374,7 @@ const Map = () => {
         markersMapRef.current.clear();
 
         // Filter valid devices once
-        const validDevices = fetchedDevices.filter(device => device.lat && device.lng);
+        const validDevices = geocodedDevices.filter(device => device.lat && device.lng);
         
         if (validDevices.length === 0) {
           if (isMountedRef.current) {
@@ -366,58 +457,58 @@ const Map = () => {
         newMap.fitBounds(bounds);
         
         // Try to get user location and zoom to closest tractor
-        try {
-          const userLocation = await getUserLocation();
+        // try {
+        //   const userLocation = await getUserLocation();
           
-          if (userLocation && validDevices.length > 0) {
-            // Find closest tractor to user
-            let closestDevice: TrackedDevice | null = null;
-            let minDistance = Infinity;
+        //   if (userLocation && validDevices.length > 0) {
+        //     // Find closest tractor to user
+        //     let closestDevice: TrackedDevice | null = null;
+        //     let minDistance = Infinity;
 
-            validDevices.forEach((device) => {
-              const distance = calculateDistance(
-                userLocation.lat(),
-                userLocation.lng(),
-                device.lat,
-                device.lng
-              );
+        //     validDevices.forEach((device) => {
+        //       const distance = calculateDistance(
+        //         userLocation.lat(),
+        //         userLocation.lng(),
+        //         device.lat,
+        //         device.lng
+        //       );
               
-              if (distance < minDistance) {
-                minDistance = distance;
-                closestDevice = device;
-              }
-            });
+        //       if (distance < minDistance) {
+        //         minDistance = distance;
+        //         closestDevice = device;
+        //       }
+        //     });
 
-            // Zoom to closest tractor
-            if (closestDevice) {
-              const closestPosition = new window.google.maps.LatLng(
-                closestDevice.lat,
-                closestDevice.lng
-              );
+        //     // Zoom to closest tractor
+        //     if (closestDevice) {
+        //       const closestPosition = new window.google.maps.LatLng(
+        //         closestDevice.lat,
+        //         closestDevice.lng
+        //       );
               
-              // Center on closest tractor with appropriate zoom
-              newMap.setCenter(closestPosition);
-              newMap.setZoom(22); // Good zoom level to see the tractor and surroundings
+        //       // Center on closest tractor with appropriate zoom
+        //       newMap.setCenter(closestPosition);
+        //       newMap.setZoom(22); // Good zoom level to see the tractor and surroundings
               
-              // Optionally show info window for closest tractor
-              const markerId = `marker-${closestDevice.id}`;
-              const closestMarker = markersMapRef.current.get(markerId);
-              if (closestMarker && infoWindowRef.current) {
-                setTimeout(() => {
-                  if (!isMountedRef.current || !infoWindowRef.current) return;
-                  infoWindowRef.current.setContent(generateInfoContent(closestDevice!));
-                  infoWindowRef.current.open(newMap, closestMarker);
-                  openInfoWindowDeviceIdRef.current = closestDevice!.id;
-                }, 500); // Small delay to ensure map is ready
-              }
+        //       // Optionally show info window for closest tractor
+        //       const markerId = `marker-${closestDevice.id}`;
+        //       const closestMarker = markersMapRef.current.get(markerId);
+        //       if (closestMarker && infoWindowRef.current) {
+        //         setTimeout(() => {
+        //           if (!isMountedRef.current || !infoWindowRef.current) return;
+        //           infoWindowRef.current.setContent(generateInfoContent(closestDevice!));
+        //           infoWindowRef.current.open(newMap, closestMarker);
+        //           openInfoWindowDeviceIdRef.current = closestDevice!.id;
+        //         }, 500); // Small delay to ensure map is ready
+        //       }
 
-              console.log(`Zoomed to closest tractor: ${closestDevice.name} (${minDistance.toFixed(2)} km away)`);
-            }
-          }
-        } catch (locationError) {
-          console.log('Could not get user location, showing all tractors:', locationError);
-          // Fallback to showing all tractors (already done with fitBounds above)
-        }
+        //       console.log(`Zoomed to closest tractor: ${closestDevice.name} (${minDistance.toFixed(2)} km away)`);
+        //     }
+        //   }
+        // } catch (locationError) {
+        //   console.log('Could not get user location, showing all tractors:', locationError);
+        //   // Fallback to showing all tractors (already done with fitBounds above)
+        // }
         
         // Set maximum zoom with throttling (only if we didn't zoom to closest tractor)
         const idleListener = window.google.maps.event.addListenerOnce(newMap, "idle", () => {
@@ -461,7 +552,7 @@ const Map = () => {
         infoWindowRef.current.close();
       }
     };
-  }, [createMarkerClickHandler, generateInfoContent, getUserLocation, calculateDistance]);
+  }, [createMarkerClickHandler, generateInfoContent, getUserLocation, calculateDistance, geocodeDevices]);
 
   // Polling effect - starts after map is initialized
   useEffect(() => {

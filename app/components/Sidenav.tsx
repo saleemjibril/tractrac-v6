@@ -308,7 +308,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
 
       <Image
         display={{ base: "flex", md: "none" }}
-        src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446664/logo_ofzooy.svg"
+        src="https://res.cloudinary.com/tractrac-global/image/upload/v1747644706/tractrac_logo_png_vfhoy7.png"
         fill="red"
         alt="Logo"
       />
