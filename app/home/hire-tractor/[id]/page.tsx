@@ -694,9 +694,9 @@ export default function HireTractorForm() {
                 farm_id: farmId ? farmId : "1"
               };
               
-              // Remove location coordinates when using hireTractorWithoutFarmSize
+              // Remove location coordinates, farm_size, and farm_id when using hireTractorWithoutFarmSize
               if (hasFarmCarrier) {
-                const { current_location_lng, current_location_lat, ...dataWithoutCoords } = requestData;
+                const { current_location_lng, current_location_lat, farm_size, farm_id, ...dataWithoutCoords } = requestData;
                 requestData = dataWithoutCoords;
               }
               

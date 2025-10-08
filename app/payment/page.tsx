@@ -1,13 +1,6 @@
 "use client";
 import {
   Box,
-  Table,
-  TableContainer,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  Tr,
   Skeleton,
   Flex,
   Text,
@@ -19,6 +12,7 @@ import {
   TabPanels,
   Tab,
   TabPanel,
+  SimpleGrid,
 } from "@chakra-ui/react";
 import Image from "@/app/components/Image";
 import { SidebarWithHeader } from "../components/Sidenav";
@@ -120,7 +114,7 @@ export default function Payments() {
 
   return (
     <SidebarWithHeader>
-      <Box mx="20px" my="12px" py="20px">
+      <Box>
         <Text
           fontSize="24px"
           fontWeight={700}
@@ -207,18 +201,45 @@ function PaymentTabContent({
   makePaymentUrl,
   idField,
 }: PaymentTabContentProps) {
+  const handleCopyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+    toast.success("Copied to clipboard!");
+  };
+
+  const getPaymentTypeIcon = (type: string) => {
+    switch (type?.toLowerCase()) {
+      case "card":
+        return "💳";
+      case "transfer":
+        return "🏦";
+      case "mobile money":
+        return "📱";
+      default:
+        return "💰";
+    }
+  };
+
+  const formatDate = (date: string) => {
+    return moment(date).format("DD/MM/YYYY HH:mm");
+  };
+
   if (loading) {
     return (
-      <Box boxShadow="lg" bg="white" borderRadius="12px" mt="20px">
-        <Skeleton height="80px" />
-        <Box p="12px">
-          <SkeletonText
-            my="12px"
-            noOfLines={8}
-            spacing="3"
-            skeletonHeight="24px"
-          />
-        </Box>
+      <Box mt="20px">
+        <SimpleGrid columns={{ base: 1, lg: 2 }} spacing="16px">
+          {[1, 2, 3, 4].map((i) => (
+            <Box
+              key={i}
+              bg="white"
+              borderRadius="16px"
+              p="15px"
+              boxShadow="0px 2px 10px rgba(0, 0, 0, 0.08)"
+            >
+              <Skeleton height="80px" mb="12px" />
+              <SkeletonText noOfLines={4} spacing="3" skeletonHeight="20px" />
+            </Box>
+          ))}
+        </SimpleGrid>
       </Box>
     );
   }
@@ -234,22 +255,16 @@ function PaymentTabContent({
 
   return (
     <Box mt="20px">
-      <Flex justifyContent="space-between" mb="10px" alignContent="center">
-        <Text
-          fontSize="20px"
-          fontWeight={600}
-          lineHeight="32px"
-          color="#333333"
-        >
+      <Flex justifyContent="space-between" mb="20px" alignItems="center">
+        <Text fontSize="20px" fontWeight={600} color="#333333">
           {paymentType} Payment History
         </Text>
 
         <Button
           bgColor="#FA9411"
-          mb="12px"
           height="42px"
-          borderRadius="4px"
-          width="170px"
+          borderRadius="8px"
+          px="20px"
           color="white"
           as="a"
           href={makePaymentUrl}
@@ -257,78 +272,202 @@ function PaymentTabContent({
             opacity: 0.8,
           }}
         >
-          <Flex justifyContent="center" alignContent="center">
-            <Text fontSize="14px">Make Payment</Text>
-            <AddIcon boxSize="12px" ml="30px" mt="3px" />
+          <Flex alignItems="center" gap="8px">
+            <AddIcon boxSize="12px" />
+            <Text fontSize="14px" fontWeight={600}>
+              Make Payment
+            </Text>
           </Flex>
         </Button>
       </Flex>
 
-      <TableContainer
-        border="1px"
-        borderColor="#32323220"
-        borderRadius="12px"
-        height="500px"
-        bgColor="white"
-      >
-        <Table variant="simple" bgColor="white">
-          <Thead bgColor="#FA9411">
-            <Tr>
-              <Th color="white">Payment ID</Th>
-              <Th color="white">{paymentType === "Agro Tool" ? "Tool" : "Tractor"} ID</Th>
-              <Th color="white">Invoice number</Th>
-              <Th color="white">Amount Paid (₦)</Th>
-              <Th color="white">Reference</Th>
-              <Th color="white">Payment type</Th>
-              <Th color="white">Date</Th>
-              <Th color="white">Payment status</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {payments?.map((payment: any) => (
-              <Tr
-                cursor={"pointer"}
-                key={payment?.id}
+      <Box maxHeight="600px" overflowY="auto" pr="8px">
+        <SimpleGrid columns={{ base: 1, lg: 2 }} spacing="16px">
+          {payments?.map((payment: any) => (
+            <Box
+              key={payment?.id}
+              bg="white"
+              borderRadius="16px"
+              p="15px"
+              boxShadow="0px 2px 10px rgba(0, 0, 0, 0.08)"
+              transition="all 0.2s"
+              _hover={{
+                boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.12)",
+              }}
+            >
+            {/* Status and Amount Row */}
+            <Flex justifyContent="space-between" alignItems="center" mb="12px">
+              <Flex
+                align="center"
+                gap="6px"
+                bg={statusTypes[payment?.payment_status]?.color || "#FA9411"}
+                color="white"
+                px="10px"
+                py="7px"
+                borderRadius="20px"
+                fontSize="12px"
+                fontWeight={600}
+              >
+                <Box as="span">
+                  {payment?.payment_status === "success"
+                    ? "✓"
+                    : payment?.payment_status === "pending"
+                    ? "⏱"
+                    : "✕"}
+                </Box>
+                <Text>
+                  {statusTypes[payment?.payment_status]?.title || "Unknown"}
+                </Text>
+              </Flex>
+
+              <Box
+                bg="rgba(250, 148, 17, 0.1)"
+                color="#FA9411"
+                px="16px"
+                py="8px"
+                borderRadius="20px"
+                border="1px solid rgba(250, 148, 17, 0.3)"
+              >
+                <Text fontSize="16px" fontWeight={700}>
+                  ₦{payment?.amount?.toLocaleString()}
+                </Text>
+              </Box>
+            </Flex>
+
+            {/* Payment ID */}
+            <InfoRow
+              label="Payment ID"
+              value={payment?.id}
+              icon="💳"
+              copyable
+              onCopy={handleCopyToClipboard}
+            />
+
+            {/* Tractor/Tool ID */}
+            <InfoRow
+              label={paymentType === "Agro Tool" ? "Tool ID" : "Tractor ID"}
+              value={payment[idField]}
+              icon="🚜"
+              copyable
+              onCopy={handleCopyToClipboard}
+            />
+
+            {/* Invoice and Reference Row */}
+            <Flex gap="16px" mb="12px">
+              <Box flex={1}>
+                <InfoRow
+                  label="Invoice"
+                  value={payment?.invoice_number}
+                  icon="🧾"
+                  copyable
+                  onCopy={handleCopyToClipboard}
+                />
+              </Box>
+              <Box flex={1}>
+                <InfoRow
+                  label="Reference"
+                  value={payment?.paystack_reference}
+                  icon="🏷️"
+                  copyable={false}
+                  onCopy={handleCopyToClipboard}
+                />
+              </Box>
+            </Flex>
+
+            {/* Type and Date Row */}
+            <Flex gap="16px">
+              <Box flex={1}>
+                <InfoRow
+                  label="Type"
+                  value={payment?.payment_type}
+                  icon={getPaymentTypeIcon(payment?.payment_type)}
+                  copyable={false}
+                  onCopy={handleCopyToClipboard}
+                />
+              </Box>
+              <Box flex={1}>
+                <InfoRow
+                  label="Date"
+                  value={formatDate(payment?.created_at)}
+                  icon="📅"
+                  copyable={false}
+                  onCopy={handleCopyToClipboard}
+                />
+              </Box>
+            </Flex>
+
+            {/* Verify Payment Button for Pending Payments */}
+            {payment?.payment_status === "pending" && (
+              <Button
+                mt="12px"
+                w="100%"
+                bgColor="#FA9411"
+                color="white"
+                height="40px"
+                borderRadius="8px"
+                fontWeight={600}
+                _hover={{
+                  opacity: 0.9,
+                }}
                 onClick={() => {
-                  if (payment?.payment_status === "pending") {
-                    window.open(
-                      `https://checkout.paystack.com/${payment?.paystack_access_code}`
-                    );
-                  }
+                  window.open(
+                    `https://checkout.paystack.com/${payment?.paystack_access_code}`
+                  );
                 }}
               >
-                <Td>{payment?.id}</Td>
-                <Td>{payment[idField]}</Td>
-                <Td>{payment?.invoice_number}</Td>
-                <Td>{payment?.amount}</Td>
-                <Td>{payment?.paystack_reference}</Td>
-                <Td>{payment?.payment_type}</Td>
-                <Td>
-                  {moment(payment?.created_at).format(
-                    "MMMM D, YYYY [at] h:mm:ss A"
-                  )}
-                </Td>
-                <Td>
-                  {statusTypes[payment?.payment_status]?.color && (
-                    <Box
-                      mt="10px"
-                      bgColor={statusTypes[payment?.payment_status].color}
-                      py="4px"
-                      textAlign="center"
-                      borderRadius="4px"
-                      w="80px"
-                    >
-                      <Text fontSize="14px" color="white">
-                        {statusTypes[payment?.payment_status].title}
-                      </Text>
-                    </Box>
-                  )}
-                </Td>
-              </Tr>
-            ))}
-          </Tbody>
-        </Table>
-      </TableContainer>
+                Verify Payment
+              </Button>
+            )}
+          </Box>
+        ))}
+        </SimpleGrid>
+      </Box>
+    </Box>
+  );
+}
+
+interface InfoRowProps {
+  label: string;
+  value: string;
+  icon: string;
+  copyable: boolean;
+  onCopy: (text: string) => void;
+}
+
+function InfoRow({ label, value, icon, copyable, onCopy }: InfoRowProps) {
+  return (
+    <Box mb="12px">
+      <Text fontSize="12px" fontWeight={700} color="#929292" mb="4px">
+        {label}
+      </Text>
+      <Flex alignItems="center" gap="8px">
+        <Text fontSize="16px">{icon}</Text>
+        <Text
+          fontSize="14px"
+          fontWeight={500}
+          flex={1}
+          overflow="hidden"
+          textOverflow="ellipsis"
+          whiteSpace="nowrap"
+        >
+          {value}
+        </Text>
+        {copyable && (
+          <Box
+            as="button"
+            onClick={() => onCopy(value)}
+            p="4px"
+            bg="gray.100"
+            borderRadius="6px"
+            cursor="pointer"
+            _hover={{
+              bg: "gray.200",
+            }}
+          >
+            <Text fontSize="14px">📋</Text>
+          </Box>
+        )}
+      </Flex>
     </Box>
   );
 }
