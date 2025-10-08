@@ -311,6 +311,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         src="https://res.cloudinary.com/tractrac-global/image/upload/v1747644706/tractrac_logo_png_vfhoy7.png"
         fill="red"
         alt="Logo"
+        width={120}
       />
 
       {pathLength > 2 && (
