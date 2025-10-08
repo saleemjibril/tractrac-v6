@@ -591,7 +591,6 @@ export default function HireTractor() {
               />
             ) : (
               <Map />
-              <></>
             )}
             {/* <Image src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446725/map_punpe8.svg" alt="map image" /> */}
           </Stack>
