@@ -1437,7 +1437,7 @@ export default function HireTractorForm() {
                   mb="4px"
                   onClick={() => {
                     onClose();
-                    router.replace("/dashboard/hired-tractors");
+                    router.replace("/dashboard");
                   }}
                   width="100%"
                   height="45px"
