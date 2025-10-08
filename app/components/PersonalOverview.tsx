@@ -386,7 +386,7 @@ export default function PersonalOverview() {
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
-            px="24px"
+            // px="24px"
           >
             <Box
               display="flex"
