@@ -31,10 +31,13 @@ interface TrackedGroup {
 
 type MarkersMap = Map<string, google.maps.Marker>;
 
+type MapType = 'satellite' | 'hybrid' | 'roadmap' | 'terrain';
+
 const Map = () => {
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [mapType, setMapType] = useState<MapType>('hybrid');
   
   const markersMapRef = useRef<MarkersMap>(new (globalThis.Map)());
   const infoWindowRef = useRef<google.maps.InfoWindow | null>(null);
@@ -47,6 +50,30 @@ const Map = () => {
   const openInfoWindowDeviceIdRef = useRef<number | null>(null);
   const geocodingCacheRef = useRef<Map<string, { state: string; lga: string }>>(new (globalThis.Map)());
   const POLLING_INTERVAL = 10000; // 10 seconds
+
+  // Function to get Google Maps MapTypeId from our MapType
+  const getGoogleMapTypeId = useCallback((type: MapType): google.maps.MapTypeId => {
+    switch (type) {
+      case 'satellite':
+        return google.maps.MapTypeId.SATELLITE;
+      case 'hybrid':
+        return google.maps.MapTypeId.HYBRID;
+      case 'roadmap':
+        return google.maps.MapTypeId.ROADMAP;
+      case 'terrain':
+        return google.maps.MapTypeId.TERRAIN;
+      default:
+        return google.maps.MapTypeId.SATELLITE;
+    }
+  }, []);
+
+  // Function to handle map type change
+  const handleMapTypeChange = useCallback((newType: MapType) => {
+    setMapType(newType);
+    if (map) {
+      map.setMapTypeId(getGoogleMapTypeId(newType));
+    }
+  }, [map, getGoogleMapTypeId]);
 
   // Function to calculate distance between two coordinates (Haversine formula)
   const calculateDistance = useCallback((lat1: number, lng1: number, lat2: number, lng2: number): number => {
@@ -307,7 +334,7 @@ const Map = () => {
         const mapOptions: google.maps.MapOptions = {
           center: new window.google.maps.LatLng(9.082, 8.6753),
           zoom: 6,
-          mapTypeId: google.maps.MapTypeId.SATELLITE, // Use satellite view by default
+          mapTypeId: google.maps.MapTypeId.HYBRID, // Use hybrid view by default
           gestureHandling: 'greedy',
           disableDefaultUI: true, // Disable all UI for better performance
           zoomControl: true,
@@ -577,7 +604,7 @@ const Map = () => {
 
   return (
     <div style={{ position: 'relative', height: '360px' }}>
-      {loading && (
+      {/* {loading && (
         <div style={{
           position: 'absolute',
           top: '50%',
@@ -591,7 +618,7 @@ const Map = () => {
         }}>
           Loading tractors...
         </div>
-      )}
+      )} */}
       {error && (
         <div style={{
           position: 'absolute',
@@ -608,6 +635,51 @@ const Map = () => {
           {error}
         </div>
       )}
+      
+      {/* Map Type Selector */}
+      <div style={{
+        position: 'absolute',
+        top: '10px',
+        right: '10px',
+        zIndex: 5,
+        background: 'white',
+        borderRadius: '8px',
+        boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+        display: 'flex',
+        overflow: 'hidden'
+      }}>
+        {(['satellite', 'hybrid', 'roadmap', 'terrain'] as MapType[]).map((type) => (
+          <button
+            key={type}
+            onClick={() => handleMapTypeChange(type)}
+            style={{
+              padding: '8px 12px',
+              border: 'none',
+              background: mapType === type ? '#FA9411' : 'white',
+              color: mapType === type ? 'white' : '#333',
+              cursor: 'pointer',
+              fontSize: '12px',
+              fontWeight: mapType === type ? 'bold' : 'normal',
+              transition: 'all 0.2s ease',
+              textTransform: 'capitalize',
+              borderRight: type !== 'terrain' ? '1px solid #e0e0e0' : 'none'
+            }}
+            onMouseEnter={(e) => {
+              if (mapType !== type) {
+                e.currentTarget.style.background = '#f5f5f5';
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (mapType !== type) {
+                e.currentTarget.style.background = 'white';
+              }
+            }}
+          >
+            {type === 'roadmap' ? 'Normal' : type}
+          </button>
+        ))}
+      </div>
+
       <div id="map" style={{ height: "360px" }}></div>
     </div>
   );

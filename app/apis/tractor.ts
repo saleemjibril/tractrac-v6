@@ -216,6 +216,22 @@ export const getMyHiredTractorsDetails = async (hire_tractor_id: string, token: 
 
   return res;
 };
+
+export const getAllHiringActivities = async (user_id: string, token: string) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const res = await axios.get(
+    `${process.env.NEXT_PUBLIC_URL}/user_stats/user/${user_id}/all-hiring-activities`,
+    config
+  );
+
+  return res;
+};
+
 export const cancelBooking = async (hire_tractor_id: string, reason: string, token: string) => {
   const config = {
     headers: {

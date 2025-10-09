@@ -280,7 +280,10 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   const [mounted, setMounted] = useState(false);
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const pathLength = usePathname().split("/").length;
+  const pathname = usePathname();
+  const pathLength = pathname.split("/").length;
+  const shouldShowBackButton = pathLength > 2 || pathname === "/payment";
+  
   useEffect(() => {
     console.log("profileInfo", profileInfo)
     setMounted(true);
@@ -314,7 +317,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         width={120}
       />
 
-      {pathLength > 2 && (
+      {shouldShowBackButton && (
         <Show above="sm">
           <Button
             mr="auto"
@@ -417,7 +420,9 @@ export const SidebarWithHeader: React.FC<SidebarProps> = ({
   const { isOpen, onOpen, onClose } = useDisclosure();
   const router = useRouter();
   const { userToken } = useAppSelector((state) => state.auth);
-  const pathLength = usePathname().split("/").length;
+  const pathname = usePathname();
+  const pathLength = pathname.split("/").length;
+  const shouldShowBackButton = pathLength > 2 || pathname === "/payment";
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
     setMounted(true);
@@ -455,7 +460,7 @@ export const SidebarWithHeader: React.FC<SidebarProps> = ({
         <MobileNav onOpen={onOpen} />
         {/* <MobileNavigation /> */}
 
-        {pathLength > 2 && (
+        {shouldShowBackButton && (
           <Box p="20px" display={{base: "block", md: "none"}}>
           <Button
             mr="auto"

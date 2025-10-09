@@ -23,6 +23,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { getTractor } from "@/app/apis/tractor";
 import { SidebarWithHeader } from "@/app/components/Sidenav";
 import { CheckIcon, TimeIcon, WarningIcon } from "@chakra-ui/icons";
+import { statusTypes } from "@/app/utils/tractorStatus";
 
 interface Tractor {
   id?: string;
@@ -167,6 +168,33 @@ export default function TrackTractorPage() {
           </Alert>
         ) : tractor ? (
           <>
+            {/* Tractor Name and Status Header */}
+            <Flex justify="space-between" align="center" mb="24px">
+              <VStack align="start" spacing="1">
+                <Text fontSize="28px" fontWeight={700} color="#2D3748">
+                  {tractor.name || tractor.tractor_name || "Unnamed Tractor"}
+                </Text>
+                <Text fontSize="14px" color="#718096">
+                  {tractor.brand && tractor.model 
+                    ? `${tractor.brand} - ${tractor.model}` 
+                    : 'Tractor Details'}
+                </Text>
+              </VStack>
+              <Badge
+                bg={statusTypes[tractor.status || '']?.color || '#FA9411'}
+                color="white"
+                fontSize="14px"
+                px="4"
+                py="2"
+                borderRadius="full"
+                fontWeight={600}
+              >
+                {statusTypes[tractor.status || '']?.title || tractor.status?.replace('_', ' ').toUpperCase() || 'UNKNOWN'}
+              </Badge>
+            </Flex>
+
+            <Divider mb="24px" />
+
             {/* Header Section */}
             <Text fontSize="24px" mb="2" fontWeight={700}>
                 Track Your Tractor Verification
@@ -174,25 +202,6 @@ export default function TrackTractorPage() {
                 <Text fontSize="14px" mb="32px">
                 Your tractor is currently undergoing the verification process. You can monitor the progress here and receive updates as soon as the verification is completed.
                 </Text>
-            <Flex justify="space-between" align="center" mb="32px">
-              <VStack align="start" spacing="2">
-                {/* <Text fontSize="28px" fontWeight={700} color="#2D3748">
-                  
-                </Text> */}
-                {/* <Text fontSize="24px" fontWeight={500} color="#718096">
-                  {tractor.name || tractor.tractor_name || "Unnamed Tractor"}
-                </Text> */}
-              </VStack>
-              {/* <Badge
-                colorScheme={tractor.status === 'approved' || tractor.status === 'available' ? 'green' : 'orange'}
-                fontSize="14px"
-                px="3"
-                py="1"
-                borderRadius="full"
-              >
-                {tractor.status?.replace('_', ' ').toUpperCase() || 'UNKNOWN'}
-              </Badge> */}
-            </Flex>
 
             {/* Tractor Image */}
             {/* {tractor.tractor_image && tractor.tractor_image.length > 0 && (
@@ -304,7 +313,7 @@ export default function TrackTractorPage() {
                   colorScheme="orange"
                   bg="#FA9411"
                   _hover={{ bg: "#E67E22" }}
-                  onClick={() => router.push(`/payment/tracker-payment/pay?tractor_id=${tractor.id}`)}
+                  onClick={() => router.push(`/payment/pay`)}
                 >
                   Make Payment
                 </Button>

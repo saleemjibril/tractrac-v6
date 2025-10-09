@@ -293,7 +293,7 @@ function PaymentTabContent({
       </Flex>
 
       <Box maxHeight="600px" overflowY="auto" pr="8px">
-        <SimpleGrid columns={{ base: 1, lg: 2 }} spacing="16px">
+        <SimpleGrid columns={{ base: 1, lg: 2 }} spacing="16px" alignItems="start">
           {payments?.map((payment: any) => {
             const isExpanded = expandedCards[payment?.id] || false;
             
@@ -380,6 +380,39 @@ function PaymentTabContent({
                     copyable
                     onCopy={handleCopyToClipboard}
                   />
+
+                  {/* Tractor Name (Only for Tractor Payments) */}
+                  {paymentType === "Tractor" && (payment?.tractor?.name || payment?.tractor_name) && (
+                    <InfoRow
+                      label="Tractor Name"
+                      value={payment?.tractor?.name || payment?.tractor_name}
+                      icon="🚜"
+                      copyable={false}
+                      onCopy={handleCopyToClipboard}
+                    />
+                  )}
+
+                  {/* Plate Number (Only for Tractor Payments) */}
+                  {paymentType === "Tractor" && (payment?.tractor?.plate_number || payment?.plate_number) && (
+                    <InfoRow
+                      label="Plate Number"
+                      value={payment?.tractor?.plate_number || payment?.plate_number}
+                      icon="🚗"
+                      copyable
+                      onCopy={handleCopyToClipboard}
+                    />
+                  )}
+
+                  {/* Tractor Location (Only for Tractor Payments) */}
+                  {paymentType === "Tractor" && (payment?.tractor?.location || payment?.tractor?.current_address || payment?.location) && (
+                    <InfoRow
+                      label="Tractor Location"
+                      value={payment?.tractor?.location || payment?.tractor?.current_address || payment?.location}
+                      icon="📍"
+                      copyable={false}
+                      onCopy={handleCopyToClipboard}
+                    />
+                  )}
 
                   {/* Invoice and Reference Row */}
                   <Flex gap="16px" mb="12px">

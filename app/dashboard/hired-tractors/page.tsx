@@ -29,7 +29,7 @@ import { AddIcon, PlusSquareIcon } from "@chakra-ui/icons";
 import { useGetHiredTractorsQuery } from "@/redux/services/tractorApi";
 import { useAppSelector } from "@/redux/hooks";
 import { getErrorMessage } from "@/app/utils/errorUtils";
-import { getMyHiredTractors } from "@/app/apis/tractor";
+import { getAllHiringActivities, getMyHiredTractors } from "@/app/apis/tractor";
 import formatNumber, { formatAmount } from "@/app/utils/formatNumber";
 import moment from "moment";
 import { useRouter } from "next/navigation";
@@ -51,6 +51,7 @@ const statusTypes: Record<string, { title: string; color: string }> = {
 export default function HiredTractors() {
   const router = useRouter();
   const { profileInfo, userToken } = useAppSelector((state) => state.auth);
+  
   const [tractors, setTractors] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -68,8 +69,8 @@ export default function HiredTractors() {
         try {
 
           if (typeof userToken === 'string') {
-            const response = await getMyHiredTractors(userToken);
-            setTractors(response?.data?.items);
+            const response = await getAllHiringActivities(profileInfo?.id, userToken);
+            setTractors(response?.data);
             console.log("getTractors", response?.data);
             setLoading(false)
           } else {
@@ -141,43 +142,70 @@ export default function HiredTractors() {
           <EmptyTractorsPlaceholder />
         ) : (
          
-                tractors?.map((tractor: any) => (
+                tractors?.map((booking: any) => (
                   <Flex
-                width={"100%"}
-                justifyContent={"space-between"}
-                alignItems={"center"}
-                pb={"8px"}
-                mb={"8px"}
-                borderBottom={"1px solid #ECECEC"}
-                onClick={() => router.push(`/dashboard/booking-details/${tractor?.id}`)}
-                cursor={"pointer"}
+            key={booking?.id}
+            width={"100%"}
+            justifyContent={"space-between"}
+            alignItems={"center"}
+            pb={"8px"}
+            mb={"8px"}
+            borderBottom={"1px solid #ECECEC"}
+            onClick={() => router.push(`/dashboard/booking-details/${booking?.id}`)}
+            cursor={"pointer"}
+          >
+            <Flex gap={"8px"} alignItems={"center"}>
+              <Box>
+                <Text fontSize={"10px"} fontWeight={"500"}>
+                  {booking?.equipment_name}
+                </Text>
+                <Text fontSize={"8px"} fontWeight={"500"} color={"#000"}>
+                  from: {moment(booking?.booking_date).format(
+                    "MMMM D, YYYY [at] h:mm:ss A"
+                  )} to: {moment(booking?.end_date).format(
+                    "MMMM D, YYYY [at] h:mm:ss A"
+                  )}
+                </Text>
+              </Box>
+
+              <Box
+                fontSize={"8px"}
+                borderRadius={"14px"}
+                border={`1px solid ${statusTypes[booking?.status]?.color || "#FA9411"}`}
+                padding={"4px 8px"}
+                color={statusTypes[booking?.status]?.color || "#FA9411"}
+                bg={"#FAF6F6"}
               >
-                <Flex gap={"8px"} alignItems={"center"}>
-                  <Box>
-                    <Text fontSize={"10px"} fontWeight={"500"}>
-                    {tractor?.tractor?.name}
-                    </Text>
-                    <Text fontSize={"8px"} fontWeight={"500"} color={"#000"}>
-                      {moment(tractor?.created_at).format(
-                        "MMMM D, YYYY [at] h:mm:ss A"
-                      )}
-                    </Text>
-                  </Box>
+                {statusTypes[booking?.status]?.title || booking?.status}
+              </Box>
+              
+              {booking?.status === "payment_pending" && (
+                <Box
+                  fontSize={"8px"}
+                  borderRadius={"14px"}
+                  border={"1px solid #FA9411"}
+                  padding={"4px 8px"}
+                  color={"#FA9411"}
+                  bg={"#FAF6F6"}
+                >
+                  ₦{formatAmount(booking?.amount?.toString())}
+                </Box>
+              )}
+              
+              <Box
+                fontSize={"7px"}
+                borderRadius={"14px"}
+                padding={"4px 8px"}
+                bg={booking?.type === "tool" ? "#E8F5E9" : "#FFF3E0"}
+                color={booking?.type === "tool" ? "#2E7D32" : "#E65100"}
+                fontWeight={600}
+              >
+                {booking?.service_type === "addon_hire" ? "Tool" : "Tractor"}
+              </Box>
+            </Flex>
 
-                  <Box
-                    fontSize={"8px"}
-                    borderRadius={"14px"}
-                    border={"1px solid #FA9411"}
-                    padding={"4px 8px"}
-                    color={"#FA9411"}
-                    bg={"#FAF6F6"}
-                  >
-                    ₦{formatAmount(tractor?.total_amount?.toString())}
-                  </Box>
-                </Flex>
-
-                <RightArrow />
-              </Flex>
+            <RightArrow />
+          </Flex>
                 ))
               
         )}

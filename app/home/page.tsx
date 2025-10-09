@@ -136,7 +136,7 @@ export default function Dashboard() {
       imageDark: "user-dark",
       icon: Measure,
       iconActive: IconWhite8,
-      path: "https://play.google.com/store/apps/details?id=com.tractrac.trac_trac&hl=en_GB",
+      path: "/farm-measurement",
       loginRequired: true,
     },
     // {

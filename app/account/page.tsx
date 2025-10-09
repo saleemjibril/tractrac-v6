@@ -60,7 +60,7 @@ import { getUserInfo, updateUserInfo } from "../apis/user";
 import { useRouter } from "next/navigation";
 import { userLogout } from "@/redux/features/auth/authActions";
 import { tractorMediaUploadService } from "../services/mediaUploadService";
-import { sendPasswordChangeOtp, changePasswordWithOtp, resendUserOtp } from "../apis/auth";
+import { sendPasswordChangeOtp, changePasswordWithOtp, resendUserOtp, forgotPassword } from "../apis/auth";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 const statusTypes: Record<string, { title: string; color: string }> = {
@@ -191,7 +191,7 @@ const dispatch = useAppDispatch();
     if (!profileInfo?.id || !userToken) return;
     
     try {
-      await sendPasswordChangeOtp(profileInfo.id, userToken as string);
+      await forgotPassword(profileInfo?.phone);
       toast.success("OTP sent to your phone successfully");
       setPasswordChangeStep("verify_otp");
       startOtpCountdown();
@@ -446,7 +446,7 @@ const dispatch = useAppDispatch();
                           {({ field, form }: { [x: string]: any }) => (
                             <FormControl
                               mt="20px"
-                              isDisabled={!!userDetails?.email}
+                              // isDisabled={!!userDetails?.email}
                               isInvalid={
                                 form.errors.email && form.touched.email
                               }
