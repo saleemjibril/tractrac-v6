@@ -402,7 +402,7 @@ export default function BookingDetailsPage() {
                   _hover={{ bg: "#0091cc" }}
                   onClick={() => {
                     if (booking.status === "approved") {
-                      router.push("/payment");
+                      router.push("/payment/pay");
                     } else {
                       handleBackToHome();
                     }

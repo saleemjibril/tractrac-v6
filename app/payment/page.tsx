@@ -13,13 +13,15 @@ import {
   Tab,
   TabPanel,
   SimpleGrid,
+  Collapse,
+  IconButton,
 } from "@chakra-ui/react";
 import Image from "@/app/components/Image";
 import { SidebarWithHeader } from "../components/Sidenav";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { getUserPayments, getUserAgroToolPayments } from "../apis/payment";
-import { AddIcon } from "@chakra-ui/icons";
+import { AddIcon, ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 import { useAppSelector } from "@/redux/hooks";
 import { toast } from "react-toastify";
 import { getErrorMessage } from "@/app/utils/errorUtils";
@@ -201,6 +203,15 @@ function PaymentTabContent({
   makePaymentUrl,
   idField,
 }: PaymentTabContentProps) {
+  const [expandedCards, setExpandedCards] = useState<Record<string, boolean>>({});
+
+  const toggleCard = (paymentId: string) => {
+    setExpandedCards((prev) => ({
+      ...prev,
+      [paymentId]: !prev[paymentId],
+    }));
+  };
+
   const handleCopyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
     toast.success("Copied to clipboard!");
@@ -283,143 +294,163 @@ function PaymentTabContent({
 
       <Box maxHeight="600px" overflowY="auto" pr="8px">
         <SimpleGrid columns={{ base: 1, lg: 2 }} spacing="16px">
-          {payments?.map((payment: any) => (
-            <Box
-              key={payment?.id}
-              bg="white"
-              borderRadius="16px"
-              p="15px"
-              boxShadow="0px 2px 10px rgba(0, 0, 0, 0.08)"
-              transition="all 0.2s"
-              _hover={{
-                boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.12)",
-              }}
-            >
-            {/* Status and Amount Row */}
-            <Flex justifyContent="space-between" alignItems="center" mb="12px">
-              <Flex
-                align="center"
-                gap="6px"
-                bg={statusTypes[payment?.payment_status]?.color || "#FA9411"}
-                color="white"
-                px="10px"
-                py="7px"
-                borderRadius="20px"
-                fontSize="12px"
-                fontWeight={600}
-              >
-                <Box as="span">
-                  {payment?.payment_status === "success"
-                    ? "✓"
-                    : payment?.payment_status === "pending"
-                    ? "⏱"
-                    : "✕"}
-                </Box>
-                <Text>
-                  {statusTypes[payment?.payment_status]?.title || "Unknown"}
-                </Text>
-              </Flex>
-
+          {payments?.map((payment: any) => {
+            const isExpanded = expandedCards[payment?.id] || false;
+            
+            return (
               <Box
-                bg="rgba(250, 148, 17, 0.1)"
-                color="#FA9411"
-                px="16px"
-                py="8px"
-                borderRadius="20px"
-                border="1px solid rgba(250, 148, 17, 0.3)"
-              >
-                <Text fontSize="16px" fontWeight={700}>
-                  ₦{payment?.amount?.toLocaleString()}
-                </Text>
-              </Box>
-            </Flex>
-
-            {/* Payment ID */}
-            <InfoRow
-              label="Payment ID"
-              value={payment?.id}
-              icon="💳"
-              copyable
-              onCopy={handleCopyToClipboard}
-            />
-
-            {/* Tractor/Tool ID */}
-            <InfoRow
-              label={paymentType === "Agro Tool" ? "Tool ID" : "Tractor ID"}
-              value={payment[idField]}
-              icon="🚜"
-              copyable
-              onCopy={handleCopyToClipboard}
-            />
-
-            {/* Invoice and Reference Row */}
-            <Flex gap="16px" mb="12px">
-              <Box flex={1}>
-                <InfoRow
-                  label="Invoice"
-                  value={payment?.invoice_number}
-                  icon="🧾"
-                  copyable
-                  onCopy={handleCopyToClipboard}
-                />
-              </Box>
-              <Box flex={1}>
-                <InfoRow
-                  label="Reference"
-                  value={payment?.paystack_reference}
-                  icon="🏷️"
-                  copyable={false}
-                  onCopy={handleCopyToClipboard}
-                />
-              </Box>
-            </Flex>
-
-            {/* Type and Date Row */}
-            <Flex gap="16px">
-              <Box flex={1}>
-                <InfoRow
-                  label="Type"
-                  value={payment?.payment_type}
-                  icon={getPaymentTypeIcon(payment?.payment_type)}
-                  copyable={false}
-                  onCopy={handleCopyToClipboard}
-                />
-              </Box>
-              <Box flex={1}>
-                <InfoRow
-                  label="Date"
-                  value={formatDate(payment?.created_at)}
-                  icon="📅"
-                  copyable={false}
-                  onCopy={handleCopyToClipboard}
-                />
-              </Box>
-            </Flex>
-
-            {/* Verify Payment Button for Pending Payments */}
-            {payment?.payment_status === "pending" && (
-              <Button
-                mt="12px"
-                w="100%"
-                bgColor="#FA9411"
-                color="white"
-                height="40px"
-                borderRadius="8px"
-                fontWeight={600}
+                key={payment?.id}
+                bg="white"
+                borderRadius="16px"
+                p="15px"
+                boxShadow="0px 2px 10px rgba(0, 0, 0, 0.08)"
+                transition="all 0.2s"
                 _hover={{
-                  opacity: 0.9,
-                }}
-                onClick={() => {
-                  window.open(
-                    `https://checkout.paystack.com/${payment?.paystack_access_code}`
-                  );
+                  boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.12)",
                 }}
               >
-                Verify Payment
-              </Button>
-            )}
-          </Box>
-        ))}
+                {/* Status and Amount Row - Always Visible */}
+                <Flex justifyContent="space-between" alignItems="center" mb="12px">
+                  <Flex
+                    align="center"
+                    gap="6px"
+                    bg={statusTypes[payment?.payment_status]?.color || "#FA9411"}
+                    color="white"
+                    px="10px"
+                    py="7px"
+                    borderRadius="20px"
+                    fontSize="12px"
+                    fontWeight={600}
+                  >
+                    <Box as="span">
+                      {payment?.payment_status === "success"
+                        ? "✓"
+                        : payment?.payment_status === "pending"
+                        ? "⏱"
+                        : "✕"}
+                    </Box>
+                    <Text>
+                      {statusTypes[payment?.payment_status]?.title || "Unknown"}
+                    </Text>
+                  </Flex>
+
+                  <Flex alignItems="center" gap="8px">
+                    <Box
+                      bg="rgba(250, 148, 17, 0.1)"
+                      color="#FA9411"
+                      px="16px"
+                      py="8px"
+                      borderRadius="20px"
+                      border="1px solid rgba(250, 148, 17, 0.3)"
+                    >
+                      <Text fontSize="16px" fontWeight={700}>
+                        ₦{payment?.amount?.toLocaleString()}
+                      </Text>
+                    </Box>
+
+                    <IconButton
+                      aria-label={isExpanded ? "Collapse details" : "Expand details"}
+                      icon={isExpanded ? <ChevronUpIcon /> : <ChevronDownIcon />}
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => toggleCard(payment?.id)}
+                      _hover={{
+                        bg: "gray.100",
+                      }}
+                    />
+                  </Flex>
+                </Flex>
+
+                {/* Collapsible Details Section */}
+                <Collapse in={isExpanded} animateOpacity>
+                  {/* Payment ID */}
+                  <InfoRow
+                    label="Payment ID"
+                    value={payment?.id}
+                    icon="💳"
+                    copyable
+                    onCopy={handleCopyToClipboard}
+                  />
+
+                  {/* Tractor/Tool ID */}
+                  <InfoRow
+                    label={paymentType === "Agro Tool" ? "Tool ID" : "Tractor ID"}
+                    value={payment[idField]}
+                    icon="🚜"
+                    copyable
+                    onCopy={handleCopyToClipboard}
+                  />
+
+                  {/* Invoice and Reference Row */}
+                  <Flex gap="16px" mb="12px">
+                    <Box flex={1}>
+                      <InfoRow
+                        label="Invoice"
+                        value={payment?.invoice_number}
+                        icon="🧾"
+                        copyable
+                        onCopy={handleCopyToClipboard}
+                      />
+                    </Box>
+                    <Box flex={1}>
+                      <InfoRow
+                        label="Reference"
+                        value={payment?.paystack_reference}
+                        icon="🏷️"
+                        copyable={false}
+                        onCopy={handleCopyToClipboard}
+                      />
+                    </Box>
+                  </Flex>
+
+                  {/* Type and Date Row */}
+                  <Flex gap="16px">
+                    <Box flex={1}>
+                      <InfoRow
+                        label="Type"
+                        value={payment?.payment_type}
+                        icon={getPaymentTypeIcon(payment?.payment_type)}
+                        copyable={false}
+                        onCopy={handleCopyToClipboard}
+                      />
+                    </Box>
+                    <Box flex={1}>
+                      <InfoRow
+                        label="Date"
+                        value={formatDate(payment?.created_at)}
+                        icon="📅"
+                        copyable={false}
+                        onCopy={handleCopyToClipboard}
+                      />
+                    </Box>
+                  </Flex>
+
+                  {/* Verify Payment Button for Pending Payments */}
+                  {payment?.payment_status === "pending" && (
+                    <Button
+                      mt="12px"
+                      w="100%"
+                      bgColor="#FA9411"
+                      color="white"
+                      height="40px"
+                      borderRadius="8px"
+                      fontWeight={600}
+                      _hover={{
+                        opacity: 0.9,
+                      }}
+                      onClick={() => {
+                        window.open(
+                          `https://checkout.paystack.com/${payment?.paystack_access_code}`
+                        );
+                      }}
+                    >
+                      Verify Payment
+                    </Button>
+                  )}
+                </Collapse>
+              </Box>
+            );
+          })}
         </SimpleGrid>
       </Box>
     </Box>
