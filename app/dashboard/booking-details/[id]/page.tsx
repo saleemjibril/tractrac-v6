@@ -274,7 +274,7 @@ export default function BookingDetailsPage() {
                 <DetailRow label="Tractor Type" value={booking.tractor?.type || ""} />
                 <DetailRow
                   label="Implement Type"
-                  value={booking.implement_types?.join(", ") || ""}
+                  value={booking.implement_types?.map((type) => type.split("_").join(" ")).join(", ") || ""}
                 />
                 <DetailRow label="Tractor Location" value={booking.tractor?.location || ""} />
               </VStack>
@@ -306,7 +306,7 @@ export default function BookingDetailsPage() {
                 )}
                 <DetailRow
                   label="Implement Type"
-                  value={booking.implement_types?.join(", ") || ""}
+                  value={booking.implement_types?.map((type) => type.split("_").join(" ")).join(", ") || ""}
                 />
                 {booking.additional_info && (
                   <DetailRow
@@ -497,6 +497,7 @@ function DetailRow({ label, value }: { label: string; value: string }) {
         color="#333"
         flex={1}
         textAlign="right"
+        textTransform={"capitalize"}
       >
         {value}
       </Text>

@@ -73,7 +73,7 @@ export default function EnlistmentsInReview() {
             _hover={{
               opacity: 0.8,
             }}
-            display={{base: "none", md: "block"}}
+            display={{base: "none", md: "flex"}}
           >
             Enlist a new tractor
           </Button>

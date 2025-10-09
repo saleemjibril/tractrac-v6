@@ -448,7 +448,7 @@ function InfoRow({ label, value, icon, copyable, onCopy }: InfoRowProps) {
           flex={1}
           overflow="hidden"
           textOverflow="ellipsis"
-          whiteSpace="nowrap"
+          // whiteSpace="nowrap"
         >
           {value}
         </Text>

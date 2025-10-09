@@ -30,8 +30,10 @@ import { useGetHiredTractorsQuery } from "@/redux/services/tractorApi";
 import { useAppSelector } from "@/redux/hooks";
 import { getErrorMessage } from "@/app/utils/errorUtils";
 import { getMyHiredTractors } from "@/app/apis/tractor";
-import formatNumber from "@/app/utils/formatNumber";
+import formatNumber, { formatAmount } from "@/app/utils/formatNumber";
 import moment from "moment";
+import { useRouter } from "next/navigation";
+import { RightArrow } from "@/app/components/Icons";
 
 const statusTypes: Record<string, { title: string; color: string }> = {
   pending: { title: "Pending", color: "#FA9411" },
@@ -47,6 +49,7 @@ const statusTypes: Record<string, { title: string; color: string }> = {
 };
 
 export default function HiredTractors() {
+  const router = useRouter();
   const { profileInfo, userToken } = useAppSelector((state) => state.auth);
   const [tractors, setTractors] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -90,7 +93,7 @@ export default function HiredTractors() {
 
   return (
     <SidebarWithHeader isAuth={true}>
-      <Box mx="20px" my="12px" py="20px">
+      <Box bg={"white"} borderRadius={"4px"} p={"20px"}>
         <Flex justifyContent="space-between" mb="10px" alignContent="center">
           <Text
             fontSize="24px"
@@ -113,6 +116,7 @@ export default function HiredTractors() {
             _hover={{
               opacity: 0.8,
             }}
+            display={{base: "none", md: "flex"}}
           >
             <Flex justifyContent="center" alignContent="center">
               <Text fontSize="14px">Hire a tractor</Text>
@@ -136,87 +140,46 @@ export default function HiredTractors() {
         ) : error ? (
           <EmptyTractorsPlaceholder />
         ) : (
-          <TableContainer
-            border="1px"
-            borderColor="#32323220"
-            borderRadius="12px"
-            height="500px"
-            bgColor="white"
-          >
-            <Table variant="simple" bgColor="white">
-              <Thead bgColor="#FA9411">
-                <Tr>
-                  <Th color="white">Tractor name</Th>
-                  {/* <Th color="white">Tractor model</Th> */}
-                  <Th color="white">Owner</Th>
-                  <Th color="white">Address</Th>
-                  <Th color="white">Farm Size</Th>
-                  {/* <Th color="white">Type of Service</Th> */}
-                  <Th color="white">Amount Paid (₦)</Th>
-                  <Th color="white">Start Date</Th>
-                  <Th color="white">End Date</Th>
-                  <Th color="white">Status</Th>
-                  {/* <Th isNumeric>multiply by</Th> */}
-                </Tr>
-              </Thead>
-              <Tbody>
-                {tractors?.map((tractor: any) => (
-                  <Tr key={tractor?.id}>
-                    <Td>{tractor?.tractor?.name}</Td>
-                    {/* <Td>{tractor?.tractor?.model}</Td> */}
-                    <Td>{tractor?.owner_name}</Td>
-                    {/* <Td>{tractor?.address ?? "Nil"}</Td> */}
-                    <Td 
-                    // whiteSpace="break-spaces"
-                    width={"400px"}
-                    // maxW="100px" 
-                    // display="inline-block"
-                    //  wordBreak="break-word"
-                    // maxW="50px"
-                      // sx={{
-                        // width: "50px",
-                        // overflowWrap: "break-word",
-                        // whiteSpace="unset"
-                        // Add any additional styles as needed
-                      // }}
-                    >
-                      {/* <Box maxW="80px" overflowWrap="break-word"> */}
-                      <Text  >
-                        { tractor?.tractor?.location ?? "Nil" }
-                      {/* Gaa-akanbi, ilorin south, nigeria Gaa-akanbi, ilorin
-                      south, nigeria,  Gaa-akanbi, ilorin south, nigeria Gaa-akanbi, ilorin */}
-                      </Text>
-                      {/* </Box> */}
-                    </Td>
-                    <Td>{tractor?.farm_size} sqm</Td>
-                    {/* <Td></Td> */}
-                    <Td>{formatNumber(tractor?.total_amount)}</Td>
-                    {/* <Td>
-                      {parseFloat(tractor?.farm_size ?? 0).toLocaleString()}
-                    </Td> */}
-                    <Td>{moment(tractor?.start_date).format('MMMM D, YYYY')}</Td>
-                    <Td>{moment(tractor?.end_date).format('MMMM D, YYYY')}</Td>
-                    <Td>
-                      {statusTypes[tractor?.status]?.color && (
-                        <Box
-                          bgColor={statusTypes[tractor?.status].color}
-                          py="4px"
-                          textAlign="center"
-                          borderRadius="4px"
-                          w="80px"
-                        >
-                          <Text fontSize="14px" color="white">
-                            {statusTypes[tractor?.status].title}
-                          </Text>
-                        </Box>
+         
+                tractors?.map((tractor: any) => (
+                  <Flex
+                width={"100%"}
+                justifyContent={"space-between"}
+                alignItems={"center"}
+                pb={"8px"}
+                mb={"8px"}
+                borderBottom={"1px solid #ECECEC"}
+                onClick={() => router.push(`/dashboard/booking-details/${tractor?.id}`)}
+                cursor={"pointer"}
+              >
+                <Flex gap={"8px"} alignItems={"center"}>
+                  <Box>
+                    <Text fontSize={"10px"} fontWeight={"500"}>
+                    {tractor?.tractor?.name}
+                    </Text>
+                    <Text fontSize={"8px"} fontWeight={"500"} color={"#000"}>
+                      {moment(tractor?.created_at).format(
+                        "MMMM D, YYYY [at] h:mm:ss A"
                       )}
-                    </Td>
-                    {/* <Td isNumeric>25.4</Td> */}
-                  </Tr>
-                ))}
-              </Tbody>
-            </Table>
-          </TableContainer>
+                    </Text>
+                  </Box>
+
+                  <Box
+                    fontSize={"8px"}
+                    borderRadius={"14px"}
+                    border={"1px solid #FA9411"}
+                    padding={"4px 8px"}
+                    color={"#FA9411"}
+                    bg={"#FAF6F6"}
+                  >
+                    ₦{formatAmount(tractor?.total_amount?.toString())}
+                  </Box>
+                </Flex>
+
+                <RightArrow />
+              </Flex>
+                ))
+              
         )}
 
         {/* <PersonalOverview /> */}
