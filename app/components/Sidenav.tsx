@@ -50,6 +50,7 @@ import NoSsrWrapper from "./noSsrWrapper";
 import { AuthGuard } from "./AuthGuard";
 import { ChakraWrapper } from "../chakraUIWrapper";
 import Link from "next/link";
+import { getUserInfo } from "../apis/user";
 
 interface LinkItemProps {
   name: string;
@@ -276,8 +277,9 @@ const NavItem = ({
 };
 
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
-  const { loading, profileInfo } = useAppSelector((state) => state.auth);
+  const { loading, profileInfo, userToken } = useAppSelector((state) => state.auth);
   const [mounted, setMounted] = useState(false);
+  const [profileImage, setProfileImage] = useState<string | null>(null);
   const dispatch = useAppDispatch();
   const router = useRouter();
   const pathname = usePathname();
@@ -288,6 +290,28 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
     console.log("profileInfo", profileInfo)
     setMounted(true);
   }, []);
+
+  const handleGetUserInfo = async () => {
+    if (!profileInfo?.id || !userToken) return;
+    
+    try {
+      const response = await getUserInfo(profileInfo?.id, userToken as string);
+    console.log("getUserInfo", response);
+      
+      if (response && response.data) {
+        if (response.data.photo) {
+          setProfileImage(response.data.photo);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching user details:", error);
+      toast.error("Failed to load user details");
+    }
+  };
+
+  useEffect(() => {
+    handleGetUserInfo();
+  }, [profileInfo]);
 
   return (
     <Flex
@@ -353,6 +377,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                   // src={
                   //   "https://images.unsplash.com/photo-1619946794135-5bc917a27793?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9"
                   // }
+                  src={profileImage}
                 />
                 <VStack
                   display={{ base: "none", md: "flex" }}

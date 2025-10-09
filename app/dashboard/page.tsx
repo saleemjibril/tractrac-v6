@@ -444,8 +444,8 @@ export default function Dashboard() {
       {/* Enlistments in Review Section */}
 
       <PersonalOverview />
-      <Grid templateColumns={{ base: "1fr", lg: "2.76fr 1fr" }} gap={{base: "10px", lg: "33px"}}>
-        <Box>
+      <Grid className="bookings_column" templateColumns={{ base: "1fr", lg: "2.76fr 1fr" }} gap={{base: "10px", lg: "33px"}}>
+        <Box order={{ base: 2, lg: 1 }}>
 
         {tractors?.length > 0 && <Box
         pt={0}
@@ -655,11 +655,13 @@ export default function Dashboard() {
          
         </Box>
 
-          {recentBookings.length > 0 && <BookingSectionMini
-            title="Recent Bookings"
-            bookings={recentBookings}
-            viewAllLink="/dashboard/hired-tractors"
-          />}
+          {recentBookings.length > 0 && <Box order={{ base: 1, lg: 2 }}>
+            <BookingSectionMini
+              title="Recent Bookings"
+              bookings={recentBookings}
+              viewAllLink="/dashboard/hired-tractors"
+            />
+          </Box>}
       </Grid>
       
       <LoginRequiredModal
@@ -739,7 +741,7 @@ function BookingSection({ title, bookings, viewAllLink }: BookingSectionProps) {
           alignItems={"center"}
           mb={"12px"}
         >
-          <Text fontSize={"14px"} color={"#050F24"} fontWeight={{base: 600, lg: 500}}>
+          <Text fontSize={{base: "12px", lg: "14px"}} color={"#050F24"} fontWeight={{base: 600, lg: 500}}>
             {title}
           </Text>
           <svg
