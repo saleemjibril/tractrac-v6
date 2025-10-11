@@ -38,6 +38,11 @@ import { useRouter } from "next/navigation";
       active: false,
     },
     {
+      name: "Our Products",
+      path: "/products",
+      active: false,
+    },
+    {
       name: "Blog",
       path: "/blog",
       active: false,

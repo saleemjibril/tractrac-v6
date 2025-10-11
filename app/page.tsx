@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import ServicesComponent from "./components/services";
 import FooterComponent from "./components/footer";
 import Header from "./components/header";
@@ -20,9 +20,16 @@ export async function generateMetadata() {
 
 export default function Home() {
   return (
-    <div style={{position: "relative"}}>
+    <div style={{ position: "relative" }}>
       <Header />
-      <HomeBanner />
+      <HomeBanner
+      title="Tractrac MSL"
+        bannerTitle="Facilitating access to mechanization services for all farmers in Africa."
+        subtitle="Driving up private sector investments in Agricultural Mechanization"
+        buttonText="Get started"
+        link="/signup"
+        image="https://res.cloudinary.com/tractrac-global/image/upload/v1746446556/hero_banner_jh5hui.jpg"
+      />
       <ServicesComponent />
       <HowItWorksComponent />
       <FaqComponent />

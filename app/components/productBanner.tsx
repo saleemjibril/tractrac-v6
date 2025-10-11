@@ -8,8 +8,9 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { ChakraWrapper } from "../chakraUIWrapper";
+import Image from "./Image";
 
-export default function HomeBanner({ title, bannerTitle, subtitle, buttonText, link, image, height }: { title: string, bannerTitle: string, subtitle: string, buttonText: string, link: string, image: string, height?: string }) {
+export default function ProductBanner({ title, subtitle, image, height }: { title: string, subtitle: string, image: string, height?: string }) {
   const router = useRouter();
   
   const bannerRef = useRef(null);
@@ -60,8 +61,8 @@ export default function HomeBanner({ title, bannerTitle, subtitle, buttonText, l
       <Box
         ref={bannerRef}
         position={"relative"}
-        height={{ base: "350px", md: !!height ? height : "535px" }}
-        bgImage={`linear-gradient(to left, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${image})`}
+        height={{ base: "370px", md: !!height ? height : "732px" }}
+        bgImage={`url(${image})`}
         bgPosition="center"
         bgSize="cover"
         bgAttachment="fixed"
@@ -79,45 +80,44 @@ export default function HomeBanner({ title, bannerTitle, subtitle, buttonText, l
         >
           <Text 
             ref={brandTextRef}
-            fontFamily={"cursive"} 
-            fontSize={"40px"} 
-            color={"#FA9411"} 
-            display={{ base: "none", sm: "initial" }}
+            fontSize={{ base: "26px", md: "48px" }}
+            color={"##FFFFFF"} 
+            textAlign={"center"}
+            fontWeight={700}
+            width={"100%"}
+            maxWidth={"20ch"}
+            margin={"0 auto"}
+            lineHeight={"120%"}
+            mb={"15px"}
           >
             {title}
           </Text>
-          <Text
-            ref={headingRef}
-            fontSize={{ base: "26px", md: "48px" }}
-            lineHeight={{ base: "28px", md: "57.65px" }}
-            mt="20px"
-            maxWidth={"17ch"}
-          >
-            {bannerTitle}
-          </Text>
+        
           <Text 
             ref={subTextRef}
             mt="20px" 
             mb="30px"
-            maxWidth={"44ch"}
+            textAlign={"center"}
+            width={"100%"}
+            maxWidth={"65ch"}
+            fontSize={{base: "16px", md: "18px"}}
+            margin={"0 auto"}
+            marginTop={"12px"}
           >
             {subtitle}
           </Text>
-          <Button
-            ref={buttonRef}
-            bg="#FA9411"
-            width={"190px"}
-            height={"40px"}
-            _hover={{ 
-              opacity: 0.8,
-              transform: "scale(1.05)",
-              transition: "transform 0.3s ease"
-            }}
-            color="#FFFFFF"
-            onClick={() => router.push(link)}
-          >
-            {buttonText}
-          </Button>
+
+          <Image margin={"0 auto"} marginTop={"10px"} src="https://res.cloudinary.com/tractrac-global/image/upload/v1760211402/ldAb_E9IiDEg3fgYQZz_F4mqwSeitd76CA_1_v9rfey.png"
+          width={{base: 200, md: 300}}
+          cursor={"pointer"}
+          onClick={() => {
+            window.open(
+              `https://play.google.com/store/apps/details?id=com.tractrac.plus`
+            );
+          }}
+          // height={124.22599792480469}
+          />
+          
         </Box>
       </Box>
     </ChakraWrapper>
