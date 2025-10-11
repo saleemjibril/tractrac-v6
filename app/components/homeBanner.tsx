@@ -91,7 +91,7 @@ export default function HomeBanner({ title, bannerTitle, subtitle, buttonText, l
             fontSize={{ base: "26px", md: "48px" }}
             lineHeight={{ base: "28px", md: "57.65px" }}
             mt="20px"
-            maxWidth={"17ch"}
+            maxWidth={"19ch"}
           >
             {bannerTitle}
           </Text>
