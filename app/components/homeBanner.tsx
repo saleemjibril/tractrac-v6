@@ -60,7 +60,7 @@ export default function HomeBanner({ title, bannerTitle, subtitle, buttonText, l
       <Box
         ref={bannerRef}
         position={"relative"}
-        height={{ base: "350px", md: !!height ? height : "535px" }}
+        // height={{ base: "350px", md: !!height ? height : "535px" }}
         bgImage={`linear-gradient(to left, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${image})`}
         bgPosition="center"
         bgSize="cover"
@@ -69,7 +69,7 @@ export default function HomeBanner({ title, bannerTitle, subtitle, buttonText, l
         width={"100%"}
       >
         <Box
-          pt={{ base: "40px", md: "86px" }}
+          py={{ base: "40px", md: "86px" }}
           color={"white"}
           width={"100%"}
           maxWidth="1400px"

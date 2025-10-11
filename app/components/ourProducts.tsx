@@ -9,7 +9,7 @@ const products = [
         image: "https://res.cloudinary.com/tractrac-global/image/upload/v1760200788/97c60de74652dd7f72e1ffff45561371505c6ee1_hjikwn.jpg",
         name: "TractracPlus",
         description: "TractracPlus is Tractrac’s flagship digital platform designed to revolutionize how mechanisation services are delivered, tracked, and managed across Nigeria. It connects tractor owners, mechanisation service providers (MSPs), and farmers through ...",
-        link: "/"
+        link: "/products/tractrac-plus"
     },
     {
         image: "https://res.cloudinary.com/tractrac-global/image/upload/v1760200806/Frame_1000005376_xpxwxj.png",
