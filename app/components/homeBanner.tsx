@@ -99,7 +99,7 @@ export default function HomeBanner({ title, bannerTitle, subtitle, buttonText, l
             ref={subTextRef}
             mt="20px" 
             mb="30px"
-            maxWidth={"44ch"}
+            maxWidth={"46ch"}
           >
             {subtitle}
           </Text>
