@@ -26,10 +26,10 @@ import { useRouter } from "next/navigation";
       path: "/about",
       active: false,
     },
-    { name: "Services", path: "/services", active: false },
+    { name: "Services", path: "/services", active: false }, 
     {
-      name: "Contact Us",
-      path: "/contact",
+      name: "Our Products",
+      path: "/products",
       active: false,
     },
     {
@@ -38,15 +38,17 @@ import { useRouter } from "next/navigation";
       active: false,
     },
     {
-      name: "Our Products",
-      path: "/products",
-      active: false,
-    },
-    {
       name: "Blog",
       path: "/blog",
       active: false,
     },
+    {
+      name: "Contact Us",
+      path: "/contact",
+      active: false,
+    },
+
+    
   ];
 
 export const SidebarContent = ({ onClose }: SidebarProps) => {

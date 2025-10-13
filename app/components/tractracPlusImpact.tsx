@@ -4,6 +4,13 @@ import Image from "./Image";
 import { ChakraWrapper } from "../chakraUIWrapper";
 import { Equipment, Job, FarmMap, Training } from "./Icons";
 import { useState } from "react";
+import { motion } from "framer-motion";
+
+// Create motion components
+const MotionBox = motion(Box);
+const MotionFlex = motion(Flex);
+const MotionText = motion(Text);
+const MotionGridItem = motion(GridItem);
 
 const points = [
   {
@@ -40,43 +47,54 @@ const points = [
 
 export default function TractracPlusImpact() {
   const [selectedId, setSelectedId] = useState(1);
+
   return (
     <ChakraWrapper>
       <Box
         pt={"61px"}
+        pb={"61px"}
         position={"relative"}
-        // height={{ base: "350px", md: "732px" }}
         bgImage={`url(https://res.cloudinary.com/tractrac-global/image/upload/v1760217372/Frame_34_dd1jzm.jpg)`}
         bgPosition="center"
         bgSize="cover"
         bgAttachment="fixed"
         bgRepeat="no-repeat"
       >
-        <Text
+        <MotionText
           fontFamily={"cursive"}
           fontSize={"28px"}
           color={"#FA9411"}
           mb={"20px"}
           textAlign={"center"}
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
         >
           Impact Snapshot
-        </Text>
-        <Text
-            fontSize={{ base: "26px", md: "32px" }}
-            textAlign={"center"}
+        </MotionText>
+
+        <MotionText
+          fontSize={{ base: "26px", md: "32px" }}
+          textAlign={"center"}
           fontWeight={700}
           color="#F5F5F5"
           width={"100%"}
           maxWidth={"27ch"}
           margin={"0 auto"}
           mb={"13px"}
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.2 }}
         >
           In its first year of deployment (under the ISSAM Project),
           TractracPlus has:
-        </Text>
-        <Text
+        </MotionText>
+
+        <MotionText
           lineHeight={"140%"}
-          fontSize={{base: "16px", md: "18px"}}
+          fontSize={{ base: "16px", md: "18px" }}
           textAlign={"center"}
           width={"100%"}
           maxWidth={"67ch"}
@@ -85,13 +103,17 @@ export default function TractracPlusImpact() {
           color={"#F5F5F5"}
           mb={"36px"}
           fontFamily={"Manrope"}
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.3 }}
         >
           In its first year of deployment (under the ISSAM Project),
           TractracPlus has
-        </Text>
+        </MotionText>
 
         <Grid
-          templateColumns={{base: "1fr", md:"1.3fr 1fr"}}
+          templateColumns={{ base: "1fr", md: "1.3fr 1fr" }}
           gap={"26px"}
           fontFamily={"Manrope"}
           width={"100%"}
@@ -100,9 +122,17 @@ export default function TractracPlusImpact() {
           pr="20px"
           pl="20px"
         >
-          <GridItem borderLeft={"3px solid #FFE4C24D"} borderRadius={"5px"}>
-            {points?.map((point) => (
-              <Flex
+          <MotionGridItem
+            borderLeft={"3px solid #FFE4C24D"}
+            borderRadius={"5px"}
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.4 }}
+          >
+            {points?.map((point, index) => (
+              <MotionFlex
+                key={point.id}
                 gap={"48px"}
                 alignItems={"center"}
                 color={selectedId === point?.id ? "#312C2C" : "#F5F5F5"}
@@ -112,33 +142,60 @@ export default function TractracPlusImpact() {
                 onClick={() => setSelectedId(point?.id)}
                 cursor={"pointer"}
                 borderRadius={"5px 5px 5px 0"}
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.5 + index * 0.1 }}
+                whileHover={{
+                  scale: 1.02,
+                  transition: { duration: 0.2 }
+                }}
+                whileTap={{ scale: 0.98 }}
+              
               >
-                <Box>
+                <MotionBox
+                  animate={{
+                    scale: selectedId === point?.id ? 1.1 : 1,
+                    rotate: selectedId === point?.id ? [0, -5, 5, 0] : 0,
+                  }}
+                  transition={{ duration: 0.3 }}
+                >
                   {selectedId === point?.id
                     ? point?.iconDark
                     : point?.iconWhite}
-                </Box>
+                </MotionBox>
                 <Box>
-                  <Text 
-            fontSize={{base: "16px", md: "18px"}}
-            fontWeight={700}>
+                  <Text fontSize={{ base: "16px", md: "18px" }} fontWeight={700}>
                     {point?.title}
                   </Text>
                   <Text fontSize={"14px"}>{point?.subtitle}</Text>
                 </Box>
-              </Flex>
+              </MotionFlex>
             ))}
-          </GridItem>
+          </MotionGridItem>
 
-          <GridItem>
-            <Image
-              src="https://res.cloudinary.com/tractrac-global/image/upload/v1760219658/iPhone_16_-_104_nc0zt4.jpg"
-              borderRadius={"60.43px 60.43px 0 0"}
-              width={475}
-              objectFit="cover"
-              margin={"0 auto"}
-            />
-          </GridItem>
+          <MotionGridItem
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.6 }}
+          >
+            <MotionBox
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: 0.7 }}
+              whileHover={{ scale: 1.02 }}
+            >
+              <Image
+                src="https://res.cloudinary.com/tractrac-global/image/upload/v1760219658/iPhone_16_-_104_nc0zt4.jpg"
+                borderRadius={"60.43px 60.43px 0 0"}
+                width={475}
+                objectFit="cover"
+                margin={"0 auto"}
+              />
+            </MotionBox>
+          </MotionGridItem>
         </Grid>
       </Box>
     </ChakraWrapper>

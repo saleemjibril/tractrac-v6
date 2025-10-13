@@ -29,7 +29,7 @@ export default function Home() {
       bannerTitle="Powering the Future of Mechanisation in Africa"
       subtitle="TractracMSL provides technology-driven solutions that connect farmers, service providers, and equipment owners—making mechanisation smarter, faster, and more reliable."
       buttonText="Partner with Us"
-      link="/contact"
+      link="/products/tractrac-plus#partner-with-us"
       image="https://res.cloudinary.com/tractrac-global/image/upload/v1760200992/Frame_181_afv1x1.jpg"
        />
        <OurProducts />

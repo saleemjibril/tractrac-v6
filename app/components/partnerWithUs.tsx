@@ -121,6 +121,7 @@ export default function PartnerWithUs() {
       position={"relative"}
       bg={"#FFF"}
       mb={"72px"}
+      id="partner-with-us"
     >
       <Grid templateColumns={{base: "1fr", md: "0.9fr 1fr"}} gap={"38px"}>
         <GridItem  height={"100%"} position={"relative"} display={{base: "none", md: "initial"}}>

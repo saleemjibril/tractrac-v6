@@ -370,6 +370,33 @@ useEffect(() => {
               </Link>
               <Link
                 // p={2}
+                href={"/products"}
+                style={{ fontSize: "14px", fontWeight: "700" }}
+                // color={linkColor}
+                prefetch={true}
+              >
+                Our Products
+              </Link>
+              <Link
+                // p={2}
+                href={"/careers"}
+                style={{ fontSize: "14px", fontWeight: "700" }}
+                // color={linkColor}
+                prefetch={true}
+              >
+                Careers
+              </Link>
+              <Link
+                // p={2}
+                href={"/blog"}
+                style={{ fontSize: "14px", fontWeight: "700" }}
+                // color={linkColor}
+                prefetch={true}
+              >
+                Blog
+              </Link>
+              <Link
+                // p={2}
                 href={"/contact"}
                 style={{ fontSize: "14px", fontWeight: "700" }}
                 // color={linkColor}
@@ -390,33 +417,9 @@ useEffect(() => {
               >
                 Careers
               </Link> */}
-              <Link
-                // p={2}
-                href={"/blog"}
-                style={{ fontSize: "14px", fontWeight: "700" }}
-                // color={linkColor}
-                prefetch={true}
-              >
-                Blog
-              </Link>
-              <Link
-                // p={2}
-                href={"/careers"}
-                style={{ fontSize: "14px", fontWeight: "700" }}
-                // color={linkColor}
-                prefetch={true}
-              >
-                Careers
-              </Link>
-              <Link
-                // p={2}
-                href={"/products"}
-                style={{ fontSize: "14px", fontWeight: "700" }}
-                // color={linkColor}
-                prefetch={true}
-              >
-                Our Products
-              </Link>
+              
+             
+             
             </Stack>
           </Box>
           <Box pt="5px" display={{ base: "none", lg: "flex" }}>
