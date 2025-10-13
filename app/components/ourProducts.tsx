@@ -13,31 +13,31 @@ const MotionLink = motion(Link);
 
 const products = [
     {
-        image: "https://res.cloudinary.com/tractrac-global/image/upload/v1760200788/97c60de74652dd7f72e1ffff45561371505c6ee1_hjikwn.jpg",
+        image: "https://res.cloudinary.com/tractrac-global/image/upload/v1760361448/Frame_1000005376_2_cnqpda.jpg",
         name: "TractracPlus",
         description: "TractracPlus is Tractrac's flagship digital platform designed to revolutionize how mechanisation services are delivered, tracked, and managed across Nigeria. It connects tractor owners, mechanisation service providers (MSPs), and farmers through ...",
         link: "/products/tractrac-plus"
     },
     {
-        image: "https://res.cloudinary.com/tractrac-global/image/upload/v1760200806/Frame_1000005376_xpxwxj.png",
+        image: "https://res.cloudinary.com/tractrac-global/image/upload/v1760361449/A5_-_3_zakm8e.jpg",
         name: "TRAxCelerate",
         description: "The Tractrac TRAxCelerate program is a flagship capacity-building program designed to train, certify, and deploy 2,000 Mechanisation Service Providers (MSPs) — including operators, booking and hiring agents, and mechanics — across Nigeria.",
         link: "/"
     },
     {
-        image: "https://res.cloudinary.com/tractrac-global/image/upload/v1760200833/Frame_1000005376_1_aaha8d.png",
+        image: "https://res.cloudinary.com/tractrac-global/image/upload/v1760361450/Frame_1000005376_3_b9pzji.png",
         name: "TRACINVEST",
         description: "Nigeria's agricultural landscape is at a turning point. With over 70 million hectares of arable land, the demand for mechanisation services far exceeds supply. Current tractor density is estimated at less than 0.27 hp per hectare, far below the FAO's recommended 1.5 hp/ha.",
         link: "/"
     },
     {
-        image: "https://res.cloudinary.com/tractrac-global/image/upload/v1760200791/Frame_1000005376_2_wyd9y7.png",
+        image: "https://res.cloudinary.com/tractrac-global/image/upload/v1760361448/A5_-_4_nl2sxv.jpg",
         name: "H₂O: Half-Way to Ownership",
         description: "Across Nigeria, young people and women are eager to participate in the agricultural mechanisation value chain — as operators, booking agents, technicians, and service entrepreneurs. However, access to finance remains a major barrier to ownership.",
         link: "/"
     },
     {
-        image: "https://res.cloudinary.com/tractrac-global/image/upload/v1760200792/Frame_1000005377_cknmim.png",
+        image: "https://res.cloudinary.com/tractrac-global/image/upload/v1760361449/A5_-_5_usti4u.jpg",
         name: "Rise7: Empowering Seven to Scale",
         description: "Rise7 is a cooperative-based asset financing and empowerment model designed by Tractrac to accelerate access to mechanization across Nigeria. Built on the principle of shared ownership and mutual responsibility, Rise7 empowers groups of seven individuals...",
         link: "/"
