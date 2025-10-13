@@ -83,7 +83,7 @@ export default function OurProducts() {
     pl="20px"
     >
       <MotionText
-        fontFamily={"cursive"} 
+        fontFamily={"Nanum Pen Script"} 
         fontSize={"28px"} 
         color={"#FA9411"} 
         mb={"20px"}

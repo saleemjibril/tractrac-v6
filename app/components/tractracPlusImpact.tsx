@@ -61,7 +61,7 @@ export default function TractracPlusImpact() {
         bgRepeat="no-repeat"
       >
         <MotionText
-          fontFamily={"cursive"}
+          fontFamily={"Nanum Pen Script"}
           fontSize={"28px"}
           color={"#FA9411"}
           mb={"20px"}

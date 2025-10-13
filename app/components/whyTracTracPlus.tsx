@@ -187,7 +187,7 @@ export default function WhyTracTracPlus() {
         >
            <Text
                 ref={headingRef}
-                fontFamily={"cursive"} 
+                fontFamily={"Nanum Pen Script"} 
                 fontSize={"28px"} 
                 color={"#FA9411"} 
                 mb={"20px"}

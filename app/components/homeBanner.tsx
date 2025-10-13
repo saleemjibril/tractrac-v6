@@ -79,7 +79,7 @@ export default function HomeBanner({ title, bannerTitle, subtitle, buttonText, l
         >
           <Text 
             ref={brandTextRef}
-            fontFamily={"cursive"} 
+            fontFamily={"Nanum Pen Script"} 
             fontSize={"40px"} 
             color={"#FA9411"} 
             display={{ base: "none", sm: "initial" }}
