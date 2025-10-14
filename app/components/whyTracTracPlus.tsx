@@ -1,5 +1,5 @@
 "use client"
-import { Box, Grid, GridItem, Text } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import Image from "./Image";
 import { ChakraWrapper } from "../chakraUIWrapper";
 import { useEffect, useRef } from "react";
@@ -11,40 +11,9 @@ if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-const points = [
-    {
-        image: "https://res.cloudinary.com/tractrac-global/image/upload/v1760214289/Group_1000001752_y1t2sp.png",
-        title: "Smart Tractor Booking & Deployment",
-        subtitle: "Connects farmers and tractor owners for real-time, GPS-tracked operations."
-    },
-    {
-        image: "https://res.cloudinary.com/tractrac-global/image/upload/v1760214287/Group_1000001752_2_i0yql4.png",
-        title: "Farm Mapping & Data Analytics",
-        subtitle: "GPS tools capture field data to improve planning and precision farming."
-    },
-    {
-        image: "https://res.cloudinary.com/tractrac-global/image/upload/v1760214287/Group_1000001752_3_urmhsr.png",
-        title: "Database Management",
-        subtitle: "Central dashboard to track performance, maintenance, and impact metrics."
-    },
-    {
-        image: "https://res.cloudinary.com/tractrac-global/image/upload/v1760214287/Group_1000001752_4_wjbgct.png",
-        title: "Performance & Reporting",
-        subtitle: "Visual dashboards track progress and show real-time impact."
-    },
-    {
-        image: "https://res.cloudinary.com/tractrac-global/image/upload/v1760214287/Group_1000001752_5_rsr2kk.png",
-        title: "Mechanisation Marketplace",
-        subtitle: "A digital hub for buying, renting, or leasing tractors and equipment."
-    },
-    {
-        image: "https://res.cloudinary.com/tractrac-global/image/upload/v1760214289/Group_1000001752_y1t2sp.png",
-        title: "Tracking & Monitoring",
-        subtitle: "Real-time visibility into equipment use, performance, and field operations."
-    }
-]
 
-export default function WhyTracTracPlus() {
+
+export default function WhyTracTracPlus({points, bannerTitle, title, subtitle}: {points: any, bannerTitle: string, title: string, subtitle: string}) {
     const sectionRef = useRef<HTMLDivElement>(null);
     const headingRef = useRef<HTMLParagraphElement>(null);
     const titleRef = useRef<HTMLParagraphElement>(null);
@@ -188,11 +157,11 @@ export default function WhyTracTracPlus() {
            <Text
                 ref={headingRef}
                 fontFamily={"Nanum Pen Script"} 
-                fontSize={"28px"} 
+                fontSize={{base: "28px", md: "40px"}}
                 color={"#FA9411"} 
-                mb={"20px"}
+                // mb={"13px"}
                 textAlign={"center"}
-            >Why Tractrac Plus</Text>
+            >{bannerTitle}</Text>
             
             <Text
                 ref={titleRef}
@@ -201,7 +170,7 @@ export default function WhyTracTracPlus() {
                 mb={"13px"}
                 textAlign={"center"}
                 fontWeight={700}
-            >Key Features & Services</Text>
+            >{title}</Text>
             
             <Text
                 ref={descRef}
@@ -215,22 +184,28 @@ export default function WhyTracTracPlus() {
                 fontWeight={400}
                 mb={"36px"}
                 fontFamily={"Manrope"}
-            >Our platform combines technology, data, and transparency to help farmers, service providers, and partners achieve better outcomes in every operation.</Text>
+            >{subtitle}</Text>
 
-            <Grid 
-                templateColumns={{base: "1fr", md: "1fr 1fr", lg: "1fr 1fr 1fr"}} 
-                gap={"30px"} 
-                fontFamily={"Manrope"}
+            <Box
+                display="flex"
+                flexWrap="wrap"
+                columnGap="30px"
+                rowGap="45px"
+                fontFamily="Manrope"
+                justifyContent="center"
             >
                 {points?.map((point, index) => 
-                    <GridItem 
+                    <Box
                         key={index}
                         ref={(el) => {gridItemsRef.current[index] = el}}
-                        display={"flex"} 
-                        flexDirection={"column"} 
-                        alignItems={"center"}
+                        display="flex"
+                        flexDirection="column"
+                        alignItems="center"
                         cursor="pointer"
                         transition="all 0.3s ease"
+                        flexBasis={{base: "100%", md: "calc(50% - 15px)", lg: "calc(33.333% - 20px)"}}
+                        minWidth={{base: "280px", md: "300px", lg: "250px"}}
+                        maxWidth={{base: "400px", md: "350px", lg: "320px"}}
                     >
                         <Image src={point?.image} mb={"10px"} width={79.31690896252975}/>
                         <Text 
@@ -248,9 +223,9 @@ export default function WhyTracTracPlus() {
                             color={"#312C2C"}
                             textAlign={"center"}
                         >{point?.subtitle}</Text>
-                    </GridItem>
+                    </Box>
                 )}
-            </Grid>
+            </Box>
         </Box>
         </ChakraWrapper>
     )

@@ -10,7 +10,7 @@ import {
 import { ChakraWrapper } from "../chakraUIWrapper";
 import Image from "./Image";
 
-export default function ProductBanner({ title, subtitle, image, height }: { title: string, subtitle: string, image: string, height?: string }) {
+export default function ProductBanner({ bannerTitle, title, subtitle, image, height, button, titleMaxWidth, subtitleMaxWidth }: { bannerTitle: string, title: string, subtitle: string, image: string, height?: string, button?: boolean, titleMaxWidth?: string, subtitleMaxWidth?: string }) {
   const router = useRouter();
   
   const bannerRef = useRef(null);
@@ -61,7 +61,7 @@ export default function ProductBanner({ title, subtitle, image, height }: { titl
       <Box
         ref={bannerRef}
         position={"relative"}
-        height={{ base: "370px", md: !!height ? height : "732px" }}
+        height={{ base: "fit-content", md: !!height ? height : "732px" }}
         bgImage={`url(${image})`}
         bgPosition="center"
         bgSize="cover"
@@ -71,6 +71,7 @@ export default function ProductBanner({ title, subtitle, image, height }: { titl
       >
         <Box
           pt={{ base: "40px", md: "86px" }}
+          pb={{ base: "40px", md: "0" }}
           color={"white"}
           width={"100%"}
           maxWidth="1400px"
@@ -78,6 +79,16 @@ export default function ProductBanner({ title, subtitle, image, height }: { titl
           pr="20px"
           pl="20px"
         >
+             <Text
+          fontFamily={"Nanum Pen Script"}
+          fontSize={{base: "28px", md: "40px"}}
+          color={"#FA9411"}
+          // mb={"16px"}
+          textAlign={"center"}
+         
+        >
+          {bannerTitle}
+        </Text>
           <Text 
             ref={brandTextRef}
             fontSize={{ base: "26px", md: "48px" }}
@@ -85,7 +96,7 @@ export default function ProductBanner({ title, subtitle, image, height }: { titl
             textAlign={"center"}
             fontWeight={700}
             width={"100%"}
-            maxWidth={"20ch"}
+            maxWidth={titleMaxWidth ? titleMaxWidth : "20ch"}
             margin={"0 auto"}
             lineHeight={"120%"}
             mb={"15px"}
@@ -99,7 +110,7 @@ export default function ProductBanner({ title, subtitle, image, height }: { titl
             mb="30px"
             textAlign={"center"}
             width={"100%"}
-            maxWidth={"65ch"}
+            maxWidth={subtitleMaxWidth ? subtitleMaxWidth : "65ch"}
             fontSize={{base: "16px", md: "18px"}}
             margin={"0 auto"}
             marginTop={"12px"}
@@ -107,7 +118,24 @@ export default function ProductBanner({ title, subtitle, image, height }: { titl
             {subtitle}
           </Text>
 
-          <Image margin={"0 auto"} marginTop={"10px"} src="https://res.cloudinary.com/tractrac-global/image/upload/v1760211402/ldAb_E9IiDEg3fgYQZz_F4mqwSeitd76CA_1_v9rfey.png"
+         {button ? <Button
+           bgColor="#FA9411"
+           _hover={{ bg: "#e88305" }}
+           _active={{ bg: "#cf7604" }}
+           color="white"
+           borderRadius="6px"
+           height="50px"
+           width="245px"
+           display={"flex"}
+           alignItems={"center"}
+           justifyContent={"center"}
+           margin="0 auto"
+           fontSize={"14px"}
+           mt="16px"
+           onClick={() => router.push("#join-us")}
+                 >
+          Join us to build the workforce
+         </Button> : <Image margin={"0 auto"} marginTop={"10px"} src="https://res.cloudinary.com/tractrac-global/image/upload/v1760211402/ldAb_E9IiDEg3fgYQZz_F4mqwSeitd76CA_1_v9rfey.png"
           width={{base: 200, md: 300}}
           cursor={"pointer"}
           onClick={() => {
@@ -116,7 +144,7 @@ export default function ProductBanner({ title, subtitle, image, height }: { titl
             );
           }}
           // height={124.22599792480469}
-          />
+          />}
           
         </Box>
       </Box>

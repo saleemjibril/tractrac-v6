@@ -38,7 +38,7 @@ export default function Home() {
       bannerTitle="Let’s Build the Future of Mechanisation Together"
       subtitle="We’re partnering with governments, cooperatives, development agencies, and agribusinesses to expand access to mechanisation across Africa."
       buttonText="Be a part of this"
-      link="/contact"
+      link="#join-us"
       height="628px"
       image="https://res.cloudinary.com/tractrac-global/image/upload/v1760203408/Frame_180_1_y2swcl.jpg"
        />

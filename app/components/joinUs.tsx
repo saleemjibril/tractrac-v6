@@ -121,6 +121,7 @@ export default function JoinUs() {
       position={"relative"}
       bg={"#FFF"}
       mb={"72px"}
+      id="join-us"
     >
       <Grid templateColumns={{base: "1fr", md: "0.9fr 1fr"}} gap={"38px"}>
         <GridItem  height={"100%"} position={"relative"} display={{base: "none", md: "initial"}}>
@@ -128,7 +129,7 @@ export default function JoinUs() {
         </GridItem>
 
         <GridItem>
-          <Text fontSize={"20px"} mb={"20px"} fontWeight={600}>Join Us Now</Text>
+          <Text fontSize={"20px"} mb={"20px"} fontWeight={600}>Join us to build the workforce</Text>
           <form onSubmit={handleSubmit}>
 
           <Box mb="20px">

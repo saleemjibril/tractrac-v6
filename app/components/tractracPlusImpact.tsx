@@ -12,40 +12,43 @@ const MotionFlex = motion(Flex);
 const MotionText = motion(Text);
 const MotionGridItem = motion(GridItem);
 
-const points = [
+const icons = [
   {
-    id: 1,
+    name: "Training",
     iconWhite: <Training width="41" height="41" fill={"white"} />,
     iconDark: <Training width="41" height="41" fill={"black"} />,
-    title: "MSP Training & Engagement",
-    subtitle: "Enabled the training and deployment of 2,500 service providers.",
   },
   {
-    id: 2,
+    name: "Equipment",
     iconWhite: <Equipment width="41" height="41" fill={"white"} />,
     iconDark: <Equipment width="41" height="41" fill={"black"} />,
-    title: "Equipment Access",
-    subtitle:
-      "Facilitated over 160 tractors and 280+ labour-saving implements.",
   },
   {
-    id: 3,
+    name: "Job",
     iconWhite: <Job width="41" height="41" fill={"white"} />,
     iconDark: <Job width="41" height="41" fill={"black"} />,
-    title: "Job Creation",
-    subtitle: "Supported more than 2,500 direct and indirect jobs.",
   },
   {
-    id: 4,
+    name: "FarmMap",
     iconWhite: <FarmMap width="41" height="41" fill={"white"} />,
     iconDark: <FarmMap width="41" height="41" fill={"black"} />,
-    title: "Farm Mapping",
-    subtitle:
-      "Digitally recorded and tracked over 10,000 hectares of farmland.",
   },
 ];
 
-export default function TractracPlusImpact() {
+
+export default function TractracPlusImpact({
+  bannerTitle,
+  title,
+  subtitle,
+  image,
+  points
+}: {
+  bannerTitle: string;
+  title: string;
+  subtitle: string;
+  image: string;
+  points: any;
+}) {
   const [selectedId, setSelectedId] = useState(1);
 
   return (
@@ -71,7 +74,7 @@ export default function TractracPlusImpact() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          Impact Snapshot
+          {bannerTitle}
         </MotionText>
 
         <MotionText
@@ -88,8 +91,7 @@ export default function TractracPlusImpact() {
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          In its first year of deployment (under the ISSAM Project),
-          TractracPlus has:
+          {title}
         </MotionText>
 
         <MotionText
@@ -108,8 +110,7 @@ export default function TractracPlusImpact() {
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.3 }}
         >
-          In its first year of deployment (under the ISSAM Project),
-          TractracPlus has
+          {subtitle}
         </MotionText>
 
         <Grid
@@ -148,10 +149,9 @@ export default function TractracPlusImpact() {
                 transition={{ duration: 0.5, delay: 0.5 + index * 0.1 }}
                 whileHover={{
                   scale: 1.02,
-                  transition: { duration: 0.2 }
+                  transition: { duration: 0.2 },
                 }}
                 whileTap={{ scale: 0.98 }}
-              
               >
                 <MotionBox
                   animate={{
@@ -161,11 +161,14 @@ export default function TractracPlusImpact() {
                   transition={{ duration: 0.3 }}
                 >
                   {selectedId === point?.id
-                    ? point?.iconDark
-                    : point?.iconWhite}
+                    ? icons.find((icon) => icon.name === point?.icon)?.iconDark
+                    : icons.find((icon) => icon.name === point?.icon)?.iconWhite}
                 </MotionBox>
                 <Box>
-                  <Text fontSize={{ base: "16px", md: "18px" }} fontWeight={700}>
+                  <Text
+                    fontSize={{ base: "16px", md: "18px" }}
+                    fontWeight={700}
+                  >
                     {point?.title}
                   </Text>
                   <Text fontSize={"14px"}>{point?.subtitle}</Text>
@@ -188,7 +191,7 @@ export default function TractracPlusImpact() {
               whileHover={{ scale: 1.02 }}
             >
               <Image
-                src="https://res.cloudinary.com/tractrac-global/image/upload/v1760219658/iPhone_16_-_104_nc0zt4.jpg"
+                src={image}
                 borderRadius={"60.43px 60.43px 0 0"}
                 width={475}
                 objectFit="cover"
