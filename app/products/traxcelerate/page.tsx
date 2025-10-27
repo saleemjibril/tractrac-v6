@@ -15,28 +15,28 @@ export async function generateMetadata() {
 const points = [
   {
     image:
-      "https://res.cloudinary.com/tractrac-global/image/upload/v1760214289/Group_1000001752_y1t2sp.png",
+      "https://res.cloudinary.com/tractrac-global/image/upload/v1761561833/Group_1000001752_e9rguf.png",
     title: "Recruitment and Mobilisation",
     subtitle:
       "Identification and screening of suitable youth and women across partner states.",
   },
   {
     image:
-      "https://res.cloudinary.com/tractrac-global/image/upload/v1760214289/Group_1000001752_y1t2sp.png",
+      "https://res.cloudinary.com/tractrac-global/image/upload/v1761561834/Group_1000001752_6_aeqxt7.png",
     title: "Training Delivery",
     subtitle:
       ": A hands-on, 3–4 week hybrid program combining classroom instruction, field practicals, and digital learning modules",
   },
   {
     image:
-      "https://res.cloudinary.com/tractrac-global/image/upload/v1760214289/Group_1000001752_y1t2sp.png",
+      "https://res.cloudinary.com/tractrac-global/image/upload/v1761561835/Group_1000001752_8_sgvh6y.png",
     title: "Certification and Onboarding",
     subtitle:
       "Graduates receive official Tractrac MSP certification and are integrated into TractracPlus, our proprietary digital platform for job placement, bookings, and service monitoring.",
   },
   {
     image:
-      "https://res.cloudinary.com/tractrac-global/image/upload/v1760214289/Group_1000001752_y1t2sp.png",
+      "https://res.cloudinary.com/tractrac-global/image/upload/v1761561834/Group_1000001752_7_v3xvyj.png",
     title: "Post-Training Support",
     subtitle:
       "Continuous mentorship, refresher courses, and integration into cooperatives and private service delivery networks.",
@@ -46,25 +46,25 @@ const points = [
 const points2 = [
   {
     id: 1,
-    icon: "Training",
+    icon: "Certificate",
     title: "MSP Training & Certification",
     subtitle: "Train and certify 2,000 service providers.",
   },
   {
     id: 2,
-    icon: "Equipment",
+    icon: "Efficiency",
     title: "Service Efficiency",
     subtitle: "Improve mechanisation reach and performance.",
   },
   {
     id: 3,
-    icon: "Training",
+    icon: "Ecosystem",
     title: "Ecosystem Growth",
     subtitle: "Strengthen state-level systems and MSME value chains.",
   },
   {
     id: 4,
-    icon: "Training",
+    icon: "Youth",
     title: "Youth Empowerment",
     subtitle: "Promote jobs, entrepreneurship, and digital skills.",
   },

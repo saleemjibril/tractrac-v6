@@ -2,7 +2,7 @@
 import { Box, Flex, Grid, GridItem, Text } from "@chakra-ui/react";
 import Image from "./Image";
 import { ChakraWrapper } from "../chakraUIWrapper";
-import { Equipment, Job, FarmMap, Training } from "./Icons";
+import { Equipment, Job, FarmMap, Training, Certificate, Efficiency, Ecosystem, Youth, Platform, Transparency, Impact } from "./Icons";
 import { useState } from "react";
 import { motion } from "framer-motion";
 
@@ -32,6 +32,46 @@ const icons = [
     name: "FarmMap",
     iconWhite: <FarmMap width="41" height="41" fill={"white"} />,
     iconDark: <FarmMap width="41" height="41" fill={"black"} />,
+  },
+  {
+    name: "Certificate",
+    iconWhite: <Certificate width="41" height="41" fill={"white"} />,
+    iconDark: <Certificate width="41" height="41" fill={"black"} />,
+  },
+  {
+    name: "Certificate",
+    iconWhite: <Certificate width="41" height="41" fill={"white"} />,
+    iconDark: <Certificate width="41" height="41" fill={"black"} />,
+  },
+  {
+    name: "Efficiency",
+    iconWhite: <Efficiency width="41" height="41" fill={"white"} />,
+    iconDark: <Efficiency width="41" height="41" fill={"black"} />,
+  },
+  {
+    name: "Ecosystem",
+    iconWhite: <Ecosystem width="41" height="41" fill={"white"} />,
+    iconDark: <Ecosystem width="41" height="41" fill={"black"} />,
+  },
+  {
+    name: "Youth",
+    iconWhite: <Youth width="41" height="41" fill={"white"} />,
+    iconDark: <Youth width="41" height="41" fill={"black"} />,
+  },
+  {
+    name: "Platform",
+    iconWhite: <Platform width="41" height="41" fill={"white"} />,
+    iconDark: <Platform width="41" height="41" fill={"black"} />,
+  },
+  {
+    name: "Transparency",
+    iconWhite: <Transparency width="41" height="41" fill={"white"} />,
+    iconDark: <Transparency width="41" height="41" fill={"black"} />,
+  },
+  {
+    name: "Impact",
+    iconWhite: <Impact width="41" height="41" fill={"white"} />,
+    iconDark: <Impact width="41" height="41" fill={"black"} />,
   },
 ];
 

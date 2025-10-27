@@ -53,25 +53,25 @@ const points = [
 const points2 = [
   {
     id: 1,
-    icon: "Training",
+    icon: "Platform",
     title: "Proven Platform",
     subtitle: "TractracPlus is an established ecosystem solution for booking, monitoring, and performance management..",
   },
   {
     id: 2,
-    icon: "Equipment",
+    icon: "Ecosystem",
     title: "Ecosystem Support",
     subtitle: "Access to a growing network of 2,000+ trained MSPs, mechanics, and operators..",
   },
   {
     id: 3,
-    icon: "Training",
+    icon: "Impact",
     title: "Impact & Return",
     subtitle: "Combines financial ROI with social and developmental impact.",
   },
   {
     id: 4,
-    icon: "Training",
+    icon: "Transparency",
     title: "Transparency",
     subtitle: "Real-time performance dashboard and quarterly investor reports.",
   },
