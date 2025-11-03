@@ -1778,7 +1778,9 @@ export default function BecomeAnAgent() {
   );
 }
 
-const brands = ["case_ih", "sonalika", "john_deere", "mahindra", "others"];
+const brands = ["case_ih", "sonalika", 
+  // "john_deere", 
+  "mahindra", "others"];
 
 const tractorTypes = ["small", "medium", "large", "specialized", "utility"];
 

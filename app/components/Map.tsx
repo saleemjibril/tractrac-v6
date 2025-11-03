@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, memo, useCallback } from "react";
 import loader from "../googleMapsLoader";
-import { getTrackedTractors } from "../apis/tracker";
+import { getTrackedTractors, reverseGeocode as reverseGeocodeAPI } from "../apis/tracker";
 
 interface TrackedDevice {
   id: number;
@@ -88,7 +88,7 @@ const Map = () => {
     return R * c;
   }, []);
 
-  // Function to reverse geocode and get state and LGA
+  // Function to reverse geocode and get state and LGA using Traccar API
   const reverseGeocode = useCallback(async (lat: number, lng: number): Promise<{ state: string; lga: string }> => {
     const cacheKey = `${lat.toFixed(4)},${lng.toFixed(4)}`; // Round to 4 decimals for caching (~11m precision)
     
@@ -99,35 +99,13 @@ const Map = () => {
     }
 
     try {
-      const geocoder = new window.google.maps.Geocoder();
-      const latlng = new window.google.maps.LatLng(lat, lng);
+      const response = await reverseGeocodeAPI(lat, lng);
       
-      const response = await geocoder.geocode({ location: latlng });
-      
-      if (response.results && response.results.length > 0) {
-        let state = '';
-        let lga = '';
-        
-        // Search through all results to find state and LGA
-        for (const result of response.results) {
-          for (const component of result.address_components) {
-            // State is usually marked as "administrative_area_level_1"
-            if (component.types.includes('administrative_area_level_1') && !state) {
-              state = component.long_name;
-            }
-            // LGA is usually marked as "administrative_area_level_2" or "locality"
-            if ((component.types.includes('administrative_area_level_2') || 
-                 component.types.includes('locality')) && !lga) {
-              lga = component.long_name;
-            }
-          }
-          
-          if (state && lga) break;
-        }
-        
+      if (response?.data?.location) {
+        const location = response.data.location;
         const result = {
-          state: state || 'Unknown',
-          lga: lga || 'Unknown'
+          state: location.state || location.county || 'Unknown',
+          lga: location.city || 'Unknown'
         };
         
         // Cache the result
@@ -139,7 +117,7 @@ const Map = () => {
     }
     
     return { state: 'Unknown', lga: 'Unknown' };
-  }, []);
+  }, [reverseGeocodeAPI]);
 
   // Function to get user's location
   const getUserLocation = useCallback((): Promise<google.maps.LatLng> => {

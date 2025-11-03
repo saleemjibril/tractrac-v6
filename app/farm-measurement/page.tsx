@@ -6,7 +6,7 @@ import { OfflineIndicator } from '../components/OfflineIndicator';
 import { useFarmMeasurement } from '../hooks/useFarmMeasurement';
 import { FarmPath } from '../types/farm-measurement';
 import { useRouter, useSearchParams } from 'next/navigation';
-import loader from '../googleMapsLoader';
+import { reverseGeocode } from '../apis/tracker';
 
 export default function FarmMeasurementPage() {
   const [measurementResult, setMeasurementResult] = useState<FarmPath | null>(null);
@@ -59,11 +59,10 @@ export default function FarmMeasurementPage() {
               const avgLng = allPoints.reduce((s, c) => s + (c?.[0] || 0), 0) / allPoints.length;
               const avgLat = allPoints.reduce((s, c) => s + (c?.[1] || 0), 0) / allPoints.length;
 
-              // Reverse geocode using Google Maps JS API
-              await loader.importLibrary('maps');
-              const geocoder = new google.maps.Geocoder();
-              const res = await geocoder.geocode({ location: { lat: avgLat, lng: avgLng } });
-              const formatted = res.results?.[0]?.formatted_address || '';
+              // Reverse geocode using Traccar API
+              const res = await reverseGeocode(avgLat, avgLng);
+              const location = res?.data?.location;
+              const formatted = location?.address || '';
               if (formatted) {
                 addressParam = `&address=${encodeURIComponent(formatted)}`;
               }

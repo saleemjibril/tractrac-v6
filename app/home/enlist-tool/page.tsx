@@ -1406,7 +1406,9 @@ Enlist your agro tools using the form below, and our team will reach out to get 
   );
 }
 
-const brands = ["case_ih", "sonalika", "john_deere", "mahindra", "others"];
+const brands = ["case_ih", "sonalika", 
+  // "john_deere",
+   "mahindra", "others"];
 const conditions = ["new", "good", "poor"];
 const powerSources = ["PTO", "Hydraulic", "Hydraulic"];
 

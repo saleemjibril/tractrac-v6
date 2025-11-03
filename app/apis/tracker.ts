@@ -5468,5 +5468,14 @@ export const deleteGeoFence = async (geofenceId: number) => {
   return res;
 };
 
+// Reverse geocoding endpoint to get address details from coordinates
+export const reverseGeocode = async (lat: number, lng: number) => {
+  const res = await axios.get(
+    `${process.env.NEXT_PUBLIC_TRACKING_BASE_URL}/address/reverse?lang=${process.env.NEXT_PUBLIC_TRACKING_LANG}&user_api_hash=$2y$10$0.AGeFFO5v59EyjbccSr2eObg9AxZn5U4N/V8z9qWtQBcuFDJw3um&lat=${lat}&lng=${lng}`
+  );
+
+  return res;
+};
+
 // Export the interface for use in other files
 export type { CreateGeoFenceData };

@@ -1624,7 +1624,9 @@ function HireTractorForm({ id, groupId }: { id: string, groupId: string }) {
   }
   
   
-  const brands = ["case_ih", "sonalika", "john_deere", "mahindra", "others"];
+  const brands = ["case_ih", "sonalika",
+    //  "john_deere",
+      "mahindra", "others"];
   
   // const tractorTypes = ["Harrower", "Ridger", "Plough", "Planter", "Sprayer"];
   

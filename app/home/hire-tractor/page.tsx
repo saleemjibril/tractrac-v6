@@ -83,7 +83,7 @@ const tractorTypeOptions = [
 const brandOptions = [
   { label: "Case IH", value: "case_ih" },
   { label: "Sonalika", value: "sonalika" },
-  { label: "John Deere", value: "john_deere" },
+  // { label: "John Deere", value: "john_deere" },
   { label: "Mahindra", value: "mahindra" },
   { label: "Others", value: "others" }
 ];
@@ -1990,7 +1990,9 @@ function SelectComponent({
 
 
 
-const brands = ["case_ih", "sonalika", "john_deere", "mahindra", "others"];
+const brands = ["case_ih", "sonalika",
+  //  "john_deere",
+    "mahindra", "others"];
 
 // const tractorTypes = ["Harrower", "Ridger", "Plough", "Planter", "Sprayer"];
 

@@ -724,4 +724,6 @@ const CustomInput: FC<CustomInputProps> = ({
   );
 };
 
-const brands = ["case_ih", "sonalika", "john_deere", "mahindra", "others"];
+const brands = ["case_ih", "sonalika", 
+  // "john_deere",
+   "mahindra", "others"];
