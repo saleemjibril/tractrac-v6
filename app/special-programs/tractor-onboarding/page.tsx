@@ -111,8 +111,9 @@ export default function BecomeAnAgent() {
             Tractor Onboarding
           </Text>
           <Image
-            src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446746/women-in-mech_y8ekus.svg"
+            src="https://res.cloudinary.com/tractrac-global/image/upload/v1760198801/af1ea0e9a7eab0a4940d9b38888f10e5f82f2f62_1_kbeg7n.jpg"
             alt="women-in-mechanization image"
+            style={{ borderRadius: "10px" }}
           />
           <Text fontSize="20px" fontWeight={500} my="4px">
             Information

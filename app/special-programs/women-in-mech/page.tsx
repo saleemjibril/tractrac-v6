@@ -68,8 +68,10 @@ export default function BecomeAnAgent() {
             Women in Mechanization
           </Text>
           <Image
-            src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446746/women-in-mech_y8ekus.svg"
+            src="https://res.cloudinary.com/tractrac-global/image/upload/v1760200495/Frame_23_l7x6lm.jpg"
             alt="women-in-mechanization image"
+            style={{ borderRadius: "10px" }}
+
           />
           <Text fontSize="20px" fontWeight={600} my="4px">
             Boosting the productivity and profitability of women in agriculture

@@ -83,7 +83,7 @@ export default function BecomeAnAgent() {
             Tractor Vendor
           </Text>
           <Image
-            src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446739/register-as-vendor_v9hh4n.svg"
+            src="https://res.cloudinary.com/tractrac-global/image/upload/f_auto,q_auto/v1757584050/tractors/tractors/4e04b30a-0bb9-47d9-b63e-59078b87091e.jpg"
             alt="Agent image"
             borderRadius="10px"
           />

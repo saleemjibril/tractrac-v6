@@ -69,8 +69,10 @@ export default function BecomeAnAgent() {
             Collaborate with US
           </Text>
           <Image
-            src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446746/women-in-mech_y8ekus.svg"
+            src="https://res.cloudinary.com/tractrac-global/image/upload/v1760200490/4181202035fc55f57668e071dedba9caed54bb56_1_qpqeuo.jpg"
             alt="women-in-mechanization image"
+            style={{ borderRadius: "10px" }}
+
           />
           <Text fontSize="20px" fontWeight={600} my="4px">
             Information

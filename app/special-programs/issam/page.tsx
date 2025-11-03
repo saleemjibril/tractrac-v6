@@ -57,7 +57,10 @@ export default function Issam() {
           <Text fontSize="24px" fontWeight={700} mb="4px">
             ISSAM
           </Text>
-          <Image src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446758/agent_coin3x.svg" alt="Agent image icon" />
+          <Image src="https://res.cloudinary.com/tractrac-global/image/upload/v1760200490/4181202035fc55f57668e071dedba9caed54bb56_1_qpqeuo.jpg"
+                      style={{ borderRadius: "10px" }}
+
+          alt="Agent image icon" />
 
         
         </Stack>
