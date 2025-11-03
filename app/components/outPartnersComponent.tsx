@@ -119,7 +119,7 @@ export default function OutPartnersComponent() {
         </Text>
         <Box ref={logoRef}>
           <Image 
-            src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446734/partners-logo_v5iz3f.svg" 
+            src="https://res.cloudinary.com/tractrac-global/image/upload/v1762179910/Logos_ivwnnt.svg" 
             alt="Partner Logos" 
           />
         </Box>
