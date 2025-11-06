@@ -15,17 +15,7 @@ export function calculateDistance(lat1: number, lon1: number, lat2: number, lon2
 export function calculatePolygonArea(coordinates: [number, number][]): number {
   if (coordinates.length < 3) return 0;
 
-  // Use Google Maps geometry library if available
-  if (typeof google !== 'undefined' && google.maps && google.maps.geometry) {
-    try {
-      const path = coordinates.map(coord => new google.maps.LatLng(coord[1], coord[0]));
-      return google.maps.geometry.spherical.computeArea(path);
-    } catch (error) {
-      console.warn('Google Maps geometry library not available, using fallback calculation');
-    }
-  }
-
-  // Fallback calculation using shoelace formula with proper coordinate handling
+  // Calculate area using shoelace formula with proper coordinate handling
   let area = 0;
   const n = coordinates.length;
 
@@ -49,17 +39,7 @@ export function calculatePolygonArea(coordinates: [number, number][]): number {
 export function calculatePerimeter(coordinates: [number, number][]): number {
   if (coordinates.length < 2) return 0;
 
-  // Use Google Maps geometry library if available
-  if (typeof google !== 'undefined' && google.maps && google.maps.geometry) {
-    try {
-      const path = coordinates.map(coord => new google.maps.LatLng(coord[1], coord[0]));
-      return google.maps.geometry.spherical.computeLength(path);
-    } catch (error) {
-      console.warn('Google Maps geometry library not available, using fallback calculation');
-    }
-  }
-
-  // Fallback calculation
+  // Calculate perimeter by summing distances between consecutive points
   let perimeter = 0;
   for (let i = 0; i < coordinates.length - 1; i++) {
     const distance = calculateDistance(

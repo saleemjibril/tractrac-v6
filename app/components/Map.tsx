@@ -149,38 +149,16 @@ const Map = () => {
     });
   }, []);
 
-  // Function to geocode devices and add state/LGA information
-  const geocodeDevices = useCallback(async (devices: TrackedDevice[]): Promise<TrackedDevice[]> => {
-    const geocodedDevices = await Promise.all(
-      devices.map(async (device) => {
-        // Skip if already has state and LGA
-        if (device.state && device.lga) {
-          return device;
-        }
-
-        // Skip if invalid coordinates
-        if (!device.lat || !device.lng) {
-          return device;
-        }
-
-        try {
-          const location = await reverseGeocode(device.lat, device.lng);
-          return {
-            ...device,
-            state: location.state,
-            lga: location.lga
-          };
-        } catch (error) {
-          console.warn(`Failed to geocode device ${device.id}:`, error);
-          return device;
-        }
-      })
-    );
-    return geocodedDevices;
-  }, [reverseGeocode]);
-
   // Memoized info window content generator
-  const generateInfoContent = useCallback((device: TrackedDevice) => {
+  const generateInfoContent = useCallback((device: TrackedDevice, isLoading: boolean = false) => {
+    if (isLoading) {
+      return `
+        <div style="padding: 8px; min-width: 200px;">
+          <h3 style="margin: 0 0 8px 0; font-size: 14px; font-weight: bold;">${device.name}</h3>
+          <p style="margin: 4px 0; font-size: 12px; color: #666;">Loading location...</p>
+        </div>
+      `;
+    }
     return `
       <div style="padding: 8px; min-width: 200px;">
         <h3 style="margin: 0 0 8px 0; font-size: 14px; font-weight: bold;">${device.name}</h3>
@@ -190,19 +168,52 @@ const Map = () => {
     `;
   }, []);
 
-  // Optimized marker click handler
+  // Optimized marker click handler with lazy geocoding
   const createMarkerClickHandler = useCallback((deviceId: number, marker: google.maps.Marker, mapInstance: google.maps.Map) => {
-    return () => {
+    return async () => {
       if (!infoWindowRef.current) return;
       
       const device = devicesDataRef.current.find(d => d.id === deviceId);
       if (!device) return;
       
-      infoWindowRef.current.setContent(generateInfoContent(device));
+      // Show device info immediately (or loading if no state/LGA)
+      const needsGeocoding = !device.state || !device.lga;
+      infoWindowRef.current.setContent(generateInfoContent(device, needsGeocoding));
       infoWindowRef.current.open(mapInstance, marker);
       openInfoWindowDeviceIdRef.current = deviceId;
+
+      // If device needs geocoding, fetch it now
+      if (needsGeocoding && device.lat && device.lng) {
+        try {
+          const location = await reverseGeocode(device.lat, device.lng);
+          
+          // Update device in devicesDataRef
+          const updatedDevice = {
+            ...device,
+            state: location.state,
+            lga: location.lga
+          };
+          
+          // Find and update the device in the array
+          const deviceIndex = devicesDataRef.current.findIndex(d => d.id === deviceId);
+          if (deviceIndex !== -1) {
+            devicesDataRef.current[deviceIndex] = updatedDevice;
+          }
+          
+          // Update info window with new data
+          if (infoWindowRef.current && openInfoWindowDeviceIdRef.current === deviceId) {
+            infoWindowRef.current.setContent(generateInfoContent(updatedDevice, false));
+          }
+        } catch (error) {
+          console.warn(`Failed to geocode device ${device.id}:`, error);
+          // Update info window to show error or partial data
+          if (infoWindowRef.current && openInfoWindowDeviceIdRef.current === deviceId) {
+            infoWindowRef.current.setContent(generateInfoContent(device, false));
+          }
+        }
+      }
     };
-  }, [generateInfoContent]);
+  }, [generateInfoContent, reverseGeocode]);
 
   // Function to update tractor positions
   const updateTractorPositions = useCallback(async (mapInstance: google.maps.Map) => {
@@ -222,14 +233,11 @@ const Map = () => {
         });
       }
 
-      // Geocode devices to get state and LGA
-      const geocodedDevices = await geocodeDevices(fetchedDevices);
+      // Update devices data (without geocoding - will be done on click)
+      devicesDataRef.current = fetchedDevices;
+      console.log('Updated tractors:', fetchedDevices.length);
 
-      // Update devices data
-      devicesDataRef.current = geocodedDevices;
-      console.log('Updated tractors:', geocodedDevices.length);
-
-      const validDevices = geocodedDevices.filter(device => device.lat && device.lng);
+      const validDevices = fetchedDevices.filter(device => device.lat && device.lng);
       const existingMarkerIds = new Set<string>();
       const newMarkers: google.maps.Marker[] = [];
 
@@ -290,7 +298,7 @@ const Map = () => {
     } catch (err) {
       console.error('Error updating tractor positions:', err);
     }
-  }, [createMarkerClickHandler, generateInfoContent, geocodeDevices]);
+  }, [createMarkerClickHandler, generateInfoContent]);
 
   useEffect(() => {
     isMountedRef.current = true;
@@ -364,12 +372,9 @@ const Map = () => {
           });
         }
 
-        // Geocode devices to get state and LGA
-        const geocodedDevices = await geocodeDevices(fetchedDevices);
-
-        // Store devices data for later reference
-        devicesDataRef.current = geocodedDevices;
-        console.log('Loaded tractors:', geocodedDevices.length);
+        // Store devices data for later reference (without geocoding - will be done on click)
+        devicesDataRef.current = fetchedDevices;
+        console.log('Loaded tractors:', fetchedDevices.length);
 
         // Clear existing markers
         if (markerClustererRef.current) {
@@ -379,7 +384,7 @@ const Map = () => {
         markersMapRef.current.clear();
 
         // Filter valid devices once
-        const validDevices = geocodedDevices.filter(device => device.lat && device.lng);
+        const validDevices = fetchedDevices.filter(device => device.lat && device.lng);
         
         if (validDevices.length === 0) {
           if (isMountedRef.current) {
@@ -557,7 +562,7 @@ const Map = () => {
         infoWindowRef.current.close();
       }
     };
-  }, [createMarkerClickHandler, generateInfoContent, getUserLocation, calculateDistance, geocodeDevices]);
+  }, [createMarkerClickHandler, generateInfoContent, getUserLocation, calculateDistance]);
 
   // Polling effect - starts after map is initialized
   useEffect(() => {
