@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";;
 import Image from "@/app/components/Image";
 import { SidebarWithHeader } from "../../components/Sidenav";
-import { createElement, Dispatch, SetStateAction, useState } from "react";
+import { createElement, Dispatch, SetStateAction, useState, useEffect } from "react";
 import { AddIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 import { useMakePaymentMutation } from "@/redux/services/userApi";
 import { useAppSelector } from "@/redux/hooks";
@@ -24,6 +24,7 @@ import { toast } from "react-toastify";
 import { getErrorMessage } from "@/app/utils/errorUtils";
 import { usePaystackPayment } from "react-paystack";
 import dynamic from 'next/dynamic';
+import { useSearchParams } from "next/navigation";
 
 const PaystackHook = dynamic(
   () => import('react-paystack').then(mod => mod.usePaystackPayment),
@@ -32,6 +33,7 @@ const PaystackHook = dynamic(
 
 
 export default function Pay() {
+  const searchParams = useSearchParams();
   const initialState: Record<string, string> = {
     amount: "",
     url: "",
@@ -42,6 +44,13 @@ export default function Pay() {
   const { userToken } = useAppSelector((state) => state.auth);
 
   const [invoice, setInvoice] = useState("");
+
+  useEffect(() => {
+    const invoiceParam = searchParams.get("invoice");
+    if (invoiceParam) {
+      setInvoice(decodeURIComponent(invoiceParam));
+    }
+  }, [searchParams]);
 
   const handleGetInvoiceDetails = async () => {
     try {
@@ -74,6 +83,7 @@ export default function Pay() {
           onClickFunction={handleGetInvoiceDetails}
           setData={setData}
           setInvoice={setInvoice}
+          invoice={invoice}
           error={error}
           isLoading={isLoading}
         />
@@ -88,10 +98,16 @@ function EnterInvoice({
   onClickFunction,
   setData,
   setInvoice,
+  invoice,
   error,
   isLoading,
 }: {
+  onClickFunction: () => void;
   setData: Dispatch<SetStateAction<Record<string, string>>>;
+  setInvoice: Dispatch<SetStateAction<string>>;
+  invoice: string;
+  error: string | null;
+  isLoading: boolean;
 }) {
   const [makePayment] = useMakePaymentMutation();
 
@@ -129,6 +145,7 @@ function EnterInvoice({
             variant="flushed"
             borderBottom="1px"
             borderBottomColor="#000000"
+            value={invoice}
             onChange={(e) => setInvoice(e.target.value)}
             textAlign={"center"}
           />

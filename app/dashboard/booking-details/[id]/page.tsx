@@ -383,7 +383,8 @@ export default function BookingDetailsPage() {
           >
             {booking.status === "paid" ||
             booking.status === "pending" ||
-            booking.status === "approved" ? (
+            booking.status === "approved" ||
+            booking.status === "payment_pending" ? (
               <HStack spacing={3}>
                 <Button
                   flex={1}
@@ -401,14 +402,14 @@ export default function BookingDetailsPage() {
                   color="white"
                   _hover={{ bg: "#0091cc" }}
                   onClick={() => {
-                    if (booking.status === "approved") {
-                      router.push("/payment/pay");
+                    if (booking.status === "approved" || booking.status === "payment_pending") {
+                      router.push(`/payment/pay${booking.invoice_number ? `?invoice=${encodeURIComponent(booking.invoice_number)}` : ""}`);
                     } else {
                       handleBackToHome();
                     }
                   }}
                 >
-                  {booking.status === "approved" ? "Pay Now" : "Back to Home"}
+                  {booking.status === "approved" || booking.status === "payment_pending" ? "Pay Now" : "Back to Home"}
                 </Button>
               </HStack>
             ) : (
