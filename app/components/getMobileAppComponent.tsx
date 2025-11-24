@@ -157,20 +157,20 @@ export default function GetMobileAppComponent() {
                   />
                 </Box>
               {/* </Link> */}
-              {/* <Box 
+              <Box 
                 ref={appStoreRef}
-                // as={Link} 
-                // href="#"
+                as={Link} 
+                href="https://apps.apple.com/ng/app/tractrac-plus/id6754968082"
                 onMouseEnter={handleButtonHover}
                 onMouseLeave={handleButtonLeave}
-                                onClick={() => toast.info("We are currently making some updates to the mobile app. Please check back later.")}
+                                // onClick={() => toast.info("We are currently making some updates to the mobile app. Please check back later.")}
               >
                 <Image
                   src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446750/app-store_iv64xk.svg"
                   alt=""
                   width={{ base: "150px", md: "240px" }}
                 />
-              </Box> */}
+              </Box>
             </Stack>
           </Stack>
         </Flex>

@@ -122,57 +122,65 @@ export default function Header() {
           <div
             style={{
               display: "flex",
-              // justifyContent: "space-between",
               alignItems: "center",
               flexDirection: "column",
               fontSize: "12px",
+              gap: "8px",
+              position: "relative",
             }}
           >
             <div
               style={{
-                position: "relative",
+                display: "flex",
+                gap: "8px",
+                alignItems: "center",
               }}
             >
               <a 
-              // href="https://play.google.com/store/apps/details?id=com.tractrac.trac_trac&hl=en_GB"
                 href="https://play.google.com/store/apps/details?id=com.tractrac.plus"
                 target="_blank"
-                              // onClick={() => toast.info("We are currently making some updates to the mobile app. Please check back later.")}
-              
               >
-                <button
+                <Image
+                  src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446714/google-play_ft9sq5.svg"
+                  alt="Download on Google Play"
                   style={{
-                    display: "flex",
-                    alignItems: "center",
-                    padding: "8px 16px",
-                    borderRadius: "8px",
-                    // border: "1px solid red",
-                    color: "white",
-                    background: "#FA9411",
+                    height: "32px",
+                    width: "auto",
                   }}
-                >
-                  Download
-                </button>
+                />
               </a>
-              <span
-                style={{
-                  position: "absolute",
-                  top: "-40px",
-                  right: "-25px",
-                  background: "white",
-                  padding: "3px",
-                  borderRadius: "100px",
-                  height: "25px",
-                  width: "25px",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-                onClick={() => setShow(false)}
+              <a 
+                href="https://apps.apple.com/ng/app/tractrac-plus/id6754968082"
+                target="_blank"
               >
-                <CloseButton size="sm" />
-              </span>
+                <Image
+                  src="https://res.cloudinary.com/tractrac-global/image/upload/v1746446750/app-store_iv64xk.svg"
+                  alt="Download on App Store"
+                  style={{
+                    height: "32px",
+                    width: "auto",
+                  }}
+                />
+              </a>
             </div>
+            <span
+              style={{
+                position: "absolute",
+                top: "-40px",
+                right: "-25px",
+                background: "white",
+                padding: "3px",
+                borderRadius: "100px",
+                height: "25px",
+                width: "25px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              onClick={() => setShow(false)}
+            >
+              <CloseButton size="sm" />
+            </span>
           </div>
         </div>
       )}
