@@ -40,6 +40,7 @@ import {
   ClarityHomeLine,
   ClarityHomeLineWhite,
   TractorPlusWhite,
+  Logout,
 } from "../components/Icons";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { useEffect, useState, useId } from "react";
@@ -208,12 +209,9 @@ const SidebarContent = ({
         _focus={{ boxShadow: "none" }}
       >
         <Flex align="center" gap="8px">
-          <Image
-            width="16px"
-            height="16px"
-            src={`/icons/logout.svg`}
-            alt="Logout icon"
-            fill="red"
+          <Logout
+            boxSize="16px"
+            color="currentColor"
           />
           <Text>Logout</Text>
         </Flex>

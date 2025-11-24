@@ -17,6 +17,7 @@ import {
   FaCheckCircle
 } from "react-icons/fa";
 import { ChakraWrapper } from "../chakraUIWrapper";
+import { List as ListIconn, Money, Tractor_2 } from "./Icons";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -333,11 +334,10 @@ export default function ServicesComponent() {
               href="/home/hire-tractor"
               transition="transform 0.3s"
             >
-              <Image
-                src="icons/tractor-bold.svg"
-                alt="Tractor image icon"
-                width="110px"
-              ></Image>
+              <Tractor_2 
+                boxSize="110px"
+                color="#FFFFFF"
+              />
               <Text fontSize="16px" mt="18px" fontWeight={600}>
                 Hire a Tractor
               </Text>
@@ -356,7 +356,10 @@ export default function ServicesComponent() {
               href="/home/enlist-tractor"
               transition="transform 0.3s"
             >
-              <Image src="icons/list.svg" alt=""></Image>
+              <ListIconn 
+                boxSize="110px"
+                color="#222222"
+              />
               <Text fontSize="16px" mt="18px" fontWeight={600}>
                 Enlist your Tractors
               </Text>
@@ -393,7 +396,10 @@ export default function ServicesComponent() {
               href="/home/invest-in-tractor"
               transition="transform 0.3s"
             >
-              <Image src="icons/money.svg" alt=""></Image>
+              <Money 
+                boxSize="110px"
+                color="#222222"
+              />
               <Text fontSize="16px" mt="18px" fontWeight={600}>
                 Invest in Tractors
               </Text>

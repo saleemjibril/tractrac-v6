@@ -25,6 +25,7 @@ import {
 import { useAppSelector } from "@/redux/hooks";
 import { FiMenu } from "react-icons/fi";
 import Link from "next/link";
+import { Call, Clock, Location } from "./Icons";
 
 interface MobileProps extends FlexProps {
   onOpen: () => void;
@@ -235,10 +236,9 @@ useEffect(() => {
       divider={divider}
     >
       <Box width={{base: "100vw", sm: "initial"}} className="header-banner__item" display={"flex"} ml={{ base: "10px", lg: "0" }}>
-        <Image
-          src="/icons/call.svg"
-          alt="call icon"
-          width={{ base: "30px", lg: "40px" }}
+        <Call
+          boxSize={{ base: "30px", lg: "40px" }}
+          color="currentColor"
         />
         <Box pl={{ base: "4px", lg: "10px" }}>
           <Text
@@ -254,10 +254,9 @@ useEffect(() => {
       </Box>
 
       <Box width={{base: "100vw", sm: "initial"}} className="header-banner__item" display={"flex"} ml={{ base: "0px", lg: "30px" }} mt={{ base: "4px", md: "0" }}>
-        <Image
-          src="/icons/clock.svg"
-          alt="Clock Icon"
-          width={{ base: "30px", lg: "40px" }}
+        <Clock
+          boxSize={{ base: "30px", lg: "40px" }}
+          color="currentColor"
         />
         <Box pl={{ base: "4px", lg: "10px" }}>
           <Text
@@ -273,10 +272,9 @@ useEffect(() => {
       </Box>
 
       <Box width={{base: "100vw", sm: "initial"}} className="header-banner__item" display={"flex"} ml={{ base: "0px", lg: "30px" }} mt={{ base: "4px", md: "0" }}>
-        <Image
-          src="/icons/location.svg"
-          alt="Location icon"
-          width={{ base: "30px", lg: "40px" }}
+        <Location
+          boxSize={{ base: "30px", lg: "40px" }}
+          color="currentColor"
         />
         <Box pl={{ base: "4px", lg: "10px" }}>
           <Text

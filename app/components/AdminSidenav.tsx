@@ -52,6 +52,7 @@ import {
   Farmers,
   Entries,
   Wallet,
+  Logout,
 } from "../components/Icons";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { useEffect, useState } from "react";
@@ -209,12 +210,9 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         _focus={{ boxShadow: "none" }}
       >
         <Flex align="center" gap="8px">
-          <Image
-            width="16px"
-            height="16px"
-            src={`/icons/logout.svg`}
-            alt="Logout icon"
-            fill="red"
+          <Logout
+            boxSize="16px"
+            color="currentColor"
           />
           <Text>Logout</Text>
         </Flex>
