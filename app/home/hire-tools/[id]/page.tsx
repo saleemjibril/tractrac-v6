@@ -1470,9 +1470,9 @@ function HireTractorForm({ id, groupId }: { id: string, groupId: string }) {
           <option key="cash" value="cash">
             Cash
           </option>
-          {/* <option key="online " value="online">
+          <option key="online " value="online">
             Online
-          </option> */}
+          </option>
         </Select>
         {/* <Input
             variant="flushed"
