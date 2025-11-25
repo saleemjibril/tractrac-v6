@@ -1,4 +1,5 @@
 import axios from "axios";
+import secureLocalStorage from 'react-secure-storage';
 
 export const createSupportTicket = async (data: object, token: string) => {
 
@@ -115,29 +116,44 @@ export const uploadFile = async (id: string, data: object, token: string) => {
   return res;
 };
 
-export async function uploadSupportMedia(mediaFile: File): Promise<string | null> {
-  const url = 'https://api.cloudinary.com/v1_1/tractrac-global/upload';
+export async function uploadSupportMedia(mediaFile: File, folder: string = 'images'): Promise<string | null> {
+  const BASE_URL = process.env.NEXT_PUBLIC_URL
   const formData = new FormData();
 
-  formData.append('upload_preset', 'dswdebju'); // Your unsigned preset
   formData.append('file', mediaFile);
+  formData.append('folder', folder);
 
   try {
-    const response = await fetch(url, {
+    // Get authentication token
+    const userToken = secureLocalStorage.getItem("xak") as string;
+    const adminToken = secureLocalStorage.getItem("xuk") as string;
+    const token = userToken || adminToken;
+
+    const headers: HeadersInit = {};
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+
+    const response = await fetch(`${BASE_URL}/uploads/images`, {
       method: 'POST',
       body: formData,
+      headers,
     });
 
     if (response.ok) {
       const data = await response.json();
-      console.log('Cloudinary Response:', data);
-      return data.secure_url;
+      console.log('Image upload response:', data);
+      
+      // API returns the uploaded image URL as response
+      const imageUrl = typeof data === 'string' ? data : data.url || data.data?.url;
+      return imageUrl || null;
     } else {
-      console.log('Upload failed with status:', response.status);
+      const errorData = await response.json().catch(() => ({}));
+      console.error('Upload failed with status:', response.status, errorData);
       return null;
     }
   } catch (error) {
-    console.log('Upload error:', error);
+    console.error('Upload error:', error);
     return null;
   }
 }
