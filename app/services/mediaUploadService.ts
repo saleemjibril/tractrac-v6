@@ -9,7 +9,7 @@ export interface TractorMediaModel {
 }
 
 class TractorMediaUploadService {
-  private readonly BASE_URL = process.env.NEXT_PUBLIC_URL
+  private readonly BASE_URL = 'https://tractracplus-backend-v6.onrender.com/api/v1';
 
   private getAuthToken(): string | null {
     const userToken = secureLocalStorage.getItem("xak") as string;

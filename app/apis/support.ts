@@ -117,7 +117,7 @@ export const uploadFile = async (id: string, data: object, token: string) => {
 };
 
 export async function uploadSupportMedia(mediaFile: File, folder: string = 'images'): Promise<string | null> {
-  const BASE_URL = process.env.NEXT_PUBLIC_URL
+  const BASE_URL = process.env.NEXT_PUBLIC_URL || 'https://tractracplus-backend-v6.onrender.com/api/v1';
   const formData = new FormData();
 
   formData.append('file', mediaFile);
