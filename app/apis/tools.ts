@@ -116,7 +116,7 @@ export const hireTool = async (data: object, token: string) => {
   };
 
   const res = await axios.post(
-    `${process.env.NEXT_PUBLIC_URL}/hire_addons`,
+    `${process.env.NEXT_PUBLIC_URL}/hire_addons/`,
     data,
     config
   );
@@ -132,7 +132,7 @@ export const getMyHiredTools = async (token: string) => {
   };
 
   const res = await axios.get(
-    `${process.env.NEXT_PUBLIC_URL}/hire_addons`,
+    `${process.env.NEXT_PUBLIC_URL}/hire_addons/`,
     config
   );
 
