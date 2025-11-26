@@ -21,11 +21,11 @@ import {
   ModalFooter,
   useDisclosure,
 } from "@chakra-ui/react";
-import Image from "next/image";
 import { useAppSelector } from "@/redux/hooks";
 import { getMyHiredTractorsDetails, cancelBooking } from "@/app/apis/tractor";
 import { formatAmount } from "@/app/utils/formatNumber";
 import { SidebarWithHeader } from "@/app/components/Sidenav";
+import { Schedule, Pneding, Paid, InUse, Cancelled, Complete, Warning } from "@/app/components/Icons";
 
 interface BookingDetails {
   id: string;
@@ -116,26 +116,26 @@ export default function BookingDetailsPage() {
     }
   };
 
-  const getStatusImage = (status: string) => {
+  const getStatusIcon = (status: string) => {
     const statusLower = status?.toLowerCase();
     switch (statusLower) {
       case "pending":
-        return "/icons/Schedule.svg";
+        return <Schedule boxSize="70px" />;
       case "approved":
       case "payment_pending":
-        return "/icons/Pneding.svg";
+        return <Pneding boxSize="70px" />;
       case "paid":
-        return "/icons/Paid.svg";
+        return <Paid boxSize="70px" />;
       case "in_progress":
-        return "/icons/InUse.svg";
+        return <InUse boxSize="70px" />;
       case "rejected":
       case "cancelled":
       case "abandoned":
-        return "/icons/Cancelled.svg";
+        return <Cancelled boxSize="70px" />;
       case "completed":
-        return "/icons/Complete.svg";
+        return <Complete boxSize="70px" />;
       default:
-        return "/icons/Pneding.svg";
+        return <Pneding boxSize="70px" />;
     }
   };
 
@@ -245,12 +245,7 @@ export default function BookingDetailsPage() {
         <VStack spacing={6} align="stretch">
           {/* Status Icon and Title */}
           <VStack spacing={3} align="center" pt={6}>
-            <Image
-              src={getStatusImage(booking.status)}
-              alt={booking.status}
-              width={70}
-              height={70}
-            />
+            {getStatusIcon(booking.status)}
             <Text fontSize="18px" fontWeight={600}>
               {getStatusText(booking.status)}
             </Text>
@@ -434,12 +429,7 @@ export default function BookingDetailsPage() {
       <ModalContent mx={4}>
         <ModalHeader textAlign="center" pt={6}>
           <VStack spacing={3}>
-            <Image
-              src="/icons/warning.svg"
-              alt="Warning"
-              width={100}
-              height={100}
-            />
+            <Warning boxSize="100px" />
             <Text fontSize="18px" fontWeight={600} color="#333">
               Are you sure?
             </Text>
