@@ -17,7 +17,7 @@ import {
 } from "./Icons";
 import { useRouter } from "next/navigation";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
-import Image from "next/image";
+import { Icon1, Icon2, Icon3, Icon4 } from "./Icons";
 export default function PersonalOverview() {
     const router = useRouter();
   const { userToken, profileInfo } = useAppSelector((state) => state.auth);
@@ -36,35 +36,35 @@ export default function PersonalOverview() {
 
   const stats = [
     {
-      icon: <Image src="/icons/2.svg" alt="Tractors" width={60} height={60} />,
+      icon: <Icon2 boxSize="60px" color="white" />,
       title: "Total Number of Tractors Enlisted",
       value: 0,
       backgroundColor: "#00A2E3",
       link: "/dashboard/enlisted-tractors",
     },
     {
-      icon: <Image src="/icons/2.svg" alt="Tractors" width={60} height={60} />,
+      icon: <Icon2 boxSize="60px" color="white" />,
       title: "Total Number of Tractors Hired",
       value: userStats?.tractors_hired_count || 0,
       backgroundColor: "#0E3850",
       link: "/dashboard/hired-tractors",
     },
     {
-      icon: <Image src="/icons/1.svg" alt="Agro Tools" width={60} height={60} />,
+      icon: <Icon1 boxSize="60px" color="white" />,
       title: "Total Number of Agro Tools Hired",
       value: userStats?.addons_hired_count || 0,
       backgroundColor: "#1C5597",
       link: "/dashboard/hired-tools",
     },
     {
-      icon: <Image src="/icons/3.svg" alt="Approved" width={60} height={60} />,
+      icon: <Icon3 boxSize="60px" color="white" />,
       title: "Approved Leasing Requests",
       value: userStats?.tractor_hire_status_counts?.approved || 0,
       backgroundColor: "#256A6E",
       link: "/dashboard/hired-tractors",
     },
     {
-      icon: <Image src="/icons/4.svg" alt="Cancelled" width={60} height={60} />,
+      icon: <Icon4 boxSize="60px" color="white" />,
       title: "Total cancelled Request",
       value: userStats?.tractor_hire_status_counts?.cancelled || 0,
       backgroundColor: "#01A9A2",
@@ -422,10 +422,7 @@ export default function PersonalOverview() {
                       right="28px"
                       opacity={0.6}
                     >
-                      {item?.icon && React.cloneElement(item.icon, { 
-                        width: "60", 
-                        height: "60" 
-                      })}
+                      {item?.icon}
                     </Box>
                     <Box position="relative" zIndex={1}>
                       <Text 
@@ -503,10 +500,7 @@ export default function PersonalOverview() {
                 right="28px"
                 opacity={0.6}
               >
-                {item?.icon && React.cloneElement(item.icon, { 
-                  width: "60", 
-                  height: "60" 
-                })}
+                {item?.icon}
               </Box>
               <Box position="relative" zIndex={1}>
                 <Text 

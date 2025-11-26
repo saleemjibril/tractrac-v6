@@ -351,7 +351,7 @@ const Map = () => {
         // Create optimized marker icon with smaller size
         if (!cachedIconRef.current) {
           cachedIconRef.current = {
-            url: "/icons/Group.png",
+            url: "https://api.tractrac.co/media/images/248b7dd1-92c1-4122-883f-68149ed9c1e5.png",
             scaledSize: new window.google.maps.Size(32, 32), // Reduced from 40x40
             anchor: new window.google.maps.Point(16, 16),
           };
