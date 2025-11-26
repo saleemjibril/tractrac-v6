@@ -11,16 +11,30 @@ import {
   Tab,
   TabPanel
 } from "@chakra-ui/react";;
-import Image from "@/app/components/Image";
 import { useRouter } from "next/navigation";
 import { ReactNode, useRef, useEffect, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ChakraWrapper } from "../chakraUIWrapper";
+import { Profilecircle, Services, Business } from "./Icons";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
+
+// Helper function to get the icon component based on icon name
+const getIconComponent = (iconName: string) => {
+  switch (iconName.toLowerCase()) {
+    case 'profilecircle':
+      return <Profilecircle boxSize="120px" color="currentColor" />;
+    case 'services':
+      return <Services boxSize="120px" color="currentColor" />;
+    case 'business':
+      return <Business boxSize="120px" color="currentColor" />;
+    default:
+      return <Profilecircle boxSize="120px" color="currentColor" />;
+  }
+};
 
 function TabContent({
   title,
@@ -140,7 +154,7 @@ function TabContent({
           align={{ base: "start", md: "end" }}
         >
           <div ref={iconRef}>
-            <Image src={`icons/${icon}.svg`} alt="" width="120px" />
+            {getIconComponent(icon)}
           </div>
           <div ref={contentRef}>
             <Text mt="12px">
