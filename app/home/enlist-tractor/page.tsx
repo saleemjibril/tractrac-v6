@@ -372,9 +372,9 @@ export default function BecomeAnAgent() {
                 console.log("createTractor", response);
 
                 toast.success("Enlisting successful");
-                setTimeout(() => {
-                  router.push("/dashboard");
-                }, 2000);
+                // setTimeout(() => {
+                //   router.push("/dashboard");
+                // }, 2000);
 
                 // dispatch(enlistTractor(formData));
 
