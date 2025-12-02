@@ -215,15 +215,16 @@ export default function HireTractor() {
     setLoading(true);
     try {
       if (typeof userToken === "string") {
-        const response = await getApprovedTractors(userToken);
+        const coords = await getUserCoordinates();
+        const response = await getApprovedTractors(coords, userToken);
         const tractorsData = response?.data || [];
         console.log("handleGetTractors: Got tractors data:", tractorsData.length);
         
         // Sort tractors by distance before setting state
-        console.log("handleGetTractors: About to sort tractors...");
-        const sortedTractorsData = await sortTractorsByDistance(tractorsData);
-        console.log("handleGetTractors: Sorted tractors:", sortedTractorsData.length);
-        setTractors(sortedTractorsData);
+        // console.log("handleGetTractors: About to sort tractors...");
+        // const sortedTractorsData = await sortTractorsByDistance(tractorsData);
+        // console.log("handleGetTractors: Sorted tractors:", sortedTractorsData.length);
+        setTractors(tractorsData);
         console.log("getTractorss", response);
       } else {
         // Handle the case when userToken is not a string
@@ -1609,6 +1610,7 @@ function TractorCard({
   onCardClick,
   tractorData
 }: ITractorCard) {
+  
 
   const [distance, setDistance] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);

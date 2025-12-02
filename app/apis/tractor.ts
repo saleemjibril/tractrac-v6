@@ -89,7 +89,7 @@ export const getTractor = async (id: string, token: string) => {
   return res;
 };
 
-export const getApprovedTractors = async (token: string) => {
+export const getApprovedTractors = async (coords: any, token: string) => {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -97,7 +97,7 @@ export const getApprovedTractors = async (token: string) => {
   };
 
   const res = await axios.get(
-    `${process.env.NEXT_PUBLIC_URL}/tractors/approved-for-hire?skip=0&limit=100`,
+    `${process.env.NEXT_PUBLIC_URL}/tractors/approved-for-hire?skip=0&limit=100&user_lat=${coords?.latitude}&user_lng=${coords?.longitude}`,
     config
   );
 
