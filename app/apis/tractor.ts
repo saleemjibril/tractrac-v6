@@ -277,3 +277,18 @@ export const filterTractors = async (params: string, token: string) => {
 
   return res;
 };
+
+export const getHireRequestsById = async (hire_tractor_id: string, token: string) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const res = await axios.get(
+    `${process.env.NEXT_PUBLIC_URL}/hire_tractor/hire/${hire_tractor_id}`,
+    config
+  );
+
+  return res;
+};

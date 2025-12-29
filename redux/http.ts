@@ -7,7 +7,7 @@ interface JWTPayload {
 }
 
 const http = axios.create({
-  baseURL: "https://tractracplus-backend-v6.onrender.com/api/v1",
+  baseURL: process.env.NEXT_PUBLIC_URL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -88,6 +88,7 @@ http.interceptors.response.use(
     return response;
   },
   (error: AxiosError) => {
+    console.log("error going to the server", error);
     // Handle 401 Unauthorized responses (token expired/invalid)
     if (error.response?.status === 401) {
       console.log('Token expired or invalid, logging out...');
