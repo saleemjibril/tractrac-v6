@@ -26,6 +26,7 @@ import Image from "@/app/components/Image";
 import Link from "next/link";
 import { FaGlobe, FaChartLine, FaHeart, FaRocket, FaMapMarkerAlt } from "react-icons/fa";
 import BlogCarousel from "./blogCarousel";
+import jobs from "../careers/jobs.json";
 
 interface Post {
   id: string;
@@ -41,7 +42,7 @@ interface Post {
   };
 }
 
-type Job = {
+type JobCardData = {
   id: string;
   title: string;
   location: string;
@@ -50,17 +51,24 @@ type Job = {
   link: string;
 };
 
-const jobs: Job[] = [
-  {
-    id: "1",
-    title: "MERL Manager (Monitoring, Evaluation, Research & Learning)",
-    location: "Onsite, Abuja",
-    type: "Full-time",
-    summary:
-      "Lead the design, implementation, and oversight of Monitoring, Evaluation, Research, and Learning for our programs.",
-    link: "/careers/merl-manager",
-  },
-];
+type JobJson = {
+  id?: string;
+  slug: string;
+  title: string;
+  location: string;
+  type: string;
+  summary?: string;
+  overview?: string;
+};
+
+const jobCards: JobCardData[] = (jobs as JobJson[]).map((job) => ({
+  id: job.id ?? job.slug,
+  title: job.title,
+  location: job.location,
+  type: job.type,
+  summary: job.summary ?? job.overview ?? "",
+  link: `/careers/${job.slug}`,
+}));
 
 export default function CareersInner() {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -466,7 +474,7 @@ export default function CareersInner() {
             <Divider mb="40px" />
 
             <SimpleGrid columns={{ base: 1, md: 1 }} spacing="30px" maxW="800px" mx="auto">
-            {jobs.map((job) => (
+            {jobCards.map((job) => (
               <JobCard key={job.id} job={job} />
             ))}
           </SimpleGrid>
@@ -569,7 +577,7 @@ export default function CareersInner() {
   );
 }
 
-function JobCard({ job }: { job: Job }) {
+function JobCard({ job }: { job: JobCardData }) {
   return (
     <Box boxShadow="lg" p={{ base: "20px", md: "28px" }} borderRadius="12px">
       <Flex mb="12px" alignItems="center" gap="10px" flexWrap="wrap">
@@ -599,6 +607,7 @@ function JobCard({ job }: { job: Job }) {
     </Box>
   );
 }
+
 
 
 
