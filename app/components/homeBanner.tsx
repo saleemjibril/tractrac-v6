@@ -1,7 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
 import {
   Box,
   Text,
@@ -19,40 +18,46 @@ export default function HomeBanner({ title, bannerTitle, subtitle, buttonText, l
   const buttonRef = useRef(null);
   
   useEffect(() => {
-    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-    
-    gsap.set([brandTextRef.current, headingRef.current, subTextRef.current, buttonRef.current], { 
-      opacity: 0,
-      y: 20
-    });
-    
-    gsap.fromTo(bannerRef.current, 
-      { scale: 1.1 }, 
-      { scale: 1, duration: 1.5, ease: "power2.out" }
-    );
-    
-    tl.to(brandTextRef.current, { opacity: 1, y: 0, duration: 0.8 })
-      .to(headingRef.current, { opacity: 1, y: 0, duration: 0.8 }, "-=0.4")
-      .to(subTextRef.current, { opacity: 1, y: 0, duration: 0.8 }, "-=0.4")
-      .to(buttonRef.current, { 
-        opacity: 1, 
-        y: 0, 
-        duration: 0.8,
-        onComplete: () => {
-          gsap.to(buttonRef.current, {
-            scale: 1.05,
-            duration: 0.3,
-            paused: true,
-            repeat: 1,
-            yoyo: true
-          }).play();
-        }
-      }, "-=0.4");
+    // Dynamically load GSAP only when component mounts
+    const loadGSAP = async () => {
+      const { gsap } = await import("gsap");
       
-    // Cleanup function
-    return () => {
-      tl.kill();
+      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+      
+      gsap.set([brandTextRef.current, headingRef.current, subTextRef.current, buttonRef.current], { 
+        opacity: 0,
+        y: 20
+      });
+      
+      gsap.fromTo(bannerRef.current, 
+        { scale: 1.1 }, 
+        { scale: 1, duration: 1.5, ease: "power2.out" }
+      );
+      
+      tl.to(brandTextRef.current, { opacity: 1, y: 0, duration: 0.8 })
+        .to(headingRef.current, { opacity: 1, y: 0, duration: 0.8 }, "-=0.4")
+        .to(subTextRef.current, { opacity: 1, y: 0, duration: 0.8 }, "-=0.4")
+        .to(buttonRef.current, { 
+          opacity: 1, 
+          y: 0, 
+          duration: 0.8,
+          onComplete: () => {
+            gsap.to(buttonRef.current, {
+              scale: 1.05,
+              duration: 0.3,
+              paused: true,
+              repeat: 1,
+              yoyo: true
+            }).play();
+          }
+        }, "-=0.4");
+        
+      return () => {
+        tl.kill();
+      };
     };
+    
+    loadGSAP();
   }, []);
 
   return (

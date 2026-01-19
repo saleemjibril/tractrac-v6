@@ -3,16 +3,19 @@ import { Inter } from "next/font/google";
 import './app.scss';
 import '../styles/pages/_support.scss';
 import { Providers } from "@/redux/provider";
-import SupportWidget from "./components/support";
 import GoogleAnalytics from "./components/googleAnalytics";
 import PageTracker from "./components/pageTracker";
+import WebVitals from "./components/WebVitals";
+import ServiceWorkerRegistration from "./components/ServiceWorkerRegistration";
 import { AuthProvider } from "./components/AuthProvider";
 import FacebookPixel from "./components/facebookPixel";
 
 
 const inter = Inter({
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  weight: ["400", "600", "700"],
   subsets: ["latin"],
+  display: "swap",
+  preload: true,
 });
 
 export const metadata = {
@@ -39,6 +42,8 @@ export default function RootLayout({
         <Providers>
         <AuthProvider>
         <PageTracker />
+        <WebVitals />
+        <ServiceWorkerRegistration />
           {children}
            {/* <SupportWidget /> */}
            </AuthProvider>

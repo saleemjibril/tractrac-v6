@@ -1,7 +1,5 @@
 "use client";
 import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
   Box,
   List,
@@ -19,10 +17,6 @@ import {
 import { ChakraWrapper } from "../chakraUIWrapper";
 import { Tractor_2, List as ListIconSvg, Money } from "./Icons";
 
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
-
 export default function ServicesComponent() {
   const aboutSectionRef = useRef(null);
   const tractorImagesRef = useRef(null);
@@ -36,18 +30,27 @@ export default function ServicesComponent() {
   const leaveHandlersRef = useRef<Array<() => void>>([]);
 
   useEffect(() => {
-    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-    
-    if (aboutSectionRef.current) {
-      gsap.set([tractorImagesRef.current.children], { 
-        opacity: 0, 
-        y: 50 
-      });
+    // Dynamically load GSAP and ScrollTrigger only when component mounts
+    const loadGSAP = async () => {
+      const { gsap } = await import("gsap");
+      const { ScrollTrigger } = await import("gsap/ScrollTrigger");
       
-      gsap.set(aboutTextRef.current.children, { 
-        opacity: 0, 
-        y: 30 
-      });
+      if (typeof window !== "undefined") {
+        gsap.registerPlugin(ScrollTrigger);
+      }
+      
+      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+      
+      if (aboutSectionRef.current) {
+        gsap.set([tractorImagesRef.current.children], { 
+          opacity: 0, 
+          y: 50 
+        });
+        
+        gsap.set(aboutTextRef.current.children, { 
+          opacity: 0, 
+          y: 30 
+        });
 
       tl.fromTo(
         aboutSectionRef.current,
@@ -159,7 +162,10 @@ export default function ServicesComponent() {
         }
       );
     }
-
+    };
+    
+    loadGSAP();
+    
     // Cleanup function
     return () => {
       serviceBoxesRef.current.forEach((box, index) => {
@@ -170,10 +176,6 @@ export default function ServicesComponent() {
           if (onLeave) box.removeEventListener("mouseleave", onLeave);
         }
       });
-      if (typeof window !== "undefined") {
-        ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-      }
-      tl.kill();
     };
   }, []);
 

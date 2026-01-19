@@ -1,34 +1,29 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { transformRequest } from "../utils";
 import { RootState } from "../store";
-// import { baseUrl } from 'src/utils/helpers'
 
 export const userApi = createApi({
   reducerPath: "userApi",
   baseQuery: fetchBaseQuery({
-    // base url of backend API
     baseUrl: " https://tractracplus-backend-v6.onrender.com/api/v1",
-    // prepareHeaders: (headers, { getState }) => {
-    //   return headers;
-    // },
-
-    // prepareHeaders is used to configure the header of every request and gives access to getState which we use to include the token from the store
     prepareHeaders: (headers, { getState }) => {
-      console.log((getState() as RootState).auth);
       const authState = (getState() as RootState).auth;
       const token = authState.userToken;
       if (!headers.has("Content-Type")) {
         headers.set("Content-Type", "application/x-www-form-urlencoded");
       }
       if (token) {
-        // include token in req header
         headers.set("authorization", `Bearer ${token}`);
         return headers;
       }
       return headers;
     },
   }),
-  tagTypes: ['farmers'],
+  tagTypes: ['farmers', 'dashboard', 'stats'],
+  keepUnusedDataFor: 60, // Keep unused data for 60 seconds
+  refetchOnMountOrArgChange: false,
+  refetchOnFocus: false,
+  refetchOnReconnect: true,
   endpoints: (builder) => ({
     // getActiveUsers: builder.query({
     //   query: (page) => ({
@@ -49,12 +44,16 @@ export const userApi = createApi({
         url: `/personal_stats/${user_id}`,
         method: "GET",
       }),
+      providesTags: ['stats'],
+      keepUnusedDataFor: 120,
     }),
     getDashboardStats: builder.query({
       query: () => ({
         url: "/dashboard_stats",
         method: "GET",
       }),
+      providesTags: ['dashboard', 'stats'],
+      keepUnusedDataFor: 120, // Keep dashboard stats for 2 minutes
     }),
     becomeAnAgent: builder.mutation({
       query: ({ user_id, state, lga, town }) => ({

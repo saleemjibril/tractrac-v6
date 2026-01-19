@@ -41,12 +41,10 @@ import {
 } from "@chakra-ui/react";
 import Navbar from "./navbar";
 import { useEffect, useState } from "react";
-import { useStateManager } from "chakra-react-select";
 import { openModal } from "@/redux/features/modalSlice";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { useAppDispatch } from "@/redux/hooks";
 import { SidebarContent } from "./sidebar";
 import { ChakraWrapper } from "../chakraUIWrapper";
-import { toast } from "react-toastify";
 
 export default function Header() {
   const dispatch = useAppDispatch();
@@ -61,7 +59,6 @@ export default function Header() {
   };
   useEffect(() => {
     setShow(true);
-    console.log(isMobile);
   }, [isMobile]);
   return (
     <ChakraWrapper>

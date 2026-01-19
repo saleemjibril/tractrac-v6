@@ -1,31 +1,25 @@
 "use client";
 import {
   Box,
-  ComponentWithAs,
   Flex,
   Grid,
-  IconProps,
-  SimpleGrid,
   Text,
+  Skeleton,
+  SkeletonCircle,
+  SkeletonText,
 } from "@chakra-ui/react";
 import Image from "@/app/components/Image";
 import { SidebarWithHeader } from "../components/Sidenav";
 import {
-  TaskList,
   Tractor_2,
-  Money_2,
-  DemandLight,
-  DemandDark,
-  TaskListWhite,
   AgroTools,
   RightArrow,
 } from "../components/Icons";
-import { createElement, useEffect, useState } from "react";
+import { useEffect, useState, memo } from "react";
 import { useAppSelector } from "@/redux/hooks";
 import { usePathname, useRouter } from "next/navigation";
 import { useGetDashboardStatsQuery } from "@/redux/services/userApi";
 import LoginRequiredModal from "../components/LoginRequiredModal";
-import { toast } from "react-toastify";
 import { getErrorMessage } from "@/app/utils/errorUtils";
 import Link from "next/link";
 import PersonalOverview from "../components/PersonalOverview";
@@ -35,49 +29,41 @@ import moment from "moment";
 import { formatAmount } from "../utils/formatNumber";
 import { statusTypes } from "../utils/tractorStatus";
 
-interface ItemProps {
-  name: string;
-  path: string;
-  icon: ComponentWithAs<"svg", IconProps>;
-  iconActive?: ComponentWithAs<"svg", IconProps>;
-  // imageLight: string;
-  // imageDark: string;
-}
+// Commented out - not currently used
+// interface ItemProps {
+//   name: string;
+//   path: string;
+//   icon: ComponentWithAs<"svg", IconProps>;
+//   iconActive?: ComponentWithAs<"svg", IconProps>;
+// }
 
 export default function Dashboard() {
   const path = usePathname();
   const router = useRouter();
 
-  const PageItems: Array<ItemProps> = [
-    {
-      name: "Hired Tractors",
-      // imageLight: "home-light",
-      // imageDark: "home-dark",
-      icon: Tractor_2,
-      path: `${path}/hired-tractors`,
-    },
-    {
-      name: "Hired Tools",
-      // imageLight: "home-light",
-      // imageDark: "home-dark",
-      icon: AgroTools,
-      path: `${path}/hired-tools`,
-    },
-    {
-      name: "Enlisted Tractors",
-      // imageLight: "pay-light",
-      // imageDark: "pay-dark",
-      icon: TaskList,
-      iconActive: TaskListWhite,
-      path: `${path}/enlisted-tractors`,
-    },
-    {
-      name: "Investment",
-      // imageLight: "pay-light",
-      // imageDark: "pay-dark",
-      icon: Money_2,
-      path: `${path}/investment`,
-    },
+  // Commented out - not currently used
+  // const PageItems: Array<ItemProps> = [
+  //   {
+  //     name: "Hired Tractors",
+  //     icon: Tractor_2,
+  //     path: `${path}/hired-tractors`,
+  //   },
+  //   {
+  //     name: "Hired Tools",
+  //     icon: AgroTools,
+  //     path: `${path}/hired-tools`,
+  //   },
+  //   {
+  //     name: "Enlisted Tractors",
+  //     icon: TaskList,
+  //     iconActive: TaskListWhite,
+  //     path: `${path}/enlisted-tractors`,
+  //   },
+  //   {
+  //     name: "Investment",
+  //     icon: Money_2,
+  //     path: `${path}/investment`,
+  //   },
     // {
     //   name: "Land Processed",
     //   // imageLight: "pay-light",
@@ -126,7 +112,7 @@ export default function Dashboard() {
     //   iconActive: TaskListWhite,
     //   path:  `${path}/agent`,
     // },
-  ];
+  // ];
 
   const [mounted, setMounted] = useState(false);
   const [tractors, setTractors] = useState([]);
@@ -155,15 +141,13 @@ export default function Dashboard() {
     setLoading(true);
     try {
       const response = await getMyHiredTractors(userToken as string);
-      console.log("getMyHiredTractors", response);
-      let tractorData = response?.data?.items || [];
+      const tractorData = response?.data?.items || [];
       setHiredTractors(tractorData);
       return tractorData;
     } catch (err) {
       const error = err as any;
-      const errorMessage = getErrorMessage(error, "An unexpected error occurred");
+      getErrorMessage(error, "An unexpected error occurred");
       setError(true);
-      console.log("Error fetching hired tractors", error);
       return [];
     }
   };
@@ -171,14 +155,12 @@ export default function Dashboard() {
   const handleGetHiredTools = async () => {
     try {
       const response = await getMyHiredTools(userToken as string);
-      console.log("getMyHiredTools", response);
-      let toolData = response?.data || [];
+      const toolData = response?.data || [];
       setHiredTools(toolData);
       return toolData;
     } catch (err) {
       const error = err as any;
-      const errorMessage = getErrorMessage(error, "An unexpected error occurred");
-      console.log("Error fetching hired tools", error);
+      getErrorMessage(error, "An unexpected error occurred");
       return [];
     }
   };
@@ -190,9 +172,6 @@ export default function Dashboard() {
         handleGetHiredTractors(),
         handleGetHiredTools()
       ]);
-
-      console.log("tractorData", tractorData);
-      console.log("toolData", toolData);
 
       // Filter and combine bookings by status
       const tractorPending = tractorData?.filter((item: any) => 
@@ -284,27 +263,22 @@ export default function Dashboard() {
       setRecentBookings(allRecent);
     } catch (err) {
       const error = err as any;
-      const errorMessage = getErrorMessage(error, "An unexpected error occurred");
+      getErrorMessage(error, "An unexpected error occurred");
       setError(true);
-      console.log("Error fetching bookings", error);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    // console.log(profileInfo)
     setMounted(true);
     if (userToken) {
       handleGetAllBookings();
     }
   }, [userToken]);
 
-  console.log("profileInfo", profileInfo);
-
   const {
     data: result,
-    // isFetching,
     isLoading,
   } = useGetDashboardStatsQuery({});
 
@@ -314,17 +288,14 @@ export default function Dashboard() {
       if (typeof userToken === "string") {
         const response = await getMyTractors(userToken);
         setTractors(response?.data);
-        console.log("getMyTractors", response?.data);
         setLoadingTractors(false);
       } else {
-        console.log("User token is not a string");
         setLoadingTractors(false);
       }
     } catch (err) {
       const error = err as any;
       const errorMessage = getErrorMessage(error, "An unexpected error occurred");
       setTractorError(errorMessage);
-      console.log("Error fetching tractors", error);
       setLoadingTractors(false);
     }
   };
@@ -334,9 +305,6 @@ export default function Dashboard() {
       handleGetTractors();
     }
   }, [userToken]);
-
-  console.log(result?.data);
-  console.log("My tractors:", tractors);
 
   /**
    * 
@@ -454,7 +422,12 @@ export default function Dashboard() {
          >
 
           {loadingTractors ? (
-            <Text>Loading tractors...</Text>
+            <Box bg={"white"} padding={"20px"} borderRadius={"4px"} border={"1px solid #FF8E291A"} boxShadow={"0px 0px 4px 0px #FF8E291A"}>
+              <Skeleton height="20px" mb="12px" />
+              <Skeleton height="20px" mb="12px" />
+              <Skeleton height="20px" mb="12px" />
+              <Skeleton height="20px" />
+            </Box>
           ) : tractorError ? (
             <Text color="#E53E3E" fontSize="16px">
               Error loading tractors: {tractorError}
@@ -718,7 +691,7 @@ interface BookingSectionProps {
   viewAllLink: string;
 }
 
-function BookingSection({ title, bookings, viewAllLink }: BookingSectionProps) {
+const BookingSection = memo(function BookingSection({ title, bookings, viewAllLink }: BookingSectionProps) {
   const router = useRouter();
   
   return (
@@ -845,9 +818,9 @@ function BookingSection({ title, bookings, viewAllLink }: BookingSectionProps) {
       )}
     </Box>
   );
-}
+});
 
-function BookingSectionMini({ title, bookings, viewAllLink }: BookingSectionProps) {
+const BookingSectionMini = memo(function BookingSectionMini({ title, bookings, viewAllLink }: BookingSectionProps) {
   const router = useRouter();
   
   return (
@@ -974,4 +947,4 @@ function BookingSectionMini({ title, bookings, viewAllLink }: BookingSectionProp
       )}
     </Box>
   );
-}
+});

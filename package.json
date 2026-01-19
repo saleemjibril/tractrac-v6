@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "analyze": "ANALYZE=true next build",
     "generate-icons": "npx create-chakra-icons  -o ./app/components/Icons.tsx ./public/icons --ts"
   },
   "dependencies": {
@@ -58,6 +59,7 @@
     "typescript": "5.1.6"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "^14.2.0",
     "@types/google.maps": "^3.54.0",
     "@types/nprogress": "^0.2.1",
     "@types/qs": "^6.9.18",

@@ -1,14 +1,34 @@
-import React from "react";
-import ServicesComponent from "./components/services";
-import FooterComponent from "./components/footer";
+import React, { Suspense } from "react";
+import dynamic from "next/dynamic";
 import Header from "./components/header";
+import FooterComponent from "./components/footer";
 import HowItWorksComponent from "./components/howItWorks";
 import FaqComponent from "./components/faq";
-import GetMobileAppComponent from "./components/getMobileAppComponent";
-import OutPartnersComponent from "./components/outPartnersComponent";
-import HomeBanner from "./components/homeBanner";
-import ContactUsComponent from "./components/contactUs";
-import BlogCarouselSection from "./components/blogCarouselSection";
+
+// Dynamic imports for heavy components with GSAP and animations
+const HomeBanner = dynamic(() => import("./components/homeBanner"), {
+  loading: () => <div style={{ minHeight: "400px", backgroundColor: "#f0f0f0" }} />,
+});
+
+const ServicesComponent = dynamic(() => import("./components/services"), {
+  loading: () => <div style={{ minHeight: "300px", backgroundColor: "#fafafa" }} />,
+});
+
+const BlogCarouselSection = dynamic(() => import("./components/blogCarouselSection"), {
+  loading: () => <div style={{ minHeight: "200px", backgroundColor: "#fafafa" }} />,
+});
+
+const GetMobileAppComponent = dynamic(() => import("./components/getMobileAppComponent"), {
+  loading: () => <div style={{ minHeight: "200px", backgroundColor: "#fafafa" }} />,
+});
+
+const OutPartnersComponent = dynamic(() => import("./components/outPartnersComponent"), {
+  loading: () => <div style={{ minHeight: "200px", backgroundColor: "#fafafa" }} />,
+});
+
+const ContactUsComponent = dynamic(() => import("./components/contactUs"), {
+  loading: () => <div style={{ minHeight: "200px", backgroundColor: "#fafafa" }} />,
+});
 
 export async function generateMetadata() {
   return {

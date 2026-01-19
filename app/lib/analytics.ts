@@ -60,3 +60,19 @@ export const trackConversion = (eventName: string, parameters?: Record<string, a
 
   window.gtag('event', eventName, parameters)
 }
+
+// Web Vitals tracking
+export const reportWebVitals = (metric: any): void => {
+  if (!GA_MEASUREMENT_ID || typeof window.gtag === 'undefined') return
+
+  const { name, value, id, delta, rating } = metric
+
+  window.gtag('event', name, {
+    event_category: 'Web Vitals',
+    value: Math.round(name === 'CLS' ? delta * 1000 : delta),
+    event_label: id,
+    non_interaction: true,
+    metric_value: value,
+    metric_rating: rating,
+  })
+}
