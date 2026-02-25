@@ -46,6 +46,9 @@ async function getPostsWithMedia(): Promise<Post[]> {
   }
 }
 
+// Revalidate the carousel content every 1 hour (3600 seconds)
+export const revalidate = 3600;
+
 export default async function BlogCarouselSection() {
   const posts = await getPostsWithMedia();
   if (!posts || posts.length === 0) return null;

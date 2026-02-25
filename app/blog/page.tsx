@@ -63,6 +63,9 @@ export async function generateMetadata() {
   };
 }
 
+// Revalidate the page every 1 hour (3600 seconds)
+// This enables Incremental Static Regeneration (ISR)
+export const revalidate = 3600;
 
 export default async function BlogPosts() {
   // Call the defined function to fetch posts with media

@@ -100,6 +100,32 @@ function getTextFromHtml(html: string): string {
   return html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
 }
 
+// Revalidate individual blog posts every 1 hour (3600 seconds)
+export const revalidate = 3600;
+
+// Generate static paths for all existing blog posts at build time
+export async function generateStaticParams() {
+  const postsQuery = `
+    query AllPosts {
+      posts(first: 100) {
+        nodes {
+          slug
+        }
+      }
+    }
+  `;
+
+  try {
+    const data = await graphQLClient.request<{ posts: { nodes: { slug: string }[] } }>(postsQuery);
+    return data.posts.nodes.map((post) => ({
+      slug: post.slug,
+    }));
+  } catch (error) {
+    console.log('Error fetching posts for static paths:', error);
+    return [];
+  }
+}
+
 export async function generateMetadata() {
   return {
     title: "TracTrac Mechanization Forum 2025: The State of the Mechanization Ecosystem in Nigeria.",
