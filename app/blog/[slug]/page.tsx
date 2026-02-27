@@ -101,7 +101,7 @@ function getTextFromHtml(html: string): string {
 }
 
 // Revalidate individual blog posts every 1 hour (3600 seconds)
-export const revalidate = 3600;
+export const revalidate = 60;
 
 // Generate static paths for all existing blog posts at build time
 export async function generateStaticParams() {
