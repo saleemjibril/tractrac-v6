@@ -5,8 +5,8 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 
 const nextConfig = {
   env: {
-    NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: 'AIzaSyBWo_tQ4rjQkZz1kN5WXfnemHCaF0gQ8BU',
     NEXT_PUBLIC_URL: process.env.NEXT_PUBLIC_URL || 'http://localhost:3000/api/v1',
+    NEXT_PUBLIC_BLOG_API_URL: process.env.NEXT_PUBLIC_BLOG_API_URL || 'http://localhost:4000/api/v1',
     NEXT_PUBLIC_TRACKING_BASE_URL: 'https://africatelematics.com/api',
     NEXT_PUBLIC_TRACKING_LANG: 'en',
   },

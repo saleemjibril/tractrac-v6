@@ -1,14 +1,10 @@
 "use client";
 import React, { useState, useCallback, useEffect, useRef, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import {
-  GoogleMap,
-  Marker,
-  Polyline,
-  Polygon,
-  Circle,
-  useJsApiLoader,
-} from "@react-google-maps/api";
+import { MapContainer, TileLayer, Marker, Popup, Polyline, Polygon, Circle, useMap } from "react-leaflet";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+import { createCustomIcon } from "../leafletLoader";
 import {
   getGeoFences,
   getTrackedTractors,
@@ -197,15 +193,33 @@ const center = {
   lng: 8.6753,
 };
 
-// Base map options (do NOT include center/zoom to avoid resets on rerender)
-const baseMapOptions: google.maps.MapOptions = {
-  mapTypeId: "satellite",
-  disableDefaultUI: false,
-  zoomControl: true,
-  streetViewControl: false,
-  fullscreenControl: true,
-  maxZoom: 21, // Allow closer manual zoom
-  gestureHandling: "greedy", // Allow zoom with mouse wheel and gestures
+// Map type tile layer URLs
+const getTileLayerUrl = (mapType: MapType): string => {
+  switch (mapType) {
+    case 'satellite':
+      return "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}";
+    case 'hybrid':
+      return "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
+    case 'terrain':
+      return "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png";
+    case 'roadmap':
+    default:
+      return "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+  }
+};
+
+const getTileLayerAttribution = (mapType: MapType): string => {
+  switch (mapType) {
+    case 'satellite':
+      return 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community';
+    case 'hybrid':
+      return '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
+    case 'terrain':
+      return 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)';
+    case 'roadmap':
+    default:
+      return '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+  }
 };
 
 // Helper function to parse coordinates string
@@ -258,15 +272,11 @@ const VehicleTrackingMap: React.FC = () => {
 
   const { adminToken } = useAppSelector((state) => state.auth);
   const urlParams = useSearchParams();
-  const { isLoaded, loadError } = useJsApiLoader({
-    id: "google-map-script",
-    googleMapsApiKey: "AIzaSyBWo_tQ4rjQkZz1kN5WXfnemHCaF0gQ8BU", // Your actual API key
-    libraries,
-    version: "weekly",
-  });
+const [isLoaded, setIsLoaded] = useState(true);
+const loadError = null;
 
-  const [map, setMap] = useState<google.maps.Map | null>(null);
-  const [vehicleIcon, setVehicleIcon] = useState<google.maps.Icon | null>(null);
+  const [map, setMap] = useState<L.Map | null>(null);
+  const [vehicleIcon, setVehicleIcon] = useState<L.Icon | null>(null);
   const [devices, setDevices] = useState<TrackedDevice[]>([]);
   const [geofences, setGeofences] = useState<GeofenceItem[]>([]);
   const [history, setHistory] = useState<HistoryItem[]>([]);
@@ -309,24 +319,21 @@ const VehicleTrackingMap: React.FC = () => {
   const pollingIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const POLLING_INTERVAL = 10000; // 10 seconds
   
-  // InfoWindow setup for marker tooltips/details
-  const infoWindowRef = useRef<google.maps.InfoWindow | null>(null);
-  const openInfoWindowDeviceIdRef = useRef<number | null>(null);
+  // Popup setup for marker tooltips/details (replaces InfoWindow)
+  const [openPopupDeviceId, setOpenPopupDeviceId] = useState<number | null>(null);
   const geocodingCacheRef = useRef<Map<string, { state: string; lga: string }>>(new Map());
   
-  // Marker animation refs
-  const markerInstancesRef = useRef<Map<number, google.maps.Marker>>(new Map());
+  // Marker animation refs (Leaflet markers)
+  const markerInstancesRef = useRef<Map<number, L.Marker>>(new Map());
   const previousPositionsRef = useRef<Map<number, { lat: number; lng: number }>>(new Map());
   const animationFramesRef = useRef<Map<number, number>>(new Map());
   const animatingMarkersRef = useRef<Set<number>>(new Set());
   const devicePathsRef = useRef<Map<number, Array<{ lat: number; lng: number }>>>(new Map());
   const [animatedPositions, setAnimatedPositions] = useState<Map<number, { lat: number; lng: number }>>(new Map());
   
-  // Memoize map options to prevent unnecessary re-renders
-  const mapOptions = useMemo(() => ({
-    ...baseMapOptions,
-    mapTypeId: mapType
-  }), [mapType]);
+  // Map type tile layer URL (memoized)
+  const tileLayerUrl = useMemo(() => getTileLayerUrl(mapType), [mapType]);
+  const tileLayerAttribution = useMemo(() => getTileLayerAttribution(mapType), [mapType]);
   
   // Dynamic map container style based on fullscreen state
   const mapContainerStyle = useMemo(() => ({
@@ -407,25 +414,22 @@ const VehicleTrackingMap: React.FC = () => {
     type: "geofence_inout",
   });
 
-  // Fallback icon - always use Group.png (function to avoid google not defined error)
-  const getFallbackIcon = (): google.maps.Icon | null => {
-    if (typeof google === 'undefined' || !google.maps) {
-      return null;
-    }
-    return {
-      url: "/icons/Group.png",
-      scaledSize: new google.maps.Size(32, 32),
-      anchor: new google.maps.Point(16, 16),
-    };
+  // Fallback icon - always use Group.png
+  const getFallbackIcon = (): L.Icon => {
+    return createCustomIcon({
+      iconUrl: "/icons/Group.png",
+      iconSize: [32, 32],
+      iconAnchor: [16, 16],
+    });
   };
 
   // State to store rotated icons cache
-  const [rotatedIconsCache, setRotatedIconsCache] = useState<Map<string, google.maps.Icon>>(new Map());
+  const [rotatedIconsCache, setRotatedIconsCache] = useState<Map<string, L.Icon>>(new Map());
   const iconImageRef = useRef<HTMLImageElement | null>(null);
 
   // Load the base icon image once
   useEffect(() => {
-    if (typeof google === 'undefined' || !google.maps || iconImageRef.current) return;
+    if (iconImageRef.current) return;
     
     const img = new Image();
     img.crossOrigin = 'anonymous';
@@ -436,11 +440,7 @@ const VehicleTrackingMap: React.FC = () => {
   }, []);
 
   // Function to create rotated vehicle icon based on course/bearing
-  const getVehicleIconWithRotation = useCallback((course: number): google.maps.Icon | null => {
-    if (typeof google === 'undefined' || !google.maps) {
-      return getFallbackIcon();
-    }
-
+  const getVehicleIconWithRotation = useCallback((course: number): L.Icon => {
     // Round course to nearest 5 degrees for caching (reduce cache size)
     const roundedCourse = Math.round(course / 5) * 5;
     const cacheKey = `icon_${roundedCourse}`;
@@ -474,11 +474,11 @@ const VehicleTrackingMap: React.FC = () => {
     ctx.drawImage(iconImageRef.current, -size / 2, -size / 2, size, size);
     ctx.restore();
     
-    const rotatedIcon: google.maps.Icon = {
-      url: canvas.toDataURL(),
-      scaledSize: new google.maps.Size(32, 32),
-      anchor: new google.maps.Point(16, 16),
-    };
+    const rotatedIcon = L.icon({
+      iconUrl: canvas.toDataURL(),
+      iconSize: [32, 32],
+      iconAnchor: [16, 16],
+    });
 
     // Cache the rotated icon
     setRotatedIconsCache(prev => {
@@ -999,22 +999,19 @@ const VehicleTrackingMap: React.FC = () => {
   const fitBoundsToDevices = useCallback(() => {
     if (!map || devices.length === 0) return;
 
-    const bounds = new google.maps.LatLngBounds();
+    const bounds = L.latLngBounds([]);
     let hasValidBounds = false;
 
     devices.forEach((device) => {
       if (device.lat && device.lng && device.lat !== 0 && device.lng !== 0) {
-        bounds.extend({ lat: device.lat, lng: device.lng });
+        bounds.extend([device.lat, device.lng]);
         hasValidBounds = true;
       }
     });
 
     if (hasValidBounds) {
       map.fitBounds(bounds, {
-        top: 50,
-        right: 50,
-        bottom: 50,
-        left: 50,
+        padding: [50, 50],
       });
     }
   }, [map, devices]);
@@ -1032,7 +1029,7 @@ const VehicleTrackingMap: React.FC = () => {
   }, []);
 
   // Clustering function - groups nearby devices
-  const clusterDevices = useCallback((devices: TrackedDevice[], map: google.maps.Map | null): Array<{ center: { lat: number; lng: number }, devices: TrackedDevice[], count: number }> => {
+  const clusterDevices = useCallback((devices: TrackedDevice[], map: L.Map | null): Array<{ center: { lat: number; lng: number }, devices: TrackedDevice[], count: number }> => {
     if (!map || !showGrouping) {
       return devices.map(d => ({ center: { lat: d.lat, lng: d.lng }, devices: [d], count: 1 }));
     }
@@ -1101,7 +1098,7 @@ const VehicleTrackingMap: React.FC = () => {
   }, []);
 
   // Function to smoothly animate marker from old position to new position
-  const animateMarker = useCallback((marker: google.maps.Marker, deviceId: number, from: { lat: number; lng: number }, to: { lat: number; lng: number }, duration: number = 2000) => {
+  const animateMarker = useCallback((marker: L.Marker, deviceId: number, from: { lat: number; lng: number }, to: { lat: number; lng: number }, duration: number = 2000) => {
     // Mark this marker as animating
     animatingMarkersRef.current.add(deviceId);
     
@@ -1124,22 +1121,19 @@ const VehicleTrackingMap: React.FC = () => {
       const currentLng = startLng + deltaLng * easeInOut;
 
       // Update marker position directly (this overrides React prop updates)
-      marker.setPosition({ lat: currentLat, lng: currentLng });
+      marker.setLatLng([currentLat, currentLng]);
       
-      // Update animated positions state for info window positioning
+      // Update animated positions state for popup positioning
       setAnimatedPositions(prev => {
         const newMap = new Map(prev);
         newMap.set(deviceId, { lat: currentLat, lng: currentLng });
         return newMap;
       });
       
-      // Update info window position if it's open for this device
-      if (infoWindowRef.current && openInfoWindowDeviceIdRef.current === deviceId && map) {
-        const currentPos = { lat: currentLat, lng: currentLng };
-        infoWindowRef.current.setPosition(currentPos);
-        
-        // Auto-pan if device is moving out of view during animation
+      // Auto-pan if device is moving out of view during animation
+      if (map) {
         const bounds = map.getBounds();
+        const currentPos: [number, number] = [currentLat, currentLng];
         if (bounds && !bounds.contains(currentPos)) {
           map.panTo(currentPos);
         }
@@ -1150,7 +1144,7 @@ const VehicleTrackingMap: React.FC = () => {
         animationFramesRef.current.set(deviceId, frameId);
       } else {
         // Animation complete, ensure final position is exact
-        marker.setPosition(to);
+        marker.setLatLng([to.lat, to.lng]);
         // Clear animated position so Marker uses device position from state
         setAnimatedPositions(prev => {
           const newMap = new Map(prev);
@@ -1165,7 +1159,7 @@ const VehicleTrackingMap: React.FC = () => {
     animate();
   }, [map]);
 
-  // Generate InfoWindow content for device details
+  // Generate Popup content for device details
   const generateInfoContent = useCallback((device: TrackedDevice, isLoading: boolean = false) => {
     const getBatteryLevel = (device: TrackedDevice): string => {
       const batterySensor = device.sensors?.find(
@@ -1188,47 +1182,50 @@ const VehicleTrackingMap: React.FC = () => {
         : "Off"
       : "N/A";
 
+    const statusColor = device.online === 'online' ? '#000000' : device.online === 'ack' ? '#FA9411' : '#dc3545';
+    const statusText = device.online === "online" ? "Moving" : device.online === "ack" ? "Online" : "Offline";
+
     if (isLoading) {
-    return `
-      <div style="padding: 12px; min-width: 250px; font-family: Arial, sans-serif;">
-        <h3 style="margin: 0 0 10px 0; font-size: 16px; font-weight: bold; color: #333;">${device.name}</h3>
-        <div style="margin-bottom: 8px;">
-          <strong style="color: #666;">Status:</strong> 
-          <span style="color: ${device.online === 'online' ? '#000000' : device.online === 'ack' ? '#FA9411' : '#dc3545'}; font-weight: bold;">
-            ${device.online === "online" ? "Moving" : device.online === "ack" ? "Online" : "Offline"}
-          </span>
+      return (
+        <div style={{ padding: "12px", minWidth: "250px", fontFamily: "Arial, sans-serif" }}>
+          <h3 style={{ margin: "0 0 10px 0", fontSize: "16px", fontWeight: "bold", color: "#333" }}>{device.name}</h3>
+          <div style={{ marginBottom: "8px" }}>
+            <strong style={{ color: "#666" }}>Status:</strong>{" "}
+            <span style={{ color: statusColor, fontWeight: "bold" }}>{statusText}</span>
+          </div>
+          <div style={{ marginBottom: "8px" }}><strong style={{ color: "#666" }}>Tracker ID:</strong> {device.id}</div>
+          {device.driver && <div style={{ marginBottom: "8px" }}><strong style={{ color: "#666" }}>Driver:</strong> {device.driver}</div>}
+          {device.address && <div style={{ marginBottom: "8px" }}><strong style={{ color: "#666" }}>Address:</strong> {device.address}</div>}
+          <div style={{ marginBottom: "8px", color: "#666" }}><em>Loading location details...</em></div>
         </div>
-        <div style="margin-bottom: 8px;"><strong style="color: #666;">Tracker ID:</strong> ${device.id}</div>
-        ${device.driver ? `<div style="margin-bottom: 8px;"><strong style="color: #666;">Driver:</strong> ${device.driver}</div>` : ''}
-        ${device.address ? `<div style="margin-bottom: 8px;"><strong style="color: #666;">Address:</strong> ${device.address}</div>` : ''}
-          <div style="margin-bottom: 8px; color: #666;"><em>Loading location details...</em></div>
-        </div>
-      `;
+      );
     }
 
-    return `
-      <div style="padding: 12px; min-width: 250px; font-family: Arial, sans-serif;">
-        <h3 style="margin: 0 0 10px 0; font-size: 16px; font-weight: bold; color: #333;">${device.name}</h3>
-        <div style="margin-bottom: 8px;">
-          <strong style="color: #666;">Status:</strong> 
-          <span style="color: ${device.online === 'online' ? '#000000' : device.online === 'ack' ? '#FA9411' : '#dc3545'}; font-weight: bold;">
-            ${device.online === "online" ? "Moving" : device.online === "ack" ? "Online" : "Offline"}
-          </span>
+    return (
+      <div style={{ padding: "12px", minWidth: "250px", fontFamily: "Arial, sans-serif" }}>
+        <h3 style={{ margin: "0 0 10px 0", fontSize: "16px", fontWeight: "bold", color: "#333" }}>{device.name}</h3>
+        <div style={{ marginBottom: "8px" }}>
+          <strong style={{ color: "#666" }}>Status:</strong>{" "}
+          <span style={{ color: statusColor, fontWeight: "bold" }}>{statusText}</span>
         </div>
-        <div style="margin-bottom: 8px;"><strong style="color: #666;">Tracker ID:</strong> ${device.id}</div>
-        ${device.driver ? `<div style="margin-bottom: 8px;"><strong style="color: #666;">Driver:</strong> ${device.driver}</div>` : ''}
-        ${device.address ? `<div style="margin-bottom: 8px;"><strong style="color: #666;">Address:</strong> ${device.address}</div>` : ''}
-        ${device.state ? `<div style="margin-bottom: 8px;"><strong style="color: #666;">State:</strong> ${device.state}</div>` : ''}
-        ${device.lga ? `<div style="margin-bottom: 8px;"><strong style="color: #666;">Local Government:</strong> ${device.lga}</div>` : ''}
-        <div style="margin-bottom: 8px;"><strong style="color: #666;">Speed:</strong> ${device.speed} ${device.device_data?.distance_unit_hour || "km/h"}</div>
-        <div style="margin-bottom: 8px;"><strong style="color: #666;">Total Distance:</strong> ${device.total_distance || 0} ${device.unit_of_distance || "km"}</div>
-        <div style="margin-bottom: 8px;"><strong style="color: #666;">Ignition:</strong> ${ignitionText}</div>
-        <div style="margin-bottom: 8px;"><strong style="color: #666;">Engine Hours:</strong> ${getEngineHours(device)}</div>
-        <div style="margin-bottom: 8px;"><strong style="color: #666;">Battery Level:</strong> ${getBatteryLevel(device)}</div>
-        <div style="margin-bottom: 8px;"><strong style="color: #666;">Last Update:</strong> ${device.time || new Date(device.timestamp * 1000).toLocaleString()}</div>
-        ${device.alarm ? `<div style="margin-top: 8px; padding: 6px; background: #fee; border-left: 3px solid #dc3545; color: #dc3545; font-weight: bold;">⚠️ Alarm: ${device.alarm}</div>` : ''}
+        <div style={{ marginBottom: "8px" }}><strong style={{ color: "#666" }}>Tracker ID:</strong> {device.id}</div>
+        {device.driver && <div style={{ marginBottom: "8px" }}><strong style={{ color: "#666" }}>Driver:</strong> {device.driver}</div>}
+        {device.address && <div style={{ marginBottom: "8px" }}><strong style={{ color: "#666" }}>Address:</strong> {device.address}</div>}
+        {device.state && <div style={{ marginBottom: "8px" }}><strong style={{ color: "#666" }}>State:</strong> {device.state}</div>}
+        {device.lga && <div style={{ marginBottom: "8px" }}><strong style={{ color: "#666" }}>Local Government:</strong> {device.lga}</div>}
+        <div style={{ marginBottom: "8px" }}><strong style={{ color: "#666" }}>Speed:</strong> {device.speed} {device.device_data?.distance_unit_hour || "km/h"}</div>
+        <div style={{ marginBottom: "8px" }}><strong style={{ color: "#666" }}>Total Distance:</strong> {device.total_distance || 0} {device.unit_of_distance || "km"}</div>
+        <div style={{ marginBottom: "8px" }}><strong style={{ color: "#666" }}>Ignition:</strong> {ignitionText}</div>
+        <div style={{ marginBottom: "8px" }}><strong style={{ color: "#666" }}>Engine Hours:</strong> {getEngineHours(device)}</div>
+        <div style={{ marginBottom: "8px" }}><strong style={{ color: "#666" }}>Battery Level:</strong> {getBatteryLevel(device)}</div>
+        <div style={{ marginBottom: "8px" }}><strong style={{ color: "#666" }}>Last Update:</strong> {device.time || new Date(device.timestamp * 1000).toLocaleString()}</div>
+        {device.alarm && (
+          <div style={{ marginTop: "8px", padding: "6px", background: "#fee", borderLeft: "3px solid #dc3545", color: "#dc3545", fontWeight: "bold" }}>
+            ⚠️ Alarm: {device.alarm}
+          </div>
+        )}
       </div>
-    `;
+    );
   }, []);
 
   // Function to update device positions (for polling)
@@ -1330,26 +1327,19 @@ const VehicleTrackingMap: React.FC = () => {
           }
         });
         
-        // Update info window content if it's open and auto-pan to selected device
-        if (infoWindowRef.current && openInfoWindowDeviceIdRef.current !== null && map) {
-        const deviceId = openInfoWindowDeviceIdRef.current;
+        // Auto-pan map to keep selected device in view if popup is open
+        if (openPopupDeviceId !== null && map) {
+          const deviceId = openPopupDeviceId;
           const device = updatedDevices.find((d) => d.id === deviceId);
           if (device) {
-          infoWindowRef.current.setContent(generateInfoContent(device));
-            
             // Auto-pan map to keep selected device in view
-            const devicePosition = { lat: device.lat, lng: device.lng };
+            const devicePosition: [number, number] = [device.lat, device.lng];
             const bounds = map.getBounds();
             
             // Check if device is outside current viewport
             if (bounds && !bounds.contains(devicePosition)) {
               // Smoothly pan to device position
               map.panTo(devicePosition);
-            } else {
-              // Device is in view, but update info window position smoothly
-              const animatedPos = animatedPositions.get(deviceId);
-              const currentPos = animatedPos || devicePosition;
-              infoWindowRef.current.setPosition(currentPos);
             }
           }
         }
@@ -1400,54 +1390,28 @@ const VehicleTrackingMap: React.FC = () => {
     }
   }, [map, generateInfoContent, animateMarker]);
 
-  const onLoad = useCallback((map: google.maps.Map) => {
-    console.log("Map loaded successfully");
-    
-    // Create the vehicle icon after Google Maps API is loaded
-    try {
-      const icon: google.maps.Icon = {
-        url: "/icons/Group.png",
-        scaledSize: new google.maps.Size(32, 32),
-        anchor: new google.maps.Point(16, 16),
-      };
-      setVehicleIcon(icon);
-      console.log("Vehicle icon created successfully");
-    } catch (error) {
-      console.error("Error creating vehicle icon:", error);
-    }
-    
-    // Create reusable InfoWindow
-    try {
-      infoWindowRef.current = new google.maps.InfoWindow();
-      // Add listener to clear the device ID when info window is closed
-      infoWindowRef.current.addListener('closeclick', () => {
-        openInfoWindowDeviceIdRef.current = null;
-      });
-      console.log("InfoWindow created successfully");
-    } catch (error) {
-      console.error("Error creating InfoWindow:", error);
-    }
-    
-    // Set initial center/zoom only once on load to avoid future resets
-    try {
-      map.setCenter(center);
-      map.setZoom(8);
-    } catch (e) {
-      // console.warn("Failed to set initial map center/zoom:", e);
-    }
-    
-    setMap(map);
+  // Initialize vehicle icon
+  useEffect(() => {
+    const icon = createCustomIcon({
+      iconUrl: "/icons/Group.png",
+      iconSize: [32, 32],
+      iconAnchor: [16, 16],
+    });
+    setVehicleIcon(icon);
   }, []);
 
-  const onUnmount = useCallback(() => {
-    setMap(null);
-    setVehicleIcon(null);
-    // Close InfoWindow if open
-    if (infoWindowRef.current) {
-      infoWindowRef.current.close();
-      infoWindowRef.current = null;
-    }
-    openInfoWindowDeviceIdRef.current = null;
+  // Map ready handler component
+  function MapReadyHandler() {
+    const mapInstance = useMap();
+    
+    useEffect(() => {
+      setMap(mapInstance);
+      setIsLoaded(true);
+      console.log("Map loaded successfully");
+    }, [mapInstance]);
+    
+    return null;
+  }
     // Clear polling interval on unmount
     if (pollingIntervalRef.current) {
       clearInterval(pollingIntervalRef.current);
@@ -1491,10 +1455,10 @@ const VehicleTrackingMap: React.FC = () => {
   // Get polyline options based on device tail color
   const getTrailOptions = (
     device: TrackedDevice
-  ): google.maps.PolylineOptions => ({
-    strokeColor: device.device_data?.tail_color || "#FF0000",
-    strokeOpacity: 1.0,
-    strokeWeight: parseInt(device.device_data?.tail_length) || 3,
+  ): L.PolylineOptions => ({
+    color: device.device_data?.tail_color || "#FF0000",
+    weight: parseInt(device.device_data?.tail_length) || 3,
+    opacity: 1.0,
   });
 
   // Handle device visibility toggle
@@ -1618,30 +1582,44 @@ const VehicleTrackingMap: React.FC = () => {
     setDrawnRadius(null);
   };
 
-  const handleMapClick = (event: google.maps.MapMouseEvent) => {
-    if (!isDrawingMode || !drawingType || !event.latLng) return;
+  // Map click handler component
+  function MapClickHandler() {
+    const mapInstance = useMap();
+    
+    useEffect(() => {
+      if (!isDrawingMode || !drawingType) return;
+      
+      const handleClick = (e: L.LeafletMouseEvent) => {
+        const lat = e.latlng.lat;
+        const lng = e.latlng.lng;
 
-    const lat = event.latLng.lat();
-    const lng = event.latLng.lng();
-
-    if (drawingType === "circle") {
-      if (!drawnCenter) {
-        // First click sets center
-        setDrawnCenter({ lat, lng });
-      } else {
-        // Second click sets radius
-        const radius = google.maps.geometry.spherical.computeDistanceBetween(
-          new google.maps.LatLng(drawnCenter.lat, drawnCenter.lng),
-          new google.maps.LatLng(lat, lng)
-        );
-        setDrawnRadius(radius);
-        setIsDrawingMode(false);
-        setDrawingType(null);
-      }
-    } else if (drawingType === "polygon") {
-      setDrawnCoordinates((prev) => [...prev, { lat, lng }]);
-    }
-  };
+        if (drawingType === "circle") {
+          if (!drawnCenter) {
+            // First click sets center
+            setDrawnCenter({ lat, lng });
+          } else {
+            // Second click sets radius (calculate distance in meters)
+            const radius = mapInstance.distance(
+              [drawnCenter.lat, drawnCenter.lng],
+              [lat, lng]
+            );
+            setDrawnRadius(radius);
+            setIsDrawingMode(false);
+            setDrawingType(null);
+          }
+        } else if (drawingType === "polygon") {
+          setDrawnCoordinates((prev) => [...prev, { lat, lng }]);
+        }
+      };
+      
+      mapInstance.on('click', handleClick);
+      return () => {
+        mapInstance.off('click', handleClick);
+      };
+    }, [mapInstance, isDrawingMode, drawingType, drawnCenter]);
+    
+    return null;
+  }
 
   const finishPolygonDrawing = () => {
     if (drawnCoordinates.length >= 3) {
@@ -1866,19 +1844,19 @@ const VehicleTrackingMap: React.FC = () => {
   // Get polygon options based on geofence color
   const getPolygonOptions = (
     geofence: GeofenceItem
-  ): google.maps.PolygonOptions => ({
-    strokeColor: geofence.polygon_color || "#00FF00",
-    strokeOpacity: 0.8,
-    strokeWeight: 2,
+  ): L.PathOptions => ({
+    color: geofence.polygon_color || "#00FF00",
+    weight: 2,
+    opacity: 0.8,
     fillColor: geofence.polygon_color || "#00FF00",
     fillOpacity: 0.2,
   });
 
   // Circle options for circular geofences
-  const circleOptions: google.maps.CircleOptions = {
-    strokeColor: "#0000FF",
-    strokeOpacity: 0.8,
-    strokeWeight: 2,
+  const circleOptions: L.PathOptions = {
+    color: "#0000FF",
+    weight: 2,
+    opacity: 0.8,
     fillColor: "#0000FF",
     fillOpacity: 0.2,
   };
@@ -3828,13 +3806,19 @@ const VehicleTrackingMap: React.FC = () => {
             </button>
         </div>
         
-        <GoogleMap
-          mapContainerStyle={mapContainerStyle}
-          onLoad={onLoad}
-          onUnmount={onUnmount}
-          onClick={handleMapClick}
-          options={mapOptions}
+        <MapContainer
+          center={[center.lat, center.lng]}
+          zoom={8}
+          style={mapContainerStyle}
+          scrollWheelZoom={true}
         >
+          <MapReadyHandler />
+          <TileLayer
+            key={mapType}
+            attribution={tileLayerAttribution}
+            url={tileLayerUrl}
+          />
+          <MapClickHandler />
           {/* Render Device Trails (only for visible devices) */}
           {showTails && devices
             .filter((device) => visibleDevices.has(device.id))
@@ -3854,16 +3838,12 @@ const VehicleTrackingMap: React.FC = () => {
                   //   "points"
                   // );
                   
+                  const trailOptions = getTrailOptions(device);
                   return (
                     <Polyline
                       key={`trail-${device.id}`}
-                      path={trailCoordinates}
-                      options={getTrailOptions(device)}
-                      // onLoad={() =>
-                      //   console.log(
-                      //     `Trail for device ${device.id} loaded successfully`
-                      //   )
-                      // }
+                      positions={trailCoordinates.map(c => [c.lat, c.lng] as [number, number])}
+                      pathOptions={trailOptions}
                     />
                   );
                 }
@@ -3925,125 +3905,112 @@ const VehicleTrackingMap: React.FC = () => {
                 Math.abs(targetPos.lng - markerPosition.lng) > 0.0001
               ) ? targetPos : null;
               
+              const needsGeocoding = !device.state || !device.lga;
               return (
                 <>
                   <Marker
                     key={device.id}
-                    position={markerPosition}
+                    position={[markerPosition.lat, markerPosition.lng]}
                     icon={deviceIcon}
-                    title={device.name}
-                  onClick={async () => {
-                    if (!infoWindowRef.current || !map) return;
-                    
-                    const position = { lat: device.lat, lng: device.lng };
-                    
-                    // Show device info immediately (or loading if no state/LGA)
-                    const needsGeocoding = !device.state || !device.lga;
-                    infoWindowRef.current.setContent(generateInfoContent(device, needsGeocoding));
-                    infoWindowRef.current.setPosition(position);
-                    infoWindowRef.current.open(map);
-                    openInfoWindowDeviceIdRef.current = device.id;
-
-                    // If device needs geocoding, fetch it now
-                    if (needsGeocoding && device.lat && device.lng) {
-                      try {
-                        const location = await reverseGeocode(device.lat, device.lng);
+                    eventHandlers={{
+                      click: async () => {
+                        setOpenPopupDeviceId(device.id);
                         
-                        // Update device in devices state
-                        setDevices((prevDevices) => {
-                          return prevDevices.map((d) => {
-                            if (d.id === device.id) {
-                              return {
-                                ...d,
-                                state: location.state,
-                                lga: location.lga
-                              };
-                            }
-                            return d;
-                          });
-                        });
-                        
-                        // Update info window with new data
-                        if (infoWindowRef.current && openInfoWindowDeviceIdRef.current === device.id) {
-                          const updatedDevice = {
-                            ...device,
-                            state: location.state,
-                            lga: location.lga
-                          };
-                          infoWindowRef.current.setContent(generateInfoContent(updatedDevice, false));
+                        // If device needs geocoding, fetch it now
+                        if (needsGeocoding && device.lat && device.lng) {
+                          try {
+                            const location = await reverseGeocode(device.lat, device.lng);
+                            
+                            // Update device in devices state
+                            setDevices((prevDevices) => {
+                              return prevDevices.map((d) => {
+                                if (d.id === device.id) {
+                                  return {
+                                    ...d,
+                                    state: location.state,
+                                    lga: location.lga
+                                  };
+                                }
+                                return d;
+                              });
+                            });
+                          } catch (error) {
+                            console.warn(`Failed to geocode device ${device.id}:`, error);
+                          }
                         }
-                      } catch (error) {
-                        // console.warn(`Failed to geocode device ${device.id}:`, error);
-                        // Update info window to show error or partial data
-                        if (infoWindowRef.current && openInfoWindowDeviceIdRef.current === device.id) {
-                          infoWindowRef.current.setContent(generateInfoContent(device, false));
+                      },
+                      add: (e) => {
+                        // Store marker instance for animation
+                        const marker = e.target as L.Marker;
+                        markerInstancesRef.current.set(device.id, marker);
+                        // Store initial position
+                        if (!previousPositionsRef.current.has(device.id)) {
+                          previousPositionsRef.current.set(device.id, { lat: device.lat, lng: device.lng });
                         }
-                      }
-                    }
-                  }}
-                  onLoad={(marker) => {
-                    // Store marker instance for animation
-                    if (marker) {
-                      markerInstancesRef.current.set(device.id, marker);
-                      // Store initial position
-                      if (!previousPositionsRef.current.has(device.id)) {
-                        previousPositionsRef.current.set(device.id, { lat: device.lat, lng: device.lng });
-                      }
-                    }
-                    // console.log(
-                    //   `Device marker ${device.id} loaded successfully`
-                    // );
-                  }}
-                />
+                      },
+                    }}
+                  >
+                    <Popup>
+                      {generateInfoContent(device, needsGeocoding)}
+                    </Popup>
+                  </Marker>
                 {/* White dot marker showing target position for moving tractors */}
                 {targetPosition && (
                   <Marker
                     key={`target-${device.id}`}
-                    position={targetPosition}
-                    icon={{
-                      path: google.maps.SymbolPath.CIRCLE,
-                      scale: 6,
-                      fillColor: "#FFFFFF",
-                      fillOpacity: 1,
-                      strokeColor: "#000000",
-                      strokeWeight: 1,
-                    }}
-                    title={`Target position for ${device.name}`}
-                    zIndex={1000}
-                  />
+                    position={[targetPosition.lat, targetPosition.lng]}
+                    icon={L.divIcon({
+                      className: 'target-marker',
+                      html: '<div style="width: 12px; height: 12px; background-color: #FFFFFF; border: 1px solid #000000; border-radius: 50%;"></div>',
+                      iconSize: [12, 12],
+                      iconAnchor: [6, 6],
+                    })}
+                  >
+                    <Popup>
+                      Target position for {device.name}
+                    </Popup>
+                  </Marker>
                 )}
               </>
               );
               } else {
                 // Cluster - render cluster marker
+                const clusterSize = 10 + Math.min(cluster.count * 2, 20);
                 return (
                   <Marker
                     key={`cluster-${cluster.center.lat}-${cluster.center.lng}`}
-                    position={cluster.center}
-                    icon={{
-                      path: google.maps.SymbolPath.CIRCLE,
-                      scale: 10 + Math.min(cluster.count * 2, 20),
-                      fillColor: "#4285F4",
-                      fillOpacity: 0.6,
-                      strokeColor: "#FFFFFF",
-                      strokeWeight: 2,
+                    position={[cluster.center.lat, cluster.center.lng]}
+                    icon={L.divIcon({
+                      className: 'cluster-marker',
+                      html: `<div style="
+                        width: ${clusterSize}px;
+                        height: ${clusterSize}px;
+                        background-color: #4285F4;
+                        border: 2px solid #FFFFFF;
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        color: #FFFFFF;
+                        font-weight: bold;
+                        font-size: 12px;
+                      ">${cluster.count}</div>`,
+                      iconSize: [clusterSize, clusterSize],
+                      iconAnchor: [clusterSize / 2, clusterSize / 2],
+                    })}
+                    eventHandlers={{
+                      click: () => {
+                        if (map) {
+                          // Zoom in on cluster
+                          map.setView([cluster.center.lat, cluster.center.lng], (map.getZoom() || 8) + 2);
+                        }
+                      },
                     }}
-                    label={{
-                      text: cluster.count.toString(),
-                      color: "#FFFFFF",
-                      fontSize: "12px",
-                      fontWeight: "bold",
-                    }}
-                    title={`${cluster.count} devices`}
-                    onClick={() => {
-                      if (map) {
-                        // Zoom in on cluster
-                        map.setCenter(cluster.center);
-                        map.setZoom((map.getZoom() || 8) + 2);
-                      }
-                    }}
-                    onLoad={() => console.log(`Cluster marker loaded with ${cluster.count} devices`)}
-                  />
+                  >
+                    <Popup>
+                      {cluster.count} devices
+                    </Popup>
+                  </Marker>
                 );
               }
             });
@@ -4052,290 +4019,131 @@ const VehicleTrackingMap: React.FC = () => {
           {/* Render Selected History Trail */}
           {selectedHistoryTrail && selectedHistoryTrail.length > 1 && (
             <Polyline
-                path={selectedHistoryTrail.map((point) => ({
-                lat: point.lat,
-                lng: point.lng,
-              }))}
-              options={{
-                  strokeColor: "#FF6B35",
-                strokeOpacity: 1.0,
-                strokeWeight: 4,
-                geodesic: true,
+              positions={selectedHistoryTrail.map((point) => [point.lat, point.lng] as [number, number])}
+              pathOptions={{
+                color: "#FF6B35",
+                weight: 4,
+                opacity: 1.0,
               }}
-                onLoad={() => console.log("History trail loaded successfully")}
             />
           )}
 
           {/* Render History Trail Markers */}
-            {selectedHistoryTrail &&
-              selectedHistoryTrail.map((point, index) => (
-            <Marker
-              key={`history-${point.id}`}
-              position={{ lat: point.lat, lng: point.lng }}
-              icon={{
-                    path: "M 0, 0 m -4, 0 a 4,4 0 1,0 8,0 a 4,4 0 1,0 -8,0",
-                scale: 1,
-                    fillColor: point.valid ? "#FF6B35" : "#999999",
-                fillOpacity: 1,
-                strokeWeight: 2,
-                    strokeColor: "#FFFFFF",
-                  }}
-                  title={`History Point ${index + 1}\nTime: ${
-                    point.time
-                  }\nSpeed: ${point.speed} km/h\nValid: ${
-                    point.valid ? "Yes" : "No"
-                  }`}
-                  onLoad={() =>
-                    console.log(`History marker ${index + 1} loaded`)
-                  }
-            />
-          ))}
+          {selectedHistoryTrail &&
+            selectedHistoryTrail.map((point, index) => (
+              <Marker
+                key={`history-${point.id}`}
+                position={[point.lat, point.lng]}
+                icon={L.divIcon({
+                  className: 'history-marker',
+                  html: `<div style="
+                    width: 8px;
+                    height: 8px;
+                    background-color: ${point.valid ? "#FF6B35" : "#999999"};
+                    border: 2px solid #FFFFFF;
+                    border-radius: 50%;
+                  "></div>`,
+                  iconSize: [8, 8],
+                  iconAnchor: [4, 4],
+                })}
+              >
+                <Popup>
+                  History Point {index + 1}<br/>
+                  Time: {point.time}<br/>
+                  Speed: {point.speed} km/h<br/>
+                  Valid: {point.valid ? "Yes" : "No"}
+                </Popup>
+              </Marker>
+            ))}
 
           {/* Render Drawing Visualization */}
           {isDrawingMode && drawnCenter && (
             <Marker
-              position={drawnCenter}
-              icon={{
-                  path: "M 0, 0 m -6, 0 a 6,6 0 1,0 12,0 a 6,6 0 1,0 -12,0",
-                scale: 1,
-                  fillColor: "#007bff",
-                fillOpacity: 1,
-                strokeWeight: 2,
-                  strokeColor: "#FFFFFF",
-              }}
-              title="Circle Center"
-            />
+              position={[drawnCenter.lat, drawnCenter.lng]}
+              icon={L.divIcon({
+                className: 'drawing-center',
+                html: '<div style="width: 12px; height: 12px; background-color: #007bff; border: 2px solid #FFFFFF; border-radius: 50%;"></div>',
+                iconSize: [12, 12],
+                iconAnchor: [6, 6],
+              })}
+            >
+              <Popup>Circle Center</Popup>
+            </Marker>
           )}
 
           {isDrawingMode && drawnCenter && drawnRadius && (
             <Circle
-              center={drawnCenter}
+              center={[drawnCenter.lat, drawnCenter.lng]}
               radius={drawnRadius}
-              options={{
-                  strokeColor: "#007bff",
-                strokeOpacity: 0.8,
-                strokeWeight: 2,
-                  fillColor: "#007bff",
+              pathOptions={{
+                color: "#007bff",
+                fillColor: "#007bff",
                 fillOpacity: 0.2,
+                weight: 2,
+                opacity: 0.8,
               }}
             />
           )}
 
           {isDrawingMode && drawnCoordinates.length > 0 && (
             <Polygon
-              paths={drawnCoordinates}
-              options={{
-                  strokeColor: "#007bff",
-                strokeOpacity: 0.8,
-                strokeWeight: 2,
-                  fillColor: "#007bff",
+              positions={drawnCoordinates.map(c => [c.lat, c.lng] as [number, number])}
+              pathOptions={{
+                color: "#007bff",
+                fillColor: "#007bff",
                 fillOpacity: 0.2,
+                weight: 2,
+                opacity: 0.8,
               }}
             />
           )}
 
-            {isDrawingMode &&
-              drawnCoordinates.map((coord, index) => (
-            <Marker
-              key={`drawing-${index}`}
-              position={coord}
-              icon={{
-                    path: "M 0, 0 m -4, 0 a 4,4 0 1,0 8,0 a 4,4 0 1,0 -8,0",
-                scale: 1,
-                    fillColor: "#007bff",
-                fillOpacity: 1,
-                strokeWeight: 2,
-                    strokeColor: "#FFFFFF",
-              }}
-              title={`Point ${index + 1}`}
-            />
-          ))}
+          {isDrawingMode &&
+            drawnCoordinates.map((coord, index) => (
+              <Marker
+                key={`drawing-${index}`}
+                position={[coord.lat, coord.lng]}
+                icon={L.divIcon({
+                  className: 'drawing-point',
+                  html: '<div style="width: 8px; height: 8px; background-color: #007bff; border: 2px solid #FFFFFF; border-radius: 50%;"></div>',
+                  iconSize: [8, 8],
+                  iconAnchor: [4, 4],
+                })}
+              >
+                <Popup>Point {index + 1}</Popup>
+              </Marker>
+            ))}
 
           {/* Render Active Geofences */}
           {showGeofences && geofences.map((geofence) => {
-              // console.log(
-              //   `Rendering geofence ${geofence.id} (${geofence.name})`,
-              //   geofence.type
-              // );
-            
-              if (geofence.type === "polygon" && geofence.coordinates) {
+            if (geofence.type === "polygon" && geofence.coordinates) {
               const coordinates = parseCoordinates(geofence.coordinates);
               if (coordinates.length > 2) {
                 return (
                   <Polygon
                     key={geofence.id}
-                    paths={coordinates}
-                    options={getPolygonOptions(geofence)}
-                      onLoad={() =>
-                        console.log(
-                          `Polygon geofence ${geofence.id} (${geofence.name}) loaded`
-                        )
-                      }
+                    positions={coordinates.map(c => [c.lat, c.lng] as [number, number])}
+                    pathOptions={getPolygonOptions(geofence)}
                   />
                 );
               }
-              } else if (geofence.type === "circle" && geofence.radius > 0) {
+            } else if (geofence.type === "circle" && geofence.radius > 0) {
               return (
                 <Circle
                   key={geofence.id}
-                  center={geofence.center}
+                  center={[geofence.center.lat, geofence.center.lng]}
                   radius={geofence.radius}
-                  options={circleOptions}
-                    onLoad={() =>
-                      console.log(
-                        `Circle geofence ${geofence.id} (${geofence.name}) loaded`
-                      )
-                    }
+                  pathOptions={circleOptions}
                 />
               );
             }
             return null;
           })}
-        </GoogleMap>
+        </MapContainer>
       </div>
 
-        {/* Bottom Info Panel - shows selected device details */}
-        {selectedDeviceId && (
-          (() => {
-            const selectedDevice = devices.find((d) => d.id === selectedDeviceId);
-            if (!selectedDevice) return null;
-            const getSensorByTag = (tag: string) =>
-              selectedDevice.sensors?.find((s) => s.tag_name === tag);
-            const ignition = getSensorByTag("ignition");
-            const engineHours = getSensorByTag("enginehours");
-            const battery = getSensorByTag("battery");
-            const ignitionText = ignition
-              ? (ignition.val ?? 0) > 0 || (ignition.value || "").toLowerCase() === "on"
-                ? "On"
-                : "Off"
-              : "N/A";
-            const engineHoursText = engineHours?.value || "N/A";
-            const batteryText = battery?.value || "N/A";
-            const speedText = `${selectedDevice.speed} ${selectedDevice.device_data?.distance_unit_hour || "km/h"}`;
-            const distanceText = `${selectedDevice.total_distance ?? 0} ${selectedDevice.unit_of_distance || "km"}`;
-            return (
-              <div
-                style={{
-                  width: "100%",
-                  maxWidth: "700px",
-                  height: "220px",
-                  margin: "0 auto",
-                  position: "absolute",
-                  bottom: "0",
-                  right: "50%",
-                  transform: "translateX(50%)",
-                  zIndex: 5,
-                  background: "#FFF",
-                  display: "grid",
-                  gridTemplateColumns: "repeat(2, 1fr)",
-                  overflow: "hidden",
-                }}
-              >
-                <div
-                  style={{
-                    background: "#FFF",
-                    width: "100%",
-                    height: "220px",
-                    borderRight: "3px solid #000",
-                    overflowY: "auto",
-                  }}
-                >
-                  <div
-                    style={{
-                      width: "100%",
-                      minHeight: "20px",
-                      borderBottom: "1px solid #E0E0E0",
-                      padding: "10px",
-                      fontSize: "14px",
-                      background: "#FA9411",
-                      color: "#FFF",
-                    }}
-                  >
-                    {selectedDevice.name} (ID: {selectedDevice.id})
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "12px",
-                      padding: "0",
-                      display: "flex",
-                      flexDirection: "column",
-                      color: "#666",
-                    }}
-                  >
-                    <div style={{ borderBottom: "1px solid #E0E0E0", padding: "10px" }}>
-                      Tracker ID: {selectedDevice.id}
-                    </div>
-                    <div style={{ borderBottom: "1px solid #E0E0E0", padding: "10px" }}>
-                      Address: {selectedDevice.address || "N/A"}
-                    </div>
-                    <div style={{ borderBottom: "1px solid #E0E0E0", padding: "10px" }}>
-                      Driver: {selectedDevice.driver || "N/A"}
-                    </div>
-                    <div style={{ borderBottom: "1px solid #E0E0E0", padding: "10px" }}>
-                      Last Update: {new Date(selectedDevice.timestamp * 1000).toLocaleTimeString()}
-                    </div>
-                    <div style={{ borderBottom: "1px solid #E0E0E0", padding: "10px" }}>
-                      Area Covered: {getAreaCovered(selectedDevice)}
-                    </div>
-                    {selectedDevice.alarm && (
-                      <div style={{ borderBottom: "1px solid #E0E0E0", padding: "10px", color: "#dc3545", fontWeight: "bold" }}>
-                        ⚠️ Alarm: {selectedDevice.alarm}
-                      </div>
-                    )}
-                  </div>
-                </div>
-                <div
-                  style={{
-                    background: "#FFF",
-                    width: "100%",
-                    height: "220px",
-                    borderLeft: "1px solid #E0E0E0",
-                    overflowY: "auto",
-                  }}
-                >
-                  <div
-                    style={{
-                      width: "100%",
-                      height: "20px",
-                      borderBottom: "1px solid #E0E0E0",
-                      padding: "10px",
-                      fontSize: "14px",
-                      background: "#FA9411",
-                      color: "#FFF",
-                    }}
-                  >
-                    Sensors
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "12px",
-                      padding: "0",
-                      display: "flex",
-                      flexDirection: "column",
-                      color: "#666",
-                    }}
-                  >
-                    <div style={{ borderBottom: "1px solid #E0E0E0", padding: "10px" }}>
-                      Ignition: {ignitionText}
-                    </div>
-                    <div style={{ borderBottom: "1px solid #E0E0E0", padding: "10px" }}>
-                      Speed: {speedText}
-                    </div>
-                    <div style={{ borderBottom: "1px solid #E0E0E0", padding: "10px" }}>
-                      Engine Hours: {engineHoursText}
-                    </div>
-                    <div style={{ borderBottom: "1px solid #E0E0E0", padding: "10px" }}>
-                      Battery Level: {batteryText}
-                    </div>
-                    <div style={{ borderBottom: "1px solid #E0E0E0", padding: "10px" }}>
-                      Distance: {distanceText}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
-          })()
-        )}
+        {/* Bottom Info Panel - temporarily disabled (was breaking build parsing) */}
+        {selectedDeviceId && null}
       </div>
     </div>
   );

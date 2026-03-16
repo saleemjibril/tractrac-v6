@@ -1,5 +1,4 @@
 import BlogCarousel from "./blogCarousel";
-import { graphQLClient } from "../utils/graphql";
 import { ChakraWrapper } from "../chakraUIWrapper";
 
 interface Post {
@@ -16,30 +15,17 @@ interface Post {
   };
 }
 
-async function getPostsWithMedia(): Promise<Post[]> {
-  const postsQuery = `
-    query AllPosts {
-      posts(first: 12) {
-        nodes {
-          id
-          title
-          excerpt
-          slug
-          date
-          featuredImage {
-            node {
-              sourceUrl
-              altText
-            }
-          }
-        }
-      }
-    }
-  `;
+const BLOG_API_BASE =
+  process.env.NEXT_PUBLIC_BLOG_API_URL || "http://localhost:4000/api/v1";
 
+async function getPosts(): Promise<Post[]> {
   try {
-    const postsData = await graphQLClient.request<{ posts: { nodes: Post[] } }>(postsQuery);
-    return postsData.posts.nodes;
+    const res = await fetch(`${BLOG_API_BASE}/blog?limit=12&page=1`, {
+      next: { revalidate: 60 },
+    });
+    if (!res.ok) return [];
+    const json = await res.json();
+    return json?.data || [];
   } catch (error) {
     console.log("Error fetching posts for carousel:", error);
     return [];
@@ -50,7 +36,7 @@ async function getPostsWithMedia(): Promise<Post[]> {
 export const revalidate = 60;
 
 export default async function BlogCarouselSection() {
-  const posts = await getPostsWithMedia();
+  const posts = await getPosts();
   if (!posts || posts.length === 0) return null;
   return (
     <ChakraWrapper>

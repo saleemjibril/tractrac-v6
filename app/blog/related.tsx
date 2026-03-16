@@ -1,59 +1,31 @@
-import { graphQLClient } from '../utils/graphql';
-
 interface Post {
-  posts: {
-    nodes: {
-      id: string;
-      title: string;
-      excerpt: string;
-      slug: string;
-      date: string;
-      featuredImage: {
-        node: {
-          sourceUrl: string;
-          altText: string;
-        };
-      };
-    }[];
+  id: string;
+  title: string;
+  excerpt: string;
+  slug: string;
+  date: string;
+  featuredImage: {
+    node: {
+      sourceUrl: string;
+      altText: string;
+    };
   };
 }
 
-async function getPostsWithMedia() {
-  const postsQuery = ` 
-    query AllPosts {
-      posts(first: 100) {
-        nodes {
-          id
-          title
-          excerpt
-          slug
-          date
-          featuredImage {
-            node {
-              sourceUrl
-              altText
-            }
-          }
-        }
-      }
-    }
-  `;
-  
+const BLOG_API_BASE =
+  process.env.NEXT_PUBLIC_BLOG_API_URL || "http://localhost:4000/api/v1";
+
+export default async function relatedBlogs(slug: string): Promise<Post[]> {
   try {
-    const postsData = await graphQLClient.request<Post>(postsQuery);
-    return postsData.posts.nodes;
+    const res = await fetch(
+      `${BLOG_API_BASE}/blog/${encodeURIComponent(slug)}/related?limit=3`,
+      { cache: "no-store" }
+    );
+    if (!res.ok) return [];
+    const json = await res.json();
+    return json?.data || [];
   } catch (error) {
-    console.log('Error fetching posts with media:', error);
+    console.log("Error fetching related posts:", error);
     return [];
   }
-}
-
-export default async function relatedBlogs(blogId : string) {
-    const blogList = await getPostsWithMedia();
-    let relatedList = blogList.filter(blog => blog.id !== blogId);
-  
-    if(relatedList.length > 3){
-      relatedList.slice(0,3);
-    }
-    return relatedList;
 }

@@ -1,70 +1,55 @@
-import BlogPostDetail from '@/app/components/singleBlogPostInner';
-import { graphQLClient } from '../../utils/graphql';
-import { JSDOM } from 'jsdom';
-import type { Metadata } from 'next';
+import BlogPostDetail from "@/app/components/singleBlogPostInner";
+import { JSDOM } from "jsdom";
+import type { Metadata } from "next";
+import Script from "next/script";
 
 interface PostResponse {
-  post: {
-    id: string;
-    title: string;
-    content: string;
-    slug: string;
-    date: string;
-    modified: string;
-    author: {
-      node: {
-        name: string;
-        avatar: {
-          url: string;
-        };
-        description: string;
+  id: string;
+  title: string;
+  excerpt?: string;
+  content: string;
+  slug: string;
+  date: string;
+  modified: string;
+  author: {
+    node: {
+      name: string;
+      avatar: {
         url: string;
       };
+      description: string;
+      url: string;
     };
-    featuredImage: {
-      node: {
-        sourceUrl: string;
-        altText: string;
-      };
-    };
-    toc?: { id: string; content: string }[]; // Add optional TOC field
   };
+  featuredImage: {
+    node: {
+      sourceUrl: string;
+      altText: string;
+    };
+  };
+  toc?: { id: string; content: string }[]; // Add optional TOC field
 }
 
-const FetchBlogSlug = async (slug: string) => {
-  const postQuery = `
-    query PostBySlug($slug: ID!) {
-      post(id: $slug, idType: SLUG) {
-        id
-        title
-        content
-        slug
-        date
-        modified
-        author {
-          node {
-            name
-            avatar {
-              url
-            }
-            description
-            url
-          }
-        }
-        featuredImage {
-          node {
-            sourceUrl
-            altText
-          }
-        }
-      }
-    }
-  `;
+const BLOG_API_BASE =
+  process.env.NEXT_PUBLIC_BLOG_API_URL || "http://localhost:4000/api/v1";
 
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL || "https://tractrac.co";
+
+const FetchBlogSlug = async (slug: string) => {
   try {
-    const variables = { slug };
-    const data = await graphQLClient.request<PostResponse>(postQuery, variables);
-    const data_content = data.post.content;
+    const res = await fetch(
+      `${BLOG_API_BASE}/blog/${encodeURIComponent(slug)}`,
+      {
+        next: { revalidate: 60 },
+      }
+    );
+    if (!res.ok) return null;
+    const json = await res.json();
+    const post: PostResponse | null = json?.data || null;
+    if (!post) return null;
+
+    const data_content = post.content;
 
     // Parse the HTML content
     const dom = new JSDOM(data_content);
@@ -86,7 +71,7 @@ const FetchBlogSlug = async (slug: string) => {
 
     // Add the extracted elements to the post object
     return {
-      ...data.post,
+      ...post,
       toc: dataContentElements, // Add TOC to the post object
     };
   } catch (error) {
@@ -105,42 +90,114 @@ export const revalidate = 60;
 
 // Generate static paths for all existing blog posts at build time
 export async function generateStaticParams() {
-  const postsQuery = `
-    query AllPosts {
-      posts(first: 100) {
-        nodes {
-          slug
-        }
-      }
-    }
-  `;
-
   try {
-    const data = await graphQLClient.request<{ posts: { nodes: { slug: string }[] } }>(postsQuery);
-    return data.posts.nodes.map((post) => ({
-      slug: post.slug,
-    }));
+    // Fetch a few pages to cover more than 100 slugs if needed (cap to avoid huge builds)
+    const slugs: string[] = [];
+    const limit = 100;
+    for (let page = 1; page <= 10; page += 1) {
+      const res = await fetch(`${BLOG_API_BASE}/blog?limit=${limit}&page=${page}`, {
+        next: { revalidate: 60 },
+      });
+      if (!res.ok) break;
+      const json = await res.json();
+      const data = json?.data || [];
+      for (const item of data) slugs.push(item.slug);
+      if (!json?.pagination || page >= (json.pagination.totalPages || 1)) break;
+    }
+    return slugs.map((slug) => ({ slug }));
   } catch (error) {
-    console.log('Error fetching posts for static paths:', error);
+    console.log("Error fetching posts for static paths:", error);
     return [];
   }
 }
 
-export async function generateMetadata() {
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}): Promise<Metadata> {
+  const post = await FetchBlogSlug(params.slug);
+  if (!post) {
+    return { title: "Post not found" };
+  }
+
+  const description =
+    (post.excerpt && getTextFromHtml(post.excerpt)) ||
+    getTextFromHtml(post.content).slice(0, 160);
+
+  const url = `${siteUrl}/blog/${post.slug}`;
+  const plainTitle = getTextFromHtml(post.title);
+  const imageUrl = post.featuredImage?.node?.sourceUrl || undefined;
+
   return {
-    title: "TracTrac Mechanization Forum 2025: The State of the Mechanization Ecosystem in Nigeria.",
-    description:
-      "TracTrac is set to host the TracTrac Mechanization Forum 2025 — a landmark event to spark National dialogue, foster partnerships, and chart a roadmap for transforming Nigeria’s agricultural landscape.",
+    title: plainTitle,
+    description,
+    alternates: {
+      canonical: url,
+    },
+    openGraph: {
+      type: "article",
+      url,
+      title: plainTitle,
+      description,
+      images: imageUrl
+        ? [
+            {
+              url: imageUrl,
+              alt: post.featuredImage?.node?.altText || plainTitle,
+            },
+          ]
+        : undefined,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: plainTitle,
+      description,
+      images: imageUrl ? [imageUrl] : undefined,
+    },
   };
 }
 
 export default async function BlogPostPage({ params }: { params: { slug: string } }) {
   const post = await FetchBlogSlug(params.slug);
-  
 
   if (!post) {
     return <div>Post not found</div>;
   }
 
-  return <BlogPostDetail post={post} />;
+  const url = `${siteUrl}/blog/${post.slug}`;
+  const imageUrl = post.featuredImage?.node?.sourceUrl || "";
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: getTextFromHtml(post.title),
+    description:
+      (post.excerpt && getTextFromHtml(post.excerpt)) ||
+      getTextFromHtml(post.content).slice(0, 160),
+    url,
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": url,
+    },
+    image: imageUrl || undefined,
+    author: {
+      "@type": "Person",
+      name: post.author?.node?.name || undefined,
+      url: post.author?.node?.url || undefined,
+    },
+    datePublished: post.date,
+    dateModified: post.modified,
+  };
+
+  return (
+    <>
+      <Script
+        id={`ld-json-blog-${post.slug}`}
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <BlogPostDetail post={post} />
+    </>
+  );
 }

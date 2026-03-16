@@ -1,75 +1,69 @@
 
-// app/blog/page.tsx
-import { graphQLClient } from '../utils/graphql';
+import type { Metadata } from "next";
 import BlogInner from "../components/blogInner";
 
-// Define types for WordPress data
+const BLOG_API_BASE =
+  process.env.NEXT_PUBLIC_BLOG_API_URL || "http://localhost:4000/api/v1";
+
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL || "https://tractrac.co";
+
 interface Post {
-  posts: {
-    nodes: {
-      id: string;
-      title: string;
-      excerpt: string;
-      slug: string;
-      date: string;
-      featuredImage: {
-        node: {
-          sourceUrl: string;
-          altText: string;
-        };
-      };
-    }[];
+  id: string;
+  title: string;
+  excerpt: string;
+  slug: string;
+  date: string;
+  featuredImage: {
+    node: {
+      sourceUrl: string;
+      altText: string;
+    };
   };
 }
- 
 
-// Define the function to fetch posts with media
-async function getPostsWithMedia() {
-  const postsQuery = ` 
-    query AllPosts {
-      posts(first: 100) {
-        nodes {
-          id
-          title
-          excerpt
-          slug
-          date
-          featuredImage {
-            node {
-              sourceUrl
-              altText
-            }
-          }
-        }
-      }
-    }
-  `;
-  
-
+async function getPosts(): Promise<Post[]> {
   try {
-    const postsData = await graphQLClient.request<Post>(postsQuery);
-    return postsData.posts.nodes;
+    const res = await fetch(`${BLOG_API_BASE}/blog?limit=100&page=1`, {
+      next: { revalidate: 60 },
+    });
+    if (!res.ok) return [];
+    const json = await res.json();
+    return json?.data || [];
   } catch (error) {
-    console.log('Error fetching posts with media:', error);
+    console.log("Error fetching posts:", error);
     return [];
   }
 }
 
-export async function generateMetadata() {
-  return {
-    title: "Blog",
+export const metadata: Metadata = {
+  title: "Blog",
+  description:
+    "Insights on agricultural mechanization, tractors, and mechanization services across Africa.",
+  alternates: {
+    canonical: `${siteUrl}/blog`,
+  },
+  openGraph: {
+    type: "website",
+    url: `${siteUrl}/blog`,
+    title: "Blog | TracTrac MSL",
     description:
-      "Facilitatings access to mechanization services for all farmers in Africa.",
-  };
-}
+      "Latest insights on agricultural mechanization and TracTrac programs.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Blog | TracTrac MSL",
+    description:
+      "Latest insights on agricultural mechanization and TracTrac programs.",
+  },
+};
 
 // Revalidate the page every 1 hour (3600 seconds)
 // This enables Incremental Static Regeneration (ISR)
 export const revalidate = 60;
 
 export default async function BlogPosts() {
-  // Call the defined function to fetch posts with media
-  const postsWithMedia = await getPostsWithMedia();
+  const postsWithMedia = await getPosts();
 
   return (
     <>

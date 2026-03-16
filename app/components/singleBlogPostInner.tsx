@@ -98,12 +98,12 @@ export default function BlogPostDetail({ post }: BlogPostDetailProps) {
 
   useEffect(() => {
     const fetchRelatedPosts = async () => {
-      const posts = await relatedBlogs(post?.id);
+      const posts = await relatedBlogs(post?.slug);
       setRelatedPosts(posts);
     };
 
     fetchRelatedPosts();
-  }, [post?.id]);
+  }, [post?.slug]);
 
   useEffect(() => {
     if (post?.content) {
