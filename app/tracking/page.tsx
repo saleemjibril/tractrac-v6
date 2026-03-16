@@ -4150,3 +4150,24 @@
 // };
 
 // export default VehicleTrackingMap;
+
+export default function TrackingPage() {
+  return (
+    <div
+      style={{
+        minHeight: "60vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "40px 16px",
+      }}
+    >
+      <div style={{ maxWidth: 600, textAlign: "center" }}>
+        <h1 style={{ fontSize: 28, marginBottom: 12 }}>Tracking dashboard temporarily unavailable</h1>
+        <p style={{ fontSize: 16, color: "#555" }}>
+          We&apos;re working on a new version of the tracking page.
+        </p>
+      </div>
+    </div>
+  );
+}
