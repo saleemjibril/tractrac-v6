@@ -15,7 +15,6 @@ import { ArrowForwardIcon } from "@chakra-ui/icons";
 import { ChakraWrapper } from "@/app/chakraUIWrapper";
 import Header from "@/app/components/header";
 import FooterComponent from "@/app/components/footer";
-import relatedBlogs from "../blog/related";
 import { useEffect, useState } from "react";
 
 interface Post {
@@ -46,6 +45,7 @@ interface Post {
 
 interface BlogPostDetailProps {
   post: Post;
+  relatedPosts?: Post[];
 }
 
 // Helper function to decode HTML entities
@@ -90,20 +90,11 @@ const cleanHtmlContent = (content) => {
     });
 };
 
-export default function BlogPostDetail({ post }: BlogPostDetailProps) {
-  const [relatedPosts, setRelatedPosts] = useState<any[]>([]);
+export default function BlogPostDetail({ post, relatedPosts: initialRelatedPosts = [] }: BlogPostDetailProps) {
+  const [relatedPosts] = useState<Post[]>(initialRelatedPosts);
   const [cleanedContent, setCleanedContent] = useState('');
 
   console.log("my blog post", post);
-
-  useEffect(() => {
-    const fetchRelatedPosts = async () => {
-      const posts = await relatedBlogs(post?.slug);
-      setRelatedPosts(posts);
-    };
-
-    fetchRelatedPosts();
-  }, [post?.slug]);
 
   useEffect(() => {
     if (post?.content) {

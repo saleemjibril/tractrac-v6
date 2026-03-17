@@ -1,4 +1,5 @@
 import BlogPostDetail from "@/app/components/singleBlogPostInner";
+import relatedBlogs from "../related";
 import { JSDOM } from "jsdom";
 import type { Metadata } from "next";
 import Script from "next/script";
@@ -159,7 +160,10 @@ export async function generateMetadata({
 }
 
 export default async function BlogPostPage({ params }: { params: { slug: string } }) {
-  const post = await FetchBlogSlug(params.slug);
+  const [post, relatedPosts] = await Promise.all([
+    FetchBlogSlug(params.slug),
+    relatedBlogs(params.slug),
+  ]);
 
   if (!post) {
     return <div>Post not found</div>;
@@ -197,7 +201,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <BlogPostDetail post={post} />
+      <BlogPostDetail post={post} relatedPosts={relatedPosts} />
     </>
   );
 }
