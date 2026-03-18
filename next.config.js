@@ -30,6 +30,7 @@ const nextConfig = {
   swcMinify: true,
   poweredByHeader: false,
   reactStrictMode: true,
+  generateEtags: false
 }
 
 module.exports = withBundleAnalyzer(nextConfig)
