@@ -1,25 +1,41 @@
 "use client";
 import React, { useEffect, useRef, useState } from 'react';
+import { MapContainer, TileLayer, Marker, Circle, Polyline, useMap } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 import { useGeolocation } from '../hooks/useGeolocation';
 import { useFarmMeasurement } from '../hooks/useFarmMeasurement';
 import { Position, FarmPath } from '../types/farm-measurement';
 import { GPSQualityAlert } from './GPSQualityAlert';
-import loader from '../googleMapsLoader';
 import { useAppSelector } from '@/redux/hooks';
+import { LeafletStrictModeGate } from './LeafletStrictModeGate';
 
 interface FarmMeasurementMapProps {
   onMeasurementComplete?: (result: { path: FarmPath; serverId: string }) => void;
+}
+
+function MapController({ 
+  position, 
+  isTracking 
+}: { 
+  position: Position | null; 
+  isTracking: boolean;
+}) {
+  const map = useMap();
+
+  useEffect(() => {
+    if (position && isTracking) {
+      map.setView([position.latitude, position.longitude], map.getZoom());
+    }
+  }, [position, isTracking, map]);
+
+  return null;
 }
 
 export const FarmMeasurementMap: React.FC<FarmMeasurementMapProps> = ({
   onMeasurementComplete
 }) => {
   const { userToken } = useAppSelector((state) => state.auth);
-  const mapRef = useRef<HTMLDivElement>(null);
-  const [map, setMap] = useState<google.maps.Map | null>(null);
-  const [path, setPath] = useState<google.maps.Polyline | null>(null);
-  const [marker, setMarker] = useState<google.maps.Marker | null>(null);
-  const [accuracyCircle, setAccuracyCircle] = useState<google.maps.Circle | null>(null);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
   const [showGPSAlert, setShowGPSAlert] = useState(false);
 
@@ -41,90 +57,23 @@ export const FarmMeasurementMap: React.FC<FarmMeasurementMapProps> = ({
     createMeasurementOnServer
   } = useFarmMeasurement();
 
-  // Initialize map
+  // Initialize map loaded state
   useEffect(() => {
-    if (!mapRef.current || map) return;
+    setIsMapLoaded(true);
+  }, []);
 
-    const initializeMap = async () => {
+  // Debug: log current GPS accuracy on each update
+  useEffect(() => {
+    if (position) {
       try {
-        // Ensure Google Maps JS API is loaded via the shared loader
-        await loader.importLibrary("maps");
-        
-        const initialMap = new google.maps.Map(mapRef.current!, {
-          zoom: 18,
-          center: { lat: 6.5244, lng: 3.3792 }, // Default to Lagos
-          mapTypeId: google.maps.MapTypeId.SATELLITE,
-          disableDefaultUI: true,
-          zoomControl: true,
+        console.log('FarmMeasurementMap: position update', {
+          accuracy: position.accuracy,
+          latitude: position.latitude,
+          longitude: position.longitude
         });
-
-        setMap(initialMap);
-        setIsMapLoaded(true);
-      } catch (error) {
-        console.error('Failed to initialize map:', error);
-      }
-    };
-
-    initializeMap();
-  }, [map]);
-
-  // Update map center when position changes
-  useEffect(() => {
-    if (!map || !position) return;
-
-    // Debug: log current GPS accuracy on each update
-    try {
-      console.log('FarmMeasurementMap: position update', {
-        accuracy: position.accuracy,
-        latitude: position.latitude,
-        longitude: position.longitude
-      });
-    } catch {}
-
-    const center = { lat: position.latitude, lng: position.longitude };
-    
-    if (isTracking) {
-      map.setCenter(center);
+      } catch {}
     }
-
-    // Update current position marker
-    if (marker) {
-      marker.setPosition(center);
-    } else {
-      const newMarker = new google.maps.Marker({
-        position: center,
-        map,
-        title: 'Current Position',
-        icon: {
-          path: google.maps.SymbolPath.CIRCLE,
-          scale: 8,
-          fillColor: '#FA9411',
-          fillOpacity: 1,
-          strokeColor: '#ffffff',
-          strokeWeight: 2,
-        }
-      });
-      setMarker(newMarker);
-    }
-
-    // Update accuracy circle
-    if (accuracyCircle) {
-      accuracyCircle.setCenter(center);
-      accuracyCircle.setRadius(position.accuracy);
-    } else {
-      const circle = new google.maps.Circle({
-        center,
-        radius: position.accuracy,
-        map,
-        fillColor: getAccuracyColor(position.accuracy),
-        fillOpacity: 0.2,
-        strokeColor: getAccuracyColor(position.accuracy),
-        strokeOpacity: 0.5,
-        strokeWeight: 1,
-      });
-      setAccuracyCircle(circle);
-    }
-  }, [map, position, marker, accuracyCircle, isTracking]);
+  }, [position]);
 
   // Add point to tracking when position changes
   useEffect(() => {
@@ -133,29 +82,8 @@ export const FarmMeasurementMap: React.FC<FarmMeasurementMapProps> = ({
     }
   }, [position, isTracking, addPoint]);
 
-  // Update path visualization
-  useEffect(() => {
-    if (!map || trackPoints.length === 0) return;
-
-    const pathCoordinates = trackPoints.map(point => ({
-      lat: point.latitude,
-      lng: point.longitude
-    }));
-
-    if (path) {
-      path.setPath(pathCoordinates);
-    } else {
-      const newPath = new google.maps.Polyline({
-        path: pathCoordinates,
-        geodesic: true,
-        strokeColor: '#FA9411',
-        strokeOpacity: 1.0,
-        strokeWeight: 4,
-      });
-      newPath.setMap(map);
-      setPath(newPath);
-    }
-  }, [map, trackPoints, path]);
+  // Path coordinates for polyline
+  const pathCoordinates = trackPoints.map(point => [point.latitude, point.longitude] as [number, number]);
 
   const handleStartMeasurement = () => {
     // Debug: log current accuracy when attempting to start
@@ -264,9 +192,80 @@ export const FarmMeasurementMap: React.FC<FarmMeasurementMapProps> = ({
     );
   }
 
+  // Create custom marker icon
+  const createMarkerIcon = () => {
+    return L.divIcon({
+      className: 'custom-marker',
+      html: `<div style="
+        width: 16px;
+        height: 16px;
+        background-color: #FA9411;
+        border: 2px solid #ffffff;
+        border-radius: 50%;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      "></div>`,
+      iconSize: [16, 16],
+      iconAnchor: [8, 8],
+    });
+  };
+
   return (
     <div className="relative w-full h-96 rounded-lg overflow-hidden shadow-lg">
-      <div ref={mapRef} className="w-full h-full" />
+      <LeafletStrictModeGate className="h-full w-full" style={{ minHeight: "100%" }}>
+        <MapContainer
+          center={position ? [position.latitude, position.longitude] : [6.5244, 3.3792]}
+          zoom={18}
+          style={{ height: "100%", width: "100%" }}
+          scrollWheelZoom={true}
+          zoomControl={true}
+        >
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        
+        {/* Satellite tile layer option - using Esri World Imagery as alternative */}
+        {/* Uncomment if you want satellite view:
+        <TileLayer
+          attribution='Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+          url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+        />
+        */}
+        
+        {position && (
+          <>
+            <Marker
+              position={[position.latitude, position.longitude]}
+              icon={createMarkerIcon()}
+            />
+            <Circle
+              center={[position.latitude, position.longitude]}
+              radius={position.accuracy}
+              pathOptions={{
+                fillColor: getAccuracyColor(position.accuracy),
+                fillOpacity: 0.2,
+                color: getAccuracyColor(position.accuracy),
+                weight: 1,
+                opacity: 0.5,
+              }}
+            />
+          </>
+        )}
+        
+        {pathCoordinates.length > 0 && (
+          <Polyline
+            positions={pathCoordinates}
+            pathOptions={{
+              color: '#FA9411',
+              weight: 4,
+              opacity: 1.0,
+            }}
+          />
+        )}
+        
+        <MapController position={position} isTracking={isTracking} />
+        </MapContainer>
+      </LeafletStrictModeGate>
       
       {/* GPS Quality Alert */}
       {showGPSAlert && position && (

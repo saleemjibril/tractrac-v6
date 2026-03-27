@@ -55,7 +55,7 @@ import {
   useHireTractorMutation,
   useLazyGetSearchTractorsQuery,
 } from "@/redux/services/tractorApi";
-import Autocomplete from "react-google-autocomplete";
+import dynamic from "next/dynamic";
 
 
 import moment from "moment";
@@ -64,7 +64,8 @@ import { states } from "@/app/utils/states";
 import { filterTools, getToolBookedDates, getApprovedTools, hireTool } from "@/app/apis/tools";
 import { getgroups } from "process";
 import { getGroups, getGroupsMembers } from "@/app/apis/user";
-import ToolMap from "@/app/components/ToolMap";
+import AddressAutocomplete from "@/app/components/AddressAutocomplete";
+const ToolMap = dynamic(() => import("@/app/components/ToolMap"), { ssr: false });
 
 const fileTypes = ["JPG", "PNG", "JPEG"];
 
@@ -1272,7 +1273,7 @@ function HireTractorForm({ id, groupId }: { id: string, groupId: string }) {
                       <FormLabel fontSize="12px" color="#323232">
                         Address
                       </FormLabel>
-                      <Autocomplete
+                      <AddressAutocomplete
                         style={{
                           padding: "0px 10px 0px 10px",
                           borderRadius: "6px",
@@ -1283,7 +1284,6 @@ function HireTractorForm({ id, groupId }: { id: string, groupId: string }) {
                           backgroundColor: "#3232320D",
                         }}
                         placeholder=""
-                        apiKey={"AIzaSyBWo_tQ4rjQkZz1kN5WXfnemHCaF0gQ8BU"}
                         onChange={(e) => {
                           // alert(`Address: ${e.currentTarget?.value}`)
                           form.setFieldValue(field.name, e.currentTarget?.value);

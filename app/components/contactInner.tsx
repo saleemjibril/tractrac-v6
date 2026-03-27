@@ -23,15 +23,38 @@ import { useCollaborateMutation } from "@/redux/services/userApi";
 import { toast } from "react-toastify";
 import FooterComponent from "./footer";
 import Header from "./header";
-import { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import { ChakraWrapper } from "../chakraUIWrapper";
-import loader from "../googleMapsLoader";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import L from "leaflet";
+import { createCustomIcon } from "../leafletLoader";
+import { LeafletStrictModeGate } from "./LeafletStrictModeGate";
 
+interface Office {
+  name: string;
+  address: string;
+  position: { lat: number; lng: number };
+  placeholder?: boolean;
+}
+
+function FitBounds({ offices }: { offices: Office[] }) {
+  const map = useMap();
+
+  React.useEffect(() => {
+    if (offices.length > 0) {
+      const bounds = L.latLngBounds(
+        offices.map(office => [office.position.lat, office.position.lng] as [number, number])
+      );
+      map.fitBounds(bounds, { padding: [20, 20] });
+    }
+  }, [offices, map]);
+
+  return null;
+}
 
 export default function ContactUsInner() {
   const dispatch = useAppDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const mapContainerRef = useRef<HTMLDivElement | null>(null);
 
   const initialDataState = {
     name: "",
@@ -70,62 +93,6 @@ export default function ContactUsInner() {
       placeholder: true,
     },
   ];
-
-  useEffect(() => {
-    let mapInstance: google.maps.Map | null = null;
-    let infoWindows: google.maps.InfoWindow[] = [];
-
-    const initMap = async () => {
-      try {
-        await loader.importLibrary("maps");
-        const container = mapContainerRef.current;
-        if (!container) return;
-
-        mapInstance = new window.google.maps.Map(container, {
-          center: new window.google.maps.LatLng(9.082, 8.6753),
-          zoom: 6,
-        });
-
-        const bounds = new window.google.maps.LatLngBounds();
-        offices.forEach((office) => {
-          const marker = new window.google.maps.Marker({
-            position: office.position,
-            map: mapInstance!,
-            title: office.placeholder
-              ? `${office.name} (Placeholder)`
-              : office.name,
-          });
-
-          const infoWindow = new window.google.maps.InfoWindow({
-            content: `<div style="padding:8px; max-width:260px">
-              <div style="font-weight:600; margin-bottom:6px">${office.name}${office.placeholder ? " (Placeholder)" : ""}</div>
-              <div style="font-size:13px; line-height:1.4">${office.address}</div>
-            </div>`,
-          });
-          infoWindows.push(infoWindow);
-          marker.addListener("click", () => {
-            infoWindows.forEach((iw) => iw.close());
-            infoWindow.open({ map: mapInstance!, anchor: marker });
-          });
-
-          bounds.extend(office.position as google.maps.LatLngLiteral);
-        });
-
-        if (!bounds.isEmpty()) {
-          mapInstance.fitBounds(bounds);
-        }
-      } catch (e) {
-        // fail silently on map init issues
-      }
-    };
-
-    initMap();
-
-    return () => {
-      infoWindows.forEach((iw) => iw.close());
-      mapInstance = null;
-    };
-  }, []);
 
   return (
     <ChakraWrapper>
@@ -341,7 +308,37 @@ export default function ContactUsInner() {
             </Box>
 
             <Box flex={1} minH="420px" borderRadius="12px" overflow="hidden" border="1px solid #EFEFEF" boxShadow="0 8px 24px rgba(0,0,0,0.06)">
-              <div ref={mapContainerRef} style={{ width: "100%", height: "100%" }} />
+              <LeafletStrictModeGate style={{ height: "100%", width: "100%", minHeight: "420px" }}>
+                <MapContainer
+                  center={[9.082, 8.6753]}
+                  zoom={6}
+                  style={{ height: "100%", width: "100%" }}
+                  scrollWheelZoom={true}
+                >
+                <TileLayer
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+                {offices.map((office, index) => (
+                  <Marker
+                    key={index}
+                    position={[office.position.lat, office.position.lng]}
+                  >
+                    <Popup>
+                      <div style={{ padding: "8px", maxWidth: "260px" }}>
+                        <div style={{ fontWeight: 600, marginBottom: "6px" }}>
+                          {office.name}{office.placeholder ? " (Placeholder)" : ""}
+                        </div>
+                        <div style={{ fontSize: "13px", lineHeight: "1.4" }}>
+                          {office.address}
+                        </div>
+                      </div>
+                    </Popup>
+                  </Marker>
+                ))}
+                <FitBounds offices={offices} />
+                </MapContainer>
+              </LeafletStrictModeGate>
             </Box>
           </Box>
         </Box>

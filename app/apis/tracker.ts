@@ -32,6 +32,59 @@ export const getTrackedTractors = async () => {
   return res;
 };
 
+function flattenDeviceGroups(groups: unknown[]): unknown[] {
+  const out: unknown[] = [];
+  for (const g of groups) {
+    if (!g || typeof g !== "object") continue;
+    const obj = g as Record<string, unknown>;
+    if (Array.isArray(obj.items)) {
+      out.push(...obj.items);
+    } else if (
+      "id" in obj &&
+      ("lat" in obj || "latitude" in obj || "lng" in obj || "longitude" in obj)
+    ) {
+      out.push(g);
+    }
+  }
+  return out;
+}
+
+/**
+ * Normalize get_devices response bodies (axios `response.data`).
+ * Supports: top-level group array, `{ items: groups[] }`, nested `items.devices`, or `{ data: ... }`.
+ */
+export function flattenDevicesFromGetDevicesBody(body: unknown): unknown[] {
+  if (body == null) return [];
+
+  if (Array.isArray(body)) {
+    return flattenDeviceGroups(body);
+  }
+
+  if (typeof body !== "object") return [];
+
+  const o = body as Record<string, unknown>;
+
+  if (Array.isArray(o.items)) {
+    return flattenDeviceGroups(o.items);
+  }
+
+  if (o.items && typeof o.items === "object" && !Array.isArray(o.items)) {
+    const nested = o.items as Record<string, unknown>;
+    if (Array.isArray(nested.devices)) return [...nested.devices];
+  }
+
+  if (o.data != null && o.data !== body) {
+    const inner = o.data;
+    if (Array.isArray(inner)) return flattenDeviceGroups(inner);
+    if (inner && typeof inner === "object") {
+      const d = inner as Record<string, unknown>;
+      if (Array.isArray(d.items)) return flattenDeviceGroups(d.items);
+    }
+  }
+
+  return [];
+}
+
 export const createAlert = async (
   name: string,
   devices: Array<number>,

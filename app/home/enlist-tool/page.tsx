@@ -48,8 +48,7 @@ import { FileUploader } from "react-drag-drop-files";
 import { FaFileUpload, FaUpload } from "react-icons/fa";
 import { FiFile, FiUpload } from "react-icons/fi";
 import { enlistTractor } from "@/redux/features/user/userActions";
-import { usePlacesWidget } from "react-google-autocomplete";
-import Autocomplete from "react-google-autocomplete";
+import AddressAutocomplete from "@/app/components/AddressAutocomplete";
 import { createTractor } from "@/app/apis/tractor";
 import { getBanks, verifyBankAccount } from "@/app/apis/payment";
 
@@ -168,11 +167,6 @@ export default function BecomeAnAgent() {
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ");
   }
-
-  const { ref } = usePlacesWidget<any>({
-    apiKey: "AIzaSyBWo_tQ4rjQkZz1kN5WXfnemHCaF0gQ8BU",
-    onPlaceSelected: (place) => console.log(place),
-  });
 
   const handleGetBanks = async () => {
     try {
@@ -850,7 +844,7 @@ Enlist your agro tools using the form below, and our team will reach out to get 
                         <FormLabel fontSize="12px" color="#323232">
                           Tool Address
                         </FormLabel>
-                        <Autocomplete
+                        <AddressAutocomplete
                           style={{
                             padding: "0px 10px 0px 10px",
                             borderRadius: "6px",
@@ -861,7 +855,6 @@ Enlist your agro tools using the form below, and our team will reach out to get 
                             backgroundColor: "#3232320D",
                           }}
                           placeholder=""
-                          apiKey={"AIzaSyBWo_tQ4rjQkZz1kN5WXfnemHCaF0gQ8BU"}
                           onChange={(e) => {
                             // alert(`Address: ${e.currentTarget?.value}`)
                             form.setFieldValue(

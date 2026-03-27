@@ -55,16 +55,14 @@ import {
   useHireTractorMutation,
   useLazyGetSearchTractorsQuery,
 } from "@/redux/services/tractorApi";
-import Autocomplete from "react-google-autocomplete";
-
-import Map from "../../components/Map";
+import dynamic from "next/dynamic";
 import moment from "moment";
 import Link from "next/link";
 import { states } from "@/app/utils/states";
 import { filterTools, getToolBookedDates, getApprovedTools, hireTool } from "@/app/apis/tools";
 import { getgroups } from "process";
 import { getGroups, getGroupsMembers } from "@/app/apis/user";
-import ToolMap from "@/app/components/ToolMap";
+const ToolMap = dynamic(() => import("@/app/components/ToolMap"), { ssr: false });
 
 const fileTypes = ["JPG", "PNG", "JPEG"];
 

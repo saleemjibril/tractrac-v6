@@ -1,4 +1,9 @@
-import ContactUsInner from "../components/contactInner";
+import dynamic from "next/dynamic";
+
+const ContactUsInner = dynamic(
+  () => import("../components/contactInner"),
+  { ssr: false }
+);
 
 export async function generateMetadata() {
   return {
@@ -9,12 +14,6 @@ export async function generateMetadata() {
 }
 
 export default function ContactUsPage() {
-
-
-  return (
-  <>
-  <ContactUsInner />
-  </>
-  );
+  return <ContactUsInner />;
 }
 

@@ -46,7 +46,7 @@ import {
   useHireTractorMutation,
   useLazyGetSearchTractorsQuery,
 } from "@/redux/services/tractorApi";
-import Autocomplete from "react-google-autocomplete";
+import AddressAutocomplete from "@/app/components/AddressAutocomplete";
 
 import {
   filterTractors,
@@ -1251,7 +1251,7 @@ export default function HireTractorForm() {
                         Address
                       </FormLabel>
                          {formData.implement_types?.includes('farm_carrier') ? 
-                      <Autocomplete
+                      <AddressAutocomplete
                       style={{
                         padding: "0px 10px 0px 10px",
                         borderRadius: "6px",
@@ -1262,7 +1262,6 @@ export default function HireTractorForm() {
                         backgroundColor: "#3232320D",
                       }}
                       placeholder=""
-                      apiKey={"AIzaSyBWo_tQ4rjQkZz1kN5WXfnemHCaF0gQ8BU"}
                       onChange={(e) => {
                         form.setFieldValue(field.name, e.currentTarget?.value);
                             saveFormData({ address: e.currentTarget?.value });
