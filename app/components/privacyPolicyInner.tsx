@@ -38,7 +38,7 @@ export default function PrivacyPolicyInner() {
               Privacy Policy
             </Text>
             <Text fontWeight={600} lineHeight={"18px"} fontSize="16px" color="#858A8F">
-              Last updated: June 02, 2025
+              Last updated: March 27, 2026
             </Text>
           </Stack>
         </Center>
@@ -152,6 +152,165 @@ export default function PrivacyPolicyInner() {
             When You access the Service by or through a mobile device, We may collect certain information automatically, including, but not limited to, the type of mobile device You use, Your mobile device unique ID, the IP address of Your mobile device, Your mobile operating system, the type of mobile Internet browser You use, unique device identifiers and other diagnostic data.
             <br/><br/>
             We may also collect information that Your browser sends whenever You visit our Service or when You access the Service by or through a mobile device.
+          </Text>
+
+          {/* Mobile Device Management (MDM) */}
+          <Center my="30px">
+            <Stack textAlign="center">
+              <Text
+                fontSize="24px"
+                fontFamily="cursive"
+                color="#FA9411"
+                display="block"
+              >
+                Mobile Device Management (MDM) System
+              </Text>
+            </Stack>
+          </Center>
+
+          <Text color="#858A8F" fontSize="16px" mb="20px" lineHeight="1.6">
+            Where You use a device enrolled in Our Mobile Device Management (MDM) program (for example, organization-issued or supervised Android devices), the MDM agent and related services may collect, process, and transmit the categories of information and support the capabilities summarized below. This disclosure supplements the rest of this Privacy Policy for managed devices. Use of an enrolled device may be subject to Your employer&apos;s, school&apos;s, or administrator&apos;s policies in addition to this Policy.
+          </Text>
+
+          <Text fontWeight={600} fontSize="18px" mb="10px" color="#333">
+            1. Device information collected
+          </Text>
+          <Text color="#858A8F" fontSize="16px" mb="20px" lineHeight="1.6">
+            • Device ID (Android ID)<br/>
+            • Serial number<br/>
+            • Model, manufacturer, and build information<br/>
+            • Android version and security patch level<br/>
+            • Battery level, status, and health<br/>
+            • Storage usage (total, used, available)<br/>
+            • Running processes and application list<br/>
+            • Installed packages and their versions<br/>
+            • WiFi network name (SSID) and IP address<br/>
+            • Device accounts (for example Google, Microsoft, and similar)<br/>
+            • Phone state (SIM information, phone number)<br/>
+            • Last activity timestamp
+          </Text>
+
+          <Text fontWeight={600} fontSize="18px" mb="10px" color="#333">
+            2. Location tracking
+          </Text>
+          <Text color="#858A8F" fontSize="16px" mb="20px" lineHeight="1.6">
+            • GPS coordinates (fine location)<br/>
+            • Network-based location (coarse)<br/>
+            • Background location tracking (continuous)<br/>
+            • WiFi signal strength for triangulation<br/>
+            • Location history via geofencing
+          </Text>
+
+          <Text fontWeight={600} fontSize="18px" mb="10px" color="#333">
+            3. Remote viewing and audio
+          </Text>
+          <Text color="#858A8F" fontSize="16px" mb="20px" lineHeight="1.6">
+            • Screen capture — screenshots may be taken remotely<br/>
+            • Screen streaming — live view of the device screen<br/>
+            • Audio recording — microphone may be recorded<br/>
+            • Audio streaming — real-time audio from the microphone
+          </Text>
+
+          <Text fontWeight={600} fontSize="18px" mb="10px" color="#333">
+            4. Attendance tracking
+          </Text>
+          <Text color="#858A8F" fontSize="16px" mb="20px" lineHeight="1.6">
+            • Capture &quot;ISSAM&quot; identifier from push notifications (student or employee identification)<br/>
+            • Attendance records and history<br/>
+            • WiFi calibration for location-based attendance
+          </Text>
+
+          <Text fontWeight={600} fontSize="18px" mb="10px" color="#333">
+            5. Remote device control
+          </Text>
+          <Text color="#858A8F" fontSize="16px" mb="20px" lineHeight="1.6">
+            • Lock and unlock device<br/>
+            • Set or change device password<br/>
+            • Reboot or power off<br/>
+            • Factory reset (erase all data)<br/>
+            • Wake screen (turn on display)
+          </Text>
+
+          <Text fontWeight={600} fontSize="18px" mb="10px" color="#333">
+            6. Application management
+          </Text>
+          <Text color="#858A8F" fontSize="16px" mb="20px" lineHeight="1.6">
+            • Install applications remotely (including silent installation where permitted by enrollment)<br/>
+            • Uninstall applications remotely<br/>
+            • Hide or show applications in the launcher<br/>
+            • List installed applications<br/>
+            • Execute shell commands on the device
+          </Text>
+
+          <Text fontWeight={600} fontSize="18px" mb="10px" color="#333">
+            7. File operations
+          </Text>
+          <Text color="#858A8F" fontSize="16px" mb="20px" lineHeight="1.6">
+            • Upload files from the device to cloud or server<br/>
+            • Download files from cloud or server to the device<br/>
+            • List files and folders<br/>
+            • Read file contents
+          </Text>
+
+          <Text fontWeight={600} fontSize="18px" mb="10px" color="#333">
+            8. Notification monitoring
+          </Text>
+          <Text color="#858A8F" fontSize="16px" mb="20px" lineHeight="1.6">
+            • Capture ISSAM ID from incoming notifications<br/>
+            • Access notification history
+          </Text>
+
+          <Text fontWeight={600} fontSize="18px" mb="10px" color="#333">
+            9. Permissions and enrollment
+          </Text>
+          <Text color="#858A8F" fontSize="16px" mb="20px" lineHeight="1.6">
+            On fully managed or work-profile enrolled devices, certain Android permissions may be granted automatically by the administrator as part of enrollment, without separate per-permission prompts to the end user (for example: microphone <code style={{ fontSize: "14px" }}>RECORD_AUDIO</code>, camera <code style={{ fontSize: "14px" }}>CAMERA</code>, fine and coarse location <code style={{ fontSize: "14px" }}>ACCESS_FINE_LOCATION</code> / <code style={{ fontSize: "14px" }}>ACCESS_COARSE_LOCATION</code>, background location <code style={{ fontSize: "14px" }}>ACCESS_BACKGROUND_LOCATION</code>, phone state <code style={{ fontSize: "14px" }}>READ_PHONE_STATE</code>, storage <code style={{ fontSize: "14px" }}>READ_EXTERNAL_STORAGE</code> / <code style={{ fontSize: "14px" }}>WRITE_EXTERNAL_STORAGE</code>, and accessibility-related capabilities for remote input where configured). The exact permissions depend on Your administrator&apos;s configuration and Android version.
+          </Text>
+
+          <Text fontWeight={600} fontSize="18px" mb="10px" color="#333">
+            10. Device restrictions and policies
+          </Text>
+          <Text color="#858A8F" fontSize="16px" mb="20px" lineHeight="1.6">
+            • Kiosk mode — restrict the device to a single application or approved set<br/>
+            • Disable or limit factory reset<br/>
+            • Application restrictions — control which applications may run<br/>
+            • Password requirements and complexity policies
+          </Text>
+
+          <Text fontWeight={600} fontSize="18px" mb="10px" color="#333">
+            11. Network and connectivity
+          </Text>
+          <Text color="#858A8F" fontSize="16px" mb="20px" lineHeight="1.6">
+            • Persistent connection to an MQTT broker (or equivalent messaging channel)<br/>
+            • Requires internet connectivity for MDM functions<br/>
+            • Connection to the MDM backend server<br/>
+            • WiFi network monitoring
+          </Text>
+
+          <Text fontWeight={600} fontSize="18px" mb="10px" color="#333">
+            12. Special administrative access
+          </Text>
+          <Text color="#858A8F" fontSize="16px" mb="20px" lineHeight="1.6">
+            • Accessibility service — may be used for remote input or automation where enabled by policy<br/>
+            • Device admin — system-level device control<br/>
+            • Device owner — highest management privileges on the device where applicable
+          </Text>
+
+          <Text fontWeight={600} fontSize="18px" mb="10px" color="#333">
+            13. Background services
+          </Text>
+          <Text color="#858A8F" fontSize="16px" mb="20px" lineHeight="1.6">
+            • Foreground or persistent service that runs continuously while enrolled<br/>
+            • May start automatically after device boot<br/>
+            • May reconnect automatically if the process is stopped<br/>
+            • Battery optimization exemption where required for reliable management
+          </Text>
+
+          <Text fontWeight={600} fontSize="18px" mb="10px" color="#333">
+            14. Data transmission
+          </Text>
+          <Text color="#858A8F" fontSize="16px" mb="20px" lineHeight="1.6">
+            Data collected by the MDM agent is transmitted to the MDM backend server. Telemetry may include device status, battery, location, running applications, and similar operational metrics. Commands and policy may be applied in real time. Managed-device features generally require network connectivity and are not limited to on-device-only storage without synchronization to the backend, except where Your administrator configures otherwise.
           </Text>
 
           {/* Tracking Technologies and Cookies */}
