@@ -38,9 +38,11 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "react-toastify";
 import { useGetTractorsQuery } from "@/redux/services/tractorApi";
 import { getTractor } from "@/app/apis/tractor";
-import Map from "../../components/Map";
+import dynamic from "next/dynamic";
 import { statusTypes } from "@/app/utils/tractorStatus";
 import { SidebarWithHeader } from "@/app/components/Sidenav";
+
+const Map = dynamic(() => import("../../components/Map"), { ssr: false });
 
 interface Tractor {
   tractor_image?: any;

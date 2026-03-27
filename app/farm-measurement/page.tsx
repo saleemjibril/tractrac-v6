@@ -1,12 +1,17 @@
 "use client";
 import React, { useState } from 'react';
-import { FarmMeasurementMap } from '../components/FarmMeasurementMap';
+import dynamic from 'next/dynamic';
 import { MeasurementSummary } from '../components/MeasurementSummary';
 import { OfflineIndicator } from '../components/OfflineIndicator';
 import { useFarmMeasurement } from '../hooks/useFarmMeasurement';
 import { FarmPath } from '../types/farm-measurement';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { reverseGeocode } from '../apis/tracker';
+
+const FarmMeasurementMap = dynamic(
+  () => import('../components/FarmMeasurementMap').then((m) => m.FarmMeasurementMap),
+  { ssr: false }
+);
 
 export default function FarmMeasurementPage() {
   const [measurementResult, setMeasurementResult] = useState<FarmPath | null>(null);
