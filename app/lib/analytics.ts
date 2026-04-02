@@ -1,4 +1,6 @@
-export const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID
+/** GA4 property for tractrac.co (public site, including /blog). Override via NEXT_PUBLIC_GA_MEASUREMENT_ID if needed. */
+export const GA_MEASUREMENT_ID =
+  process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || "G-B4S5MTJFCC"
 
 declare global {
   interface Window {
@@ -27,9 +29,7 @@ export const initGA = (): void => {
 
 // Track page views
 export const trackPageView = (url: string): void => {
-  console.log("page url", url, GA_MEASUREMENT_ID, typeof window.gtag);
-  
-  if (!GA_MEASUREMENT_ID || typeof window.gtag === 'undefined') return
+  if (!GA_MEASUREMENT_ID || typeof window.gtag === "undefined") return
   
   window.gtag('config', GA_MEASUREMENT_ID, {
     page_path: url,
