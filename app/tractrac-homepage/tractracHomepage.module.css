@@ -20,7 +20,7 @@
   --tt-muted: #475569;
   --tt-nav-text: #374151;
   --tt-border: #e5e7eb;
-  --tt-hero-gradient: linear-gradient(180deg, #fff9f0 0%, #ffffff 60%);
+  --tt-hero-gradient: linear-gradient(0deg, #FFF9F0 0%, #FFFFFF 60%);
   min-height: 100vh;
   background: #ffffff;
   color: var(--tt-navy);
