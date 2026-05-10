@@ -1,0 +1,1307 @@
+/* Page shell */
+.page {
+  /* Brand tokens (mirror tractracHomepage.module.css so the shared
+     TractracHomepageNav + TractracFooter render with the right colours). */
+  --tt-orange: #fa9510;
+  --tt-orange-hover: #e8890e;
+  --tt-navy: #101a2a;
+  --tt-navy-deep: #162844;
+  --tt-muted: #475569;
+  --tt-nav-text: #374151;
+  --tt-border: #e5e7eb;
+  --tt-hero-gradient: linear-gradient(180deg, #fff9f0 0%, #ffffff 60%);
+  background: #060c15;
+  color: #ffffff;
+  min-height: 100vh;
+}
+
+/* ---------- Hero section ---------- */
+
+.hero {
+  width: 100%;
+  background: #060c15;
+}
+
+.heroInner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: clamp(3.5rem, 8vw, 6.25rem) clamp(1.25rem, 4vw, 5rem);
+}
+
+/* Tag pill */
+.heroTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 999px;
+  font-family: "Chivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 15px;
+  color: #ffffff;
+}
+
+.heroTagDot {
+  width: 6px;
+  height: 6px;
+  background: #fa9510;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Title */
+.heroTitle {
+  margin: 0;
+  max-width: 900px;
+  text-align: center;
+  font-family: "Chivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 700;
+  font-size: clamp(2.25rem, 6vw, 4.5rem);
+  line-height: 1.1;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+}
+
+/* Description */
+.heroLede {
+  margin: 0;
+  max-width: 680px;
+  text-align: center;
+  font-family: "Chivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 400;
+  font-size: clamp(1rem, 1.4vw, 1.25rem);
+  line-height: 1.6;
+  color: #ccd9e6;
+}
+
+.heroLedeLead {
+  display: block;
+  margin-bottom: 0.85rem;
+}
+
+/* Video card */
+.heroVideoCard {
+  position: relative;
+  display: block;
+  width: 100%;
+  max-width: 800px;
+  aspect-ratio: 800 / 440;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 16px;
+  overflow: hidden;
+  background: #11151c;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  isolation: isolate;
+  transition: transform 220ms ease, box-shadow 220ms ease;
+}
+
+.heroVideoCard:hover,
+.heroVideoCard:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 22px 44px -22px rgba(0, 0, 0, 0.55);
+  outline: none;
+}
+
+.heroVideoImg {
+  object-fit: cover;
+}
+
+.heroVideoOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 16px;
+  background: linear-gradient(
+    180deg,
+    rgba(6, 12, 21, 0.05) 0%,
+    rgba(6, 12, 21, 0.25) 60%,
+    rgba(6, 12, 21, 0.45) 100%
+  );
+  transition: background 220ms ease;
+}
+
+.heroVideoCard:hover .heroVideoOverlay,
+.heroVideoCard:focus-visible .heroVideoOverlay {
+  background: linear-gradient(
+    180deg,
+    rgba(6, 12, 21, 0.15) 0%,
+    rgba(6, 12, 21, 0.4) 60%,
+    rgba(6, 12, 21, 0.55) 100%
+  );
+}
+
+.heroPlayBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 72px;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 100px;
+  box-shadow: 0 10px 26px -12px rgba(0, 0, 0, 0.55);
+  transition: transform 200ms ease, background 200ms ease;
+}
+
+.heroVideoCard:hover .heroPlayBtn,
+.heroVideoCard:focus-visible .heroPlayBtn {
+  background: #ffffff;
+  transform: scale(1.04);
+}
+
+.heroPlayIcon {
+  width: 24px;
+  height: 26px;
+  display: block;
+}
+
+.heroPlayLabel {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 278px;
+  max-width: calc(100% - 1rem);
+  height: 34px;
+  padding: 0 14px;
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 10px;
+  font-family: "Chivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 18px;
+  color: #060c15;
+}
+
+/* States row */
+.heroStates {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.heroStateChip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 999px;
+  font-family: "Chivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 15px;
+  color: #e6edf5;
+  white-space: nowrap;
+}
+
+/* ---------- Responsive tweaks ---------- */
+
+@media (max-width: 640px) {
+  .heroInner {
+    gap: 1.5rem;
+  }
+
+  .heroTitle {
+    font-size: clamp(1.9rem, 8.5vw, 2.5rem);
+  }
+
+  .heroLede {
+    font-size: 0.95rem;
+  }
+
+  .heroPlayBtn {
+    width: 64px;
+    height: 56px;
+  }
+
+  .heroPlayIcon {
+    width: 20px;
+    height: 22px;
+  }
+
+  .heroPlayLabel {
+    width: auto;
+    height: 32px;
+    font-size: 13px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heroVideoCard,
+  .heroPlayBtn,
+  .heroVideoOverlay {
+    transition: none;
+  }
+}
+
+/* ---------- Our Story section ---------- */
+
+.story {
+  width: 100%;
+  background: #ffffff;
+  color: #101a2a;
+}
+
+.storyInner {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  gap: clamp(2rem, 5vw, 5rem);
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: clamp(3.5rem, 8vw, 6rem) clamp(1.25rem, 4vw, 5rem);
+}
+
+@media (min-width: 900px) {
+  .storyInner {
+    grid-template-columns: minmax(0, 560px) minmax(0, 1fr);
+    align-items: center;
+  }
+}
+
+/* Image card */
+.storyImageCard {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  aspect-ratio: 560 / 480;
+  background: #f5f7fa;
+  border-radius: 20px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  justify-self: center;
+}
+
+@media (min-width: 900px) {
+  .storyImageCard {
+    justify-self: start;
+  }
+}
+
+.storyImage {
+  object-fit: cover;
+  object-position: center;
+}
+
+.storyFoundedPill {
+  position: absolute;
+  left: clamp(16px, 3vw, 30px);
+  bottom: clamp(16px, 3vw, 30px);
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 11px 18px;
+  background: #060c15;
+  border-radius: 999px;
+  color: #ffffff;
+  font-family: "Chivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 18px;
+  white-space: nowrap;
+  box-shadow: 0 8px 18px -10px rgba(0, 0, 0, 0.55);
+}
+
+.storyFoundedEmoji {
+  font-size: 16px;
+  line-height: 1;
+}
+
+/* Right column: copy + stats */
+.storyBody {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  max-width: 600px;
+  width: 100%;
+}
+
+.storyTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: rgba(250, 149, 16, 0.1);
+  border-radius: 999px;
+  font-family: "Chivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 15px;
+  color: #fa9510;
+}
+
+.storyTagDot {
+  width: 6px;
+  height: 6px;
+  background: #fa9510;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.storyHeading {
+  margin: 0;
+  font-family: "Chivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+  line-height: 1.15;
+  color: #101a2a;
+  letter-spacing: -0.01em;
+}
+
+.storyParagraph {
+  margin: 0;
+  font-family: "Chivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.7;
+  color: #6b7585;
+}
+
+/* Quick stats */
+.storyStats {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.storyStat {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.storyStatValue {
+  font-family: "Chivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 33px;
+  color: #fa9510;
+}
+
+.storyStatLabel {
+  font-family: "Chivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 15px;
+  color: #6b7585;
+}
+
+@media (max-width: 640px) {
+  .storyHeading {
+    font-size: clamp(1.5rem, 7vw, 2rem);
+  }
+
+  .storyParagraph {
+    font-size: 15px;
+  }
+
+  .storyFoundedPill {
+    font-size: 13px;
+    padding: 9px 14px;
+  }
+}
+
+/* ---------- Mission & Vision section ---------- */
+
+.mission {
+  width: 100%;
+  background: #060c15;
+  color: #ffffff;
+}
+
+.missionInner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(2rem, 4vw, 3.5rem);
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: clamp(3.5rem, 8vw, 6rem) clamp(1.25rem, 4vw, 5rem);
+}
+
+/* Header */
+.missionHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  text-align: center;
+}
+
+.missionTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: rgba(250, 149, 16, 0.1);
+  border-radius: 999px;
+  font-family: "Chivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 15px;
+  color: #fa9510;
+}
+
+.missionTagDot {
+  width: 6px;
+  height: 6px;
+  background: #fa9510;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.missionTitle {
+  margin: 0;
+  font-family: "Chivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+  line-height: 1.2;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+}
+
+/* Cards row */
+.missionCards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(1.5rem, 4vw, 5rem);
+  width: 100%;
+}
+
+@media (min-width: 900px) {
+  .missionCards {
+    grid-template-columns: 1fr 1fr;
+    align-items: stretch;
+  }
+}
+
+.missionCard {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  padding: clamp(1.75rem, 3.5vw, 2.75rem);
+  border-radius: 20px;
+  height: 100%;
+}
+
+.missionCardDark {
+  background: #192332;
+  color: #dde1e6;
+}
+
+.missionCardLight {
+  background: #fff3e0;
+  color: #6b7585;
+}
+
+/* Hexagon icon */
+.missionCardIcon {
+  display: block;
+  width: 70px;
+  height: 70px;
+  margin-bottom: 10px;
+  flex-shrink: 0;
+}
+
+.missionCardLabel {
+  margin: 0;
+  font-family: "Chivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.5rem, 2.4vw, 1.8rem);
+  line-height: 1.15;
+  color: #fa9411;
+  letter-spacing: 0.01em;
+}
+
+.missionCardCopy {
+  margin: 0;
+  font-family: "Chivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 400;
+  font-size: clamp(1rem, 1.4vw, 1.25rem);
+  line-height: 1.58;
+}
+
+.missionCardDark .missionCardCopy {
+  color: #dde1e6;
+}
+
+.missionCardLight .missionCardCopy {
+  color: #6b7585;
+}
+
+@media (max-width: 640px) {
+  .missionCardLabel {
+    font-size: 1.4rem;
+  }
+  .missionCardCopy {
+    font-size: 0.95rem;
+  }
+}
+
+/* ---------- Awards & Recognition section ---------- */
+
+.awards {
+  width: 100%;
+  background: #ffffff;
+  color: #101a2a;
+}
+
+.awardsInner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(2rem, 5vw, 3.5rem);
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: clamp(3.5rem, 8vw, 6rem) clamp(1.25rem, 4vw, 5rem);
+}
+
+/* Header */
+.awardsHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  text-align: center;
+  max-width: 640px;
+}
+
+.awardsTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: rgba(250, 149, 16, 0.1);
+  border-radius: 999px;
+  font-family: "Chivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 15px;
+  color: #fa9510;
+}
+
+.awardsTagDot {
+  width: 6px;
+  height: 6px;
+  background: #fa9510;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.awardsTitle {
+  margin: 0;
+  font-family: "Chivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+  line-height: 1.2;
+  color: #101a2a;
+  letter-spacing: -0.01em;
+}
+
+.awardsSubtitle {
+  margin: 0;
+  font-family: "Chivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #6b7585;
+}
+
+/* Cards */
+.awardsCards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(1.5rem, 2.4vw, 2rem);
+  width: 100%;
+}
+
+@media (min-width: 900px) {
+  .awardsCards {
+    grid-template-columns: 1fr 1fr;
+    align-items: stretch;
+  }
+}
+
+.awardCard {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: clamp(1rem, 1.6vw, 1.4rem);
+  padding: clamp(1.75rem, 3vw, 2.875rem);
+  background: #f8f7f3;
+  border: 1px solid #e4e8ec;
+  border-radius: 21px;
+  height: 100%;
+}
+
+.awardYearPill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
+  padding: 7px 18px;
+  background: #060c15;
+  border-radius: 999px;
+  font-family: "Chivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 400;
+  font-size: clamp(1.1rem, 1.6vw, 1.5rem);
+  line-height: 1.18;
+  letter-spacing: -0.025em;
+  color: #fa9510;
+}
+
+.awardCardBody {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.awardCardTitle {
+  margin: 0;
+  font-family: "Chivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.3rem, 2vw, 1.875rem);
+  line-height: 1.18;
+  color: #060c15;
+  letter-spacing: -0.005em;
+}
+
+.awardCardCopy {
+  margin: 0;
+  font-family: "Chivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 400;
+  font-size: clamp(1rem, 1.4vw, 1.3rem);
+  line-height: 1.58;
+  color: #6b7585;
+}
+
+.awardCardArt {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 122px;
+  padding: 24px;
+  background: #fef5e5;
+  border: 1.5px dashed #fa9510;
+  border-radius: 15px;
+}
+
+.awardCardArtIcon {
+  width: 56px;
+  height: 56px;
+  display: block;
+  color: #fa9510;
+}
+
+/* As featured in */
+.awardsFeatured {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 19px;
+  width: 100%;
+  margin-top: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.awardsFeaturedTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: rgba(250, 149, 16, 0.1);
+  border-radius: 999px;
+  font-family: "Chivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 15px;
+  color: #fa9510;
+}
+
+.awardsFeaturedLogos {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  justify-content: center;
+  gap: 11px;
+  width: 100%;
+}
+
+.awardsLogoBox {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 1 auto;
+  min-width: 116px;
+  min-height: 100px;
+  padding: 16px 24px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+}
+
+.awardsLogoBoxKicker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.awardsLogoKicker {
+  font-family: "Chivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 400;
+  font-size: 9px;
+  line-height: 1;
+  color: #6b7585;
+  letter-spacing: 0.02em;
+}
+
+.awardsLogoIcon {
+  display: block;
+  height: 56px;
+  width: auto;
+}
+
+@media (max-width: 640px) {
+  .awardsLogoBox {
+    min-width: 96px;
+    min-height: 84px;
+    padding: 12px 16px;
+  }
+  .awardsLogoIcon {
+    height: 44px;
+  }
+  .awardCardTitle {
+    font-size: 1.2rem;
+  }
+  .awardCardCopy {
+    font-size: 0.95rem;
+  }
+}
+
+/* ---------- Testimonials section ---------- */
+
+.testimonials {
+  width: 100%;
+  background: #060c15;
+  color: #ffffff;
+}
+
+.testimonialsInner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(2rem, 4vw, 3.5rem);
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: clamp(3.5rem, 8vw, 6rem) clamp(1.25rem, 4vw, 5rem);
+}
+
+.testimonialsHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  text-align: center;
+  max-width: 653px;
+}
+
+.testimonialsTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: rgba(250, 149, 16, 0.1);
+  border-radius: 999px;
+  font-family: "Chivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 15px;
+  color: #fa9510;
+}
+
+.testimonialsTagDot {
+  width: 6px;
+  height: 6px;
+  background: #fa9510;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.testimonialsTitle {
+  margin: 0;
+  font-family: "Chivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+  line-height: 1.2;
+  color: #f9fdff;
+  letter-spacing: -0.01em;
+}
+
+.testimonialsCards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(1.5rem, 2.4vw, 1.75rem);
+  width: 100%;
+}
+
+@media (min-width: 900px) {
+  .testimonialsCards {
+    grid-template-columns: 1fr 1fr;
+    align-items: stretch;
+  }
+}
+
+.testimonialCard {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 25px;
+  padding: clamp(1.5rem, 2.5vw, 1.875rem) clamp(1.5rem, 3vw, 2.625rem);
+  background: #f8f7f3;
+  border: 1px solid #e4e8ec;
+  border-radius: 20px;
+  height: 100%;
+}
+
+.testimonialQuoteIcon {
+  width: 44px;
+  height: 38px;
+  color: #fa9411;
+  display: block;
+  flex-shrink: 0;
+}
+
+.testimonialQuote {
+  margin: 0;
+  flex: 1 1 auto;
+  font-family: "Chivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 400;
+  font-size: clamp(1rem, 1.4vw, 1.25rem);
+  line-height: 1.58;
+  color: #6b7585;
+}
+
+.testimonialAuthor {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 14px;
+  margin-top: auto;
+}
+
+.testimonialAvatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 49px;
+  padding: 0 14px;
+  background: #fff2e2;
+  border-radius: 999px;
+  font-family: "Chivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 1.18;
+  letter-spacing: -0.025em;
+  color: #fa9411;
+  flex-shrink: 0;
+}
+
+.testimonialMeta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.testimonialName {
+  margin: 0;
+  font-family: "Chivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.2;
+  color: #060c15;
+}
+
+.testimonialRole {
+  margin: 0;
+  font-family: "Chivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.58;
+  color: #6b7585;
+}
+
+@media (max-width: 640px) {
+  .testimonialQuote {
+    font-size: 0.95rem;
+  }
+  .testimonialAvatar {
+    width: 50px;
+    height: 44px;
+    font-size: 16px;
+  }
+}
+
+/* ---------- Leadership Team section ---------- */
+
+.leadership {
+  width: 100%;
+  background: #f7f7fa;
+  color: #101a2a;
+}
+
+.leadershipInner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(2rem, 4vw, 3.5rem);
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: clamp(3.5rem, 8vw, 6rem) clamp(1.25rem, 4vw, 5rem);
+}
+
+.leadershipHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  text-align: center;
+  max-width: 700px;
+}
+
+.leadershipTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: rgba(250, 149, 16, 0.1);
+  border-radius: 999px;
+  font-family: "Chivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 15px;
+  color: #fa9510;
+}
+
+.leadershipTagDot {
+  width: 6px;
+  height: 6px;
+  background: #fa9510;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.leadershipTitle {
+  margin: 0;
+  font-family: "Chivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+  line-height: 1.2;
+  color: #101a2a;
+  letter-spacing: -0.01em;
+}
+
+.leadershipSubtitle {
+  margin: 0;
+  font-family: "Chivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #6b7585;
+}
+
+/* Grid */
+.leadershipGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  width: 100%;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+@media (min-width: 640px) {
+  .leadershipGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .leadershipGrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* Card */
+.leadershipCard {
+  display: flex;
+  flex-direction: column;
+  background: #f8f7f3;
+  border: 1px solid #e4e8ec;
+  border-radius: 10px;
+  overflow: hidden;
+  height: 100%;
+}
+
+.leadershipPhoto {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 302 / 201;
+  background: #e4e8ec;
+  overflow: hidden;
+}
+
+.leadershipPhotoImg {
+  object-fit: cover;
+}
+
+.leadershipBody {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px 16px;
+  flex: 1 1 auto;
+}
+
+.leadershipMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.leadershipName {
+  margin: 0;
+  font-family: "Chivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 1.2;
+  color: #060c15;
+}
+
+.leadershipRole {
+  margin: 0;
+  font-family: "Chivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.58;
+  color: #fa9510;
+}
+
+.leadershipBio {
+  margin: 0;
+  font-family: "Chivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 400;
+  font-size: 13.5px;
+  line-height: 1.58;
+  color: #6b7585;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.leadershipLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: auto;
+  font-family: "Chivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 400;
+  font-size: 13.5px;
+  line-height: 1.58;
+  color: #6b7585;
+  text-decoration: none;
+  transition: color 180ms ease;
+}
+
+.leadershipLink:hover,
+.leadershipLink:focus-visible {
+  color: #fa9510;
+  outline: none;
+}
+
+.leadershipLink:focus-visible {
+  text-decoration: underline;
+}
+
+.leadershipLinkIcon {
+  width: 16px;
+  height: 16px;
+  display: block;
+  flex-shrink: 0;
+  color: currentColor;
+}
+
+/* Slide indicators (decorative pagination matching the figma) */
+.leadershipDots {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: clamp(1rem, 2vw, 1.5rem);
+  padding: 0;
+  list-style: none;
+}
+
+.leadershipDot {
+  width: 80px;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(16, 26, 42, 0.12);
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  transition: background 180ms ease, width 180ms ease;
+  appearance: none;
+}
+
+.leadershipDot:hover {
+  background: rgba(16, 26, 42, 0.24);
+}
+
+.leadershipDot:focus-visible {
+  outline: 2px solid rgba(250, 149, 16, 0.45);
+  outline-offset: 2px;
+}
+
+.leadershipDotActive {
+  background: #fa9510;
+  width: 96px;
+}
+
+@media (max-width: 640px) {
+  .leadershipDot {
+    width: 44px;
+  }
+  .leadershipDotActive {
+    width: 56px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .leadershipDot,
+  .leadershipLink {
+    transition: none;
+  }
+}
+
+/* ---------- Join the Humans CTA section ---------- */
+
+.cta {
+  width: 100%;
+  background: linear-gradient(0deg, #fa9510 0%, #ea580c 100%);
+  color: #ffffff;
+}
+
+.ctaInner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: clamp(3.5rem, 8vw, 6rem) clamp(1.25rem, 4vw, 5rem);
+  text-align: center;
+}
+
+.ctaTitle {
+  margin: 0;
+  font-family: "Chivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.6rem, 3vw, 2rem);
+  line-height: 1.18;
+  color: #101a2a;
+  letter-spacing: -0.005em;
+}
+
+.ctaCopy {
+  margin: 0;
+  font-family: "Chivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 400;
+  font-size: clamp(0.95rem, 1.2vw, 1rem);
+  line-height: 1.6;
+  color: #ffffff;
+}
+
+.ctaButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 28px;
+  margin-top: 8px;
+  background: #060c15;
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: "Chivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 18px;
+  color: #ffffff;
+  text-decoration: none;
+  transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
+  box-shadow: 0 8px 22px -10px rgba(6, 12, 21, 0.45);
+}
+
+.ctaButton:hover,
+.ctaButton:focus-visible {
+  background: #1a2233;
+  transform: translateY(-2px);
+  box-shadow: 0 16px 30px -14px rgba(6, 12, 21, 0.6);
+  outline: none;
+}
+
+.ctaButton:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+}
+
+.ctaButtonArrow {
+  display: inline-block;
+  transition: transform 180ms ease;
+}
+
+.ctaButton:hover .ctaButtonArrow,
+.ctaButton:focus-visible .ctaButtonArrow {
+  transform: translateX(3px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ctaButton,
+  .ctaButtonArrow {
+    transition: none;
+  }
+}
