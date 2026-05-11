@@ -4,7 +4,7 @@ import { FaFacebookF, FaLinkedinIn, FaXTwitter, FaYoutube } from "react-icons/fa
 import styles from "./tractracHomepage.module.css";
 
 const LOGO_SRC =
-  "https://res.cloudinary.com/tractrac-global/image/upload/v1747644706/tractrac_logo_png_vfhoy7.png";
+  "/icons/tractrac-white-logo.svg";
 
 const QUICK_LINKS: { label: string; href: string }[] = [
   { label: "About Us", href: "/about" },
