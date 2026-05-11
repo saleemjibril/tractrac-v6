@@ -585,9 +585,11 @@
   }
 
   .statCardFarmers {
+    left: auto;
     right: 0.25rem;
-    top: -1.5rem;
-    transform-origin: top right;
+    top: 50%;
+    transform: translateY(-50%) scale(0.9);
+    transform-origin: right center;
   }
 
   .statCardInvest {
