@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import styles from "./traxcelerateProduct.module.css";
 
-const LOGO_SRC = "/icons/tractrac-white-logo.svg";
+const LOGO_SRC = "https://res.cloudinary.com/tractrac-global/image/upload/v1747644706/tractrac_logo_png_vfhoy7.png";
 
 const NAV_LINKS: { label: string; href: string }[] = [
   { label: "About Us", href: "/about-us" },
