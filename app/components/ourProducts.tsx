@@ -22,7 +22,7 @@ const products = [
         image: "https://res.cloudinary.com/tractrac-global/image/upload/v1760361449/A5_-_3_zakm8e.jpg",
         name: "TRAxCelerate",
         description: "The Tractrac TRAxCelerate program is a flagship capacity-building program designed to train, certify, and deploy 2,000 Mechanisation Service Providers (MSPs) — including operators, booking and hiring agents, and mechanics — across Nigeria.",
-        link: "/products/traxcelerate"
+        link: "/traxcelerate-product-page"
     },
     {
         image: "https://res.cloudinary.com/tractrac-global/image/upload/v1760361450/Frame_1000005376_3_b9pzji.png",

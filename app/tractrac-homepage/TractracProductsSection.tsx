@@ -31,7 +31,7 @@ const PRODUCTS: {
     title: "TraxCelerate",
     description:
       "Accelerate the growth of your mechanization service business with smart tools and market access.",
-    href: "/products/traxcelerate",
+    href: "/traxcelerate-product-page",
     icon: "chart",
   },
   {
