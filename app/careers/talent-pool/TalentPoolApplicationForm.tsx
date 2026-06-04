@@ -174,13 +174,39 @@ export default function TalentPoolApplicationForm() {
     body.append("certificate", certificate);
     body.append("consent", "true");
 
+    const submissionPayload = {
+      fullName: fullName.trim(),
+      email: email.trim(),
+      phone: phone.trim(),
+      degreeClass,
+      coverLetter: coverLetter.trim(),
+      consent: true,
+      resume: {
+        name: resume.name,
+        size: resume.size,
+        type: resume.type,
+      },
+      certificate: {
+        name: certificate.name,
+        size: certificate.size,
+        type: certificate.type,
+      },
+    };
+    console.log(
+      "Talent pool submission:",
+      JSON.stringify(submissionPayload, null, 2)
+    );
+
     setSubmitting(true);
     try {
       const res = await fetch("/api/careers/talent-pool", {
         method: "POST",
         body,
       });
+
+      console.log("RESPONSE FROM TALENT POOL API", body, res);
       const data = await res.json().catch(() => ({}));
+      console.log("DATA FROM TALENT POOL API", data);
       if (!res.ok) {
         setStatus("error");
         setStatusMessage(
