@@ -204,7 +204,7 @@ export default function TalentPoolApplicationForm() {
         body,
       });
 
-      console.log("RESPONSE FROM TALENT POOL API", body, res);
+      console.log("RESPONSE FROM TALENT POOL API   ", body, res);
       const data = await res.json().catch(() => ({}));
       console.log("DATA FROM TALENT POOL API", data);
       if (!res.ok) {
