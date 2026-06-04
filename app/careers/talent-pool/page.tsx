@@ -29,7 +29,7 @@ export default function TalentPoolPage() {
 
         <div className={styles.layout}>
           <div>
-            <h1 className={styles.introTitle}>?</h1>
+            <h1 className={styles.introTitle}>Open Application?</h1>
             <p className={styles.introCopy}>
               Are you passionate about making a difference and contributing your
               skills to meaningful work in agricultural mechanization? TracTrac
