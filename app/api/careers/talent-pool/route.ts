@@ -5,6 +5,9 @@ export const runtime = "nodejs";
 const CV_TYPES = [".pdf", ".doc", ".docx"];
 const CERT_TYPES = [".pdf", ".doc", ".docx"];
 const MAX_FILE_BYTES = 10 * 1024 * 1024;
+const UPLOAD_FOLDER = "careers";
+const TALENT_POOL_SOURCE = "tractrac-careers-talent-pool";
+const TALENT_POOL_POSITION = "Talent Pool";
 
 /** Form labels → API `DegreeClass` enum values. */
 const DEGREE_CLASS_TO_API: Record<string, string> = {
@@ -62,12 +65,44 @@ function getTracTracApiBase(): string {
   return (
     process.env.CAREERS_TALENT_POOL_API_URL?.trim() ||
     process.env.TRACTRAC_API_BASE_URL?.trim() ||
+    process.env.NEXT_PUBLIC_URL?.trim() ||
     "https://api.tractrac.co/api/v1"
   ).replace(/\/$/, "");
 }
 
 function mapDegreeClass(label: string): string | null {
   return DEGREE_CLASS_TO_API[label] ?? null;
+}
+
+/** Response shape from POST /api/v1/uploads/files */
+type TracTracFileUploadResponse = {
+  success?: boolean;
+  message?: string;
+  url?: string;
+  filename?: string;
+  folder?: string;
+};
+
+type UploadedFileRef = {
+  url: string;
+  filename: string;
+};
+
+function parseFileUploadResponse(data: unknown): UploadedFileRef | null {
+  if (!data || typeof data !== "object") return null;
+
+  const record = data as TracTracFileUploadResponse;
+  if (record.success === false) return null;
+
+  const url = typeof record.url === "string" ? record.url.trim() : "";
+  if (!url) return null;
+
+  const filename =
+    typeof record.filename === "string" && record.filename.trim()
+      ? record.filename.trim()
+      : url.split("/").pop() || "upload";
+
+  return { url, filename };
 }
 
 async function parseApiErrorMessage(res: Response): Promise<string> {
@@ -171,53 +206,106 @@ async function validateForm(
   };
 }
 
-function appendUpload(form: FormData, field: string, file: UploadPart) {
-  form.append(field, new Blob([file.buffer], { type: file.type }), file.name);
-}
-
-function buildTracTracFormData(payload: ValidatedTalentPoolPayload): FormData {
+function buildFileUploadFormData(file: UploadPart, folder: string): FormData {
   const outbound = new FormData();
-  outbound.append("full_name", payload.fullName);
-  outbound.append("email", payload.email);
-  outbound.append("phone", payload.phone);
-  outbound.append("degree_class", payload.degreeClassApi);
-  outbound.append("cover_letter", payload.coverLetter);
-  outbound.append("privacy_consent", payload.consent ? "true" : "false");
-  appendUpload(outbound, "resume", payload.resume);
-  appendUpload(outbound, "certificate", payload.certificate);
+  outbound.append("file", new Blob([file.buffer], { type: file.type }), file.name);
+  outbound.append("folder", folder);
   return outbound;
 }
 
-function buildWebhookFormData(payload: ValidatedTalentPoolPayload): FormData {
+/**
+ * Upload a document via POST /uploads/files (see api.tractrac.co docs).
+ * Same endpoint pattern as admin-v6 mediaUploadService / asset-management file upload proxy.
+ */
+async function uploadFileToTracTrac(
+  file: UploadPart,
+  folder: string = UPLOAD_FOLDER
+): Promise<UploadedFileRef | null> {
+  const uploadEndpoint = `${getTracTracApiBase()}/uploads/files`;
+  const res = await fetch(uploadEndpoint, {
+    method: "POST",
+    body: buildFileUploadFormData(file, folder),
+  });
+
+  const bodyText = await res.text();
+  if (!res.ok) {
+    console.error("[careers/talent-pool] file upload failed", res.status, bodyText);
+    return null;
+  }
+
+  try {
+    return parseFileUploadResponse(JSON.parse(bodyText));
+  } catch {
+    console.error("[careers/talent-pool] invalid upload response", bodyText);
+    return null;
+  }
+}
+
+function buildJobApplicationBody(
+  payload: ValidatedTalentPoolPayload,
+  resume: UploadedFileRef,
+  certificate: UploadedFileRef
+) {
+  return {
+    full_name: payload.fullName,
+    email: payload.email,
+    phone: payload.phone,
+    position_applied_for: TALENT_POOL_POSITION,
+    degree_class: payload.degreeClassApi,
+    job_posting_id: null,
+    cover_letter: payload.coverLetter,
+    resume_url: resume.url,
+    resume_filename: resume.filename,
+    certificate_url: certificate.url,
+    certificate_filename: certificate.filename,
+    privacy_consent: payload.consent,
+    source: TALENT_POOL_SOURCE,
+  };
+}
+
+async function submitJobApplication(
+  payload: ValidatedTalentPoolPayload,
+  resume: UploadedFileRef,
+  certificate: UploadedFileRef
+) {
+  const url = `${getTracTracApiBase()}/job-applications`;
+  return fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Accept: "application/json" },
+    body: JSON.stringify(buildJobApplicationBody(payload, resume, certificate)),
+  });
+}
+
+function buildWebhookFormData(
+  payload: ValidatedTalentPoolPayload,
+  resumeUrl: string,
+  certificateUrl: string
+): FormData {
   const outbound = new FormData();
   outbound.append("fullName", payload.fullName);
   outbound.append("email", payload.email);
   outbound.append("phone", payload.phone);
   outbound.append("degreeClass", payload.degreeClassLabel);
   outbound.append("coverLetter", payload.coverLetter);
-  appendUpload(outbound, "resume", payload.resume);
-  appendUpload(outbound, "certificate", payload.certificate);
-  outbound.append("source", "tractrac-careers-talent-pool");
+  outbound.append("resumeUrl", resumeUrl);
+  outbound.append("certificateUrl", certificateUrl);
+  outbound.append("source", TALENT_POOL_SOURCE);
   outbound.append("consent", payload.consent ? "true" : "false");
   return outbound;
 }
 
-async function forwardToTracTracTalentPool(payload: ValidatedTalentPoolPayload) {
-  const url = `${getTracTracApiBase()}/careers/talent-pool`;
-  return fetch(url, {
-    method: "POST",
-    body: buildTracTracFormData(payload),
-  });
-}
-
 /** Optional legacy webhook; used only when `CAREERS_TALENT_POOL_WEBHOOK_URL` is set. */
-async function forwardToWebhook(payload: ValidatedTalentPoolPayload) {
+async function forwardToWebhook(
+  payload: ValidatedTalentPoolPayload,
+  resumeUrl: string,
+  certificateUrl: string
+) {
   const webhook = process.env.CAREERS_TALENT_POOL_WEBHOOK_URL?.trim();
   if (!webhook) return null;
 
   return fetch(webhook, {
     method: "POST",
-    body: buildWebhookFormData(payload),
+    body: buildWebhookFormData(payload, resumeUrl, certificateUrl),
   });
 }
 
@@ -227,13 +315,35 @@ export async function POST(request: Request) {
     const validated = await validateForm(form);
     if (validated instanceof NextResponse) return validated;
 
-    const webhookRes = await forwardToWebhook(validated);
+    const resume = await uploadFileToTracTrac(validated.resume);
+    if (!resume) {
+      return NextResponse.json(
+        {
+          message:
+            "We could not upload your CV. Please try again or email jobs@tractrac.co.",
+        },
+        { status: 502 }
+      );
+    }
+
+    const certificate = await uploadFileToTracTrac(validated.certificate);
+    if (!certificate) {
+      return NextResponse.json(
+        {
+          message:
+            "We could not upload your certificate. Please try again or email jobs@tractrac.co.",
+        },
+        { status: 502 }
+      );
+    }
+
+    const webhookRes = await forwardToWebhook(validated, resume.url, certificate.url);
     if (webhookRes) {
       if (!webhookRes.ok) {
         return NextResponse.json(
           {
             message:
-              "We could not process your upload. Please try again or email jobs@tractrac.co.",
+              "We could not process your application. Please try again or email jobs@tractrac.co.",
           },
           { status: 502 }
         );
@@ -245,7 +355,7 @@ export async function POST(request: Request) {
       });
     }
 
-    const apiRes = await forwardToTracTracTalentPool(validated);
+    const apiRes = await submitJobApplication(validated, resume, certificate);
     if (!apiRes.ok) {
       const message = await parseApiErrorMessage(apiRes);
       const status = apiRes.status >= 400 && apiRes.status < 500 ? apiRes.status : 502;
