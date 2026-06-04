@@ -18,8 +18,44 @@ function getExtension(name: string) {
   return dot >= 0 ? name.slice(dot).toLowerCase() : "";
 }
 
-function isAllowed(file: File, allowed: string[]) {
-  return allowed.includes(getExtension(file.name)) && file.size <= MAX_FILE_BYTES;
+function isBlobLike(value: unknown): value is Blob & { name?: string } {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    "size" in value &&
+    typeof (value as Blob).arrayBuffer === "function"
+  );
+}
+
+function getUploadName(entry: Blob & { name?: string }): string {
+  if ("name" in entry && typeof entry.name === "string" && entry.name.trim()) {
+    return entry.name;
+  }
+  return "upload";
+}
+
+type UploadPart = {
+  name: string;
+  type: string;
+  size: number;
+  buffer: ArrayBuffer;
+};
+
+async function parseUpload(
+  entry: FormDataEntryValue | null,
+  allowed: string[]
+): Promise<UploadPart | null> {
+  if (!entry || typeof entry === "string" || !isBlobLike(entry)) return null;
+  const name = getUploadName(entry);
+  if (!allowed.includes(getExtension(name)) || entry.size > MAX_FILE_BYTES) {
+    return null;
+  }
+  return {
+    name,
+    type: entry.type || "application/octet-stream",
+    size: entry.size,
+    buffer: await entry.arrayBuffer(),
+  };
 }
 
 function getTracTracApiBase(): string {
@@ -62,19 +98,19 @@ type ValidatedTalentPoolPayload = {
   degreeClassApi: string;
   coverLetter: string;
   consent: boolean;
-  resume: File;
-  certificate: File;
+  resume: UploadPart;
+  certificate: UploadPart;
 };
 
-function validateForm(form: FormData): ValidatedTalentPoolPayload | NextResponse {
+async function validateForm(
+  form: FormData
+): Promise<ValidatedTalentPoolPayload | NextResponse> {
   const fullName = String(form.get("fullName") ?? "").trim();
   const email = String(form.get("email") ?? "").trim();
   const phone = String(form.get("phone") ?? "").trim();
   const degreeClassLabel = String(form.get("degreeClass") ?? "").trim();
   const coverLetter = String(form.get("coverLetter") ?? "").trim();
   const consent = form.get("consent") === "true";
-  const resume = form.get("resume");
-  const certificate = form.get("certificate");
 
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
@@ -102,13 +138,17 @@ function validateForm(form: FormData): ValidatedTalentPoolPayload | NextResponse
   if (!consent) {
     return NextResponse.json({ message: "Consent is required." }, { status: 400 });
   }
-  if (!(resume instanceof File) || !isAllowed(resume, CV_TYPES)) {
+
+  const resume = await parseUpload(form.get("resume"), CV_TYPES);
+  if (!resume) {
     return NextResponse.json(
       { message: "Please upload a valid CV (PDF, DOC, or DOCX, max 10 MB)." },
       { status: 400 }
     );
   }
-  if (!(certificate instanceof File) || !isAllowed(certificate, CERT_TYPES)) {
+
+  const certificate = await parseUpload(form.get("certificate"), CERT_TYPES);
+  if (!certificate) {
     return NextResponse.json(
       {
         message:
@@ -131,6 +171,10 @@ function validateForm(form: FormData): ValidatedTalentPoolPayload | NextResponse
   };
 }
 
+function appendUpload(form: FormData, field: string, file: UploadPart) {
+  form.append(field, new Blob([file.buffer], { type: file.type }), file.name);
+}
+
 function buildTracTracFormData(payload: ValidatedTalentPoolPayload): FormData {
   const outbound = new FormData();
   outbound.append("full_name", payload.fullName);
@@ -139,8 +183,22 @@ function buildTracTracFormData(payload: ValidatedTalentPoolPayload): FormData {
   outbound.append("degree_class", payload.degreeClassApi);
   outbound.append("cover_letter", payload.coverLetter);
   outbound.append("privacy_consent", payload.consent ? "true" : "false");
-  outbound.append("resume", payload.resume, payload.resume.name);
-  outbound.append("certificate", payload.certificate, payload.certificate.name);
+  appendUpload(outbound, "resume", payload.resume);
+  appendUpload(outbound, "certificate", payload.certificate);
+  return outbound;
+}
+
+function buildWebhookFormData(payload: ValidatedTalentPoolPayload): FormData {
+  const outbound = new FormData();
+  outbound.append("fullName", payload.fullName);
+  outbound.append("email", payload.email);
+  outbound.append("phone", payload.phone);
+  outbound.append("degreeClass", payload.degreeClassLabel);
+  outbound.append("coverLetter", payload.coverLetter);
+  appendUpload(outbound, "resume", payload.resume);
+  appendUpload(outbound, "certificate", payload.certificate);
+  outbound.append("source", "tractrac-careers-talent-pool");
+  outbound.append("consent", payload.consent ? "true" : "false");
   return outbound;
 }
 
@@ -157,24 +215,16 @@ async function forwardToWebhook(payload: ValidatedTalentPoolPayload) {
   const webhook = process.env.CAREERS_TALENT_POOL_WEBHOOK_URL?.trim();
   if (!webhook) return null;
 
-  const outbound = new FormData();
-  outbound.append("fullName", payload.fullName);
-  outbound.append("email", payload.email);
-  outbound.append("phone", payload.phone);
-  outbound.append("degreeClass", payload.degreeClassLabel);
-  outbound.append("coverLetter", payload.coverLetter);
-  outbound.append("resume", payload.resume, payload.resume.name);
-  outbound.append("certificate", payload.certificate, payload.certificate.name);
-  outbound.append("source", "tractrac-careers-talent-pool");
-  outbound.append("consent", payload.consent ? "true" : "false");
-
-  return fetch(webhook, { method: "POST", body: outbound });
+  return fetch(webhook, {
+    method: "POST",
+    body: buildWebhookFormData(payload),
+  });
 }
 
 export async function POST(request: Request) {
   try {
     const form = await request.formData();
-    const validated = validateForm(form);
+    const validated = await validateForm(form);
     if (validated instanceof NextResponse) return validated;
 
     const webhookRes = await forwardToWebhook(validated);
@@ -217,7 +267,8 @@ export async function POST(request: Request) {
       status: "success",
       message: successMessage,
     });
-  } catch {
+  } catch (error) {
+    console.error("[careers/talent-pool]", error);
     return NextResponse.json(
       { message: "An unexpected error occurred. Please try again later." },
       { status: 500 }
