@@ -79,8 +79,8 @@ export default function TractracPlusMobileSection() {
       <div className={styles.plusMobileInner}>
         <div className={styles.plusMobileCopy}>
           <p className={styles.plusMobileTag}>
-            <span className={styles.plusMobileTagDot} aria-hidden />
-            <span>TracTrac Plus — Mobile App</span>
+            {/* <span className={styles.plusMobileTagDot} aria-hidden /> */}
+            <span>TracTrac Plus Mobile App</span>
           </p>
 
           <h2 id="tractrac-plus-mobile-heading" className={styles.plusMobileTitle}>

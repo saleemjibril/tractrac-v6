@@ -58,12 +58,12 @@ export default function TraxceleratePromise() {
           <div className={styles.promiseStripInner}>
             <div className={styles.statePills}>
               <span className={styles.statePillActive}>
-                <span className={styles.statePillDot} aria-hidden />
-                Kaduna — active
+                {/* <span className={styles.statePillDot} aria-hidden /> */}
+                Kaduna active
               </span>
               <span className={styles.statePillActive}>
-                <span className={styles.statePillDot} aria-hidden />
-                Nasarawa — active
+                {/* <span className={styles.statePillDot} aria-hidden /> */}
+                Nasarawa active
               </span>
               <span className={styles.statePillNext}>Your state — next?</span>
             </div>
@@ -74,7 +74,7 @@ export default function TraxceleratePromise() {
                 </span>
               ))}
               <span className={styles.sdgPillOrange}>
-                <span className={styles.sdgPillDot} aria-hidden />
+                {/* <span className={styles.sdgPillDot} aria-hidden /> */}
                 TractracPlus
               </span>
             </div>

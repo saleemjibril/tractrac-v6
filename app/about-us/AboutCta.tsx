@@ -1,7 +1,6 @@
 import Link from "next/link";
 import styles from "./aboutUs.module.css";
 
-// TODO: replace with the real careers page once it exists.
 const OPEN_POSITIONS_HREF = "/careers";
 
 export default function AboutCta() {

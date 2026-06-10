@@ -1,49 +1,54 @@
-import React from 'react';
-import ServicesComponent from "../components/services";
-import FooterComponent from "../components/footer";
-import Header from "../components/header";
-import HowItWorksComponent from "../components/howItWorks";
-import FaqComponent from "../components/faq";
-import GetMobileAppComponent from "../components/getMobileAppComponent";
-import OutPartnersComponent from "../components/outPartnersComponent";
-import HomeBanner from "../components/homeBanner";
-import ContactUsComponent from "../components/contactUs";
-import BlogCarouselSection from "../components/blogCarouselSection";
-import OurProducts from '../components/ourProducts';
-import JoinUs from '../components/joinUs';
+import type { Metadata } from "next";
+import { Chivo } from "next/font/google";
+import TraxcelerateFooter from "../traxcelerate-product-page/TraxcelerateFooter";
+import ProductCatalog from "./ProductCatalog";
+import ProductListingPartners from "./ProductListingPartners";
+import ProductMarketingCta from "./ProductMarketingCta";
+import ProductMarketingHero from "./ProductMarketingHero";
+import ProductMarketingNav from "./ProductMarketingNav";
+import ProductMarketingOverview from "./ProductMarketingOverview";
+import ProductMarketingProof from "./ProductMarketingProof";
+import ProductsPartnerForm from "./ProductsPartnerForm";
+import {
+  LISTING_CTA,
+  LISTING_HERO,
+  LISTING_OVERVIEW,
+  LISTING_PROOF,
+} from "./productsListingData";
+import traxStyles from "../traxcelerate-product-page/traxcelerateProduct.module.css";
 
-export async function generateMetadata() {
-  return {
-    title: "Products",
-    description:
-      "Powering the Future of Mechanisation in Africa",
-  };
-}
+const chivo = Chivo({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
+  display: "swap",
+});
 
-export default function Home() {
+export const metadata: Metadata = {
+  title: "Products — TracTrac Mechanisation Suite",
+  description: "Powering the future of mechanisation in Africa.",
+};
+
+export default function ProductsPage() {
   return (
-    <div style={{position: "relative", background: "#F8F8F0"}}>
-      <Header />
-      <HomeBanner 
-            title="Our product"
-      bannerTitle="Powering the Future of Mechanisation in Africa"
-      subtitle="TractracMSL provides technology-driven solutions that connect farmers, service providers, and equipment owners—making mechanisation smarter, faster, and more reliable."
-      buttonText="Partner with Us"
-      link="/products/tractrac-plus#partner-with-us"
-      image="https://res.cloudinary.com/tractrac-global/image/upload/v1760200992/Frame_181_afv1x1.jpg"
-       />
-       <OurProducts />
-       <HomeBanner 
-            title="Collaborative Growth"
-      bannerTitle="Let’s Build the Future of Mechanisation Together"
-      subtitle="We’re partnering with governments, cooperatives, development agencies, and agribusinesses to expand access to mechanisation across Africa."
-      buttonText="Be a part of this"
-      link="#join-us"
-      height="628px"
-      image="https://res.cloudinary.com/tractrac-global/image/upload/v1760203408/Frame_180_1_y2swcl.jpg"
-       />
-       <JoinUs />
-       <FooterComponent />
+    <div className={`${traxStyles.page} ${chivo.className}`}>
+      <ProductMarketingNav variant="listing" />
+      <main>
+        <ProductMarketingHero hero={LISTING_HERO} />
+        <ProductCatalog />
+        <ProductMarketingOverview overview={LISTING_OVERVIEW} />
+        <ProductMarketingProof
+          proof={{
+            eyebrow: "Our impact",
+            title: "Proven at programme scale",
+            lead: "TracTrac products have delivered measurable mechanisation outcomes across Nigeria.",
+            items: LISTING_PROOF,
+          }}
+        />
+        <ProductListingPartners />
+        <ProductMarketingCta cta={LISTING_CTA} />
+        <ProductsPartnerForm variant="join" />
+      </main>
+      <TraxcelerateFooter />
     </div>
   );
 }

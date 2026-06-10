@@ -46,7 +46,7 @@ export default function AboutTestimonials() {
       <div className={styles.testimonialsInner}>
         <header className={styles.testimonialsHeader}>
           <span className={styles.testimonialsTag}>
-            <span className={styles.testimonialsTagDot} aria-hidden="true" />
+            {/* <span className={styles.testimonialsTagDot} aria-hidden="true" /> */}
             <span>Testimonials</span>
           </span>
           <h2

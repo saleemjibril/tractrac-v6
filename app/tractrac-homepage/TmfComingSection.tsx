@@ -34,7 +34,7 @@ export default function TmfComingSection() {
     <section id="tmf-2026" className={styles.tmf} aria-labelledby="tmf-coming-heading">
       <div className={styles.tmfInner}>
         <p className={styles.tmfBadge}>
-          <span className={styles.tmfBadgeDot} aria-hidden />
+          {/* <span className={styles.tmfBadgeDot} aria-hidden /> */}
           <span>Event · TracTrac Mechanization Forum 2026</span>
         </p>
 

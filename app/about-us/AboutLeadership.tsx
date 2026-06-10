@@ -120,7 +120,7 @@ export default function AboutLeadership() {
       <div className={styles.leadershipInner}>
         <header className={styles.leadershipHeader}>
           <span className={styles.leadershipTag}>
-            <span className={styles.leadershipTagDot} aria-hidden="true" />
+            {/* <span className={styles.leadershipTagDot} aria-hidden="true" /> */}
             <span>Our Leadership</span>
           </span>
           <h2

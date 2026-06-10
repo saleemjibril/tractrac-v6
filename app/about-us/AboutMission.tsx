@@ -69,7 +69,7 @@ export default function AboutMission() {
       <div className={styles.missionInner}>
         <header className={styles.missionHeader}>
           <span className={styles.missionTag}>
-            <span className={styles.missionTagDot} aria-hidden="true" />
+            {/* <span className={styles.missionTagDot} aria-hidden="true" /> */}
             <span>Mission &amp; Visson</span>
           </span>
           <h2 id="about-mission-heading" className={styles.missionTitle}>

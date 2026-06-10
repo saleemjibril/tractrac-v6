@@ -142,7 +142,7 @@ export default function TractracProductsSection() {
       <div className={styles.productsInner}>
         <header className={styles.productsHeader}>
           <p className={styles.productsTag}>
-            <span className={styles.productsTagDot} aria-hidden />
+            {/* <span className={styles.productsTagDot} aria-hidden /> */}
             <span>Our Products</span>
           </p>
           <h2 id="tractrac-products-heading" className={styles.productsTitle}>

@@ -98,7 +98,7 @@ export default function AboutAwards() {
       <div className={styles.awardsInner}>
         <header className={styles.awardsHeader}>
           <span className={styles.awardsTag}>
-            <span className={styles.awardsTagDot} aria-hidden="true" />
+            {/* <span className={styles.awardsTagDot} aria-hidden="true" /> */}
             <span>Awards &amp; Recognition</span>
           </span>
           <h2 id="about-awards-heading" className={styles.awardsTitle}>
@@ -136,7 +136,7 @@ export default function AboutAwards() {
 
         <div className={styles.awardsFeatured}>
           <span className={styles.awardsFeaturedTag}>
-            <span className={styles.awardsTagDot} aria-hidden="true" />
+            {/* <span className={styles.awardsTagDot} aria-hidden="true" /> */}
             <span>As featured in</span>
           </span>
           <ul

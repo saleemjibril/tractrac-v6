@@ -1,0 +1,291 @@
+.page {
+  --tt-orange: #fa9510;
+  --tt-orange-hover: #e8890e;
+  --tt-navy: #101a2a;
+  --tt-muted: #475569;
+  --tt-border: #e5e7eb;
+  --tt-cream: #fff9f0;
+  --tt-surface: #f5f7fa;
+  min-height: 100vh;
+  background: #ffffff;
+  color: var(--tt-navy);
+}
+
+.sectionTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px;
+  border-radius: 100px;
+  background: #fff4e2;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 15px;
+  color: var(--tt-orange);
+}
+
+.sectionTagDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--tt-orange);
+  flex-shrink: 0;
+}
+
+/* ---------- Hero ---------- */
+
+.hero {
+  background: linear-gradient(180deg, var(--tt-cream) 0%, #ffffff 70%);
+  border-bottom: 1px solid var(--tt-border);
+}
+
+.heroInner {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: clamp(3rem, 8vw, 5.5rem) clamp(1.25rem, 4vw, 5rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1rem;
+}
+
+.heroTitle {
+  margin: 0;
+  max-width: 800px;
+  font-weight: 700;
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--tt-navy);
+}
+
+.heroLede {
+  margin: 0;
+  max-width: 680px;
+  font-size: clamp(1rem, 1.4vw, 1.2rem);
+  line-height: 1.65;
+  color: var(--tt-muted);
+}
+
+.heroCta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 0.5rem;
+  padding: 16px 28px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 16px;
+  color: #ffffff;
+  background: var(--tt-orange);
+  text-decoration: none;
+  box-shadow: 0 8px 24px rgba(250, 149, 16, 0.35);
+  transition: background 0.15s ease;
+}
+
+.heroCta:hover {
+  background: var(--tt-orange-hover);
+}
+
+/* ---------- Services list ---------- */
+
+.services {
+  background: #ffffff;
+}
+
+.servicesInner {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: clamp(2.5rem, 6vw, 4.5rem) clamp(1.25rem, 4vw, 5rem);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.serviceCard {
+  border: 1px solid var(--tt-border);
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 8px 28px rgba(16, 26, 42, 0.06);
+  overflow: hidden;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.serviceCard:hover {
+  border-color: rgba(250, 149, 16, 0.35);
+  box-shadow: 0 14px 36px rgba(16, 26, 42, 0.09);
+}
+
+.serviceCardHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.5rem 1.5rem 0;
+}
+
+@media (min-width: 640px) {
+  .serviceCardHeader {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.75rem 2rem 0;
+  }
+}
+
+.serviceCardTitle {
+  margin: 0;
+  font-weight: 700;
+  font-size: clamp(1.15rem, 2vw, 1.5rem);
+  line-height: 1.25;
+  color: var(--tt-navy);
+}
+
+.serviceCardCta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-shrink: 0;
+  padding: 12px 22px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 14px;
+  color: #ffffff;
+  background: var(--tt-orange);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.15s ease;
+}
+
+.serviceCardCta:hover {
+  background: var(--tt-orange-hover);
+}
+
+.serviceCardBody {
+  padding: 1.25rem 1.5rem 1.75rem;
+  border-top: 1px solid var(--tt-border);
+  margin-top: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .serviceCardBody {
+    padding: 1.25rem 2rem 2rem;
+  }
+}
+
+.serviceParagraph {
+  margin: 0 0 1rem;
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--tt-muted);
+}
+
+.serviceParagraph:last-child {
+  margin-bottom: 0;
+}
+
+.serviceBulletsIntro {
+  margin: 0.5rem 0 0.65rem;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--tt-navy);
+}
+
+.serviceBullets {
+  margin: 0 0 1rem;
+  padding-left: 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--tt-muted);
+}
+
+/* ---------- Bottom CTA ---------- */
+
+.cta {
+  background: var(--tt-navy);
+  color: #ffffff;
+}
+
+.ctaInner {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: clamp(3rem, 7vw, 4.5rem) clamp(1.25rem, 4vw, 5rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.25rem;
+}
+
+.ctaTitle {
+  margin: 0;
+  font-weight: 700;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  line-height: 1.2;
+}
+
+.ctaCopy {
+  margin: 0;
+  max-width: 560px;
+  font-size: 17px;
+  line-height: 1.6;
+  color: #ccd9e6;
+}
+
+.ctaActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+.ctaPrimary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 16px 28px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--tt-navy);
+  background: var(--tt-orange);
+  text-decoration: none;
+  transition: background 0.15s ease;
+}
+
+.ctaPrimary:hover {
+  background: var(--tt-orange-hover);
+}
+
+.ctaSecondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 16px 28px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 16px;
+  color: #ffffff;
+  background: transparent;
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  text-decoration: none;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.ctaSecondary:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.55);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .serviceCard,
+  .serviceCardCta,
+  .heroCta {
+    transition: none;
+  }
+}

@@ -30,7 +30,7 @@ export default function TraxcelerateHero() {
       <div className={styles.heroInner}>
         <div className={styles.heroBadgeRow}>
           <div className={styles.heroBadge}>
-            <span className={styles.pulseDot} aria-hidden />
+            {/* <span className={styles.pulseDot} aria-hidden /> */}
             <span className={styles.heroBadgeText}>TRAxCelerate</span>
           </div>
         </div>

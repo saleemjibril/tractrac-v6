@@ -320,7 +320,7 @@ export default async function TractracPartnersInsightsSection() {
           <div className={styles.insightsTop}>
             <div className={styles.insightsTopLeft}>
               <p className={styles.insightsTag}>
-                <span className={styles.insightsTagDot} aria-hidden />
+                {/* <span className={styles.insightsTagDot} aria-hidden /> */}
                 <span>Insights &amp; News</span>
               </p>
               <h2 id="tractrac-insights-heading" className={styles.insightsTitle}>

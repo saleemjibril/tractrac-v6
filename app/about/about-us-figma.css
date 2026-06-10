@@ -1,0 +1,8502 @@
+/* TracTrac / About Us */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px;
+
+position: relative;
+width: 1440px;
+height: 6604.89px;
+
+background: #FFFFFF;
+
+
+/* Section / Navbar */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 0px 80px;
+gap: 40px;
+
+width: 1440px;
+height: 80px;
+
+background: #FFFFFF;
+box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.06);
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* tractrac logo png 1 */
+
+width: 118.52px;
+height: 33.49px;
+
+background: url(tractrac logo png.png);
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Spacer */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+
+width: 62.74px;
+height: 1px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 1;
+
+
+/* Component / NavLinks */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 0px;
+gap: 4px;
+
+width: 595px;
+height: 33px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Element / NavLink */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 8px 14px;
+
+width: 89px;
+height: 33px;
+
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* About Us */
+
+width: 61px;
+height: 17px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 500;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+
+color: #374151;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Element / NavLink */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 8px 14px;
+
+width: 109px;
+height: 33px;
+
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* What We Do */
+
+width: 81px;
+height: 17px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 500;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+
+color: #374151;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Element / NavLink */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 8px 14px;
+
+width: 90px;
+height: 33px;
+
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Products */
+
+width: 62px;
+height: 17px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 500;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+
+color: #374151;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Element / NavLink */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 8px 14px;
+
+width: 101px;
+height: 33px;
+
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* Resources */
+
+width: 73px;
+height: 17px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 500;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+
+color: #374151;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Element / NavLink */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 8px 14px;
+
+width: 84px;
+height: 33px;
+
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 4;
+flex-grow: 0;
+
+
+/* Careers */
+
+width: 56px;
+height: 17px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 500;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+
+color: #374151;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Element / NavLink */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 8px 14px;
+
+width: 102px;
+height: 33px;
+
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 5;
+flex-grow: 0;
+
+
+/* Contact Us */
+
+width: 74px;
+height: 17px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 500;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+
+color: #374151;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Spacer */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+
+width: 62.74px;
+height: 1px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 1;
+
+
+/* Component / NavCTAs */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 0px;
+gap: 12px;
+
+width: 281px;
+height: 37px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 4;
+flex-grow: 0;
+
+
+/* Component / Btn-Partner */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 10px 20px;
+
+width: 148px;
+height: 37px;
+
+border: 1.5px solid #E5E7EB;
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Partner With Us */
+
+width: 108px;
+height: 17px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 600;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+
+color: #101A2A;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Component / Btn-GetApp */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 10px 20px;
+
+width: 121px;
+height: 37px;
+
+background: #FA9510;
+box-shadow: 0px 4px 16px rgba(250, 149, 16, 0.3);
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Get The App */
+
+width: 81px;
+height: 17px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 600;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Section / Hero */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+padding: 100px 80px;
+gap: 40px;
+
+width: 1440px;
+height: 1176px;
+
+background: #060C15;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Tag */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 6px 14px;
+gap: 6px;
+
+width: 167px;
+height: 27px;
+
+background: rgba(255, 255, 255, 0.15);
+border-radius: 999px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* dot */
+
+width: 6px;
+height: 6px;
+
+background: #FA9510;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* About TracTrac MSL */
+
+width: 127px;
+height: 15px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 500;
+font-size: 13px;
+line-height: 15px;
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Mechanization for the Last Mile. */
+
+width: 900px;
+height: 158px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 700;
+font-size: 72px;
+line-height: 110%;
+/* or 79px */
+text-align: center;
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* That's what drives us. TracTrac is bringing tractors, technology, and opportunity to the smallholder farmers who have long been excluded from mechanization access. */
+
+width: 680px;
+height: 160px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 20px;
+line-height: 160%;
+/* or 32px */
+text-align: center;
+
+color: #CCD9E6;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Frame 1000006710 */
+
+width: 800px;
+height: 440px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* DSC00118 1 */
+
+position: absolute;
+width: 956px;
+height: 637.41px;
+left: calc(50% - 956px/2 - 6px);
+top: calc(50% - 637.41px/2 + 0.04px);
+
+background: url(DSC00118.jpg);
+
+
+/* Component / VideoPlaceholder */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+padding: 0px;
+gap: 16px;
+
+position: absolute;
+width: 800px;
+height: 440px;
+left: 0px;
+top: 0px;
+
+border: 1px solid rgba(255, 255, 255, 0.25);
+border-radius: 16px;
+
+
+/* Element / PlayButton */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 0px;
+
+width: 80px;
+height: 72px;
+
+background: rgba(255, 255, 255, 0.9);
+border-radius: 100px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame */
+
+width: 38px;
+height: 38px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+width: 22.17px;
+height: 25.33px;
+left: calc(50% - 22.17px/2 + 0.09px);
+top: calc(50% - 25.33px/2 - 0.33px);
+
+border: 2.37499px solid #FA9510;
+
+
+/* Frame 1000006711 */
+
+width: 278px;
+height: 34px;
+
+background: rgba(255, 255, 255, 0.95);
+border-radius: 10px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Watch Impact Highlights */
+
+position: absolute;
+width: 176px;
+height: 18px;
+left: calc(50% - 176px/2 - 11px);
+top: calc(50% - 18px/2);
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 500;
+font-size: 15px;
+line-height: 18px;
+/* identical to box height */
+
+color: #060C15;
+
+
+
+/* States Row */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 0px;
+gap: 12px;
+
+width: 639px;
+height: 31px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 4;
+flex-grow: 0;
+
+
+/* State / Kaduna */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 8px 16px;
+
+width: 80px;
+height: 31px;
+
+background: rgba(255, 255, 255, 0.08);
+border: 1px solid rgba(255, 255, 255, 0.15);
+border-radius: 999px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Kaduna */
+
+width: 48px;
+height: 15px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 500;
+font-size: 13px;
+line-height: 15px;
+
+color: #E6EDF5;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* State / Nasarawa */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 8px 16px;
+
+width: 97px;
+height: 31px;
+
+background: rgba(255, 255, 255, 0.08);
+border: 1px solid rgba(255, 255, 255, 0.15);
+border-radius: 999px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Nasarawa */
+
+width: 65px;
+height: 15px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 500;
+font-size: 13px;
+line-height: 15px;
+
+color: #E6EDF5;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* State / Abuja (FCT) */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 8px 16px;
+
+width: 103px;
+height: 31px;
+
+background: rgba(255, 255, 255, 0.08);
+border: 1px solid rgba(255, 255, 255, 0.15);
+border-radius: 999px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Abuja (FCT) */
+
+width: 71px;
+height: 15px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 500;
+font-size: 13px;
+line-height: 15px;
+
+color: #E6EDF5;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* State / Adamawa */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 8px 16px;
+
+width: 95px;
+height: 31px;
+
+background: rgba(255, 255, 255, 0.08);
+border: 1px solid rgba(255, 255, 255, 0.15);
+border-radius: 999px;
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* Adamawa */
+
+width: 63px;
+height: 15px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 500;
+font-size: 13px;
+line-height: 15px;
+
+color: #E6EDF5;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* State / Kano */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 8px 16px;
+
+width: 64px;
+height: 31px;
+
+background: rgba(255, 255, 255, 0.08);
+border: 1px solid rgba(255, 255, 255, 0.15);
+border-radius: 999px;
+
+/* Inside auto layout */
+flex: none;
+order: 4;
+flex-grow: 0;
+
+
+/* Kano */
+
+width: 32px;
+height: 15px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 500;
+font-size: 13px;
+line-height: 15px;
+
+color: #E6EDF5;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* State / Oyo */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 8px 16px;
+
+width: 56px;
+height: 31px;
+
+background: rgba(255, 255, 255, 0.08);
+border: 1px solid rgba(255, 255, 255, 0.15);
+border-radius: 999px;
+
+/* Inside auto layout */
+flex: none;
+order: 5;
+flex-grow: 0;
+
+
+/* Oyo */
+
+width: 24px;
+height: 15px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 500;
+font-size: 13px;
+line-height: 15px;
+
+color: #E6EDF5;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* State / Enugu */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 8px 16px;
+
+width: 72px;
+height: 31px;
+
+background: rgba(255, 255, 255, 0.08);
+border: 1px solid rgba(255, 255, 255, 0.15);
+border-radius: 999px;
+
+/* Inside auto layout */
+flex: none;
+order: 6;
+flex-grow: 0;
+
+
+/* Enugu */
+
+width: 40px;
+height: 15px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 500;
+font-size: 13px;
+line-height: 15px;
+
+color: #E6EDF5;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Section / Our Story */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 96px 80px;
+gap: 80px;
+
+width: 1440px;
+height: 729px;
+
+background: #FFFFFF;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Component / AboutImage */
+
+width: 560px;
+height: 480px;
+
+background: #F5F7FA;
+box-shadow: 0px 16px 40px rgba(0, 0, 0, 0.08);
+border-radius: 20px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* [ TracTrac Team / Operations Image ] */
+
+position: absolute;
+width: 231px;
+height: 15px;
+left: 145px;
+top: 230px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 13px;
+line-height: 15px;
+text-align: center;
+
+color: #B4BEC8;
+
+
+
+/* DSC02478 1 */
+
+position: absolute;
+width: 783px;
+height: 522px;
+left: calc(50% - 783px/2 - 0.5px);
+top: calc(50% - 522px/2 - 21px);
+
+background: url(DSC02478.jpg);
+
+
+/* DSC02281 1 */
+
+position: absolute;
+width: 1112.86px;
+height: 742px;
+left: calc(50% - 1112.86px/2 - 42px);
+top: calc(50% - 742px/2 - 30px);
+
+background: url(DSC02281.jpg);
+
+
+/* Element / FoundedPill */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 11.5897px 18.5436px;
+gap: 9.27px;
+
+position: absolute;
+width: 226.09px;
+height: 41.18px;
+left: 30px;
+bottom: 29.82px;
+
+background: #060C15;
+border-radius: 115.897px;
+
+
+/* 🚜 Founded 2019 · Nigeria */
+
+width: 189px;
+height: 18px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 600;
+font-size: 15.0667px;
+line-height: 18px;
+/* identical to box height */
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Story Text */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 24px;
+
+width: 600px;
+height: 537px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Tag */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 6px 14px;
+gap: 6px;
+
+width: 101px;
+height: 27px;
+
+background: rgba(250, 149, 16, 0.1);
+border-radius: 999px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Ellipse */
+
+width: 6px;
+height: 6px;
+
+background: #FA9510;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Our Story */
+
+width: 61px;
+height: 15px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 500;
+font-size: 13px;
+line-height: 15px;
+
+color: #FA9510;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Built to Solve Africa's Mechanization Gap */
+
+width: 600px;
+height: 92px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 40px;
+line-height: 115%;
+/* or 46px */
+
+color: #101A2A;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* TracTrac Mechanization Services Limited was founded in 2019 with a clear and urgent mission: increase tractor density in Nigeria and ensure that smallholder farmers can access mechanization services at their doorstep. In Africa, millions of farmers still rely on manual labour, limiting productivity, income, and food security. TracTrac was created to change that reality. */
+
+width: 600px;
+height: 162px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 170%;
+/* or 27px */
+
+color: #6B7585;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Quick Stats */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 40px;
+
+width: 419px;
+height: 52px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 4px;
+
+width: 114px;
+height: 52px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* 800+ */
+
+width: 69px;
+height: 33px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 700;
+font-size: 28px;
+line-height: 33px;
+
+color: #FA9510;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Tractors Deployed */
+
+width: 114px;
+height: 15px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 13px;
+line-height: 15px;
+
+color: #6B7585;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 4px;
+
+width: 129px;
+height: 52px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* 125,000+ */
+
+width: 129px;
+height: 33px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 700;
+font-size: 28px;
+line-height: 33px;
+
+color: #FA9510;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Farmers Supported */
+
+width: 122px;
+height: 15px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 13px;
+line-height: 15px;
+
+color: #6B7585;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 4px;
+
+width: 96px;
+height: 52px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* 2,700+ */
+
+width: 94px;
+height: 33px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 700;
+font-size: 28px;
+line-height: 33px;
+
+color: #FA9510;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Booking Agents */
+
+width: 96px;
+height: 15px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 13px;
+line-height: 15px;
+
+color: #6B7585;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Since inception, we have built one of Nigeria's fastest-growing investment portfolios in mechanization ecosystems. Today, our operations span seven Nigerian states, supporting farmers with technology-enabled access to machinery and services. */
+
+width: 600px;
+height: 108px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 170%;
+/* or 27px */
+
+color: #6B7585;
+
+
+/* Inside auto layout */
+flex: none;
+order: 4;
+flex-grow: 0;
+
+
+/* Section / Mission & Vision */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+padding: 96px 80px;
+gap: 56px;
+
+width: 1440px;
+height: 691.1px;
+
+background: #060C15;
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006810 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px;
+gap: 56.93px;
+
+width: 1280px;
+height: 499.1px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006812 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px;
+gap: 56.93px;
+
+width: 1280px;
+height: 499.1px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Header */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+padding: 0px;
+gap: 16.27px;
+
+width: 357px;
+height: 92.46px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Tag */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 6.09947px 14.2321px;
+gap: 6.1px;
+
+width: 148.66px;
+height: 28.2px;
+
+background: rgba(250, 149, 16, 0.1);
+border-radius: 1015.56px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Ellipse */
+
+width: 6.1px;
+height: 6.1px;
+
+background: #FA9510;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Mission & Visson */
+
+width: 108px;
+height: 16px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 500;
+font-size: 13.2155px;
+line-height: 16px;
+/* identical to box height */
+
+color: #FA9510;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* What we stand for */
+
+width: 357px;
+height: 48px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 40.6631px;
+line-height: 48px;
+text-align: center;
+
+color: #DDE1E6;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 1000006800 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 79.55px;
+
+width: 1280px;
+height: 349.7px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 1000006798 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 43.3931px;
+gap: 14.46px;
+
+width: 626.21px;
+height: 349.7px;
+
+background: #192332;
+border-radius: 20.2501px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame 1000006801 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 14.46px;
+
+width: 539.42px;
+height: 245.72px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006805 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 23.14px;
+
+width: 539.42px;
+height: 245.72px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006708 */
+
+width: 69.43px;
+height: 69.43px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+height: 69.43px;
+left: 0%;
+right: 0%;
+top: calc(50% - 69.43px/2 - 0px);
+
+background: #342D2C;
+
+
+/* Frame */
+
+position: absolute;
+width: 34.71px;
+height: 34.71px;
+left: calc(50% - 34.71px/2 + 0px);
+top: calc(50% - 34.71px/2 - 0px);
+
+
+
+/* Vector */
+
+position: absolute;
+left: 20.84%;
+right: 20.83%;
+top: 8.33%;
+bottom: 8.33%;
+
+border: 1.08483px solid #FA9510;
+
+
+/* Vector */
+
+position: absolute;
+left: 49.99%;
+right: 49.96%;
+top: 75%;
+bottom: 25%;
+
+border: 1.08483px solid #FA9510;
+
+
+/* MISSION */
+
+width: 132px;
+height: 34px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 28.9288px;
+line-height: 34px;
+
+color: #FA9411;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Empowering Africa’s smallholder farmers with affordable mechanization that drives productivity, profitability, and sustainability. */
+
+width: 539.42px;
+height: 96px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 20.3316px;
+line-height: 158%;
+/* or 32px */
+
+color: #DDE1E6;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006799 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 43.3931px;
+gap: 14.46px;
+
+width: 574.24px;
+height: 347.14px;
+
+background: #FFF3E0;
+border-radius: 20.2501px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 1000006802 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 23.14px;
+
+width: 487.45px;
+height: 260.36px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006806 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 14.46px;
+
+width: 487.45px;
+height: 260.36px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006708 */
+
+width: 69.43px;
+height: 69.43px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+height: 69.43px;
+left: 0%;
+right: 0%;
+top: calc(50% - 69.43px/2 - 0px);
+
+background: #FFE1BD;
+
+
+/* Frame */
+
+position: absolute;
+width: 34.71px;
+height: 34.71px;
+left: calc(50% - 34.71px/2 + 0px);
+top: calc(50% - 34.71px/2 - 0px);
+
+
+
+/* Vector */
+
+position: absolute;
+left: 20.84%;
+right: 20.83%;
+top: 8.33%;
+bottom: 8.33%;
+
+border: 1.08483px solid #FA9510;
+
+
+/* Vector */
+
+position: absolute;
+left: 49.99%;
+right: 49.96%;
+top: 75%;
+bottom: 25%;
+
+border: 1.08483px solid #FA9510;
+
+
+/* Vission */
+
+width: 487.45px;
+height: 34px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 28.9288px;
+line-height: 34px;
+
+color: #FA9411;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* To improve agricultural productivity and economic opportunity for smallholder farmers through accessible, scalable, and sustainable mechanization systems. */
+
+width: 487.45px;
+height: 128px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 20.3316px;
+line-height: 158%;
+/* or 32px */
+
+color: #6B7585;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Section / Awards & Recognition */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+align-items: center;
+padding: 96px 80px;
+gap: 48px;
+
+width: 1440px;
+height: 980px;
+
+background: #FFFFFF;
+
+/* Inside auto layout */
+flex: none;
+order: 4;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006814 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px;
+gap: 56px;
+
+margin: 0 auto;
+width: 1280px;
+height: 898.05px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame 1000006811 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px;
+gap: 56px;
+
+width: 1280px;
+height: 693.54px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Header */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+padding: 0px;
+gap: 16px;
+
+width: 640px;
+height: 159px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Tag */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 6px 14px;
+gap: 6px;
+
+width: 178px;
+height: 27px;
+
+background: rgba(250, 149, 16, 0.1);
+border-radius: 999px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Ellipse */
+
+width: 6px;
+height: 6px;
+
+background: #FA9510;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Awards & Recognition */
+
+width: 138px;
+height: 15px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 500;
+font-size: 13px;
+line-height: 15px;
+
+color: #FA9510;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Recognized for Impact */
+
+width: 439px;
+height: 48px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 700;
+font-size: 40px;
+line-height: 48px;
+/* identical to box height */
+text-align: center;
+
+color: #101A2A;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Our work advancing mechanization for smallholder farmers has earned national and international recognition. */
+
+width: 640px;
+height: 52px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 160%;
+/* or 26px */
+text-align: center;
+
+color: #6B7585;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Frame 1000006809 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 30px;
+
+width: 1280px;
+height: 478.54px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006801 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 46.1299px 44.6418px;
+gap: 14.88px;
+
+width: 625px;
+height: 478.54px;
+
+background: #F8F7F3;
+border: 1.48806px solid #E4E8EC;
+border-radius: 20.8329px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 1;
+
+
+/* Frame 1000006808 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 11.9px;
+
+width: 535.72px;
+height: 385.28px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006787 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 7.44031px 17.8567px;
+gap: 14.88px;
+
+width: 104.16px;
+height: 52.08px;
+
+background: #060C15;
+border-radius: 148.806px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* 2022 */
+
+width: 57px;
+height: 28px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 23.809px;
+line-height: 28px;
+letter-spacing: -0.648209px;
+
+color: #FA9510;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame 1000006807 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 20.83px;
+
+width: 535.72px;
+height: 321.29px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006804 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 7.44px;
+
+width: 535.72px;
+height: 178.44px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* NCAM) Recognition */
+
+width: 535.72px;
+height: 35px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 700;
+font-size: 29.7612px;
+line-height: 35px;
+
+color: #060C15;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Empowering Africa’s smallholder farmers with affordable mechanization that drives productivity, profitability, and sustainability.  */
+
+width: 535.72px;
+height: 136px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 21.3289px;
+line-height: 158%;
+/* or 34px */
+
+/* Body text colour */
+color: #6B7585;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006803 */
+
+box-sizing: border-box;
+
+width: 535.72px;
+height: 122.02px;
+
+background: #FEF5E5;
+border: 1.48806px dashed #FA9510;
+border-radius: 14.8806px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame */
+
+position: absolute;
+width: 56.55px;
+height: 56.55px;
+left: calc(50% - 56.55px/2 - 17.06px);
+top: calc(50% - 56.55px/2 + 0.11px);
+
+
+
+/* Vector */
+
+position: absolute;
+left: 29.16%;
+right: 58.34%;
+top: 61.08%;
+bottom: 8.43%;
+
+border: 1.76707px solid #FA9510;
+
+
+/* Vector */
+
+position: absolute;
+left: 58.34%;
+right: 29.16%;
+top: 61.08%;
+bottom: 8.43%;
+
+border: 1.76707px solid #FA9510;
+
+
+/* Vector */
+
+position: absolute;
+left: 75%;
+right: 8.33%;
+top: 16.67%;
+bottom: 62.5%;
+
+border: 1.76707px solid #FA9510;
+
+
+/* Vector */
+
+position: absolute;
+left: 16.66%;
+right: 16.67%;
+top: 91.67%;
+bottom: 8.33%;
+
+border: 1.76707px solid #FA9510;
+
+
+/* Vector */
+
+position: absolute;
+left: 25%;
+right: 25%;
+top: 8.33%;
+bottom: 37.5%;
+
+border: 1.76707px solid #FA9510;
+
+
+/* Vector */
+
+position: absolute;
+left: 8.34%;
+right: 75%;
+top: 16.67%;
+bottom: 62.5%;
+
+border: 1.76707px solid #FA9510;
+
+
+/* Frame 1000006802 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 46.1299px 44.6418px;
+gap: 14.88px;
+
+width: 625px;
+height: 478.54px;
+
+background: #F8F7F3;
+border: 1.48806px solid #E4E8EC;
+border-radius: 20.8329px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 1;
+
+
+/* Frame 1000006808 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 11.9px;
+
+width: 535.72px;
+height: 386.28px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006808 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 7.44031px 17.8567px;
+gap: 14.88px;
+
+width: 104.16px;
+height: 52.08px;
+
+background: #060C15;
+border-radius: 148.806px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* 2024 */
+
+width: 57px;
+height: 28px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 23.809px;
+line-height: 28px;
+letter-spacing: -0.648209px;
+
+color: #FA9510;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame 1000006807 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 20.83px;
+
+width: 535.72px;
+height: 322.29px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006804 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 7.44px;
+
+width: 535.72px;
+height: 179.44px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Africa Top 10 Agricultural Innovators */
+
+width: 535.72px;
+height: 70px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 700;
+font-size: 29.7612px;
+line-height: 35px;
+
+color: #060C15;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Featured among Africa’s Top 10 Agricultural Innovators by AgTech World, recognizing our scalable mechanization ecosystem. */
+
+width: 535.72px;
+height: 102px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 21.3289px;
+line-height: 158%;
+/* or 34px */
+
+/* Body text colour */
+color: #6B7585;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006805 */
+
+box-sizing: border-box;
+
+width: 535.72px;
+height: 122.02px;
+
+background: #FEF5E5;
+border: 1.48806px dashed #FA9510;
+border-radius: 14.8806px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame */
+
+position: absolute;
+width: 53.57px;
+height: 53.57px;
+left: calc(50% - 53.57px/2 - 17.06px);
+top: calc(50% - 53.57px/2 + 0.11px);
+
+
+
+/* Vector */
+
+position: absolute;
+left: 16.66%;
+right: 16.67%;
+top: 8.33%;
+bottom: 8.32%;
+
+border: 1.67407px solid #FA9510;
+
+
+/* Vector */
+
+position: absolute;
+left: 37.49%;
+right: 37.51%;
+top: 41.67%;
+bottom: 41.67%;
+
+border: 1.67407px solid #FA9510;
+
+
+/* Frame 1000006813 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px;
+gap: 19.49px;
+
+width: 1280px;
+height: 148.51px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Header */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+padding: 0px;
+gap: 15.59px;
+
+width: 124.98px;
+height: 26.69px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Tag */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 5.84722px 13.6435px;
+gap: 5.85px;
+
+width: 124.98px;
+height: 26.69px;
+
+background: rgba(250, 149, 16, 0.1);
+border-radius: 973.562px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Ellipse */
+
+width: 5.85px;
+height: 5.85px;
+
+background: #FA9510;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* As featured in */
+
+width: 86px;
+height: 15px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 500;
+font-size: 12.669px;
+line-height: 15px;
+/* identical to box height */
+
+color: #FA9510;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 1000006797 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 10.72px;
+
+width: 1280px;
+height: 102.33px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Component / LogoBox-Mastercard Foundation */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 15.5926px 23.3889px;
+
+width: 116.18px;
+height: 102.33px;
+
+background: #FFFFFF;
+border: 0.974536px solid #E5E7EB;
+border-radius: 11.6944px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Full Colour Negative 2 1 */
+
+width: 69.4px;
+height: 71.14px;
+
+background: url(Full Colour Negative 2);
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Component / LogoBox-Mastercard Foundation */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 15.5926px 23.3889px;
+
+width: 342.06px;
+height: 102.33px;
+
+background: #FFFFFF;
+border: 0.974536px solid #E5E7EB;
+border-radius: 11.6944px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Group 1000005124 */
+
+width: 295.28px;
+height: 66.12px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Logo-emblem 1 */
+
+position: absolute;
+width: 66.12px;
+height: 66.12px;
+left: 23.39px;
+top: 18.1px;
+
+background: url(Logo-emblem.png);
+
+
+/* Federal Ministry of Agriculture and Food Security */
+
+position: absolute;
+width: 231.22px;
+height: 36px;
+left: 87.45px;
+top: calc(50% - 36px/2 + 0.19px);
+
+font-family: 'Work Sans';
+font-style: normal;
+font-weight: 600;
+font-size: 15.2521px;
+line-height: 18px;
+
+color: #1E2026;
+
+
+
+/* Component / LogoBox-Mastercard Foundation */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 15.5926px 23.3889px;
+
+width: 122.09px;
+height: 102.33px;
+
+background: #FFFFFF;
+border: 0.974536px solid #E5E7EB;
+border-radius: 11.6944px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* freepik_br_3d0c3a9a-6a2a-4afb-8645-a81911e4a668 1 */
+
+width: 75.32px;
+height: 71.45px;
+
+background: url(freepik_br_3d0c3a9a-6a2a-4afb-8645-a81911e4a668);
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Component / LogoBox-Mastercard Foundation */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 15.5926px 23.3889px;
+
+width: 139.36px;
+height: 102.33px;
+
+background: #FFFFFF;
+border: 0.974536px solid #E5E7EB;
+border-radius: 11.6944px;
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* imageye___-_imgi_1_AMTA c 1 */
+
+width: 92.58px;
+height: 92.58px;
+
+background: url(imageye___-_imgi_1_AMTA c.png);
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Component / LogoBox-Mastercard Foundation */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 15.5926px 23.3889px;
+
+width: 131.51px;
+height: 102.33px;
+
+background: #FFFFFF;
+border: 0.974536px solid #E5E7EB;
+border-radius: 11.6944px;
+
+/* Inside auto layout */
+flex: none;
+order: 4;
+flex-grow: 0;
+
+
+/* WIMA LOGO 1 */
+
+width: 84.74px;
+height: 79.32px;
+
+background: url(WIMA LOGO);
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Component / LogoBox-Mastercard Foundation */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 15.5926px 23.3889px;
+
+width: 173.47px;
+height: 102.33px;
+
+background: #FFFFFF;
+border: 0.974536px solid #E5E7EB;
+border-radius: 11.6944px;
+
+/* Inside auto layout */
+flex: none;
+order: 5;
+flex-grow: 0;
+
+
+/* Ikore 1 */
+
+width: 126.69px;
+height: 86.43px;
+
+background: url(Ikore.png);
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Component / LogoBox-Mastercard Foundation */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 15.5926px 23.3889px;
+
+width: 191.01px;
+height: 102.33px;
+
+background: #FFFFFF;
+border: 0.974536px solid #E5E7EB;
+border-radius: 11.6944px;
+
+/* Inside auto layout */
+flex: none;
+order: 6;
+flex-grow: 0;
+
+
+/* imageye___-_imgi_1_logo-final 1 */
+
+width: 144.23px;
+height: 48.08px;
+
+background: url(imageye___-_imgi_1_logo-final.jpg);
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Section / Testimonials */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+padding: 96px 80px;
+gap: 16px;
+
+width: 1440px;
+height: 771px;
+
+background: #060C15;
+
+/* Inside auto layout */
+flex: none;
+order: 5;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006820 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px;
+gap: 56px;
+
+width: 1221px;
+height: 579px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame 1000006819 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 0px;
+gap: 16px;
+
+width: 653px;
+height: 91px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Tag */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 6px 14px;
+gap: 6px;
+
+width: 119px;
+height: 27px;
+
+background: rgba(250, 149, 16, 0.1);
+border-radius: 999px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Ellipse */
+
+width: 6px;
+height: 6px;
+
+background: #FA9510;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Testimonials */
+
+width: 79px;
+height: 15px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 500;
+font-size: 13px;
+line-height: 15px;
+
+color: #FA9510;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* What Our Partners & Farmers Say */
+
+width: 653px;
+height: 48px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 40px;
+line-height: 48px;
+/* identical to box height */
+text-align: center;
+
+color: #F9FDFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 1000006818 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 25px;
+
+width: 1221px;
+height: 432px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 1000006801 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 29px 42px;
+gap: 10px;
+
+width: 598px;
+height: 432px;
+
+background: #F8F7F3;
+border: 1.39535px solid #E4E8EC;
+border-radius: 19.5349px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame 1000006817 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 25px;
+
+width: 514px;
+height: 374px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame */
+
+width: 51px;
+height: 51px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 58.33%;
+right: 12.5%;
+top: 12.5%;
+bottom: 12.5%;
+
+border: 4.25px solid #FA9411;
+
+
+/* Vector */
+
+position: absolute;
+left: 12.5%;
+right: 58.33%;
+top: 12.5%;
+bottom: 12.5%;
+
+border: 4.25px solid #FA9411;
+
+
+/* Before TracTrac’s mechanization services, farming was backbreaking labour with limited returns. Since gaining access to a tractor through the ISSAM program, my workload has reduced by half and my crop yield has increased by 50%. Today I can support my family and invest in better seeds for the next planting season. */
+
+width: 514px;
+height: 224px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 20px;
+line-height: 158%;
+/* or 32px */
+
+/* Body text colour */
+color: #6B7585;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006815 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 10px;
+
+width: 423.05px;
+height: 49px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Frame 1000006788 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 6.97674px 16.7442px;
+gap: 13.95px;
+
+width: 67px;
+height: 49px;
+
+background: #FFF2E2;
+border-radius: 139.535px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* AW */
+
+width: 37px;
+height: 27px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 22.3256px;
+line-height: 27px;
+/* identical to box height */
+letter-spacing: -0.607822px;
+
+color: #FA9411;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame 1000006816 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 346.05px;
+height: 47px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Adewale */
+
+width: 346.05px;
+height: 20px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 17px;
+line-height: 20px;
+
+color: #060C15;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Smallholder Farmer, Kaduna State */
+
+width: 346.05px;
+height: 27px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 17px;
+line-height: 158%;
+/* identical to box height, or 27px */
+
+/* Body text colour */
+color: #6B7585;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006804 */
+
+box-sizing: border-box;
+
+width: 598px;
+height: 432px;
+
+background: #F8F7F3;
+border: 1.39535px solid #E4E8EC;
+border-radius: 19.5349px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+position: absolute;
+width: 51px;
+height: 51px;
+left: 42px;
+top: 29px;
+
+
+
+/* Vector */
+
+position: absolute;
+left: 58.33%;
+right: 12.5%;
+top: 12.5%;
+bottom: 12.5%;
+
+border: 4.25px solid #FA9411;
+
+
+/* Vector */
+
+position: absolute;
+left: 12.5%;
+right: 58.33%;
+top: 12.5%;
+bottom: 12.5%;
+
+border: 4.25px solid #FA9411;
+
+
+/* Collaborating with TracTrac has enabled us to reach underserved farming communities with meaningful solutions. Their mechanization model is helping transform agricultural productivity while creating new economic opportunities for rural farmers. */
+
+position: absolute;
+width: 514px;
+height: 160px;
+left: 41.5px;
+top: 103.88px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 20px;
+line-height: 158%;
+/* or 32px */
+
+/* Body text colour */
+color: #6B7585;
+
+
+
+/* Frame 1000006815 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 10px;
+
+position: absolute;
+width: 423.05px;
+height: 49px;
+left: 41.5px;
+top: 352.88px;
+
+
+
+/* Frame 1000006788 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 6.97674px 16.7442px;
+gap: 13.95px;
+
+width: 67px;
+height: 49px;
+
+background: #FFF2E2;
+border-radius: 139.535px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* JO */
+
+width: 27px;
+height: 27px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 22.3256px;
+line-height: 27px;
+/* identical to box height */
+letter-spacing: -0.607822px;
+
+color: #FA9411;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame 1000006816 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 346.05px;
+height: 47px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Dr. Jane Okoro */
+
+width: 346.05px;
+height: 20px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 17px;
+line-height: 20px;
+
+color: #060C15;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* WIMA Representative */
+
+width: 346.05px;
+height: 27px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 17px;
+line-height: 158%;
+/* identical to box height, or 27px */
+
+/* Body text colour */
+color: #6B7585;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Section / Leadership Team */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+padding: 96px 80px;
+gap: 56px;
+
+width: 1440px;
+height: 1333.82px;
+
+background: #F7F7FA;
+
+/* Inside auto layout */
+flex: none;
+order: 6;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Header */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+padding: 0px;
+gap: 16px;
+
+width: 700px;
+height: 159px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Tag */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 6px 14px;
+gap: 6px;
+
+width: 137px;
+height: 27px;
+
+background: rgba(250, 149, 16, 0.1);
+border-radius: 999px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Ellipse */
+
+width: 6px;
+height: 6px;
+
+background: #FA9510;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Our Leadership */
+
+width: 97px;
+height: 15px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 500;
+font-size: 13px;
+line-height: 15px;
+
+color: #FA9510;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* The Team Behind the Mission */
+
+width: 562px;
+height: 48px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 700;
+font-size: 40px;
+line-height: 48px;
+/* identical to box height */
+text-align: center;
+
+color: #101A2A;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Our leadership combines expertise in agribusiness, engineering, development finance, policy, and technology to build scalable mechanization systems across Africa. */
+
+width: 700px;
+height: 52px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 160%;
+/* or 26px */
+text-align: center;
+
+color: #6B7585;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Frame 1000006830 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 24.11px;
+
+width: 1280px;
+height: 402.41px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006826 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 301.91px;
+height: 402.41px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame 1000006825 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 9.65px;
+
+width: 301.91px;
+height: 201.28px;
+
+border-radius: 9.64582px 9.64582px 0px 0px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* WhatsApp Image 2026-04-17 at 15.04.59 1 */
+
+width: 301.91px;
+height: 201.28px;
+
+background: url(WhatsApp Image 2026-04-17 at 15.04.59.jpg);
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006801 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 13.5041px 16.3979px;
+gap: 9.65px;
+
+width: 301.91px;
+height: 201.14px;
+
+background: #F8F7F3;
+border: 1.25385px solid #E4E8EC;
+border-radius: 0px 0px 9.64582px 9.64582px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006817 */
+
+width: 269.12px;
+height: 174.13px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006828 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 9.65px;
+
+position: absolute;
+height: 167.76px;
+left: 0px;
+right: 0px;
+top: 0px;
+
+
+
+/* Frame 1000006829 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 4.82px;
+
+width: 269.12px;
+height: 137.11px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006815 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 8.99px;
+
+width: 269.12px;
+height: 48.29px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006816 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 310.95px;
+height: 48.29px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame 1000006821 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 6.29px;
+
+width: 310.95px;
+height: 48.29px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Godson Ohuruogu */
+
+width: 310.95px;
+height: 18px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 15.2761px;
+line-height: 18px;
+
+color: #060C15;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Chief Executive Officer */
+
+width: 310.95px;
+height: 24px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 15.2761px;
+line-height: 158%;
+/* or 24px */
+
+color: #FA9510;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Godson Ohuruogu is an agribusiness and private sector development expert with over 17 years of experience in value chain development, SME growth, */
+
+width: 269.12px;
+height: 84px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 13.5041px;
+line-height: 158%;
+/* or 21px */
+
+/* Body text colour */
+color: #6B7585;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006827 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 0px;
+gap: 4.82px;
+
+width: 76.22px;
+height: 21px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+width: 16.4px;
+height: 16.4px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 8.34%;
+right: 62.5%;
+top: 29.17%;
+bottom: 29.17%;
+
+/* Body text colour */
+border: 1.36649px solid #6B7585;
+
+
+/* Vector */
+
+position: absolute;
+left: 62.51%;
+right: 8.33%;
+top: 29.17%;
+bottom: 29.17%;
+
+/* Body text colour */
+border: 1.36649px solid #6B7585;
+
+
+/* Vector */
+
+position: absolute;
+left: 33.33%;
+right: 33.34%;
+top: 50%;
+bottom: 50%;
+
+/* Body text colour */
+border: 1.36649px solid #6B7585;
+
+
+/* LinkedIn */
+
+width: 55px;
+height: 21px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 13.5041px;
+line-height: 158%;
+/* or 21px */
+
+/* Body text colour */
+color: #6B7585;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 1000006827 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 301.91px;
+height: 402.41px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 1000006825 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 9.65px;
+
+width: 301.91px;
+height: 201.28px;
+
+border-radius: 9.64582px 9.64582px 0px 0px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006831 */
+
+width: 301.91px;
+height: 201.28px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* WhatsApp Image 2026-04-17 at 15.04.59 1 */
+
+position: absolute;
+width: 618.3px;
+height: 412.2px;
+left: calc(50% - 618.3px/2 + 0px);
+top: -106.1px;
+
+background: url(DSC00129.jpg);
+
+
+/* Frame 1000006801 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 13.5041px 16.3979px;
+gap: 9.65px;
+
+width: 301.91px;
+height: 201.14px;
+
+background: #F8F7F3;
+border: 1.25385px solid #E4E8EC;
+border-radius: 0px 0px 9.64582px 9.64582px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006817 */
+
+width: 269.12px;
+height: 174.13px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006828 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 9.65px;
+
+position: absolute;
+height: 167.76px;
+left: 0px;
+right: 0px;
+top: 0px;
+
+
+
+/* Frame 1000006829 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 4.82px;
+
+width: 269.12px;
+height: 137.11px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006815 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 8.99px;
+
+width: 269.12px;
+height: 48.29px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006816 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 310.95px;
+height: 48.29px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame 1000006821 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 6.29px;
+
+width: 310.95px;
+height: 48.29px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Alero Otis */
+
+width: 73px;
+height: 18px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 15.2761px;
+line-height: 18px;
+
+color: #060C15;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Head of Projects & Partnerships */
+
+width: 231px;
+height: 24px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 15.2761px;
+line-height: 158%;
+/* or 24px */
+
+color: #FA9510;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Alero Otis is a development and research specialist with extensive experience in program implementation, policy advocacy, and strategic partnerships. */
+
+width: 269.12px;
+height: 84px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 13.5041px;
+line-height: 158%;
+/* or 21px */
+
+/* Body text colour */
+color: #6B7585;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006827 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 0px;
+gap: 4.82px;
+
+width: 76.22px;
+height: 21px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+width: 16.4px;
+height: 16.4px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 8.34%;
+right: 62.5%;
+top: 29.17%;
+bottom: 29.17%;
+
+/* Body text colour */
+border: 1.36649px solid #6B7585;
+
+
+/* Vector */
+
+position: absolute;
+left: 62.51%;
+right: 8.33%;
+top: 29.17%;
+bottom: 29.17%;
+
+/* Body text colour */
+border: 1.36649px solid #6B7585;
+
+
+/* Vector */
+
+position: absolute;
+left: 33.35%;
+right: 33.32%;
+top: 50%;
+bottom: 50%;
+
+/* Body text colour */
+border: 1.36649px solid #6B7585;
+
+
+/* LinkedIn */
+
+width: 55px;
+height: 21px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 13.5041px;
+line-height: 158%;
+/* or 21px */
+
+/* Body text colour */
+color: #6B7585;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 1000006828 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 301.91px;
+height: 402.41px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Frame 1000006825 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 9.65px;
+
+width: 301.91px;
+height: 201.28px;
+
+border-radius: 9.64582px 9.64582px 0px 0px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006831 */
+
+width: 301.91px;
+height: 201.28px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* WhatsApp Image 2026-04-17 at 15.04.59 1 */
+
+position: absolute;
+width: 618.3px;
+height: 412.2px;
+left: calc(50% - 618.3px/2 + 0px);
+top: -106.1px;
+
+background: url(DSC00129.jpg);
+
+
+/* Frame 1000006801 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 13.5041px 16.3979px;
+gap: 9.65px;
+
+width: 301.91px;
+height: 201.14px;
+
+background: #F8F7F3;
+border: 1.25385px solid #E4E8EC;
+border-radius: 0px 0px 9.64582px 9.64582px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006817 */
+
+width: 269.12px;
+height: 174.13px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006828 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 9.65px;
+
+position: absolute;
+height: 167.76px;
+left: 0px;
+right: 0px;
+top: 0px;
+
+
+
+/* Frame 1000006829 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 4.82px;
+
+width: 269.12px;
+height: 137.11px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006815 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 8.99px;
+
+width: 269.12px;
+height: 48.29px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006816 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 310.95px;
+height: 48.29px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame 1000006821 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 6.29px;
+
+width: 310.95px;
+height: 48.29px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Alero Otis */
+
+width: 73px;
+height: 18px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 15.2761px;
+line-height: 18px;
+
+color: #060C15;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Head of Projects & Partnerships */
+
+width: 231px;
+height: 24px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 15.2761px;
+line-height: 158%;
+/* or 24px */
+
+color: #FA9510;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Alero Otis is a development and research specialist with extensive experience in program implementation, policy advocacy, and strategic partnerships. */
+
+width: 269.12px;
+height: 84px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 13.5041px;
+line-height: 158%;
+/* or 21px */
+
+/* Body text colour */
+color: #6B7585;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006827 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 0px;
+gap: 4.82px;
+
+width: 76.22px;
+height: 21px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+width: 16.4px;
+height: 16.4px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 8.34%;
+right: 62.5%;
+top: 29.17%;
+bottom: 29.17%;
+
+/* Body text colour */
+border: 1.36649px solid #6B7585;
+
+
+/* Vector */
+
+position: absolute;
+left: 62.48%;
+right: 8.35%;
+top: 29.17%;
+bottom: 29.17%;
+
+/* Body text colour */
+border: 1.36649px solid #6B7585;
+
+
+/* Vector */
+
+position: absolute;
+left: 33.33%;
+right: 33.34%;
+top: 50%;
+bottom: 50%;
+
+/* Body text colour */
+border: 1.36649px solid #6B7585;
+
+
+/* LinkedIn */
+
+width: 55px;
+height: 21px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 13.5041px;
+line-height: 158%;
+/* or 21px */
+
+/* Body text colour */
+color: #6B7585;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 1000006829 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 301.91px;
+height: 402.41px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* Frame 1000006825 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 9.65px;
+
+width: 301.91px;
+height: 201.28px;
+
+border-radius: 9.64582px 9.64582px 0px 0px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006831 */
+
+width: 301.91px;
+height: 201.28px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* WhatsApp Image 2026-04-17 at 15.04.59 1 */
+
+position: absolute;
+width: 618.3px;
+height: 412.2px;
+left: calc(50% - 618.3px/2 + 0px);
+top: -106.1px;
+
+background: url(DSC00129.jpg);
+
+
+/* Frame 1000006801 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 13.5041px 16.3979px;
+gap: 9.65px;
+
+width: 301.91px;
+height: 201.14px;
+
+background: #F8F7F3;
+border: 1.25385px solid #E4E8EC;
+border-radius: 0px 0px 9.64582px 9.64582px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006817 */
+
+width: 269.12px;
+height: 174.13px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006828 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 9.65px;
+
+position: absolute;
+height: 167.76px;
+left: 0px;
+right: 0px;
+top: 0px;
+
+
+
+/* Frame 1000006829 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 4.82px;
+
+width: 269.12px;
+height: 137.11px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006815 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 8.99px;
+
+width: 269.12px;
+height: 48.29px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006816 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 310.95px;
+height: 48.29px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame 1000006821 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 6.29px;
+
+width: 310.95px;
+height: 48.29px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Alero Otis */
+
+width: 73px;
+height: 18px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 15.2761px;
+line-height: 18px;
+
+color: #060C15;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Head of Projects & Partnerships */
+
+width: 231px;
+height: 24px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 15.2761px;
+line-height: 158%;
+/* or 24px */
+
+color: #FA9510;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Alero Otis is a development and research specialist with extensive experience in program implementation, policy advocacy, and strategic partnerships. */
+
+width: 269.12px;
+height: 84px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 13.5041px;
+line-height: 158%;
+/* or 21px */
+
+/* Body text colour */
+color: #6B7585;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006827 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 0px;
+gap: 4.82px;
+
+width: 76.22px;
+height: 21px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+width: 16.4px;
+height: 16.4px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 8.34%;
+right: 62.5%;
+top: 29.17%;
+bottom: 29.17%;
+
+/* Body text colour */
+border: 1.36649px solid #6B7585;
+
+
+/* Vector */
+
+position: absolute;
+left: 62.51%;
+right: 8.33%;
+top: 29.17%;
+bottom: 29.17%;
+
+/* Body text colour */
+border: 1.36649px solid #6B7585;
+
+
+/* Vector */
+
+position: absolute;
+left: 33.33%;
+right: 33.34%;
+top: 50%;
+bottom: 50%;
+
+/* Body text colour */
+border: 1.36649px solid #6B7585;
+
+
+/* LinkedIn */
+
+width: 55px;
+height: 21px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 13.5041px;
+line-height: 158%;
+/* or 21px */
+
+/* Body text colour */
+color: #6B7585;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 1000006831 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: center;
+padding: 0px;
+gap: 24.11px;
+
+width: 1280px;
+height: 402.41px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006826 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 301.91px;
+height: 402.41px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame 1000006825 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 9.65px;
+
+width: 301.91px;
+height: 201.28px;
+
+border-radius: 9.64582px 9.64582px 0px 0px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* WhatsApp Image 2026-04-17 at 15.04.59 1 */
+
+width: 301.91px;
+height: 201.28px;
+
+background: url(WhatsApp Image 2026-04-17 at 15.04.59.jpg);
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006801 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 13.5041px 16.3979px;
+gap: 9.65px;
+
+width: 301.91px;
+height: 201.14px;
+
+background: #F8F7F3;
+border: 1.25385px solid #E4E8EC;
+border-radius: 0px 0px 9.64582px 9.64582px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006817 */
+
+width: 269.12px;
+height: 174.13px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006828 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 9.65px;
+
+position: absolute;
+height: 167.76px;
+left: 0px;
+right: 0px;
+top: 0px;
+
+
+
+/* Frame 1000006829 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 4.82px;
+
+width: 269.12px;
+height: 137.11px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006815 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 8.99px;
+
+width: 269.12px;
+height: 48.29px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006816 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 310.95px;
+height: 48.29px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame 1000006821 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 6.29px;
+
+width: 310.95px;
+height: 48.29px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Godson Ohuruogu */
+
+width: 310.95px;
+height: 18px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 15.2761px;
+line-height: 18px;
+
+color: #060C15;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Chief Executive Officer */
+
+width: 310.95px;
+height: 24px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 15.2761px;
+line-height: 158%;
+/* or 24px */
+
+color: #FA9510;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Godson Ohuruogu is an agribusiness and private sector development expert with over 17 years of experience in value chain development, SME growth, */
+
+width: 269.12px;
+height: 84px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 13.5041px;
+line-height: 158%;
+/* or 21px */
+
+/* Body text colour */
+color: #6B7585;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006827 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 0px;
+gap: 4.82px;
+
+width: 76.22px;
+height: 21px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+width: 16.4px;
+height: 16.4px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 8.34%;
+right: 62.5%;
+top: 29.17%;
+bottom: 29.17%;
+
+/* Body text colour */
+border: 1.36649px solid #6B7585;
+
+
+/* Vector */
+
+position: absolute;
+left: 62.51%;
+right: 8.33%;
+top: 29.17%;
+bottom: 29.17%;
+
+/* Body text colour */
+border: 1.36649px solid #6B7585;
+
+
+/* Vector */
+
+position: absolute;
+left: 33.33%;
+right: 33.34%;
+top: 50%;
+bottom: 50%;
+
+/* Body text colour */
+border: 1.36649px solid #6B7585;
+
+
+/* LinkedIn */
+
+width: 55px;
+height: 21px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 13.5041px;
+line-height: 158%;
+/* or 21px */
+
+/* Body text colour */
+color: #6B7585;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 1000006827 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 301.91px;
+height: 402.41px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 1000006825 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 9.65px;
+
+width: 301.91px;
+height: 201.28px;
+
+border-radius: 9.64582px 9.64582px 0px 0px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006831 */
+
+width: 301.91px;
+height: 201.28px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* WhatsApp Image 2026-04-17 at 15.04.59 1 */
+
+position: absolute;
+width: 618.3px;
+height: 412.2px;
+left: calc(50% - 618.3px/2 + 0px);
+top: -106.1px;
+
+background: url(DSC00129.jpg);
+
+
+/* Frame 1000006801 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 13.5041px 16.3979px;
+gap: 9.65px;
+
+width: 301.91px;
+height: 201.14px;
+
+background: #F8F7F3;
+border: 1.25385px solid #E4E8EC;
+border-radius: 0px 0px 9.64582px 9.64582px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006817 */
+
+width: 269.12px;
+height: 174.13px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006828 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 9.65px;
+
+position: absolute;
+height: 167.76px;
+left: 0px;
+right: 0px;
+top: 0px;
+
+
+
+/* Frame 1000006829 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 4.82px;
+
+width: 269.12px;
+height: 137.11px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006815 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 8.99px;
+
+width: 269.12px;
+height: 48.29px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006816 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 310.95px;
+height: 48.29px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame 1000006821 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 6.29px;
+
+width: 310.95px;
+height: 48.29px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Alero Otis */
+
+width: 73px;
+height: 18px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 15.2761px;
+line-height: 18px;
+
+color: #060C15;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Head of Projects & Partnerships */
+
+width: 231px;
+height: 24px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 15.2761px;
+line-height: 158%;
+/* or 24px */
+
+color: #FA9510;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Alero Otis is a development and research specialist with extensive experience in program implementation, policy advocacy, and strategic partnerships. */
+
+width: 269.12px;
+height: 84px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 13.5041px;
+line-height: 158%;
+/* or 21px */
+
+/* Body text colour */
+color: #6B7585;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006827 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 0px;
+gap: 4.82px;
+
+width: 76.22px;
+height: 21px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+width: 16.4px;
+height: 16.4px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 8.34%;
+right: 62.5%;
+top: 29.17%;
+bottom: 29.17%;
+
+/* Body text colour */
+border: 1.36649px solid #6B7585;
+
+
+/* Vector */
+
+position: absolute;
+left: 62.51%;
+right: 8.33%;
+top: 29.17%;
+bottom: 29.17%;
+
+/* Body text colour */
+border: 1.36649px solid #6B7585;
+
+
+/* Vector */
+
+position: absolute;
+left: 33.35%;
+right: 33.32%;
+top: 50%;
+bottom: 50%;
+
+/* Body text colour */
+border: 1.36649px solid #6B7585;
+
+
+/* LinkedIn */
+
+width: 55px;
+height: 21px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 13.5041px;
+line-height: 158%;
+/* or 21px */
+
+/* Body text colour */
+color: #6B7585;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 1000006828 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 301.91px;
+height: 402.41px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Frame 1000006825 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 9.65px;
+
+width: 301.91px;
+height: 201.28px;
+
+border-radius: 9.64582px 9.64582px 0px 0px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006831 */
+
+width: 301.91px;
+height: 201.28px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* WhatsApp Image 2026-04-17 at 15.04.59 1 */
+
+position: absolute;
+width: 618.3px;
+height: 412.2px;
+left: calc(50% - 618.3px/2 + 0px);
+top: -106.1px;
+
+background: url(DSC00129.jpg);
+
+
+/* Frame 1000006801 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 13.5041px 16.3979px;
+gap: 9.65px;
+
+width: 301.91px;
+height: 201.14px;
+
+background: #F8F7F3;
+border: 1.25385px solid #E4E8EC;
+border-radius: 0px 0px 9.64582px 9.64582px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006817 */
+
+width: 269.12px;
+height: 174.13px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006828 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 9.65px;
+
+position: absolute;
+height: 167.76px;
+left: 0px;
+right: 0px;
+top: 0px;
+
+
+
+/* Frame 1000006829 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 4.82px;
+
+width: 269.12px;
+height: 137.11px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006815 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 8.99px;
+
+width: 269.12px;
+height: 48.29px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006816 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 310.95px;
+height: 48.29px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame 1000006821 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 6.29px;
+
+width: 310.95px;
+height: 48.29px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Alero Otis */
+
+width: 73px;
+height: 18px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 15.2761px;
+line-height: 18px;
+
+color: #060C15;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Head of Projects & Partnerships */
+
+width: 231px;
+height: 24px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 15.2761px;
+line-height: 158%;
+/* or 24px */
+
+color: #FA9510;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Alero Otis is a development and research specialist with extensive experience in program implementation, policy advocacy, and strategic partnerships. */
+
+width: 269.12px;
+height: 84px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 13.5041px;
+line-height: 158%;
+/* or 21px */
+
+/* Body text colour */
+color: #6B7585;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006827 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 0px;
+gap: 4.82px;
+
+width: 76.22px;
+height: 21px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+width: 16.4px;
+height: 16.4px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 8.34%;
+right: 62.5%;
+top: 29.17%;
+bottom: 29.17%;
+
+/* Body text colour */
+border: 1.36649px solid #6B7585;
+
+
+/* Vector */
+
+position: absolute;
+left: 62.48%;
+right: 8.35%;
+top: 29.17%;
+bottom: 29.17%;
+
+/* Body text colour */
+border: 1.36649px solid #6B7585;
+
+
+/* Vector */
+
+position: absolute;
+left: 33.33%;
+right: 33.34%;
+top: 50%;
+bottom: 50%;
+
+/* Body text colour */
+border: 1.36649px solid #6B7585;
+
+
+/* LinkedIn */
+
+width: 55px;
+height: 21px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 13.5041px;
+line-height: 158%;
+/* or 21px */
+
+/* Body text colour */
+color: #6B7585;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame 1000006829 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 301.91px;
+height: 402.41px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* Frame 1000006825 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 9.65px;
+
+width: 301.91px;
+height: 201.28px;
+
+border-radius: 9.64582px 9.64582px 0px 0px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006831 */
+
+width: 301.91px;
+height: 201.28px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* WhatsApp Image 2026-04-17 at 15.04.59 1 */
+
+position: absolute;
+width: 618.3px;
+height: 412.2px;
+left: calc(50% - 618.3px/2 + 0px);
+top: -106.1px;
+
+background: url(DSC00129.jpg);
+
+
+/* Frame 1000006801 */
+
+box-sizing: border-box;
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 13.5041px 16.3979px;
+gap: 9.65px;
+
+width: 301.91px;
+height: 201.14px;
+
+background: #F8F7F3;
+border: 1.25385px solid #E4E8EC;
+border-radius: 0px 0px 9.64582px 9.64582px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006817 */
+
+width: 269.12px;
+height: 174.13px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006828 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 9.65px;
+
+position: absolute;
+height: 167.76px;
+left: 0px;
+right: 0px;
+top: 0px;
+
+
+
+/* Frame 1000006829 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 4.82px;
+
+width: 269.12px;
+height: 137.11px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006815 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 8.99px;
+
+width: 269.12px;
+height: 48.29px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006816 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+
+width: 310.95px;
+height: 48.29px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Frame 1000006821 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 6.29px;
+
+width: 310.95px;
+height: 48.29px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Alero Otis */
+
+width: 73px;
+height: 18px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 15.2761px;
+line-height: 18px;
+
+color: #060C15;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Head of Projects & Partnerships */
+
+width: 231px;
+height: 24px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 15.2761px;
+line-height: 158%;
+/* or 24px */
+
+color: #FA9510;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Alero Otis is a development and research specialist with extensive experience in program implementation, policy advocacy, and strategic partnerships. */
+
+width: 269.12px;
+height: 84px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 13.5041px;
+line-height: 158%;
+/* or 21px */
+
+/* Body text colour */
+color: #6B7585;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Frame 1000006827 */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 0px;
+gap: 4.82px;
+
+width: 76.22px;
+height: 21px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+width: 16.4px;
+height: 16.4px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: 8.34%;
+right: 62.5%;
+top: 29.17%;
+bottom: 29.17%;
+
+/* Body text colour */
+border: 1.36649px solid #6B7585;
+
+
+/* Vector */
+
+position: absolute;
+left: 62.51%;
+right: 8.33%;
+top: 29.17%;
+bottom: 29.17%;
+
+/* Body text colour */
+border: 1.36649px solid #6B7585;
+
+
+/* Vector */
+
+position: absolute;
+left: 33.33%;
+right: 33.34%;
+top: 50%;
+bottom: 50%;
+
+/* Body text colour */
+border: 1.36649px solid #6B7585;
+
+
+/* LinkedIn */
+
+width: 55px;
+height: 21px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 13.5041px;
+line-height: 158%;
+/* or 21px */
+
+/* Body text colour */
+color: #6B7585;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Team Grid */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+flex-wrap: wrap;
+align-items: flex-start;
+align-content: flex-start;
+padding: 0px;
+gap: 24px;
+
+width: 1280px;
+height: 10px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* Godson Ohuruogu */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 32px 28px;
+gap: 16px;
+
+width: 300px;
+height: 10px;
+
+background: #FFFFFF;
+box-shadow: 0px 2px 16px rgba(0, 0, 0, 0.05);
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Ellipse */
+
+width: 64px;
+height: 64px;
+
+background: rgba(250, 149, 16, 0.15);
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Godson Ohuruogu */
+
+width: 244px;
+height: 20px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 700;
+font-size: 17px;
+line-height: 20px;
+
+color: #101A2A;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Chief Executive Officer */
+
+width: 244px;
+height: 15px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 500;
+font-size: 13px;
+line-height: 15px;
+
+color: #FA9510;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Agribusiness and private sector development expert with over 17 years of experience in value chain development, SME growth, and climate-smart agriculture. MBA, University of Leeds. */
+
+width: 244px;
+height: 126px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 13px;
+line-height: 160%;
+/* or 21px */
+
+color: #6B7585;
+
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* Alero Otis */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 32px 28px;
+gap: 16px;
+
+width: 300px;
+height: 10px;
+
+background: #FFFFFF;
+box-shadow: 0px 2px 16px rgba(0, 0, 0, 0.05);
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Ellipse */
+
+width: 64px;
+height: 64px;
+
+background: rgba(250, 149, 16, 0.15);
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Alero Otis */
+
+width: 244px;
+height: 20px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 700;
+font-size: 17px;
+line-height: 20px;
+
+color: #101A2A;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Head of Projects & Partnerships */
+
+width: 244px;
+height: 15px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 500;
+font-size: 13px;
+line-height: 15px;
+
+color: #FA9510;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Development and research specialist with extensive experience in program implementation, policy advocacy, and strategic partnerships across Nigeria. */
+
+width: 244px;
+height: 84px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 13px;
+line-height: 160%;
+/* or 21px */
+
+color: #6B7585;
+
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* Stephen Aguebor */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 32px 28px;
+gap: 16px;
+
+width: 300px;
+height: 10px;
+
+background: #FFFFFF;
+box-shadow: 0px 2px 16px rgba(0, 0, 0, 0.05);
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Ellipse */
+
+width: 64px;
+height: 64px;
+
+background: rgba(250, 149, 16, 0.15);
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Stephen Aguebor */
+
+width: 244px;
+height: 20px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 700;
+font-size: 17px;
+line-height: 20px;
+
+color: #101A2A;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Deputy Team Lead, ISSAM Project */
+
+width: 244px;
+height: 15px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 500;
+font-size: 13px;
+line-height: 15px;
+
+color: #FA9510;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Seasoned development specialist with 12+ years in agricultural livelihoods, financial inclusion, and market systems development. */
+
+width: 244px;
+height: 84px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 13px;
+line-height: 160%;
+/* or 21px */
+
+color: #6B7585;
+
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* Adanna Atounwu */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 32px 28px;
+gap: 16px;
+
+width: 300px;
+height: 10px;
+
+background: #FFFFFF;
+box-shadow: 0px 2px 16px rgba(0, 0, 0, 0.05);
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* Ellipse */
+
+width: 64px;
+height: 64px;
+
+background: rgba(250, 149, 16, 0.15);
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Adanna Atounwu */
+
+width: 244px;
+height: 20px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 700;
+font-size: 17px;
+line-height: 20px;
+
+color: #101A2A;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Communications Lead */
+
+width: 244px;
+height: 15px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 500;
+font-size: 13px;
+line-height: 15px;
+
+color: #FA9510;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Leads TracTrac's communications strategy, shaping how the company tells its story and engages stakeholders across the agricultural ecosystem. */
+
+width: 244px;
+height: 105px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 13px;
+line-height: 160%;
+/* or 21px */
+
+color: #6B7585;
+
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* Samuel Olanikepun */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 32px 28px;
+gap: 16px;
+
+width: 300px;
+height: 10px;
+
+background: #FFFFFF;
+box-shadow: 0px 2px 16px rgba(0, 0, 0, 0.05);
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 4;
+flex-grow: 0;
+
+
+/* Ellipse */
+
+width: 64px;
+height: 64px;
+
+background: rgba(250, 149, 16, 0.15);
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Samuel Olanikepun */
+
+width: 244px;
+height: 20px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 700;
+font-size: 17px;
+line-height: 20px;
+
+color: #101A2A;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* MERL Team Lead */
+
+width: 244px;
+height: 15px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 500;
+font-size: 13px;
+line-height: 15px;
+
+color: #FA9510;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Leads Monitoring, Evaluation, Research, and Learning, overseeing data-driven program evaluation and impact measurement across TracTrac initiatives. */
+
+width: 244px;
+height: 105px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 13px;
+line-height: 160%;
+/* or 21px */
+
+color: #6B7585;
+
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* Dr. John Olanrewaju */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 32px 28px;
+gap: 16px;
+
+width: 300px;
+height: 10px;
+
+background: #FFFFFF;
+box-shadow: 0px 2px 16px rgba(0, 0, 0, 0.05);
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 5;
+flex-grow: 0;
+
+
+/* Ellipse */
+
+width: 64px;
+height: 64px;
+
+background: rgba(250, 149, 16, 0.15);
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Dr. John Olanrewaju */
+
+width: 244px;
+height: 20px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 700;
+font-size: 17px;
+line-height: 20px;
+
+color: #101A2A;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Engineering Lead */
+
+width: 244px;
+height: 15px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 500;
+font-size: 13px;
+line-height: 15px;
+
+color: #FA9510;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Leads engineering and mechanization systems development, bringing deep expertise in agricultural engineering and mechanization infrastructure. */
+
+width: 244px;
+height: 84px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 13px;
+line-height: 160%;
+/* or 21px */
+
+color: #6B7585;
+
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* Israel Olatunde */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 32px 28px;
+gap: 16px;
+
+width: 300px;
+height: 10px;
+
+background: #FFFFFF;
+box-shadow: 0px 2px 16px rgba(0, 0, 0, 0.05);
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 6;
+flex-grow: 0;
+
+
+/* Ellipse */
+
+width: 64px;
+height: 64px;
+
+background: rgba(250, 149, 16, 0.15);
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Israel Olatunde */
+
+width: 244px;
+height: 20px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 700;
+font-size: 17px;
+line-height: 20px;
+
+color: #101A2A;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* IT Lead */
+
+width: 244px;
+height: 15px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 500;
+font-size: 13px;
+line-height: 15px;
+
+color: #FA9510;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Leads development and management of TracTrac's digital infrastructure, including platforms connecting farmers, service providers, and partners. */
+
+width: 244px;
+height: 105px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 13px;
+line-height: 160%;
+/* or 21px */
+
+color: #6B7585;
+
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* Barr. Ojoma Okwute */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 32px 28px;
+gap: 16px;
+
+width: 300px;
+height: 10px;
+
+background: #FFFFFF;
+box-shadow: 0px 2px 16px rgba(0, 0, 0, 0.05);
+border-radius: 16px;
+
+/* Inside auto layout */
+flex: none;
+order: 7;
+flex-grow: 0;
+
+
+/* Ellipse */
+
+width: 64px;
+height: 64px;
+
+background: rgba(250, 149, 16, 0.15);
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Barr. Ojoma Okwute */
+
+width: 244px;
+height: 20px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 700;
+font-size: 17px;
+line-height: 20px;
+
+color: #101A2A;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Head of Operations */
+
+width: 244px;
+height: 15px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 500;
+font-size: 13px;
+line-height: 15px;
+
+color: #FA9510;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Leads operational strategy and execution across TracTrac programs, ensuring efficiency, compliance, and successful delivery of mechanization services. */
+
+width: 244px;
+height: 105px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 13px;
+line-height: 160%;
+/* or 21px */
+
+color: #6B7585;
+
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* Section / TMF2026 */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+padding: 96px 80px;
+gap: 40px;
+
+width: 1440px;
+height: 420px;
+
+background: linear-gradient(0deg, #FA9510 0%, #EA580C 100%);
+
+/* Inside auto layout */
+flex: none;
+order: 7;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* CTA */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+padding: 0px;
+gap: 20px;
+
+width: 636px;
+height: 228px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Join the Humans of TracTrac */
+
+width: 443px;
+height: 38px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 700;
+font-size: 32px;
+line-height: 38px;
+/* identical to box height */
+text-align: center;
+
+color: #101A2A;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* We are boldly advancing mechanization across Nigeria and Africa. If you are passionate about transforming agriculture, strengthening food systems, and building solutions that empower farmers, come work with us. Together, we can ensure that mechanization reaches the farmers who need it most. */
+
+width: 636px;
+height: 104px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 16px;
+line-height: 160%;
+/* or 26px */
+text-align: center;
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Frame */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 14px 28px;
+
+width: 213px;
+height: 46px;
+
+background: #060C15;
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* See Open Positions → */
+
+width: 157px;
+height: 18px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 700;
+font-size: 15px;
+line-height: 18px;
+/* identical to box height */
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Section / Footer */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+padding: 64px 80px 40px;
+gap: 48px;
+
+width: 1440px;
+height: 423.97px;
+
+background: #060C15;
+
+/* Inside auto layout */
+flex: none;
+order: 8;
+align-self: stretch;
+flex-grow: 0;
+
+
+/* Component / FooterTop */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+gap: 80px;
+
+width: 1280px;
+height: 207.97px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Component / FooterBrand */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 16px;
+
+width: 300px;
+height: 207.97px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* tractrac logo png 4 */
+
+width: 173.43px;
+height: 47.97px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Vector */
+
+position: absolute;
+left: -0.1%;
+right: 70.97%;
+top: -0.11%;
+bottom: -0.26%;
+
+background: #FA9411;
+
+
+/* Vector */
+
+position: absolute;
+left: 8.63%;
+right: 81.48%;
+top: 39.81%;
+bottom: 24.88%;
+
+background: #FA9411;
+
+
+/* Vector */
+
+position: absolute;
+left: 83.23%;
+right: 7.67%;
+top: 43.53%;
+bottom: 24.21%;
+
+background: #FA9411;
+
+
+/* Vector */
+
+position: absolute;
+left: 47.11%;
+right: 43.67%;
+top: 43.56%;
+bottom: 24.19%;
+
+/* WHITE */
+background: #FFFFFF;
+
+
+/* Vector */
+
+position: absolute;
+left: 29.64%;
+right: 61.42%;
+top: 34.35%;
+bottom: 25.22%;
+
+/* WHITE */
+background: #FFFFFF;
+
+
+/* Vector */
+
+position: absolute;
+left: 3.79%;
+right: 78.94%;
+top: 16.08%;
+bottom: 13.11%;
+
+background: #FA9411;
+
+
+/* Vector */
+
+position: absolute;
+left: 65.64%;
+right: 25.42%;
+top: 34.35%;
+bottom: 25.22%;
+
+background: #FA9411;
+
+
+/* Vector */
+
+position: absolute;
+left: 56.91%;
+right: 35.1%;
+top: 43.74%;
+bottom: 24.25%;
+
+/* WHITE */
+background: #FFFFFF;
+
+
+/* Vector */
+
+position: absolute;
+left: 93.03%;
+right: -0.93%;
+top: 43.68%;
+bottom: 24.25%;
+
+background: #FA9411;
+
+
+/* Vector */
+
+position: absolute;
+left: 75.68%;
+right: 17.45%;
+top: 43.8%;
+bottom: 25.22%;
+
+background: #FA9411;
+
+
+/* Vector */
+
+position: absolute;
+left: 39.68%;
+right: 53.47%;
+top: 43.77%;
+bottom: 25.22%;
+
+/* WHITE */
+background: #FFFFFF;
+
+
+/* Vector */
+
+position: absolute;
+left: 23.1%;
+right: 70.22%;
+top: 51.26%;
+bottom: 24.97%;
+
+background: #FA9411;
+
+
+/* Mechanizing Africa, one farm at a time. Building a future where every smallholder farmer has access to the tools that unlock prosperity. */
+
+width: 300px;
+height: 92px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 162%;
+/* or 23px */
+
+color: #9CA3AF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Element / SocialIcons */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 0px;
+gap: 12px;
+
+width: 180px;
+height: 36px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Element / SocialIcon */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 0px;
+
+width: 36px;
+height: 36px;
+
+background: rgba(255, 255, 255, 0.08);
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* 𝕏 */
+
+width: 10px;
+height: 17px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 600;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+
+color: #9CA3AF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Element / SocialIcon */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 0px;
+
+width: 36px;
+height: 36px;
+
+background: rgba(255, 255, 255, 0.08);
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* in */
+
+width: 13px;
+height: 17px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 600;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+
+color: #9CA3AF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Element / SocialIcon */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 0px;
+
+width: 36px;
+height: 36px;
+
+background: rgba(255, 255, 255, 0.08);
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* f */
+
+width: 6px;
+height: 17px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 600;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+
+color: #9CA3AF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Element / SocialIcon */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 0px;
+
+width: 36px;
+height: 36px;
+
+background: rgba(255, 255, 255, 0.08);
+border-radius: 8px;
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* Vector */
+
+width: 14.2px;
+height: 9.94px;
+
+background: #9CA3AF;
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Component / FooterCol-Quick Links */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 16px;
+
+width: 90px;
+height: 182px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Quick Links */
+
+width: 78px;
+height: 17px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* About Us */
+
+width: 60px;
+height: 17px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+
+color: #9CA3AF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* What We Do */
+
+width: 81px;
+height: 17px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+
+color: #9CA3AF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Our Products */
+
+width: 90px;
+height: 17px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+
+color: #9CA3AF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* Resources */
+
+width: 73px;
+height: 17px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+
+color: #9CA3AF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 4;
+flex-grow: 0;
+
+
+/* Blog */
+
+width: 30px;
+height: 17px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+
+color: #9CA3AF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 5;
+flex-grow: 0;
+
+
+/* Component / FooterCol-Programs */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 16px;
+
+width: 107px;
+height: 182px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Programs */
+
+width: 69px;
+height: 17px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* ISSAM Project */
+
+width: 98px;
+height: 17px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+
+color: #9CA3AF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* TracTrac Plus */
+
+width: 92px;
+height: 17px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+
+color: #9CA3AF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* TMF 2026 */
+
+width: 67px;
+height: 17px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+
+color: #9CA3AF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* Partner With Us */
+
+width: 107px;
+height: 17px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+
+color: #9CA3AF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 4;
+flex-grow: 0;
+
+
+/* Careers */
+
+width: 56px;
+height: 17px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+
+color: #9CA3AF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 5;
+flex-grow: 0;
+
+
+/* Component / FooterCol-Contact */
+
+/* Auto layout */
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+padding: 0px;
+gap: 16px;
+
+width: 145px;
+height: 182px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* Contact */
+
+width: 54px;
+height: 17px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 700;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+
+color: #FFFFFF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Partnership Inquiries */
+
+width: 145px;
+height: 17px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+
+color: #9CA3AF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Press & Media */
+
+width: 97px;
+height: 17px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+
+color: #9CA3AF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* Call Us */
+
+width: 46px;
+height: 17px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+
+color: #9CA3AF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 3;
+flex-grow: 0;
+
+
+/* Our Offices */
+
+width: 75px;
+height: 17px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+
+color: #9CA3AF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 4;
+flex-grow: 0;
+
+
+/* Newsletter */
+
+width: 74px;
+height: 17px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 17px;
+/* identical to box height */
+
+color: #9CA3AF;
+
+
+/* Inside auto layout */
+flex: none;
+order: 5;
+flex-grow: 0;
+
+
+/* Element / FooterDivider */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 0px;
+
+width: 1280px;
+height: 1px;
+
+background: rgba(255, 255, 255, 0.1);
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Component / FooterBottom */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 0px;
+
+width: 1280px;
+height: 15px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;
+
+
+/* © 2026 TracTrac Mechanization Services Limited. All rights reserved. */
+
+width: 981px;
+height: 15px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 13px;
+line-height: 15px;
+
+color: #6B7280;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 1;
+
+
+/* Element / Legal */
+
+/* Auto layout */
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 0px;
+gap: 24px;
+
+width: 299px;
+height: 15px;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Privacy Policy */
+
+width: 87px;
+height: 15px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 13px;
+line-height: 15px;
+
+color: #6B7280;
+
+
+/* Inside auto layout */
+flex: none;
+order: 0;
+flex-grow: 0;
+
+
+/* Terms of Use */
+
+width: 81px;
+height: 15px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 13px;
+line-height: 15px;
+
+color: #6B7280;
+
+
+/* Inside auto layout */
+flex: none;
+order: 1;
+flex-grow: 0;
+
+
+/* Cookie Policy */
+
+width: 83px;
+height: 15px;
+
+font-family: 'Chivo';
+font-style: normal;
+font-weight: 400;
+font-size: 13px;
+line-height: 15px;
+
+color: #6B7280;
+
+
+/* Inside auto layout */
+flex: none;
+order: 2;
+flex-grow: 0;

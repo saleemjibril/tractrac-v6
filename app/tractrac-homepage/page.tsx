@@ -35,8 +35,8 @@ export default function TractracHomepage() {
         <div className={styles.heroInner}>
           <div className={styles.heroLeft}>
             <div className={styles.badge}>
-              <span className={styles.badgeDot} aria-hidden />
-              <span>Agricultural Mechanization · Nigeria &amp; Africa</span>
+              {/* <span className={styles.badgeDot} aria-hidden /> */}
+              <span>Agricultural Mechanization in Nigeria &amp; Africa</span>
             </div>
 
             <h1 id="tractrac-hero-heading" className={styles.headline}>

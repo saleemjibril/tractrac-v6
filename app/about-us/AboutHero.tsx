@@ -11,15 +11,14 @@ const STATES = [
   "Enugu",
 ];
 
-// TODO: replace with the final Impact Highlights video URL when available.
-const IMPACT_HIGHLIGHTS_URL = "#impact-highlights";
+const TRACTRAC_YOUTUBE_URL = "https://www.youtube.com/@TractracGlobal";
 
 export default function AboutHero() {
   return (
     <section className={styles.hero} aria-labelledby="about-hero-heading">
       <div className={styles.heroInner}>
         <span className={styles.heroTag}>
-          <span className={styles.heroTagDot} aria-hidden="true" />
+          {/* <span className={styles.heroTagDot} aria-hidden="true" /> */}
           <span>About TracTrac MSL</span>
         </span>
 
@@ -38,8 +37,10 @@ export default function AboutHero() {
 
         <a
           className={styles.heroVideoCard}
-          href={IMPACT_HIGHLIGHTS_URL}
-          aria-label="Watch TracTrac impact highlights video"
+          href={TRACTRAC_YOUTUBE_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Watch TracTrac impact highlights on YouTube (opens in new tab)"
         >
           <Image
             src="https://api.tractrac.co/media/images/7186f738-9967-41c5-aa7a-e227bbfc62da.jpg"

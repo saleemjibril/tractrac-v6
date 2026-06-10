@@ -1,0 +1,322 @@
+/* Catalog, flexible steps grid, partner form — extends traxcelerate template */
+
+.catalog {
+  background: #fff;
+  padding: var(--section-pad-y) var(--section-pad-x);
+}
+
+.catalogHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 48px;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.catalogHeaderText {
+  max-width: 620px;
+}
+
+.catalogTitle {
+  margin: 0 0 14px;
+}
+
+.catalogGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+@media (min-width: 768px) {
+  .catalogGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.catalogCard {
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--bg);
+  transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+}
+
+.catalogCard:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(in srgb, var(--tag-color, #fa9413) 35%, var(--border));
+  box-shadow: 0 24px 56px rgba(0, 0, 0, 0.08);
+}
+
+.catalogCardLink {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  text-decoration: none;
+  color: inherit;
+}
+
+.catalogImageWrap {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  min-height: 200px;
+}
+
+.catalogImage {
+  object-fit: cover;
+  transition: transform 0.6s;
+}
+
+.catalogCard:hover .catalogImage {
+  transform: scale(1.04);
+}
+
+.catalogImageOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 40%, rgba(6, 12, 21, 0.75) 100%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.catalogBadge {
+  position: absolute;
+  left: 18px;
+  bottom: 16px;
+  z-index: 2;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--orange);
+}
+
+.catalogBody {
+  padding: 28px 28px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+}
+
+.catalogCardTitle {
+  font-weight: 800;
+  font-size: 22px;
+  color: var(--dark);
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.catalogCardDesc {
+  font-weight: 300;
+  font-size: 15px;
+  color: var(--slate-600);
+  line-height: 1.65;
+  margin: 0;
+  flex: 1;
+}
+
+.catalogCta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--dark);
+  border-bottom: 1.5px solid var(--orange);
+  padding-bottom: 3px;
+  width: fit-content;
+  margin-top: 4px;
+}
+
+.catalogFeatured {
+  grid-column: 1 / -1;
+}
+
+.catalogFeatured .catalogImageWrap {
+  aspect-ratio: 16 / 10;
+  min-height: 320px;
+}
+
+@media (min-width: 900px) {
+  .catalogFeatured .catalogCardLink {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    min-height: 480px;
+  }
+
+  .catalogFeatured .catalogImageWrap {
+    aspect-ratio: auto;
+    min-height: 480px;
+    height: 100%;
+  }
+
+  .catalogFeatured .catalogBody {
+    justify-content: center;
+    padding: 48px 40px;
+    min-height: 480px;
+  }
+
+  .catalogFeatured .catalogCardTitle {
+    font-size: 28px;
+  }
+}
+
+.stepsGridFlex {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+/* Form block below CTA */
+.formSection {
+  background: var(--dark);
+  padding: 0 var(--section-pad-x) var(--section-pad-y);
+  position: relative;
+}
+
+.formSectionInner {
+  max-width: 1100px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.formCard {
+  background: #fff;
+  border-radius: 20px;
+  padding: clamp(28px, 4vw, 40px);
+  border: 1px solid var(--border);
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.2);
+}
+
+.formTitle {
+  font-weight: 800;
+  font-size: 24px;
+  color: var(--dark);
+  margin: 0 0 8px;
+  letter-spacing: -0.02em;
+}
+
+.formSubtitle {
+  font-weight: 300;
+  font-size: 15px;
+  color: var(--slate-500);
+  margin: 0 0 24px;
+  line-height: 1.6;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 640px) {
+  .formGridTwo {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--dark);
+}
+
+.input,
+.textarea,
+.select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 400;
+  background: var(--bg);
+  color: var(--dark);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.input:focus,
+.textarea:focus,
+.select:focus {
+  outline: none;
+  border-color: var(--orange);
+  box-shadow: 0 0 0 3px rgba(250, 148, 19, 0.2);
+  background: #fff;
+}
+
+.inputError,
+.textareaError {
+  border-color: #dc2626;
+}
+
+.textarea {
+  min-height: 140px;
+  resize: vertical;
+}
+
+.phoneRow {
+  display: grid;
+  grid-template-columns: 108px 1fr;
+  gap: 10px;
+}
+
+.fieldError {
+  margin: 0;
+  font-size: 12px;
+  color: #dc2626;
+}
+
+.alert {
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.alertSuccess {
+  background: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+.alertError {
+  background: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+.submitBtn {
+  margin-top: 8px;
+  padding: 15px 28px;
+  border: none;
+  border-radius: 12px;
+  font: inherit;
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--dark);
+  background: var(--orange);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: filter 0.15s;
+}
+
+.submitBtn:hover:not(:disabled) {
+  filter: brightness(1.05);
+}
+
+.submitBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

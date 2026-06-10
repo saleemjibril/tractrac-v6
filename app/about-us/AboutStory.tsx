@@ -30,7 +30,7 @@ export default function AboutStory() {
 
         <div className={styles.storyBody}>
           <span className={styles.storyTag}>
-            <span className={styles.storyTagDot} aria-hidden="true" />
+            {/* <span className={styles.storyTagDot} aria-hidden="true" /> */}
             <span>Our Story</span>
           </span>
 

@@ -87,7 +87,7 @@ export default function TractracWhoWeSection() {
 
           <div className={styles.whoWeCopy}>
             <div className={styles.whoWeTag}>
-              <span className={styles.whoWeTagDot} aria-hidden />
+              {/* <span className={styles.whoWeTagDot} aria-hidden /> */}
               <span>Who We Are</span>
             </div>
             <h2 id="tractrac-who-we-heading" className={styles.whoWeHeading}>

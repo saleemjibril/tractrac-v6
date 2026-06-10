@@ -145,7 +145,7 @@ export default function TractracImpactSection() {
       <div className={styles.impactInner}>
         <div className={styles.impactHeader}>
           <div className={styles.impactBadge}>
-            <span className={styles.impactBadgeDot} aria-hidden />
+            {/* <span className={styles.impactBadgeDot} aria-hidden /> */}
             <span>Our Impact</span>
           </div>
           <h2 id="tractrac-impact-heading" className={styles.impactTitle}>
