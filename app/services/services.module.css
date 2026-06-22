@@ -15,9 +15,8 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 7px 14px;
+  padding: 7px 14px 7px 0;
   border-radius: 100px;
-  background: #fff4e2;
   font-weight: 600;
   font-size: 13px;
   line-height: 15px;
@@ -54,7 +53,7 @@
   margin: 0;
   max-width: 800px;
   font-weight: 700;
-  font-size: clamp(2rem, 5vw, 3.25rem);
+  font-size: clamp(2rem, 4vw, 56px);
   line-height: 1.1;
   letter-spacing: -0.02em;
   color: var(--tt-navy);
@@ -63,7 +62,7 @@
 .heroLede {
   margin: 0;
   max-width: 680px;
-  font-size: clamp(1rem, 1.4vw, 1.2rem);
+  font-size: 16px;
   line-height: 1.65;
   color: var(--tt-muted);
 }
@@ -176,7 +175,7 @@
 
 .serviceParagraph {
   margin: 0 0 1rem;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 1.65;
   color: var(--tt-muted);
 }
@@ -198,7 +197,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 1.55;
   color: var(--tt-muted);
 }
@@ -224,14 +223,14 @@
 .ctaTitle {
   margin: 0;
   font-weight: 700;
-  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-size: clamp(1.75rem, 3vw, 38px);
   line-height: 1.2;
 }
 
 .ctaCopy {
   margin: 0;
   max-width: 560px;
-  font-size: 17px;
+  font-size: 16px;
   line-height: 1.6;
   color: #ccd9e6;
 }
@@ -288,4 +287,23 @@
   .heroCta {
     transition: none;
   }
+}
+
+/* Body copy & section subtitles */
+.heroLede,
+.serviceBulletsIntro,
+.ctaCopy {
+  font-size: 16px;
+}
+
+/* Balanced title line breaks (use with bindTitleOrphans in JSX) */
+.heroTitle,
+.ctaTitle {
+  text-wrap: balance;
+}
+
+/* Card body copy */
+.serviceParagraph,
+.serviceBullets {
+  font-size: 14px;
 }

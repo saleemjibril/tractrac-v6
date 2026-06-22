@@ -1,4 +1,5 @@
 import styles from "./aboutUs.module.css";
+import { bindTitleOrphans } from "@/app/utils/bindTitleOrphans";
 
 type Testimonial = {
   id: string;
@@ -53,7 +54,7 @@ export default function AboutTestimonials() {
             id="about-testimonials-heading"
             className={styles.testimonialsTitle}
           >
-            What Our Partners &amp; Farmers Say
+            {bindTitleOrphans("What Our Partners & Farmers Say")}
           </h2>
         </header>
 

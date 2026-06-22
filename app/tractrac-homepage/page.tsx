@@ -1,6 +1,7 @@
 import { Chivo } from "next/font/google";
 import Link from "next/link";
 import type { Metadata } from "next";
+import { bindTitleOrphans } from "@/app/utils/bindTitleOrphans";
 import TractracHomepageNav from "./TractracHomepageNav";
 import TractracHeroCarousel from "./TractracHeroCarousel";
 import TractracWhoWeSection from "./TractracWhoWeSection";
@@ -21,7 +22,7 @@ const chivo = Chivo({
 });
 
 export const metadata: Metadata = {
-  title: "TracTrac — Marketing homepage",
+  title: "TracTrac: Marketing homepage",
   description:
     "Africa's smallholder farmers deserve the power of mechanization. TracTrac connects farmers with tractors and essential farm mechanization services.",
 };
@@ -40,12 +41,14 @@ export default function TractracHomepage() {
             </div>
 
             <h1 id="tractrac-hero-heading" className={styles.headline}>
-              Africa&apos;s Smallholder Farmers Deserve the Power of Mechanization.
+              {bindTitleOrphans(
+                "Africa's Smallholder Farmers Deserve the Power of Mechanization."
+              )}
             </h1>
 
             <p className={styles.lede}>
               We are building an Africa where every smallholder farmer can access tractors
-              and essential farm mechanization services at their fingertips — through
+              and essential farm mechanization services at their fingertips, through
               technology, bold partnerships, and investment.
             </p>
 

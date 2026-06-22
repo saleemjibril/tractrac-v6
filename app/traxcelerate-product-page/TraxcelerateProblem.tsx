@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { BoundTitleWithHighlight } from "@/app/components/marketing/BoundTitle";
 import { TRAX_IMAGES } from "./images";
 import styles from "./traxcelerateProduct.module.css";
 
@@ -16,7 +17,7 @@ const STATS = [
   {
     big: "Zero",
     variant: "orange" as const,
-    small: "Certified MSP training programmes at national scale — before TRAxCelerate",
+    small: "Certified MSP training programmes at national scale, before TRAxCelerate",
   },
 ];
 
@@ -28,19 +29,21 @@ export default function TraxcelerateProblem() {
         <div className={styles.problemGrid}>
           <div>
             <p className={styles.eyebrow}>The Problem</p>
-            <h2
+            <BoundTitleWithHighlight
+              as="h2"
               id="trax-problem-heading"
               className={`${styles.sectionTitle} ${styles.problemTitle}`}
-            >
-              The gap that&apos;s costing Nigeria <span className={styles.highlight}>billions</span>
-            </h2>
+              title="The gap that's costing Nigeria billions"
+              highlight="billions"
+              highlightClassName={styles.highlight}
+            />
             <div className={styles.problemCopy}>
               <p className={styles.sectionLead}>
                 Nigeria has invested over <strong>₦500 billion</strong> in tractors, combines, and
                 agricultural machinery.
               </p>
               <p className={styles.sectionLead}>
-                Yet utilisation rates remain below 40%. Not because the machines are broken — because
+                Yet utilisation rates remain below 40%. Not because the machines are broken, because
                 there aren&apos;t enough skilled hands to run them.
               </p>
             </div>

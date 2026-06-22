@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./tractracHomepage.module.css";
+import { bindTitleOrphans } from "@/app/utils/bindTitleOrphans";
 
 const DEFAULT_ISSAM_IMAGE =
   "https://api.tractrac.co/media/images/68ddc91c-940a-4fe8-92bf-7b8177746163.webp";
@@ -28,15 +29,15 @@ export default function TractracIssamSection() {
         <div className={styles.issamGrid}>
           <div className={styles.issamCopy}>
             <p className={styles.issamTag}>
-              <span aria-hidden>•</span> The ISSAM Project <span aria-hidden>•</span> Mastercard
+              The ISSAM Project, Mastercard
               Foundation
             </p>
             <h2 id="tractrac-issam-heading" className={styles.issamTitle}>
-              Empowering Youth, Women &amp; Persons with Disabilities in Mechanization
+              {bindTitleOrphans("Empowering Youth, Women & Persons with Disabilities in Mechanization")}
             </h2>
             <div className={styles.issamBody}>
               <p>
-                In partnership with the Mastercard Foundation, TracTrac launched ISSAM — a
+                In partnership with the Mastercard Foundation, TracTrac launched ISSAM, a
                 five-year program designed to unlock economic opportunities within the
                 mechanization economy through a cooperative business model.
               </p>

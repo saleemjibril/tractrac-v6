@@ -14,7 +14,7 @@ const chivo = Chivo({
 });
 
 export const metadata: Metadata = {
-  title: "Services — What We Do",
+  title: "Services: What We Do",
   description:
     "Facilitating access to mechanization services for all farmers in Africa. Hire tractors, enlist equipment, invest, and more.",
 };

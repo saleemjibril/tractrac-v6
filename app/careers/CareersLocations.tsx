@@ -1,5 +1,6 @@
 import Image from "next/image";
 import styles from "./careers.module.css";
+import { bindTitleOrphans } from "@/app/utils/bindTitleOrphans";
 
 const OFFICES = [
   {
@@ -26,7 +27,7 @@ export default function CareersLocations() {
             <span>Our offices</span>
           </span>
           <h2 id="careers-locations-heading" className={styles.sectionTitle}>
-            Where are we located?
+            {bindTitleOrphans("Where are we located?")}
           </h2>
           <p className={styles.sectionSubtitle}>
             Along with our two offices, we have team members spread throughout

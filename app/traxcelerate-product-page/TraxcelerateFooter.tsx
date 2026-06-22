@@ -50,7 +50,7 @@ export default function TraxcelerateFooter() {
               />
             </Link>
             <p className={styles.footerMission}>
-              TRAxCelerate is TracTrac&apos;s mechanisation workforce programme — training,
+              TRAxCelerate is TracTrac&apos;s mechanisation workforce programme, training,
               certifying, and deploying MSPs at national scale.
             </p>
           </div>

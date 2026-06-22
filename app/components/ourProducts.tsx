@@ -21,7 +21,7 @@ const products = [
     {
         image: "https://res.cloudinary.com/tractrac-global/image/upload/v1760361449/A5_-_3_zakm8e.jpg",
         name: "TRAxCelerate",
-        description: "The Tractrac TRAxCelerate program is a flagship capacity-building program designed to train, certify, and deploy 2,000 Mechanisation Service Providers (MSPs) — including operators, booking and hiring agents, and mechanics — across Nigeria.",
+        description: "The Tractrac TRAxCelerate program is a flagship capacity-building program designed to train, certify, and deploy 2,000 Mechanisation Service Providers (MSPs), including operators, booking and hiring agents, and mechanics, across Nigeria.",
         link: "/traxcelerate-product-page"
     },
     {
@@ -33,7 +33,7 @@ const products = [
     {
         image: "https://res.cloudinary.com/tractrac-global/image/upload/v1760361448/A5_-_4_nl2sxv.jpg",
         name: "H₂O: Half-Way to Ownership",
-        description: "Across Nigeria, young people and women are eager to participate in the agricultural mechanisation value chain — as operators, booking agents, technicians, and service entrepreneurs. However, access to finance remains a major barrier to ownership.",
+        description: "Across Nigeria, young people and women are eager to participate in the agricultural mechanisation value chain, as operators, booking agents, technicians, and service entrepreneurs. However, access to finance remains a major barrier to ownership.",
         link: "/products/half-way-to-ownership"
     },
     {
@@ -125,7 +125,7 @@ export default function OurProducts() {
         viewport={{ once: true }}
         transition={{ duration: 0.6, delay: 0.2 }}
       >
-        TractracMSL provides technology-driven solutions that connect farmers, service providers, and equipment owners—making mechanisation smarter, faster, and more reliable
+        TractracMSL provides technology-driven solutions that connect farmers, service providers, and equipment owners, making mechanisation smarter, faster, and more reliable
       </MotionText>
 
       <MotionFlex 

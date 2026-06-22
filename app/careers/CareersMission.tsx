@@ -1,5 +1,6 @@
 import Link from "next/link";
 import styles from "./careers.module.css";
+import { bindTitleOrphans } from "@/app/utils/bindTitleOrphans";
 
 export default function CareersMission() {
   return (
@@ -11,7 +12,7 @@ export default function CareersMission() {
             <span>Our mission</span>
           </span>
           <h2 id="careers-mission-heading" className={styles.missionHeadline}>
-            All of us at TracTrac are on the same mission:
+            {bindTitleOrphans("All of us at TracTrac are on the same mission:")}
           </h2>
         </div>
 

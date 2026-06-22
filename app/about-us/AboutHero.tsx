@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { bindTitleOrphans } from "@/app/utils/bindTitleOrphans";
 import styles from "./aboutUs.module.css";
 
 const STATES = [
@@ -23,13 +24,11 @@ export default function AboutHero() {
         </span>
 
         <h1 id="about-hero-heading" className={styles.heroTitle}>
-          Mechanization for
-          <br />
-          the Last Mile.
+          {bindTitleOrphans("Mechanization for the Last Mile.")}
         </h1>
 
         <p className={styles.heroLede}>
-          <span className={styles.heroLedeLead}>That&apos;s what drives us.</span>
+          <span>That&apos;s what drives us.</span> <br />
           TracTrac is bringing tractors, technology, and opportunity to the
           smallholder farmers who have long been excluded from mechanization
           access.

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { FaApple } from "react-icons/fa";
 import { SiGoogleplay } from "react-icons/si";
 import styles from "./tractracHomepage.module.css";
+import { bindTitleOrphans } from "@/app/utils/bindTitleOrphans";
 
 const APP_STORE_URL =
   "https://apps.apple.com/search?term=TracTrac%20Plus";
@@ -84,13 +85,13 @@ export default function TractracPlusMobileSection() {
           </p>
 
           <h2 id="tractrac-plus-mobile-heading" className={styles.plusMobileTitle}>
-            Access Mechanization From Your Phone
+            {bindTitleOrphans("Access Mechanization From Your Phone")}
           </h2>
 
           <p className={styles.plusMobileDesc}>
             Download TracTrac Plus and access tractors, farm equipment, and mechanization
             services directly from your mobile phone. Farmers can book equipment quickly,
-            transparently, and efficiently — exactly when they need it.
+            transparently, and efficiently, exactly when they need it.
           </p>
 
           <p className={styles.plusMobileProof}>1,000+ bookings completed and counting.</p>

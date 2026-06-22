@@ -1,30 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import TraxcelerateIcon from "../traxcelerate-product-page/TraxcelerateIcon";
+import { BoundTitleWithHighlight } from "@/app/components/marketing/BoundTitle";
 import type { ProductPageConfig } from "./productMarketing.types";
 import styles from "../traxcelerate-product-page/traxcelerateProduct.module.css";
 
 type HeroConfig = ProductPageConfig["hero"];
-
-function TitleWithHighlight({
-  title,
-  highlight,
-}: {
-  title: string;
-  highlight?: string;
-}) {
-  if (!highlight || !title.includes(highlight)) {
-    return <>{title}</>;
-  }
-  const [before, after] = title.split(highlight);
-  return (
-    <>
-      {before}
-      <span className={styles.highlight}>{highlight}</span>
-      {after}
-    </>
-  );
-}
 
 export default function ProductMarketingHero({ hero }: { hero: HeroConfig }) {
   return (
@@ -53,9 +34,20 @@ export default function ProductMarketingHero({ hero }: { hero: HeroConfig }) {
 
         <div className={styles.heroMain}>
           {hero.kicker && <p className={styles.heroKicker}>{hero.kicker}</p>}
-          <h1 id="product-hero-heading" className={styles.heroTitle}>
-            <TitleWithHighlight title={hero.title} highlight={hero.titleHighlight} />
-          </h1>
+          <BoundTitleWithHighlight
+            as="h1"
+            id="product-hero-heading"
+            className={styles.heroTitle}
+            title={
+              hero.titleHighlight && hero.title.includes(hero.titleHighlight)
+                ? hero.title
+                : hero.titleHighlight
+                  ? `${hero.title} ${hero.titleHighlight}`
+                  : hero.title
+            }
+            highlight={hero.titleHighlight}
+            highlightClassName={styles.highlight}
+          />
           <p className={styles.heroLede}>{hero.lede}</p>
           <div className={styles.heroCtas}>
             <Link href={hero.primaryCta.href} className={styles.btnPrimary}>

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import TraxcelerateIcon from "../traxcelerate-product-page/TraxcelerateIcon";
+import { BoundTitleWithHighlight } from "@/app/components/marketing/BoundTitle";
 import type { ProductPageConfig } from "./productMarketing.types";
 import styles from "../traxcelerate-product-page/traxcelerateProduct.module.css";
 
@@ -17,15 +18,18 @@ export default function ProductMarketingCta({
           <TraxcelerateIcon name="spark" size={14} color="#FA9413" />
           <span className={styles.ctaBadgeText}>{cta.badge}</span>
         </div>
-        <h2 id="product-cta-heading" className={styles.ctaTitle}>
-          {cta.title}
-          {cta.titleHighlight ? (
-            <>
-              <br />
-              <span className={styles.highlight}>{cta.titleHighlight}</span>
-            </>
-          ) : null}
-        </h2>
+        <BoundTitleWithHighlight
+          as="h2"
+          id="product-cta-heading"
+          className={styles.ctaTitle}
+          title={
+            cta.titleHighlight
+              ? `${cta.title} ${cta.titleHighlight}`
+              : cta.title
+          }
+          highlight={cta.titleHighlight}
+          highlightClassName={styles.highlight}
+        />
         <p className={styles.ctaLead}>{cta.lead}</p>
         <div className={styles.ctaActions}>
           <Link href={cta.primary.href} className={styles.btnCtaPrimary}>

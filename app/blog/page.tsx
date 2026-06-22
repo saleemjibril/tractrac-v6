@@ -16,7 +16,7 @@ const chivo = Chivo({
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://tractrac.co";
 
 export const metadata: Metadata = {
-  title: "Blog — Insights & News",
+  title: "Blog: Insights & News",
   description:
     "Insights on agricultural mechanization, tractors, and mechanization services across Africa.",
   alternates: {

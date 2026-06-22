@@ -1,5 +1,6 @@
 import Link from "next/link";
 import styles from "./tractracHomepage.module.css";
+import { bindTitleOrphans } from "@/app/utils/bindTitleOrphans";
 
 type ProductIcon = "phone" | "chart" | "money" | "key" | "sprout";
 
@@ -48,7 +49,7 @@ const PRODUCTS: {
     id: "h2o",
     audience: "For Partners",
     accent: "sky",
-    title: "H2O — Halfway to Ownership",
+    title: "H2O: Halfway to Ownership",
     description:
       "A structured pathway enabling smallholder farmers to own their mechanization equipment.",
     href: "/products/half-way-to-ownership",
@@ -146,7 +147,7 @@ export default function TractracProductsSection() {
             <span>Our Products</span>
           </p>
           <h2 id="tractrac-products-heading" className={styles.productsTitle}>
-            Solutions Built for Every Stakeholder in the Ecosystem
+            {bindTitleOrphans("Solutions Built for Every Stakeholder in the Ecosystem")}
           </h2>
           <p className={styles.productsSub}>
             TracTrac develops solutions that serve farmers, service providers, investors, and ecosystem

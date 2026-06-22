@@ -32,7 +32,7 @@ export const TRACTRAC_PLUS: ProductPageConfig = {
     titleHighlight: "proving impact",
     paragraphs: [
       "Fragmented spreadsheets and phone calls cannot scale mechanisation. TracTrac Plus centralises operations so every stakeholder sees the same truth.",
-      "From tractor deployment to farm mapping and marketplace listings, the platform is built for transparency — critical for governments, donors, and investors who fund mechanisation at scale.",
+      "From tractor deployment to farm mapping and marketplace listings, the platform is built for transparency, critical for governments, donors, and investors who fund mechanisation at scale.",
     ],
     sideStats: [
       { big: "GPS", variant: "orange", small: "Real-time tractor booking and field deployment tracking" },
@@ -89,7 +89,7 @@ export const TRACINVEST: ProductPageConfig = {
     kicker: "Invest in productive assets.",
     title: "Accelerating mechanisation",
     titleHighlight: "investment",
-    lede: "A gateway for private and institutional investors into Nigeria's tractors-for-development revolution — blending financial return with verified social impact.",
+    lede: "A gateway for private and institutional investors into Nigeria's tractors-for-development revolution, blending financial return with verified social impact.",
     image:
       "https://res.cloudinary.com/tractrac-global/image/upload/v1760477199/Frame_183_hhbuy0.jpg",
     stats: [
@@ -106,7 +106,7 @@ export const TRACINVEST: ProductPageConfig = {
     title: "Tractors for development with",
     titleHighlight: "transparent returns",
     paragraphs: [
-      "Nigeria's arable land and mechanisation gap create durable demand — but investors need verified utilisation, operator quality, and booking pipelines.",
+      "Nigeria's arable land and mechanisation gap create durable demand, but investors need verified utilisation, operator quality, and booking pipelines.",
       "TRACINVEST packages tractor assets with TracTrac Plus deployment, trained MSPs, and quarterly reporting so capital reaches productive use faster.",
     ],
     sideStats: [
@@ -144,7 +144,7 @@ export const TRACINVEST: ProductPageConfig = {
     badge: "Now accepting investors",
     title: "Put capital to work in",
     titleHighlight: "mechanisation",
-    lead: "Schedule a briefing or submit your interest — our team will share pipeline opportunities and impact frameworks.",
+    lead: "Schedule a briefing or submit your interest, our team will share pipeline opportunities and impact frameworks.",
     primary: { label: "Schedule a briefing", href: "/contact" },
     secondary: { label: "Download overview", href: "/contact" },
   },
@@ -162,7 +162,7 @@ export const RISE7: ProductPageConfig = {
     kicker: "Seven people. One pathway.",
     title: "Empowering seven to",
     titleHighlight: "scale",
-    lede: "Rise7 is a cooperative-based asset financing model — shared ownership and mutual responsibility so groups of seven access mechanisation together.",
+    lede: "Rise7 is a cooperative-based asset financing model, shared ownership and mutual responsibility so groups of seven access mechanisation together.",
     image:
       "https://res.cloudinary.com/tractrac-global/image/upload/v1760361449/A5_-_5_usti4u.jpg",
     stats: [
@@ -179,11 +179,11 @@ export const RISE7: ProductPageConfig = {
     title: "Ownership through",
     titleHighlight: "cooperation",
     paragraphs: [
-      "Young people and women are ready to join mechanisation — but individual finance rarely matches the cost of tractors and implements.",
+      "Young people and women are ready to join mechanisation, but individual finance rarely matches the cost of tractors and implements.",
       "Rise7 groups seven members who co-invest, share risk, and operate through TracTrac Plus for bookings, income tracking, and programme reporting.",
     ],
     sideStats: [
-      { big: "7", variant: "orange", small: "Members per cooperative unit — shared capital and accountability" },
+      { big: "7", variant: "orange", small: "Members per cooperative unit, shared capital and accountability" },
       { big: "Shared", variant: "dark", small: "Ownership pathways within the mechanisation value chain" },
       { big: "Jobs+", variant: "orange", small: "Operators, agents, technicians, and rural enterprise growth" },
     ],
@@ -234,7 +234,7 @@ export const HALF_WAY: ProductPageConfig = {
     kicker: "Half-Way to Ownership.",
     title: "From access to",
     titleHighlight: "ownership",
-    lede: "A graduated model for youth and women to move from renting mechanisation services toward full asset ownership — with mentorship and digital operations built in.",
+    lede: "A graduated model for youth and women to move from renting mechanisation services toward full asset ownership, with mentorship and digital operations built in.",
     image:
       "https://res.cloudinary.com/tractrac-global/image/upload/v1760361448/A5_-_4_nl2sxv.jpg",
     stats: [
@@ -251,7 +251,7 @@ export const HALF_WAY: ProductPageConfig = {
     title: "Finance blocks the",
     titleHighlight: "next generation",
     paragraphs: [
-      "Operators and agents want to own equipment — but upfront capital excludes most young people and women from the mechanisation economy.",
+      "Operators and agents want to own equipment, but upfront capital excludes most young people and women from the mechanisation economy.",
       "Half-Way to Ownership structures payments, pairs cooperatives with mentorship, and runs operations on TracTrac Plus until participants reach full ownership.",
     ],
     sideStats: [

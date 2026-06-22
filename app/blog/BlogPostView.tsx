@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { bindTitleOrphans } from "@/app/utils/bindTitleOrphans";
 import Link from "next/link";
 import type { BlogCard, BlogPostDetail } from "./blogApi";
 import { formatPostDate } from "./blogApi";
@@ -92,7 +93,7 @@ export default function BlogPostView({ post, relatedPosts }: BlogPostViewProps) 
         <section className={styles.related} aria-labelledby="related-heading">
           <div className={styles.relatedInner}>
             <h2 id="related-heading" className={styles.relatedTitle}>
-              Related articles
+              {bindTitleOrphans("Related articles")}
             </h2>
             <BlogRelatedGrid posts={relatedPosts} />
           </div>

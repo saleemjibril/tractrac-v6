@@ -1,4 +1,5 @@
 "use client";
+import { bindTitleOrphans } from "@/app/utils/bindTitleOrphans";
 
 import { useCallback, useLayoutEffect, useRef, useState } from "react";
 import styles from "./tractracHomepage.module.css";
@@ -149,7 +150,7 @@ export default function TractracImpactSection() {
             <span>Our Impact</span>
           </div>
           <h2 id="tractrac-impact-heading" className={styles.impactTitle}>
-            Transforming Mechanization Across Nigeria
+            {bindTitleOrphans("Transforming Mechanization Across Nigeria")}
           </h2>
           <p className={styles.impactSub}>
             Our work is already transforming mechanization access across Nigeria. These numbers

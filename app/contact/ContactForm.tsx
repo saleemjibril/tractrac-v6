@@ -91,7 +91,7 @@ export default function ContactForm() {
 
       {success && (
         <div className={`${styles.alert} ${styles.alertSuccess}`} role="status">
-          Received—thanks for contacting us! We will get back to you soon.
+          Received. Thanks for contacting us! We will get back to you soon.
         </div>
       )}
       {error && (

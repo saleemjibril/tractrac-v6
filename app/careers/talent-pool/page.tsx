@@ -5,6 +5,7 @@ import TractracHomepageNav from "../../tractrac-homepage/TractracHomepageNav";
 import TractracFooter from "../../tractrac-homepage/TractracFooter";
 import TalentPoolApplicationForm from "./TalentPoolApplicationForm";
 import styles from "./talentPool.module.css";
+import { bindTitleOrphans } from "@/app/utils/bindTitleOrphans";
 
 const chivo = Chivo({
   subsets: ["latin"],
@@ -13,7 +14,7 @@ const chivo = Chivo({
 });
 
 export const metadata: Metadata = {
-  title: "Join Our Talent Pool — Careers",
+  title: "Join Our Talent Pool: Careers",
   description:
     "Submit an open application to join the TracTrac talent pool and be considered for future opportunities.",
 };
@@ -29,7 +30,7 @@ export default function TalentPoolPage() {
 
         <div className={styles.layout}>
           <div>
-            <h1 className={styles.introTitle}>Open Application</h1>
+            <h1 className={styles.introTitle}>{bindTitleOrphans("Open Application")}</h1>
             <p className={styles.introCopy}>
               Are you passionate about making a difference and contributing your
               skills to meaningful work in agricultural mechanization? TracTrac

@@ -1,4 +1,5 @@
 import styles from "./blog.module.css";
+import { bindTitleOrphans } from "@/app/utils/bindTitleOrphans";
 
 export default function BlogHero() {
   return (
@@ -6,7 +7,7 @@ export default function BlogHero() {
       <div className={styles.heroInner}>
         <span className={styles.sectionTag}>
           {/* <span className={styles.sectionTagDot} aria-hidden="true" /> */}
-          <span>Insights &amp; News</span>
+          <span>{bindTitleOrphans("Insights & News")}</span>
         </span>
         <h1 id="blog-hero-heading" className={styles.heroTitle}>
           Insights on Agricultural Mechanization

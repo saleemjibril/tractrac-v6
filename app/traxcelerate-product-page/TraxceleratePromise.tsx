@@ -1,16 +1,17 @@
 import TraxcelerateIcon from "./TraxcelerateIcon";
 import type { IconName } from "./TraxcelerateIcon";
 import styles from "./traxcelerateProduct.module.css";
+import { bindTitleOrphans } from "@/app/utils/bindTitleOrphans";
 
 const ITEMS: { t: string; d: string; i: IconName }[] = [
   {
     t: "Certification that counts",
-    d: "TracTrac MSP certificates are recognised by OEM partners, state governments, NCAM, AMTA, and agribusinesses — enabling immediate employability.",
+    d: "TracTrac MSP certificates are recognised by OEM partners, state governments, NCAM, AMTA, and agribusinesses, enabling immediate employability.",
     i: "award",
   },
   {
     t: "Technology-first deployment",
-    d: "All MSPs are onboarded to TractracPlus for real-time job matching — a digital livelihood, not just a certificate.",
+    d: "All MSPs are onboarded to TractracPlus for real-time job matching, a digital livelihood, not just a certificate.",
     i: "laptop",
   },
   {
@@ -20,7 +21,7 @@ const ITEMS: { t: string; d: string; i: IconName }[] = [
   },
   {
     t: "Inclusivity by design",
-    d: "40% minimum women and youth per cohort, contributing to SDGs 2, 5, and 8 — fully bankable for development finance reporting.",
+    d: "40% minimum women and youth per cohort, contributing to SDGs 2, 5, and 8, fully bankable for development finance reporting.",
     i: "users",
   },
 ];
@@ -35,9 +36,9 @@ export default function TraxceleratePromise() {
           <p className={styles.eyebrow}>Our Promise</p>
           <h2
             id="trax-promise-heading"
-            className={`${styles.sectionTitle} ${styles.sectionTitleNowrap}`}
+            className={`${styles.sectionTitle}`}
           >
-            What every partner can count on
+            {bindTitleOrphans("What every partner can count on")}
           </h2>
         </div>
         <div className={styles.promiseGrid}>
@@ -65,7 +66,7 @@ export default function TraxceleratePromise() {
                 {/* <span className={styles.statePillDot} aria-hidden /> */}
                 Nasarawa active
               </span>
-              <span className={styles.statePillNext}>Your state — next?</span>
+              <span className={styles.statePillNext}>Your state, next?</span>
             </div>
             <div className={styles.sdgRow}>
               {SDGS.map((s) => (

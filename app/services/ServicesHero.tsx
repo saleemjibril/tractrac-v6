@@ -1,5 +1,6 @@
 import Link from "next/link";
 import styles from "./services.module.css";
+import { bindTitleOrphans } from "@/app/utils/bindTitleOrphans";
 
 export default function ServicesHero() {
   return (
@@ -10,11 +11,11 @@ export default function ServicesHero() {
           <span>What we do</span>
         </span>
         <h1 id="services-hero-heading" className={styles.heroTitle}>
-          Bridging the Gap to Mechanisation
+          {bindTitleOrphans("Bridging the Gap to Mechanisation")}
         </h1>
         <p className={styles.heroLede}>
           We connect farmers, tractor owners, agents, investors, and vendors
-          through digital tools and trusted networks—making mechanization
+          through digital tools and trusted networks, making mechanization
           accessible across Nigeria and Africa.
         </p>
         <Link href="#services-list" className={styles.heroCta}>

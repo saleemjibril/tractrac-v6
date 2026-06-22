@@ -1,5 +1,6 @@
 import Link from "next/link";
 import styles from "./tractracHomepage.module.css";
+import { bindTitleOrphans } from "@/app/utils/bindTitleOrphans";
 
 const BLOG_API_BASE =
   process.env.NEXT_PUBLIC_BLOG_API_URL || "http://localhost:4000/api/v1";
@@ -298,7 +299,7 @@ export default async function TractracPartnersInsightsSection() {
         <div className={styles.partnersInner}>
           <p className={styles.partnersKicker}>Partners</p>
           <h2 id="tractrac-partners-heading" className={styles.partnersTitle}>
-            Mechanizing Africa Through Bold Collaboration
+            {bindTitleOrphans("Mechanizing Africa Through Bold Collaboration")}
           </h2>
           <p className={styles.partnersSub}>
             We work alongside leading institutions committed to transforming agriculture and building a
@@ -324,7 +325,7 @@ export default async function TractracPartnersInsightsSection() {
                 <span>Insights &amp; News</span>
               </p>
               <h2 id="tractrac-insights-heading" className={styles.insightsTitle}>
-                Our Insights, News &amp; Perspectives
+                {bindTitleOrphans("Our Insights, News & Perspectives")}
               </h2>
             </div>
             <Link href="/blog" className={styles.insightsViewAll}>

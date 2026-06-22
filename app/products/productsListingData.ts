@@ -24,14 +24,14 @@ export const LISTING_OVERVIEW = {
   title: "Mechanisation is Nigeria's",
   titleHighlight: "biggest untapped lever",
   paragraphs: [
-    "Over 70 million hectares of arable land need reliable access to tractors, implements, and skilled operators — yet supply and coordination remain fragmented.",
+    "Over 70 million hectares of arable land need reliable access to tractors, implements, and skilled operators, yet supply and coordination remain fragmented.",
     "TracTrac products work together: digital deployment on TracTrac Plus, workforce scale-up through TRAxCelerate, capital via TRACINVEST, and inclusive ownership through Rise7 and Half-Way to Ownership.",
   ],
   sideStats: [
     {
       big: "<0.3",
       variant: "orange" as const,
-      small: "Tractor horsepower per hectare — far below FAO's 1.5 hp/ha recommendation",
+      small: "Tractor horsepower per hectare, far below FAO's 1.5 hp/ha recommendation",
     },
     {
       big: "₦500B+",
@@ -111,7 +111,7 @@ export const LISTING_PARTNER_MODELS: ListingPartnerCard[] = [
     tagColor: "#8B5CF6",
     title: "Training partners",
     description:
-      "TRAxCelerate certifies mechanisation service providers at national scale — the human infrastructure behind every machine.",
+      "TRAxCelerate certifies mechanisation service providers at national scale, the human infrastructure behind every machine.",
     cta: "Explore TRAxCelerate",
     href: "/traxcelerate-product-page",
     icon: "cap",

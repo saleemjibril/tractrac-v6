@@ -20,7 +20,7 @@ const chivo = Chivo({
 });
 
 export const metadata: Metadata = {
-  title: "TRAxCelerate — Nigeria's Mechanisation Workforce Programme",
+  title: "TRAxCelerate: Nigeria's Mechanisation Workforce Programme",
   description:
     "TRAxCelerate is TracTrac's proven mechanisation workforce programme. We recruit, train, certify, and deploy mechanisation service providers at scale.",
 };

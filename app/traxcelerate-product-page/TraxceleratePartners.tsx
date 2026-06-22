@@ -2,6 +2,7 @@ import Link from "next/link";
 import TraxcelerateIcon from "./TraxcelerateIcon";
 import type { IconName } from "./TraxcelerateIcon";
 import styles from "./traxcelerateProduct.module.css";
+import { bindTitleOrphans } from "@/app/utils/bindTitleOrphans";
 
 type PartnerModel = {
   tag: string;
@@ -47,7 +48,7 @@ const MODELS: PartnerModel[] = [
     tagColor: "#8B5CF6",
     title: "Universities & polytechnics",
     description:
-      "Your agriculture students are learning the science of farming. TRAxCelerate teaches them the industry — with a certification they can use from day one.",
+      "Your agriculture students are learning the science of farming. TRAxCelerate teaches them the industry, with a certification they can use from day one.",
     cta: "Book a campus consultation",
     icon: "cap",
   },
@@ -60,7 +61,7 @@ export default function TraxceleratePartners() {
         <div className={styles.sectionCenter680}>
           <p className={styles.eyebrow}>Partnership Models</p>
           <h2 id="trax-partners-heading" className={styles.sectionTitlePartners}>
-            How you can partner with TRAxCelerate
+            {bindTitleOrphans("How you can partner with TRAxCelerate")}
           </h2>
         </div>
         <div className={styles.partnersGrid}>

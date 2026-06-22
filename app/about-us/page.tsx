@@ -18,7 +18,7 @@ const chivo = Chivo({
 });
 
 export const metadata: Metadata = {
-  title: "About TracTrac MSL — Mechanization for the Last Mile",
+  title: "About TracTrac MSL: Mechanization for the Last Mile",
   description:
     "TracTrac is bringing tractors, technology, and opportunity to the smallholder farmers who have long been excluded from mechanization access.",
 };

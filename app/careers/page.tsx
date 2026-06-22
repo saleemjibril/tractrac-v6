@@ -19,7 +19,7 @@ const chivo = Chivo({
 });
 
 export const metadata: Metadata = {
-  title: "Careers — Join the Humans of TracTrac",
+  title: "Careers: Join the Humans of TracTrac",
   description:
     "Join TracTrac and help power access to mechanization for farmers across Africa.",
 };

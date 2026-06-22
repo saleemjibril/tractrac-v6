@@ -3,6 +3,7 @@ import Link from "next/link";
 import TraxcelerateIcon from "./TraxcelerateIcon";
 import { TRAX_IMAGES } from "./images";
 import styles from "./traxcelerateProduct.module.css";
+import { bindTitleOrphans } from "@/app/utils/bindTitleOrphans";
 
 const PHOTOS: {
   src: string;
@@ -52,13 +53,13 @@ export default function TraxcelerateGallery() {
             <p className={styles.eyebrow}>From the field</p>
             <h2
               id="trax-gallery-heading"
-              className={`${styles.sectionTitleSm} ${styles.galleryTitle} ${styles.sectionTitleNowrap}`}
+              className={`${styles.sectionTitleSm} ${styles.galleryTitle}`}
             >
-              Real cohorts, real outcomes
+              {bindTitleOrphans("Real cohorts, real outcomes")}
             </h2>
             <p className={styles.sectionLeadMuted}>
               Every photo here is from an active ISSAM cohort across Nasarawa and Kaduna. No stock
-              imagery — this is the workforce TRAxCelerate is building, week after week.
+              imagery, this is the workforce TRAxCelerate is building, week after week.
             </p>
           </div>
           <Link href="/special-programs/issam" className={styles.galleryLink}>

@@ -1,4 +1,5 @@
 import styles from "./careers.module.css";
+import { bindTitleOrphans } from "@/app/utils/bindTitleOrphans";
 
 type BenefitIcon = "globe" | "growth" | "heart" | "rocket";
 
@@ -112,7 +113,7 @@ export default function CareersWhyJoin() {
             <span>Why join us</span>
           </span>
           <h2 id="careers-why-heading" className={styles.sectionTitle}>
-            Why Join the Humans of TracTrac?
+            {bindTitleOrphans("Why Join the Humans of TracTrac?")}
           </h2>
         </header>
 

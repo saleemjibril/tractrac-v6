@@ -116,49 +116,52 @@ export default function TractracHeroCarousel() {
       </div>
 
       <div className={`${styles.statCard} ${styles.statCardTractors}`}>
-        <div className={`${styles.statIcon} ${styles.statIconOrange}`}>
+        {/* <div className={`${styles.statIcon} ${styles.statIconOrange}`}>
           <span
             className={`${styles.statIconDot} ${styles.statIconDotOrange}`}
             aria-hidden
           />
-        </div>
+        </div> */}
         <div className={styles.statText}>
           <span className={styles.statTitle}>Tractors Deployed</span>
           <span className={styles.statSubtitle}>Across Nigeria</span>
         </div>
-        <span className={`${styles.statBadge} ${styles.statBadgeOrange}`}>
+        {/* <span className={`${styles.statBadge} ${styles.statBadgeOrange}`}> */}
+        <span className={`${styles.statBadge}`}>
           800+
         </span>
       </div>
 
       <div className={`${styles.statCard} ${styles.statCardFarmers}`}>
-        <div className={`${styles.statIcon} ${styles.statIconGreen}`}>
+        {/* <div className={`${styles.statIcon} ${styles.statIconGreen}`}>
           <span
             className={`${styles.statIconDot} ${styles.statIconDotGreen}`}
             aria-hidden
           />
-        </div>
+        </div> */}
         <div className={styles.statText}>
           <span className={styles.statTitle}>Farmers Reached</span>
           <span className={styles.statSubtitle}>ISSAM Project</span>
         </div>
-        <span className={`${styles.statBadge} ${styles.statBadgeGreen}`}>
+        {/* <span className={`${styles.statBadge} ${styles.statBadgeGreen}`}> */}
+        <span className={`${styles.statBadge}`}>
           100,000+
         </span>
       </div>
 
       <div className={`${styles.statCard} ${styles.statCardInvest}`}>
-        <div className={`${styles.statIcon} ${styles.statIconIndigo}`}>
+        {/* <div className={`${styles.statIcon} ${styles.statIconIndigo}`}>
           <span
             className={`${styles.statIconDot} ${styles.statIconDotIndigo}`}
             aria-hidden
           />
-        </div>
+        </div> */}
         <div className={styles.statText}>
           <span className={styles.statTitle}>Investment Generated</span>
           <span className={styles.statSubtitle}>Private Sector</span>
         </div>
-        <span className={`${styles.statBadge} ${styles.statBadgeIndigo}`}>
+        {/* <span className={`${styles.statBadge} ${styles.statBadgeIndigo}`}> */}
+        <span className={`${styles.statBadge}`}>
           $2B+
         </span>
       </div>

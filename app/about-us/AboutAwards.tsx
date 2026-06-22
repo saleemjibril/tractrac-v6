@@ -3,6 +3,7 @@ import {
   PartnerIconSvg,
 } from "../tractrac-homepage/TractracPartnersInsightsSection";
 import styles from "./aboutUs.module.css";
+import { bindTitleOrphans } from "@/app/utils/bindTitleOrphans";
 
 type AwardArt = "trophy" | "shield";
 
@@ -16,7 +17,7 @@ const AWARDS: {
   {
     id: "ncam",
     year: "2022",
-    title: "NCAM) Recognition",
+    title: "NCAM Recognition",
     copy: "Empowering Africa\u2019s smallholder farmers with affordable mechanization that drives productivity, profitability, and sustainability.",
     art: "trophy",
   },
@@ -92,6 +93,29 @@ function AwardArtIcon({ art }: { art: AwardArt }) {
   );
 }
 
+function FeaturedLogoItem({
+  partner,
+}: {
+  partner: (typeof PARTNERS)[number];
+}) {
+  return (
+    // <li className={styles.awardsLogoBox}>
+    //   {partner.kicker ? (
+    //     <div className={styles.awardsLogoBoxKicker}>
+    //       <span className={styles.awardsLogoKicker}>{partner.kicker}</span>
+    //       <span className={styles.awardsLogoIcon}>
+    //         <PartnerIconSvg name={partner.name} stroke="#101A2A" />
+    //       </span>
+    //     </div>
+    //   ) : (
+    //     <span className={styles.awardsLogoIcon}>
+          <PartnerIconSvg name={partner.name} stroke="#101A2A" />
+    //     </span>
+    //   )}
+    // </li>
+  );
+}
+
 export default function AboutAwards() {
   return (
     <section className={styles.awards} aria-labelledby="about-awards-heading">
@@ -102,7 +126,7 @@ export default function AboutAwards() {
             <span>Awards &amp; Recognition</span>
           </span>
           <h2 id="about-awards-heading" className={styles.awardsTitle}>
-            Recognized for Impact
+            {bindTitleOrphans("Recognized for Impact")}
           </h2>
           <p className={styles.awardsSubtitle}>
             Our work advancing mechanization for smallholder farmers has earned
@@ -139,14 +163,26 @@ export default function AboutAwards() {
             {/* <span className={styles.awardsTagDot} aria-hidden="true" /> */}
             <span>As featured in</span>
           </span>
-          <ul
-            className={styles.awardsFeaturedLogos}
+          <div
+            className={styles.awardsFeaturedMarquee}
             aria-label="Organizations TracTrac is featured with"
           >
-            {PARTNERS.map((partner) => (
-                <PartnerIconSvg name={partner.name} stroke="#101A2A" />
-            ))}
-          </ul>
+            <div className={styles.awardsFeaturedMarqueeTrack}>
+              <ul className={styles.awardsFeaturedLogos}>
+                {PARTNERS.map((partner) => (
+                  <FeaturedLogoItem key={partner.name} partner={partner} />
+                ))}
+              </ul>
+              <ul className={styles.awardsFeaturedLogos} aria-hidden="true">
+                {PARTNERS.map((partner) => (
+                  <FeaturedLogoItem
+                    key={`${partner.name}-dup`}
+                    partner={partner}
+                  />
+                ))}
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </section>

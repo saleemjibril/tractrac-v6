@@ -1,4 +1,5 @@
 "use client";
+import { bindTitleOrphans } from "@/app/utils/bindTitleOrphans";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -78,7 +79,7 @@ export default function CareersBlog() {
               <span>Insights</span>
             </span>
             <h2 id="careers-blog-heading" className={styles.sectionTitle}>
-              Learn more about us
+              {bindTitleOrphans("Learn more about us")}
             </h2>
             <p className={styles.sectionSubtitle}>
               Stories and updates from our work in agricultural mechanization.

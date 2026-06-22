@@ -91,7 +91,7 @@ export default function CareersPaths() {
             </h3>
             <p className={styles.pathsPanelCopy}>
               Don&apos;t see the right role today? Share your CV and areas of
-              interest—we&apos;ll reach out when a matching opportunity opens.
+              interest, we&apos;ll reach out when a matching opportunity opens.
             </p>
           </div>
 

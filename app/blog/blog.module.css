@@ -15,9 +15,8 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 7px 14px;
+  padding: 7px 14px 7px 0;
   border-radius: 100px;
-  background: #fff4e2;
   font-weight: 600;
   font-size: 13px;
   line-height: 15px;
@@ -52,7 +51,7 @@
   margin: 0;
   max-width: 820px;
   font-weight: 700;
-  font-size: clamp(2rem, 5vw, 3rem);
+  font-size: clamp(2rem, 4vw, 56px);
   line-height: 1.1;
   letter-spacing: -0.02em;
 }
@@ -60,7 +59,7 @@
 .heroLede {
   margin: 0;
   max-width: 680px;
-  font-size: clamp(1rem, 1.4vw, 1.2rem);
+  font-size: 16px;
   line-height: 1.65;
   color: var(--tt-muted);
 }
@@ -147,26 +146,17 @@
 .category {
   display: inline-flex;
   align-items: center;
-  padding: 4px 10px;
+  padding: 4px 10px 4px 0;
   border-radius: 100px;
   font-weight: 600;
   font-size: 12px;
   line-height: 1.2;
 }
 
-.categoryOrange {
-  background: #fff4e2;
-  color: var(--tt-orange);
-}
-
-.categoryTeal {
-  background: #e0fdfa;
-  color: #0f766e;
-}
-
+.categoryOrange,
+.categoryTeal,
 .categoryIndigo {
-  background: #eef2ff;
-  color: #6366f1;
+  color: var(--tt-orange);
 }
 
 .date {
@@ -230,4 +220,20 @@
   .card:hover {
     transform: none;
   }
+}
+
+/* Body copy & section subtitles */
+.heroLede,
+.emptyCopy {
+  font-size: 16px;
+}
+
+/* Balanced title line breaks (use with bindTitleOrphans in JSX) */
+.heroTitle {
+  text-wrap: balance;
+}
+
+/* Card body copy */
+.cardExcerpt {
+  font-size: 14px;
 }

@@ -1,4 +1,5 @@
 import styles from "./aboutUs.module.css";
+import { bindTitleOrphans } from "@/app/utils/bindTitleOrphans";
 
 type Variant = "dark" | "light";
 
@@ -73,7 +74,7 @@ export default function AboutMission() {
             <span>Mission &amp; Visson</span>
           </span>
           <h2 id="about-mission-heading" className={styles.missionTitle}>
-            What we stand for
+            {bindTitleOrphans("What we stand for")}
           </h2>
         </header>
 

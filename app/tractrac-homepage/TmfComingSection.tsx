@@ -1,12 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./tractracHomepage.module.css";
+import { bindTitleOrphans } from "@/app/utils/bindTitleOrphans";
 
 /** Replace with your TMF 2025 highlights video or playlist when ready. */
 const TMF_HIGHLIGHTS_URL =
   "https://youtu.be/OUu71JvsgZc?si=yJvuBPp2qedGqvk3";
 
-const TMF_SAVE_DATE_HREF = "/contact";
+const TMF_SAVE_DATE_HREF = "https://www.tmfnigeria.com/";
 
 function PlayGlyph() {
   return (
@@ -39,7 +40,7 @@ export default function TmfComingSection() {
         </p>
 
         <h2 id="tmf-coming-heading" className={styles.tmfTitle}>
-          TMF 2026 is Coming!
+          {bindTitleOrphans("TMF 2026 is Coming!")}
         </h2>
 
         <p className={styles.tmfDesc}>

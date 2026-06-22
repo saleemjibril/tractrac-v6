@@ -1,4 +1,5 @@
 import styles from "./traxcelerateProduct.module.css";
+import { bindTitleOrphans } from "@/app/utils/bindTitleOrphans";
 
 const TESTIMONIALS = [
   {
@@ -36,7 +37,7 @@ export default function TraxcelerateTestimonials() {
         <div className={styles.sectionCenter680Sm}>
           <p className={styles.eyebrow}>Real outcomes, real people</p>
           <h2 id="trax-testimonials-heading" className={styles.sectionTitleSm}>
-            Voices from TRAxCelerate
+            {bindTitleOrphans("Voices from TRAxCelerate")}
           </h2>
         </div>
         <div className={styles.testimonialsGrid}>

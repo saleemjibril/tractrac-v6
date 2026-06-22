@@ -19,9 +19,8 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 7px 14px;
+  padding: 7px 14px 7px 0;
   border-radius: 100px;
-  background: #fff4e2;
   font-weight: 600;
   font-size: 13px;
   line-height: 15px;
@@ -49,7 +48,7 @@
 .sectionTitle {
   margin: 0;
   font-weight: 700;
-  font-size: clamp(1.6rem, 3.2vw, 2.25rem);
+  font-size: clamp(1.75rem, 3vw, 38px);
   line-height: 1.15;
   letter-spacing: -0.03em;
   color: var(--tt-navy);
@@ -57,7 +56,7 @@
 
 .sectionSubtitle {
   margin: 0;
-  font-size: 17px;
+  font-size: 16px;
   line-height: 1.6;
   color: var(--tt-muted);
 }
@@ -360,12 +359,11 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 14px;
-  background: rgba(255, 255, 255, 0.15);
+  padding: 6px 14px 6px 0;
   border-radius: 999px;
   font-weight: 500;
   font-size: 13px;
-  color: #ffffff;
+  color: var(--tt-orange);
 }
 
 .heroTagDot {
@@ -379,7 +377,7 @@
   margin: 0;
   max-width: 720px;
   font-weight: 700;
-  font-size: clamp(2rem, 5.5vw, 3.5rem);
+  font-size: clamp(2rem, 4vw, 56px);
   line-height: 1.08;
   color: #ffffff;
   letter-spacing: -0.02em;
@@ -388,7 +386,7 @@
 .heroLede {
   margin: 0;
   max-width: 560px;
-  font-size: clamp(1rem, 1.4vw, 1.2rem);
+  font-size: 16px;
   line-height: 1.6;
   color: #ccd9e6;
 }
@@ -444,7 +442,7 @@
 .missionHeadline {
   margin: 0;
   font-weight: 700;
-  font-size: clamp(1.5rem, 2.8vw, 2rem);
+  font-size: clamp(1.75rem, 3vw, 38px);
   line-height: 1.2;
   color: var(--tt-orange);
 }
@@ -465,7 +463,7 @@
 
 .missionCopy {
   margin: 0;
-  font-size: 17px;
+  font-size: 16px;
   line-height: 1.65;
   color: var(--tt-muted);
 }
@@ -473,7 +471,7 @@
 .missionEmphasis {
   margin: 0.5rem 0 0;
   font-weight: 600;
-  font-size: 17px;
+  font-size: 16px;
   color: var(--tt-navy);
 }
 
@@ -530,7 +528,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.65rem;
-  font-size: 15px;
+  font-size: 14px;
   line-height: 1.6;
   color: var(--tt-muted);
 }
@@ -636,9 +634,8 @@
 
 .jobTypePill {
   display: inline-flex;
-  padding: 6px 12px;
+  padding: 6px 12px 6px 0;
   border-radius: 999px;
-  background: #fff4e2;
   font-weight: 600;
   font-size: 12px;
   color: var(--tt-orange);
@@ -647,13 +644,13 @@
 
 .jobLocation {
   margin: 0 0 0.65rem;
-  font-size: 15px;
+  font-size: 16px;
   color: var(--tt-muted);
 }
 
 .jobSummary {
   margin: 0 0 1.25rem;
-  font-size: 15px;
+  font-size: 14px;
   line-height: 1.6;
   color: var(--tt-muted);
 }
@@ -844,4 +841,28 @@
   .whyCard:hover {
     transform: none;
   }
+}
+
+/* Body copy & section subtitles */
+.heroLede,
+.sectionSubtitle,
+.missionCopy,
+.missionEmphasis,
+.pathsPanelCopy,
+.jobLocation {
+  font-size: 16px;
+}
+
+/* Card body copy */
+.whyList,
+.jobSummary,
+.blogCardExcerpt {
+  font-size: 14px;
+}
+
+/* Balanced title line breaks (use with bindTitleOrphans in JSX) */
+.heroTitle,
+.sectionTitle,
+.missionHeadline {
+  text-wrap: balance;
 }

@@ -31,7 +31,7 @@ export const SERVICE_ITEMS: ServiceItem[] = [
     buttonText: "Enlist your Tractor",
     buttonLink: "/home/enlist-tractor",
     paragraphs: [
-      "By enlisting tractors on TracTrac, tractor owners earn extra income by renting out their tractors to other farmers and agricultural stakeholders. Create a profile for yourself and your tractors—including type, size, available implements, and location.",
+      "By enlisting tractors on TracTrac, tractor owners earn extra income by renting out their tractors to other farmers and agricultural stakeholders. Create a profile for yourself and your tractors, including type, size, available implements, and location.",
       "After registration and verification, TracTrac matches tractors with potential renters based on their needs. Beyond additional income, tractor owners help build our vast network of equipment available for hire across Nigeria and Africa.",
     ],
   },
@@ -42,7 +42,7 @@ export const SERVICE_ITEMS: ServiceItem[] = [
     buttonLink: "/home/agent",
     paragraphs: [
       "Join TracTrac's growing network of Booking and Hiring Agents responsible for connecting farmers, farmer cooperatives, and other stakeholders with bundled mechanization services.",
-      "As a Booking and Hiring Agent, you independently aggregate demand for tractor and mechanization services—and TracTrac ensures you get the machinery and manpower (tractor operators and mechanics) you need to get the job done.",
+      "As a Booking and Hiring Agent, you independently aggregate demand for tractor and mechanization services, and TracTrac ensures you get the machinery and manpower (tractor operators and mechanics) you need to get the job done.",
     ],
   },
   {
@@ -90,7 +90,7 @@ export const SERVICE_ITEMS: ServiceItem[] = [
     buttonText: "Track a Tractor",
     buttonLink: "/home/track-tractor",
     paragraphs: [
-      "TracTrac's Track your Tractor allows tractor owners and Mechanization Service Providers (MSPs) to track their tractors in real time—knowing exactly where equipment is at every point in time.",
+      "TracTrac's Track your Tractor allows tractor owners and Mechanization Service Providers (MSPs) to track their tractors in real time, knowing exactly where equipment is at every point in time.",
       "Using the mobile or web app, tractor owners can see where their tractors are located and get insights into tractor usage.",
     ],
   },

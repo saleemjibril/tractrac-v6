@@ -11,7 +11,7 @@ export const PRODUCT_LISTING_ITEMS: ProductListingItem[] = [
     id: "tractrac-plus",
     name: "TracTrac Plus",
     description:
-      "TracTrac Plus is our flagship digital platform for delivering, tracking, and managing mechanisation services across Nigeria—connecting tractor owners, MSPs, and farmers.",
+      "TracTrac Plus is our flagship digital platform for delivering, tracking, and managing mechanisation services across Nigeria, connecting tractor owners, MSPs, and farmers.",
     image:
       "https://res.cloudinary.com/tractrac-global/image/upload/v1760361448/Frame_1000005376_2_cnqpda.jpg",
     href: "/products/tractrac-plus",
@@ -20,7 +20,7 @@ export const PRODUCT_LISTING_ITEMS: ProductListingItem[] = [
     id: "traxcelerate",
     name: "TRAxCelerate",
     description:
-      "Our flagship capacity-building programme to train, certify, and deploy 2,000 mechanisation service providers—including operators, agents, and mechanics—across Nigeria.",
+      "Our flagship capacity-building programme to train, certify, and deploy 2,000 mechanisation service providers, including operators, agents, and mechanics, across Nigeria.",
     image:
       "https://res.cloudinary.com/tractrac-global/image/upload/v1760361449/A5_-_3_zakm8e.jpg",
     href: "/traxcelerate-product-page",
@@ -29,7 +29,7 @@ export const PRODUCT_LISTING_ITEMS: ProductListingItem[] = [
     id: "tracinvest",
     name: "TRACINVEST",
     description:
-      "A gateway for private and institutional investors into Nigeria's tractors-for-development revolution—combining financial return with measurable social impact.",
+      "A gateway for private and institutional investors into Nigeria's tractors-for-development revolution, combining financial return with measurable social impact.",
     image:
       "https://res.cloudinary.com/tractrac-global/image/upload/v1760361450/Frame_1000005376_3_b9pzji.png",
     href: "/products/tracinvest",
@@ -47,7 +47,7 @@ export const PRODUCT_LISTING_ITEMS: ProductListingItem[] = [
     id: "rise7",
     name: "Rise7: Empowering Seven to Scale",
     description:
-      "A cooperative-based asset financing model built on shared ownership—empowering groups of seven to access mechanisation and scale rural enterprise together.",
+      "A cooperative-based asset financing model built on shared ownership, empowering groups of seven to access mechanisation and scale rural enterprise together.",
     image:
       "https://res.cloudinary.com/tractrac-global/image/upload/v1760361449/A5_-_5_usti4u.jpg",
     href: "/products/rise7",

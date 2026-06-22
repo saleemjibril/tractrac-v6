@@ -1,5 +1,6 @@
 import Image from "next/image";
 import styles from "./aboutUs.module.css";
+import { bindTitleOrphans } from "@/app/utils/bindTitleOrphans";
 
 const STATS = [
   { value: "800+", label: "Tractors Deployed" },
@@ -35,7 +36,7 @@ export default function AboutStory() {
           </span>
 
           <h2 id="about-story-heading" className={styles.storyHeading}>
-            Built to Solve Africa&apos;s Mechanization Gap
+            {bindTitleOrphans("Built to Solve Africa's Mechanization Gap")}
           </h2>
 
           <p className={styles.storyParagraph}>

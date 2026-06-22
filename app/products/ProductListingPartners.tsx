@@ -1,5 +1,6 @@
 import Link from "next/link";
 import TraxcelerateIcon from "../traxcelerate-product-page/TraxcelerateIcon";
+import { bindTitleOrphans } from "@/app/utils/bindTitleOrphans";
 import { LISTING_PARTNER_MODELS } from "./productsListingData";
 import styles from "../traxcelerate-product-page/traxcelerateProduct.module.css";
 
@@ -14,7 +15,7 @@ export default function ProductListingPartners() {
         <div className={styles.sectionCenter680}>
           <p className={styles.eyebrow}>How to engage</p>
           <h2 id="listing-partners-heading" className={styles.sectionTitlePartners}>
-            Partnership paths across our product suite
+            {bindTitleOrphans("Partnership paths across our product suite")}
           </h2>
         </div>
         <div className={styles.partnersGrid}>

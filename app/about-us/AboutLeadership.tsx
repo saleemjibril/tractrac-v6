@@ -1,5 +1,6 @@
 import Image from "next/image";
 import styles from "./aboutUs.module.css";
+import { bindTitleOrphans } from "@/app/utils/bindTitleOrphans";
 
 type TeamMember = {
   id: string;
@@ -11,73 +12,80 @@ type TeamMember = {
   linkedinUrl?: string;
 };
 
-// TODO: replace placeholder photos with the official team headshots from Figma
-// (DSC00129.jpg, WhatsApp Image 2026-04-17 at 15.04.59.jpg, etc.) and wire each
+// TODO: replace placeholder photos with official team headshots and wire each
 // member's real LinkedIn URL.
 const TEAM: TeamMember[] = [
   {
     id: "godson-ohuruogu",
     name: "Godson Ohuruogu",
     role: "Chief Executive Officer",
-    bio: "Godson Ohuruogu is an agribusiness and private sector development expert with over 17 years of experience in value chain development, SME growth,",
-    imageSrc: "https://api.tractrac.co/media/images/d803607a-3371-497d-a194-4cb0bfc43e26.webp",
+    bio: "Godson Ohuruogu is an agribusiness and private sector development expert with over 17 years of experience in value chain development, SME growth, rural transformation, and climate-smart agriculture. He holds an MBA from the University of Leeds (UK) and a BSc in Industrial and Production Engineering from the University of Ibadan (Nigeria). At TracTrac, he leads the strategic vision to accelerate mechanization access and build scalable agricultural systems that empower smallholder farmers.",
+    imageSrc: "https://api.tractrac.co/media/images/05d189c8-84bc-41e2-b260-4dc1d20b30a3.webp",
     imageAlt: "Godson Ohuruogu, Chief Executive Officer of TracTrac",
   },
   {
-    id: "alero-otis-1",
+    id: "alero-otis",
     name: "Alero Otis",
     role: "Head of Projects & Partnerships",
-    bio: "Alero Otis is a development and research specialist with extensive experience in program implementation, policy advocacy, and strategic partnerships.",
-    imageSrc: "https://api.tractrac.co/media/images/d803607a-3371-497d-a194-4cb0bfc43e26.webp",
+    bio: "Alero Otis is a development and research specialist with extensive experience in program implementation, policy advocacy, and strategic partnerships. At TracTrac, she leads the design and execution of large-scale initiatives that strengthen agricultural systems, expand mechanization access, and empower smallholder farmers across Nigeria.",
+    imageSrc: "https://api.tractrac.co/media/images/98bf6787-ae3a-405f-84c2-ade4d78b3d8b.jpeg",
     imageAlt: "Alero Otis, Head of Projects & Partnerships at TracTrac",
   },
   {
-    id: "alero-otis-2",
-    name: "Alero Otis",
-    role: "Head of Projects & Partnerships",
-    bio: "Alero Otis is a development and research specialist with extensive experience in program implementation, policy advocacy, and strategic partnerships.",
-    imageSrc: "https://api.tractrac.co/media/images/05d189c8-84bc-41e2-b260-4dc1d20b30a3.webp",
-    imageAlt: "Alero Otis, Head of Projects & Partnerships at TracTrac",
+    id: "stephen-aguebor",
+    name: "Stephen Aguebor",
+    role: "Deputy Team Lead, ISSAM Project",
+    bio: "Stephen Aguebor is a seasoned development and humanitarian specialist with over 12 years of experience designing and managing high-impact projects in agricultural livelihoods, financial inclusion, climate-smart agriculture, and market systems development. At TracTrac, he supports the implementation of the ISSAM Project, empowering youth and women-led mechanization businesses across Nigeria.",
+    imageSrc: "",
+    imageAlt: "Stephen Aguebor, Deputy Team Lead of the ISSAM Project at TracTrac",
   },
   {
-    id: "alero-otis-3",
-    name: "Alero Otis",
-    role: "Head of Projects & Partnerships",
-    bio: "Alero Otis is a development and research specialist with extensive experience in program implementation, policy advocacy, and strategic partnerships.",
-    imageSrc: "https://api.tractrac.co/media/images/05d189c8-84bc-41e2-b260-4dc1d20b30a3.webp",
-    imageAlt: "Alero Otis, Head of Projects & Partnerships at TracTrac",
+    id: "adanna-atounwu",
+    name: "Adanna Atounwu",
+    role: "Communications Lead",
+    bio: "Adanna leads TracTrac's communications strategy, shaping how we tell our story, amplifies our impact, and engage stakeholders across the agricultural ecosystem. Her work ensures that TracTrac's mission, programs, and partnerships reach audiences that matter.",
+    imageSrc: "",
+    imageAlt: "Adanna Atounwu, Communications Lead at TracTrac",
   },
   {
-    id: "alero-otis-4",
-    name: "Alero Otis",
-    role: "Head of Projects & Partnerships",
-    bio: "Alero Otis is a development and research specialist with extensive experience in program implementation, policy advocacy, and strategic partnerships.",
-    imageSrc: "https://api.tractrac.co/media/images/05d189c8-84bc-41e2-b260-4dc1d20b30a3.webp",
-    imageAlt: "Alero Otis, Head of Projects & Partnerships at TracTrac",
+    id: "samuel-olanikepun",
+    name: "Samuel Olanikepun",
+    role: "MERL Team Lead",
+    bio: "Samuel leads Monitoring, Evaluation, Research, and Learning (MERL) at TracTrac, ensuring that programs deliver measurable impact and continuous improvement. He oversees data-driven program evaluation and impact measurement across TracTrac initiatives.",
+    imageSrc: "",
+    imageAlt: "Samuel Olanikepun, MERL Team Lead at TracTrac",
   },
   {
-    id: "alero-otis-5",
-    name: "Alero Otis",
-    role: "Head of Projects & Partnerships",
-    bio: "Alero Otis is a development and research specialist with extensive experience in program implementation, policy advocacy, and strategic partnerships.",
-    imageSrc: "https://api.tractrac.co/media/images/05d189c8-84bc-41e2-b260-4dc1d20b30a3.webp",
-    imageAlt: "Alero Otis, Head of Projects & Partnerships at TracTrac",
+    id: "john-olanrewaju",
+    name: "Dr. Engr. John Olaseye Olanrewaju",
+    role: "Engineering Lead",
+    bio: "Dr. Olanrewaju leads our engineering and mechanization systems development, ensuring the deployment of equipment tailored to the needs of farmers across operational states. He brings deep expertise in agricultural engineering and mechanization infrastructure.",
+    imageSrc: "",
+    imageAlt: "Dr. Engr. John Olaseye Olanrewaju, Engineering Lead at TracTrac",
   },
   {
-    id: "alero-otis-6",
-    name: "Alero Otis",
-    role: "Head of Projects & Partnerships",
-    bio: "Alero Otis is a development and research specialist with extensive experience in program implementation, policy advocacy, and strategic partnerships.",
-    imageSrc: "https://api.tractrac.co/media/images/d803607a-3371-497d-a194-4cb0bfc43e26.webp",
-    imageAlt: "Alero Otis, Head of Projects & Partnerships at TracTrac",
+    id: "israel-olatunde",
+    name: "Israel Olatunde",
+    role: "IT Lead",
+    bio: "Israel leads the development and management of TracTrac's digital infrastructure, including platforms that connect farmers, mechanization service providers, and partners. His work powers the technology systems behind TracTrac's mechanization ecosystem.",
+    imageSrc: "",
+    imageAlt: "Israel Olatunde, IT Lead at TracTrac",
   },
   {
-    id: "alero-otis-7",
-    name: "Alero Otis",
-    role: "Head of Projects & Partnerships",
-    bio: "Alero Otis is a development and research specialist with extensive experience in program implementation, policy advocacy, and strategic partnerships.",
-    imageSrc: "https://api.tractrac.co/media/images/d803607a-3371-497d-a194-4cb0bfc43e26.webp",
-    imageAlt: "Alero Otis, Head of Projects & Partnerships at TracTrac",
+    id: "mercy-edoyugbo",
+    name: "Mercy Edoyugbo",
+    role: "Lead",
+    bio: "...",
+    imageSrc: "",
+    imageAlt: "Mercy Edoyugbo at TracTrac",
+  },
+  {
+    id: "ojoma-okwute",
+    name: "Barr. Ojoma Okwute",
+    role: "Head of Operations",
+    bio: "Barrister Ojoma Okwute leads operational strategy and execution across TracTrac programs, ensuring efficiency, compliance, and successful delivery of mechanization services across operational regions.",
+    imageSrc: "",
+    imageAlt: "Barr. Ojoma Okwute, Head of Operations at TracTrac",
   },
 ];
 
@@ -127,7 +135,7 @@ export default function AboutLeadership() {
             id="about-leadership-heading"
             className={styles.leadershipTitle}
           >
-            The Team Behind the Mission
+            {bindTitleOrphans("The Team Behind the Mission")}
           </h2>
           <p className={styles.leadershipSubtitle}>
             Our leadership combines expertise in agribusiness, engineering,

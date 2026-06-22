@@ -1,6 +1,7 @@
 import TraxcelerateIcon from "./TraxcelerateIcon";
 import type { IconName } from "./TraxcelerateIcon";
 import styles from "./traxcelerateProduct.module.css";
+import { bindTitleOrphans } from "@/app/utils/bindTitleOrphans";
 
 const STEPS: { n: string; t: string; i: IconName; d: string }[] = [
   {
@@ -19,13 +20,13 @@ const STEPS: { n: string; t: string; i: IconName; d: string }[] = [
     n: "03",
     t: "Certify",
     i: "award",
-    d: "Graduates receive the TracTrac MSP Certificate — Nigeria's only industry-recognised mechanisation workforce credential.",
+    d: "Graduates receive the TracTrac MSP Certificate, Nigeria's only industry-recognised mechanisation workforce credential.",
   },
   {
     n: "04",
     t: "Deploy",
     i: "laptop",
-    d: "Every MSP is integrated into TractracPlus — Nigeria's leading farm mechanisation platform — for real-time job matching, bookings, and income tracking.",
+    d: "Every MSP is integrated into TractracPlus, Nigeria's leading farm mechanisation platform, for real-time job matching, bookings, and income tracking.",
   },
   {
     n: "05",
@@ -42,7 +43,7 @@ export default function TraxcelerateHow() {
         <div className={styles.sectionCenterHow}>
           <p className={styles.eyebrow}>How It Works</p>
           <h2 id="trax-how-heading" className={`${styles.sectionTitle} ${styles.howTitle}`}>
-            The turnkey workforce solution
+            {bindTitleOrphans("The turnkey workforce solution")}
           </h2>
           <p className={styles.howLead}>
             This is beyond a one-time training. We build mechanisation ecosystems.

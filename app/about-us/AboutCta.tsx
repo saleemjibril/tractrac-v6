@@ -1,5 +1,6 @@
 import Link from "next/link";
 import styles from "./aboutUs.module.css";
+import { bindTitleOrphans } from "@/app/utils/bindTitleOrphans";
 
 const OPEN_POSITIONS_HREF = "/careers";
 
@@ -8,7 +9,7 @@ export default function AboutCta() {
     <section className={styles.cta} aria-labelledby="about-cta-heading">
       <div className={styles.ctaInner}>
         <h2 id="about-cta-heading" className={styles.ctaTitle}>
-          Join the Humans of TracTrac
+          {bindTitleOrphans("Join the Humans of TracTrac")}
         </h2>
         <p className={styles.ctaCopy}>
           We are boldly advancing mechanization across Nigeria and Africa. If

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { bindTitleOrphans } from "@/app/utils/bindTitleOrphans";
 import styles from "./tractracHomepage.module.css";
 
 const DEFAULT_TEAM_IMAGE =
@@ -13,7 +14,7 @@ const PILLARS = [
     id: "technology",
     title: "Technology",
     description:
-      "Our digital platforms — TracTrac Plus are connecting farmers and mechanization service providers in one seamless ecosystem.",
+      "Our digital platforms, TracTrac Plus, are connecting farmers and mechanization service providers in one seamless ecosystem.",
     icon: "phone",
   },
   {
@@ -27,7 +28,7 @@ const PILLARS = [
     id: "advocacy",
     title: "Advocacy",
     description:
-      "We actively advocate for mechanization-friendly policies, sector reforms, and implementation frameworks across our states of operation. Policy advocacy is not optional — it is a critical pillar of our long-term sustainability strategy.",
+      "We actively advocate for mechanization-friendly policies, sector reforms, and implementation frameworks across our states of operation. Policy advocacy is not optional. It is a critical pillar of our long-term sustainability strategy.",
     icon: "megaphone",
   },
 ] as const;
@@ -81,7 +82,7 @@ export default function TractracWhoWeSection() {
               sizes="(max-width: 1023px) 100vw, 50vw"
             />
             <div className={styles.whoWeImgBadge}>
-              <span aria-hidden>🚜</span> Founded 2019 · Nigeria
+              <span aria-hidden></span> Founded 2019 · Nigeria
             </div>
           </div>
 
@@ -91,12 +92,14 @@ export default function TractracWhoWeSection() {
               <span>Who We Are</span>
             </div>
             <h2 id="tractrac-who-we-heading" className={styles.whoWeHeading}>
-              Catalyzing Africa&apos;s Transition to a Fully Mechanized Agricultural Economy
+              {bindTitleOrphans(
+                "Catalyzing Africa's Transition to a Fully Mechanized Agricultural Economy"
+              )}
             </h2>
             <div className={styles.whoWeBody}>
               <p>
                 TracTrac MSL is accelerating Africa&apos;s transition to a fully mechanized agricultural
-                economy — starting from Nigeria. We build the digital backbone, partnerships, and
+                economy, starting from Nigeria. We build the digital backbone, partnerships, and
                 financing pathways that make tractors and essential farm power accessible to
                 smallholders at scale.
               </p>

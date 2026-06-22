@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import TraxcelerateIcon from "./TraxcelerateIcon";
 import { TRAX_IMAGES } from "./images";
+import { BoundTitleWithHighlight } from "@/app/components/marketing/BoundTitle";
 import styles from "./traxcelerateProduct.module.css";
 
 const STATS = [
@@ -37,15 +38,18 @@ export default function TraxcelerateHero() {
 
         <div className={styles.heroMain}>
           <p className={styles.heroKicker}>No more idle farmlands.</p>
-          <h1 id="trax-hero-heading" className={styles.heroTitle}>
-            The hands that power
-            <br />
-            <span className={styles.highlight}>mechanisation</span>
-          </h1>
+          <BoundTitleWithHighlight
+            as="h1"
+            id="trax-hero-heading"
+            className={styles.heroTitle}
+            title="The hands that power mechanisation"
+            highlight="mechanisation"
+            highlightClassName={styles.highlight}
+          />
           <p className={styles.heroLede}>
             <strong>TRAxCelerate</strong> is TracTrac&apos;s proven, scalable mechanisation
             workforce programme. We recruit, train, certify, and deploy mechanisation service
-            providers at scale — turning idle equipment into rural productivity.
+            providers at scale, turning idle equipment into rural productivity.
           </p>
           <div className={styles.heroCtas}>
             <Link href="#cta" className={styles.btnPrimary}>

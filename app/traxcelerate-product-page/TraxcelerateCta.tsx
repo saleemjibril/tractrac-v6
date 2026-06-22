@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BoundTitleWithHighlight } from "@/app/components/marketing/BoundTitle";
 import TraxcelerateIcon from "./TraxcelerateIcon";
 import styles from "./traxcelerateProduct.module.css";
 
@@ -12,11 +13,14 @@ export default function TraxcelerateCta() {
           <TraxcelerateIcon name="spark" size={14} color="#FA9413" />
           <span className={styles.ctaBadgeText}>Now open for co-funding partners</span>
         </div>
-        <h2 id="trax-cta-heading" className={styles.ctaTitle}>
-          Ready to build Nigeria&apos;s
-          <br />
-          <span className={styles.highlight}>mechanisation workforce?</span>
-        </h2>
+        <BoundTitleWithHighlight
+          as="h2"
+          id="trax-cta-heading"
+          className={styles.ctaTitle}
+          title="Ready to build Nigeria's mechanisation workforce?"
+          highlight="mechanisation workforce?"
+          highlightClassName={styles.highlight}
+        />
         <p className={styles.ctaLead}>
           Schedule a briefing, download the full prospectus, or apply directly as an MSP.
           TRAxCelerate is now open for co-funding partners across all states.

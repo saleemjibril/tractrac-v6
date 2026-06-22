@@ -159,7 +159,7 @@
   width: 100%;
   border-collapse: collapse;
   margin: 1.5rem 0;
-  font-size: 15px;
+  font-size: 16px;
 }
 
 .prose th,
@@ -218,7 +218,7 @@
 
 .authorBio {
   margin: 0;
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.55;
   color: var(--tt-muted);
 }
@@ -325,6 +325,7 @@
   margin: 0 0 1.75rem;
   text-align: center;
   font-weight: 700;
-  font-size: clamp(1.35rem, 2.5vw, 1.75rem);
+  font-size: clamp(1.75rem, 3vw, 38px);
   color: var(--tt-navy);
+  text-wrap: balance;
 }

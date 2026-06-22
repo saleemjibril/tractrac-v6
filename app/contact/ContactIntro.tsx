@@ -1,5 +1,6 @@
 import { CONTACT_EMAIL, CONTACT_PHONE } from "./contactData";
 import styles from "./contact.module.css";
+import { bindTitleOrphans } from "@/app/utils/bindTitleOrphans";
 
 function EmailIcon() {
   return (
@@ -26,11 +27,11 @@ function PhoneIcon() {
 export default function ContactIntro() {
   return (
     <div>
-      <h2 className={styles.introTitle}>Partnerships &amp; support</h2>
+      <h2 className={styles.introTitle}>{bindTitleOrphans("Partnerships & support")}</h2>
       <p className={styles.introCopy}>
         TracTrac is open to partnerships with organizations that share our
         vision of a more mechanized and sustainable Nigeria. Reach out by email,
-        phone, or the form—we typically respond within a few business days.
+        phone, or the form, we typically respond within a few business days.
       </p>
       <hr className={styles.introRule} />
       <div className={styles.contactMethods}>

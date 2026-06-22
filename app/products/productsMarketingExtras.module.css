@@ -87,7 +87,7 @@
   font-weight: 700;
   font-size: 11px;
   letter-spacing: 0.12em;
-  text-transform: uppercase;
+  text-transform: capitalize;
   color: var(--orange);
 }
 
@@ -109,7 +109,7 @@
 
 .catalogCardDesc {
   font-weight: 300;
-  font-size: 15px;
+  font-size: 14px;
   color: var(--slate-600);
   line-height: 1.65;
   margin: 0;
@@ -200,7 +200,7 @@
 
 .formSubtitle {
   font-weight: 300;
-  font-size: 15px;
+  font-size: 16px;
   color: var(--slate-500);
   margin: 0 0 24px;
   line-height: 1.6;

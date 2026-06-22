@@ -1,5 +1,6 @@
 import Image from "next/image";
 import styles from "./careers.module.css";
+import { bindTitleOrphans } from "@/app/utils/bindTitleOrphans";
 
 const GALLERY_IMAGES = [
   "https://res.cloudinary.com/tractrac-global/image/upload/v1758235937/WhatsApp_Image_2025-09-18_at_23.50.39_fbbd4b.jpg",
@@ -23,7 +24,7 @@ export default function CareersLifeGallery() {
             <span>Culture</span>
           </span>
           <h2 id="careers-gallery-heading" className={styles.sectionTitle}>
-            Life at TracTrac
+            {bindTitleOrphans("Life at TracTrac")}
           </h2>
         </header>
 
@@ -37,7 +38,7 @@ export default function CareersLifeGallery() {
             >
               <Image
                 src={src}
-                alt={`Life at TracTrac ${index + 1}`}
+                alt={`{bindTitleOrphans("Life at TracTrac")} ${index + 1}`}
                 fill
                 sizes="(max-width: 640px) 100vw, 280px"
                 className={styles.galleryImage}

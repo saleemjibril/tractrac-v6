@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { bindTitleOrphans } from "@/app/utils/bindTitleOrphans";
 import TraxcelerateIcon from "../traxcelerate-product-page/TraxcelerateIcon";
 import { PRODUCT_LISTING_ITEMS } from "./productsData";
 import traxStyles from "../traxcelerate-product-page/traxcelerateProduct.module.css";
@@ -15,10 +16,10 @@ export default function ProductCatalog() {
           <div className={extras.catalogHeaderText}>
             <p className={traxStyles.eyebrow}>Product suite</p>
             <h2 id="catalog-heading" className={`${traxStyles.sectionTitle} ${extras.catalogTitle}`}>
-              Smarter systems for modern mechanisation
+              {bindTitleOrphans("Smarter systems for modern mechanisation")}
             </h2>
             <p className={traxStyles.sectionLeadMuted}>
-              Explore TracTrac&apos;s platforms, programmes, and financing models — each designed
+              Explore TracTrac&apos;s platforms, programmes, and financing models, each designed
               to work together across the value chain.
             </p>
           </div>

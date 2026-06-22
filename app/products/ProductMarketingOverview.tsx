@@ -1,26 +1,7 @@
 import Image from "next/image";
 import type { ProductPageConfig } from "./productMarketing.types";
+import { BoundTitleWithHighlight } from "@/app/components/marketing/BoundTitle";
 import styles from "../traxcelerate-product-page/traxcelerateProduct.module.css";
-
-function TitleWithHighlight({
-  title,
-  highlight,
-}: {
-  title: string;
-  highlight?: string;
-}) {
-  if (!highlight || !title.includes(highlight)) {
-    return <>{title}</>;
-  }
-  const [before, after] = title.split(highlight);
-  return (
-    <>
-      {before}
-      <span className={styles.highlight}>{highlight}</span>
-      {after}
-    </>
-  );
-}
 
 export default function ProductMarketingOverview({
   overview,
@@ -38,15 +19,21 @@ export default function ProductMarketingOverview({
         <div className={styles.problemGrid}>
           <div>
             <p className={styles.eyebrow}>{overview.eyebrow}</p>
-            <h2
+            <BoundTitleWithHighlight
+              as="h2"
               id="product-overview-heading"
               className={`${styles.sectionTitle} ${styles.problemTitle}`}
-            >
-              <TitleWithHighlight
-                title={overview.title}
-                highlight={overview.titleHighlight}
-              />
-            </h2>
+              title={
+                overview.titleHighlight &&
+                overview.title.includes(overview.titleHighlight)
+                  ? overview.title
+                  : overview.titleHighlight
+                    ? `${overview.title} ${overview.titleHighlight}`
+                    : overview.title
+              }
+              highlight={overview.titleHighlight}
+              highlightClassName={styles.highlight}
+            />
             <div className={styles.problemCopy}>
               {overview.paragraphs.map((p) => (
                 <p key={p.slice(0, 40)} className={styles.sectionLead}>

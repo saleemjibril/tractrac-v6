@@ -1,6 +1,7 @@
 import TraxcelerateIcon from "./TraxcelerateIcon";
 import type { IconName } from "./TraxcelerateIcon";
 import styles from "./traxcelerateProduct.module.css";
+import { bindTitleOrphans } from "@/app/utils/bindTitleOrphans";
 
 type ProofStat = {
   v: string;
@@ -24,7 +25,7 @@ export default function TraxcelerateProof() {
         <div className={styles.sectionCenter}>
           <p className={styles.eyebrow}>Our Proof</p>
           <h2 id="trax-proof-heading" className={styles.sectionTitleLight}>
-            Already proven at scale
+            {bindTitleOrphans("Already proven at scale")}
           </h2>
           <p className={styles.sectionLeadLight}>
             TRAxCelerate is not a concept. Through the <strong>ISSAM Project</strong> in partnership

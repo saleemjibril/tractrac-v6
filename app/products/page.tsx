@@ -24,7 +24,7 @@ const chivo = Chivo({
 });
 
 export const metadata: Metadata = {
-  title: "Products — TracTrac Mechanisation Suite",
+  title: "Products: TracTrac Mechanisation Suite",
   description: "Powering the future of mechanisation in Africa.",
 };
 

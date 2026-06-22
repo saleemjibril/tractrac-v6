@@ -205,10 +205,10 @@ export default function PrivacyPolicyInner() {
             3. Remote viewing and audio
           </Text>
           <Text color="#858A8F" fontSize="16px" mb="20px" lineHeight="1.6">
-            • Screen capture — screenshots may be taken remotely<br/>
-            • Screen streaming — live view of the device screen<br/>
-            • Audio recording — microphone may be recorded<br/>
-            • Audio streaming — real-time audio from the microphone
+            • Screen capture, screenshots may be taken remotely<br/>
+            • Screen streaming, live view of the device screen<br/>
+            • Audio recording, microphone may be recorded<br/>
+            • Audio streaming, real-time audio from the microphone
           </Text>
 
           <Text fontWeight={600} fontSize="18px" mb="10px" color="#333">
@@ -271,9 +271,9 @@ export default function PrivacyPolicyInner() {
             10. Device restrictions and policies
           </Text>
           <Text color="#858A8F" fontSize="16px" mb="20px" lineHeight="1.6">
-            • Kiosk mode — restrict the device to a single application or approved set<br/>
+            • Kiosk mode, restrict the device to a single application or approved set<br/>
             • Disable or limit factory reset<br/>
-            • Application restrictions — control which applications may run<br/>
+            • Application restrictions, control which applications may run<br/>
             • Password requirements and complexity policies
           </Text>
 
@@ -291,9 +291,9 @@ export default function PrivacyPolicyInner() {
             12. Special administrative access
           </Text>
           <Text color="#858A8F" fontSize="16px" mb="20px" lineHeight="1.6">
-            • Accessibility service — may be used for remote input or automation where enabled by policy<br/>
-            • Device admin — system-level device control<br/>
-            • Device owner — highest management privileges on the device where applicable
+            • Accessibility service, may be used for remote input or automation where enabled by policy<br/>
+            • Device admin, system-level device control<br/>
+            • Device owner, highest management privileges on the device where applicable
           </Text>
 
           <Text fontWeight={600} fontSize="18px" mb="10px" color="#333">
@@ -439,7 +439,7 @@ export default function PrivacyPolicyInner() {
           </Center>
 
           <Text color="#858A8F" fontSize="16px" mb="20px" lineHeight="1.6">
-            Your information, including Personal Data, is processed at the Company's operating offices and in any other places where the parties involved in the processing are located. It means that this information may be transferred to — and maintained on — computers located outside of Your state, province, country or other governmental jurisdiction where the data protection laws may differ than those from Your jurisdiction.
+            Your information, including Personal Data, is processed at the Company's operating offices and in any other places where the parties involved in the processing are located. It means that this information may be transferred to, and maintained on, computers located outside of Your state, province, country or other governmental jurisdiction where the data protection laws may differ than those from Your jurisdiction.
             <br/><br/>
             Your consent to this Privacy Policy followed by Your submission of such information represents Your agreement to that transfer.
             <br/><br/>

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { jobCards } from "./jobsData";
 import styles from "./careers.module.css";
+import { bindTitleOrphans } from "@/app/utils/bindTitleOrphans";
 
 export default function CareersOpenPositions() {
   return (
@@ -16,7 +17,7 @@ export default function CareersOpenPositions() {
             <span>Open roles</span>
           </span>
           <h2 id="careers-positions-heading" className={styles.sectionTitle}>
-            Open Positions
+            {bindTitleOrphans("Open Positions")}
           </h2>
         </header>
 

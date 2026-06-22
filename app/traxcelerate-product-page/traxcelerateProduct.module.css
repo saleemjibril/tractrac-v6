@@ -77,13 +77,13 @@
   font-size: 12px;
   color: var(--orange);
   letter-spacing: 0.12em;
-  text-transform: uppercase;
+  text-transform: capitalize;
   margin: 0 0 16px;
 }
 
 .sectionTitle {
   font-weight: 800;
-  font-size: clamp(32px, 4vw, 48px);
+  font-size: clamp(1.75rem, 3vw, 38px);
   color: var(--dark);
   line-height: 1.1;
   letter-spacing: -0.025em;
@@ -92,7 +92,7 @@
 
 .sectionTitleLight {
   font-weight: 800;
-  font-size: clamp(32px, 4vw, 48px);
+  font-size: clamp(1.75rem, 3vw, 38px);
   color: #fff;
   line-height: 1.1;
   letter-spacing: -0.025em;
@@ -101,7 +101,7 @@
 
 .sectionTitleSm {
   font-weight: 800;
-  font-size: clamp(30px, 3.8vw, 46px);
+  font-size: clamp(1.75rem, 3vw, 38px);
   color: var(--dark);
   line-height: 1.1;
   letter-spacing: -0.025em;
@@ -110,7 +110,7 @@
 
 .sectionTitlePartners {
   font-weight: 800;
-  font-size: clamp(30px, 3.6vw, 44px);
+  font-size: clamp(1.75rem, 3vw, 38px);
   color: var(--dark);
   line-height: 1.1;
   letter-spacing: -0.025em;
@@ -119,7 +119,7 @@
 
 .sectionLead {
   font-weight: 300;
-  font-size: 19px;
+  font-size: 16px;
   color: #334155;
   line-height: 1.7;
   margin: 0;
@@ -132,7 +132,7 @@
 
 .sectionLeadMuted {
   font-weight: 300;
-  font-size: 17px;
+  font-size: 16px;
   color: var(--slate-500);
   line-height: 1.65;
   margin: 0;
@@ -140,7 +140,7 @@
 
 .sectionLeadLight {
   font-weight: 300;
-  font-size: 19px;
+  font-size: 16px;
   color: rgba(255, 255, 255, 0.65);
   line-height: 1.65;
   margin: 0;
@@ -396,11 +396,8 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: rgba(250, 148, 19, 0.15);
-  border: 1px solid rgba(250, 148, 19, 0.35);
   border-radius: 20px;
-  padding: 6px 14px;
-  backdrop-filter: blur(8px);
+  padding: 6px 14px 6px 0;
 }
 
 .pulseDot {
@@ -437,7 +434,7 @@
   font-size: 11px;
   color: var(--orange);
   letter-spacing: 0.14em;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
 .heroMain {
@@ -459,7 +456,7 @@
 
 .heroTitle {
   font-weight: 800;
-  font-size: clamp(40px, 5.6vw, 84px);
+  font-size: clamp(2rem, 4vw, 56px);
   color: #fff;
   line-height: 0.95;
   letter-spacing: -0.04em;
@@ -468,7 +465,7 @@
 
 .heroLede {
   font-weight: 300;
-  font-size: 17px;
+  font-size: 16px;
   color: rgba(255, 255, 255, 0.75);
   line-height: 1.55;
   margin: 0 0 26px;
@@ -650,7 +647,7 @@
 }
 
 .statCardBigOrange {
-  font-weight: 800;
+  font-weight: 500;
   font-size: 34px;
   letter-spacing: -0.025em;
   line-height: 1;
@@ -658,7 +655,7 @@
 }
 
 .statCardBigDark {
-  font-weight: 800;
+  font-weight: 500;
   font-size: 34px;
   letter-spacing: -0.025em;
   line-height: 1;
@@ -667,7 +664,7 @@
 
 .statCardSmall {
   font-weight: 400;
-  font-size: 13.5px;
+  font-size: 14px;
   color: var(--slate-600);
   line-height: 1.5;
 }
@@ -929,7 +926,7 @@
 
 .stepDesc {
   font-weight: 300;
-  font-size: 13px;
+  font-size: 14px;
   color: var(--slate-500);
   line-height: 1.6;
   margin: 0;
@@ -964,13 +961,11 @@
 .partnerTag {
   display: inline-block;
   border-radius: 20px;
-  padding: 4px 12px;
+  padding: 4px 12px 4px 0;
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.05em;
-  background: color-mix(in srgb, var(--tag-color) 12%, transparent);
-  border: 1px solid color-mix(in srgb, var(--tag-color) 25%, transparent);
-  color: var(--tag-color);
+  color: var(--orange);
 }
 
 .partnerIconWrap {
@@ -994,7 +989,7 @@
 
 .partnerDesc {
   font-weight: 300;
-  font-size: 15px;
+  font-size: 14px;
   color: var(--slate-600);
   line-height: 1.7;
   margin: 0 0 24px;
@@ -1066,7 +1061,7 @@
 
 .promiseCardDesc {
   font-weight: 300;
-  font-size: 15px;
+  font-size: 14px;
   color: var(--slate-600);
   line-height: 1.65;
   margin: 0;
@@ -1201,7 +1196,7 @@
 
 .testimonialQuote {
   font-weight: 400;
-  font-size: 18px;
+  font-size: 14px;
   color: #1e293b;
   line-height: 1.65;
   font-style: italic;
@@ -1283,10 +1278,8 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: rgba(250, 148, 19, 0.15);
-  border: 1px solid rgba(250, 148, 19, 0.3);
   border-radius: 20px;
-  padding: 6px 14px;
+  padding: 6px 14px 6px 0;
   margin-bottom: 28px;
 }
 
@@ -1295,12 +1288,12 @@
   font-size: 12px;
   color: var(--orange);
   letter-spacing: 0.1em;
-  text-transform: uppercase;
+  text-transform: capitalize;
 }
 
 .ctaTitle {
   font-weight: 900;
-  font-size: clamp(36px, 5.5vw, 64px);
+  font-size: clamp(1.75rem, 3vw, 38px);
   color: #fff;
   line-height: 1.05;
   letter-spacing: -0.035em;
@@ -1309,7 +1302,7 @@
 
 .ctaLead {
   font-weight: 300;
-  font-size: 19px;
+  font-size: 16px;
   color: rgba(255, 255, 255, 0.7);
   line-height: 1.65;
   margin: 0 auto 44px;
@@ -1520,4 +1513,33 @@
   .galleryItemNormal {
     grid-column: span 1;
   }
+}
+
+/* Body copy & section subtitles */
+.heroLede,
+.sectionLead,
+.sectionLeadMuted,
+.sectionLeadLight,
+.problemCopy p,
+.ctaLead {
+  font-size: 16px;
+}
+
+/* Card body copy */
+.stepDesc,
+.partnerDesc,
+.promiseCardDesc,
+.statCardSmall,
+.testimonialQuote {
+  font-size: 14px;
+}
+
+/* Balanced title line breaks (use with bindTitleOrphans in JSX) */
+.heroTitle,
+.sectionTitle,
+.sectionTitleLight,
+.sectionTitleSm,
+.sectionTitlePartners,
+.ctaTitle {
+  text-wrap: balance;
 }

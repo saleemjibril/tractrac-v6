@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./careers.module.css";
+import { bindTitleOrphans } from "@/app/utils/bindTitleOrphans";
 
 const HERO_IMAGE =
   "https://res.cloudinary.com/tractrac-global/image/upload/v1758234338/WhatsApp_Image_2025-09-18_at_23.24.35_jn4rlf.jpg";
@@ -27,7 +28,7 @@ export default function CareersHero() {
           <span>Careers at TracTrac</span>
         </span>
         <h1 id="careers-hero-heading" className={styles.heroTitle}>
-          Join the Humans of TracTrac
+          {bindTitleOrphans("Join the Humans of TracTrac")}
         </h1>
         <p className={styles.heroLede}>
           Build technology and partnerships that put mechanization in reach of

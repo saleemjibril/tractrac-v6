@@ -41,7 +41,7 @@ export default function ProductsPartnerForm({ variant = "join" }: ProductsPartne
   const subtitle =
     variant === "partner"
       ? "Tell us about your organisation and how you'd like to deploy or integrate TracTrac Plus."
-      : "Governments, cooperatives, DFIs, and agribusinesses — share how you'd like to collaborate.";
+      : "Governments, cooperatives, DFIs, and agribusinesses, share how you'd like to collaborate.";
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -121,7 +121,7 @@ export default function ProductsPartnerForm({ variant = "join" }: ProductsPartne
 
           {success && (
             <div className={`${extras.alert} ${extras.alertSuccess}`} role="status">
-              Received — thanks for reaching out. We will get back to you soon.
+              Received. Thanks for reaching out. We will get back to you soon.
             </div>
           )}
           {error && (
